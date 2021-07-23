@@ -17,7 +17,7 @@ export default function Home() {
           <li>
             wsl is pretty cool but use{" "}
             <pre>\\wsl$\Ubuntu-20.04\home\kashyap\__workspace\git</pre> Hot
-            reload won't work otherwise
+            reload won&apos;t work otherwise
           </li>
           <li>
             in godaddy domain config set cname - host as www then value as the
@@ -29,8 +29,8 @@ export default function Home() {
           </li>
           <li>Send me good personal site examples please thanks</li>
           <li>
-            I actually quite like Pineapple on pizza. When it's sliced thin and
-            charred nicely it's awesome.
+            I actually quite like Pineapple on pizza. When it&apos;s sliced thin
+            and charred nicely it&apos;s awesome.
           </li>
         </ul>
       </main>
