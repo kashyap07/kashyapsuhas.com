@@ -1,11 +1,11 @@
-const About = () => {
+const NotFound = () => {
   return (
     <main className="m-auto">
       <div className="flex items-center justify-center text-xl">
-        About page under construction
+        404. This page does not exist.
       </div>
     </main>
   );
 };
 
-export default About;
+export default NotFound;
