@@ -34,9 +34,11 @@ const Blog = (props) => {
                 as={`/blog/post/${post.slug}`}
                 passHref
               >
-                <a className="flex gap-6 items-end">
-                  <span className="font-semibold text-2xl">{post.title}</span>
-                  <span className="text-sm  text-gray-800 font-mono">
+                <a className="flex items-baseline justify-between sm:justify-start sm:gap-6 mb-2">
+                  <span className="font-semibold w-8/12 sm:w-auto">
+                    {post.title}
+                  </span>
+                  <span className="text-sm text-gray-800 font-mono">
                     {new Date(post.published_at).toLocaleDateString("en-IN", {
                       year: "numeric",
                       month: "short",
