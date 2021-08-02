@@ -8,20 +8,6 @@ const Header = () => {
     { title: "Contact", href: "/contact" },
   ];
 
-  const [navShow, setNavShow] = useState(false);
-
-  const onToggleNav = () => {
-    setNavShow((status) => {
-      if (status) {
-        document.body.style.overflow = "auto";
-      } else {
-        // Prevent scrolling
-        document.body.style.overflow = "hidden";
-      }
-      return !status;
-    });
-  };
-
   return (
     <header className="flex flex-col sm:flex-row sm:justify-between py-10 gap-y-2">
       <div>

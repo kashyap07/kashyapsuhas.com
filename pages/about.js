@@ -1,9 +1,7 @@
 const About = () => {
   return (
-    <main className="m-auto">
-      <div className="flex items-center justify-center text-xl">
-        About page under construction
-      </div>
+    <main className="mb-auto">
+      <div className="flex text-xl">About page under construction</div>
     </main>
   );
 };

@@ -25,7 +25,7 @@ module.exports = {
         sans: ["Inter", ...defaultTheme.fontFamily.sans],
       },
       colors: {
-        primary: colors.teal,
+        primary: colors.blue,
         gray: colors.trueGray,
         code: {
           green: "#b5f4a5",
@@ -40,6 +40,10 @@ module.exports = {
         DEFAULT: {
           css: {
             color: theme("colors.gray.700"),
+            p: {
+              marginTop: "0.5rem",
+              marginBottom: "0.5rem",
+            },
             a: {
               color: theme("colors.primary.500"),
               "&:hover": {
