@@ -35,6 +35,10 @@ module.exports = {
           blue: "#93ddfd",
           white: "#fff",
         },
+        headings: {
+          start: "#007cf0",
+          end: "#00dfd8"
+        }
       },
       typography: (theme) => ({
         DEFAULT: {

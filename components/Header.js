@@ -14,7 +14,7 @@ const Header = () => {
         <Link href="/" passHref>
           <div className="flex items-center justify-between">
             <a
-              className="text-2xl font-bold cursor-pointer"
+              className="text-2xl font-bold cursor-pointer bg-gradient-to-br from-blue-900 via-headings-start to-headings-end bg-clip-text text-transparent"
               aria-label="Home Page"
             >
               {/* logo? */}

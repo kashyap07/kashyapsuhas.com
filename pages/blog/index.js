@@ -25,7 +25,7 @@ const Blog = (props) => {
   return (
     <main className="mb-auto">
       <div className="flex items-center text-xl">
-        <ul className="flex flex-col">
+        <ul className="flex flex-col max-w-none w-full">
           {posts.map((post) => (
             <li key={post.slug}>
               {/* filter by tag? Maybe some other identifier for seperation */}
