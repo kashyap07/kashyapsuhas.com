@@ -4,7 +4,7 @@ const { BLOG_URL, CONTENT_API_KEY } = process.env;
 
 const getPosts = async () => {
   const res = await fetch(
-    `${BLOG_URL}/ghost/api/v3/content/posts?key=${CONTENT_API_KEY}&include=tags&fields=title,slug,published_at`
+    `https://kashyapsuhas-ghostcms.herokuapp.com/ghost/api/v3/content/posts?key=${CONTENT_API_KEY}&include=tags&fields=title,slug,published_at`
   ).then((res) => res.json());
 
   return res.posts;
