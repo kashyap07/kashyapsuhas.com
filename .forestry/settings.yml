@@ -14,7 +14,7 @@ sections:
   label: Blog Section
   create: all
   match: "**/*"
-  new_doc_ext: ".md"
+  new_doc_ext: md
 upload_dir: uploads
 public_path: "/public/blog"
 front_matter_path: ''
