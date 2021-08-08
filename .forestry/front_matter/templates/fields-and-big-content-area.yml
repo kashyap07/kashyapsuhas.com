@@ -2,10 +2,14 @@
 label: Fields and Big content area
 hide_body: false
 fields:
-- name: text
-  type: text
+- name: creation_date
+  type: datetime
+  label: Creation Date
+  description: ''
   config:
     required: false
-  label: Text
+    date_format: 
+    time_format: 
+    display_utc: false
 pages:
 - Blog/mdtest.md
