@@ -18,6 +18,11 @@ fields:
     required: false
   label: Category
   description: tech / food / travel
+- name: hero_image
+  type: file
+  config:
+    maxSize: 64
+  label: Hero Image
 - name: creation_date
   type: datetime
   label: Creation Date
@@ -27,21 +32,18 @@ fields:
     date_format: YYYY/MM/DD
     time_format: 
     display_utc: false
+    export_format: YYYY-MM-DD
   default: now
 - name: author
   type: text
   config:
     required: false
   label: Author
+  default: Suhas Kashyap
 - name: tags
   type: tag_list
   default: []
   label: Tags
-- name: hero_image
-  type: file
-  config:
-    maxSize: 64
-  label: Hero Image
 pages:
 - Blog/mdtest.md
 - Blog/test2.md
