@@ -56,6 +56,8 @@ Into an object like this:
 }
 ```
 
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr"><a href="https://twitter.com/hashtag/CSS?src=hash&amp;ref_src=twsrc%5Etfw">#CSS</a> `:focus-visible`<br><br>Lets the browser decide whether or not to show focus<br><br>Video shows the difference between `:focus` and `:focus-visible` when Javascript is used to focus buttons after mouse interaction<br><br>tldr; <br>less concerns / better UX<br><br>Learn more <a href="https://t.co/XLbtVXyaa0">https://t.co/XLbtVXyaa0</a> <a href="https://t.co/BrRYd6VHGd">pic.twitter.com/BrRYd6VHGd</a></p>&mdash; Adam Argyle (@argyleink) <a href="https://twitter.com/argyleink/status/1423633958730747906?ref_src=twsrc%5Etfw">August 6, 2021</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
 ## Why use gray-matter?
 
 * **simple**: main function takes a string and returns an object
