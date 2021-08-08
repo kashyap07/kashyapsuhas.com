@@ -12,6 +12,12 @@ fields:
   config:
     required: false
   label: Description
+- name: category
+  type: text
+  config:
+    required: false
+  label: Category
+  description: tech / food / travel
 - name: creation_date
   type: datetime
   label: Creation Date
@@ -26,5 +32,9 @@ fields:
   config:
     required: false
   label: Author
+- name: tags
+  type: tag_list
+  default: []
+  label: Tags
 pages:
 - Blog/mdtest.md
