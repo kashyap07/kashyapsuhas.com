@@ -8,7 +8,7 @@ sections:
   label: Blog
 - type: document
   path: Blog
-  label: Posts
+  label: Blog
 - type: directory
   path: Blog
   label: Blog Section
