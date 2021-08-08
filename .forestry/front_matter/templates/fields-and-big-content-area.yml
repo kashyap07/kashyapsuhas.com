@@ -7,3 +7,5 @@ fields:
   config:
     required: false
   label: Text
+pages:
+- Blog/mdtest.md
