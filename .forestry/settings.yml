@@ -4,9 +4,17 @@ auto_deploy: false
 admin_path: 
 webhook_url: 
 sections:
+- type: heading
+  label: Blog
 - type: document
   path: Blog
   label: Posts
+- type: directory
+  path: Blog
+  label: Blog Section
+  create: all
+  match: "**/*"
+  new_doc_ext: ".md"
 upload_dir: uploads
 public_path: "/public/blog"
 front_matter_path: ''
