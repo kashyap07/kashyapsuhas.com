@@ -56,5 +56,6 @@ fields:
   default: []
   label: Tags
 pages:
+- Blog/dateformattest.md
 - Blog/new-test.md
 - Blog/newtest2.md
