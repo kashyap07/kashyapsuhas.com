@@ -1,14 +1,26 @@
 import { useRouter } from "next/router";
 import Link from "next/link";
+import fs from "fs";
+import matter from "gray-matter";
+import marked from "marked";
 
-const { BLOG_URL, CONTENT_API_KEY } = process.env;
+// const getPost = async (slug) => {
+//   const res = await fetch(
+//     `${BLOG_URL}/ghost/api/v3/content/posts/slug/${slug}?key=${CONTENT_API_KEY}&fields=title,published_at,html`
+//   ).then((res) => res.json());
+
+//   return res.posts[0];
+// };
 
 const getPost = async (slug) => {
-  const res = await fetch(
-    `${BLOG_URL}/ghost/api/v3/content/posts/slug/${slug}?key=${CONTENT_API_KEY}&fields=title,published_at,html`
-  ).then((res) => res.json());
-
-  return res.posts[0];
+  console.log(slug);
+  let postContent = fs.readFileSync("Blog/" + slug);
+  let fm = matter(postContent);
+  let post = {
+    title: fm.data.title,
+    html: marked(fm.content),
+  };
+  return post;
 };
 
 export const getStaticProps = async ({ params }) => {
