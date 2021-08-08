@@ -57,4 +57,5 @@ fields:
   label: Tags
 pages:
 - Blog/mdtest.md
+- Blog/new-test.md
 - Blog/test2.md
