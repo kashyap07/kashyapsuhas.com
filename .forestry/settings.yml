@@ -12,8 +12,8 @@ sections:
   label: Blog
 - type: directory
   path: Blog
-  label: Blog Section
-  create: all
+  label: Blog
+  create: none
   match: "**/*"
   new_doc_ext: md
 upload_dir: uploads
