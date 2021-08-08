@@ -2,6 +2,16 @@
 label: Fields and Big content area
 hide_body: false
 fields:
+- name: title
+  type: text
+  config:
+    required: false
+  label: Title
+- name: description
+  type: text
+  config:
+    required: false
+  label: Description
 - name: creation_date
   type: datetime
   label: Creation Date
@@ -11,5 +21,10 @@ fields:
     date_format: 
     time_format: 
     display_utc: false
+- name: author
+  type: text
+  config:
+    required: false
+  label: Author
 pages:
 - Blog/mdtest.md
