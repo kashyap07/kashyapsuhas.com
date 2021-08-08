@@ -13,11 +13,22 @@ fields:
     required: false
   label: Description
 - name: category
-  type: text
+  type: select
+  default: Tech
   config:
     required: false
+    options:
+    - Tech
+    - Food
+    - Travel
+    - Life
+    source:
+      type: simple
+      section: 
+      file: 
+      path: 
   label: Category
-  description: tech / food / travel
+  description: tech / food / travel / life
 - name: hero_image
   type: file
   config:
