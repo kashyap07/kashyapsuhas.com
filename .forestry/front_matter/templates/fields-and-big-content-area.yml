@@ -39,11 +39,11 @@ fields:
   label: Creation Date
   description: ''
   config:
-    required: false
+    required: true
     date_format: YYYY/MM/DD
     time_format: 
     display_utc: false
-    export_format: YYYY-MM-DD
+    export_format: "'YYYY-MM-DD'"
   default: now
 - name: author
   type: text
