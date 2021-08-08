@@ -7,13 +7,12 @@ sections:
 - type: document
   path: Blog
   label: Posts
-  match: "**/*"
 - type: heading
   label: Blog
 - type: directory
   path: Blog
   label: Blog
-  create: none
+  create: all
   match: "**/*"
   new_doc_ext: md
 upload_dir: uploads
