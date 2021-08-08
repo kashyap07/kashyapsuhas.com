@@ -37,9 +37,10 @@ module.exports = {
         },
         headings: {
           start: "#007cf0",
-          end: "#00dfd8"
-        }
+          end: "#00dfd8",
+        },
       },
+      // 0 30px 60px -10px rgb(0 0 0 / 22%), 0 18px 36px -18px rgb(0 0 0 / 25%);
       typography: (theme) => ({
         DEFAULT: {
           css: {
