@@ -4,20 +4,18 @@ import fs from "fs";
 import matter from "gray-matter";
 import marked from "marked";
 
-// const getPost = async (slug) => {
-//   const res = await fetch(
-//     `${BLOG_URL}/ghost/api/v3/content/posts/slug/${slug}?key=${CONTENT_API_KEY}&fields=title,published_at,html`
-//   ).then((res) => res.json());
-
-//   return res.posts[0];
-// };
-
 const getPost = async (slug) => {
   console.log(slug);
   let postContent = fs.readFileSync("Blog/" + slug);
   let fm = matter(postContent);
+
   let post = {
     title: fm.data.title,
+    date: new Date(fm.data.creation_date).toLocaleDateString("en-IN", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    }),
     html: marked(fm.content),
   };
   return post;
@@ -54,11 +52,7 @@ const Slug = (props) => {
             <div className="mb-8">
               <h1 className="text-5xl font-bold">{post.title}</h1>
               <span className="text-sm  text-gray-800 font-mono">
-                {new Date(post.published_at).toLocaleDateString("en-IN", {
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric",
-                })}{" "}
+                {post.date}
               </span>
             </div>
             <div

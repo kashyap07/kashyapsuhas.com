@@ -1,54 +1,48 @@
+import { readFiles } from "../../utils/fileUtils";
 import Link from "next/link";
+import matter from "gray-matter";
 
-const { BLOG_URL, CONTENT_API_KEY } = process.env;
+export async function getStaticProps() {
+  const frontMatters = [];
+  await readFiles("Blog").then((files) => {
+    files.forEach((post) => {
+      let fm = matter(post.contents);
 
-const getPosts = async () => {
-  const res = await fetch(
-    `${BLOG_URL}/ghost/api/v3/content/posts?key=${CONTENT_API_KEY}&include=tags&fields=title,slug,published_at`
-  ).then((res) => res.json());
+      // date is date object, fix this by modifying frontmatter config in forestry
+      let newFMData = { ...fm.data };
+      newFMData.filename = post.filename;
+      newFMData.creation_date = fm.data.creation_date.getTime();
+      frontMatters.push(newFMData);
+      console.log(newFMData);
+    });
+  });
 
-  return res.posts;
-};
-
-// https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation
-export const getStaticProps = async () => {
-  const posts = await getPosts();
   return {
-    revalidate: 10,
-    props: { posts },
+    props: {
+      frontMatterData: frontMatters,
+    },
   };
-};
+}
 
 const Blog = (props) => {
-  const { posts } = props;
+  // call it file meta data or something and also have title (slug)
+  const fm = props.frontMatterData;
 
   return (
     <main className="mb-auto">
       <div className="flex items-center text-xl">
         <ul className="flex flex-col max-w-none w-full">
-          {posts.map((post) => (
-            <li key={post.slug}>
-              {/* filter by tag? Maybe some other identifier for seperation */}
-              <Link
-                href={"/blog/post/[slug]"}
-                as={`/blog/post/${post.slug}`}
-                passHref
-              >
-                <a className="flex items-baseline justify-between sm:justify-start sm:gap-6 mb-2">
-                  <span className="font-semibold w-8/12 sm:w-auto">
-                    {post.title}
-                  </span>
-                  <span className="text-sm text-gray-800 font-mono">
-                    {new Date(post.published_at).toLocaleDateString("en-IN", {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                    })}{" "}
-                  </span>
-                </a>
-              </Link>
-            </li>
-          ))}
+          <div className="prose max-w-none">
+            {fm.map((item, index) => {
+              return (
+                <div key={index}>
+                  <Link href={`blog/post/${item.filename}`}>
+                    <a>{item.title}</a>
+                  </Link>
+                </div>
+              );
+            })}
+          </div>
         </ul>
       </div>
     </main>
