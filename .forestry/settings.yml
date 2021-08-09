@@ -14,7 +14,7 @@ sections:
   label: Blog
   create: documents
   match: "**/*"
-  new_doc_ext: ''
+  new_doc_ext: app
   templates:
   - fields-and-big-content-area
 upload_dir: uploads

@@ -1,5 +1,5 @@
 ---
-label: Fields and Big content area
+label: Default
 hide_body: false
 fields:
 - name: title
@@ -12,6 +12,17 @@ fields:
   config:
     required: false
   label: Description
+- name: creation_date
+  type: datetime
+  label: Creation Date
+  description: ''
+  config:
+    required: true
+    date_format: YYYY/MM/DD
+    time_format: 
+    display_utc: true
+    export_format: YYYY-MM-DD
+  default: now
 - name: category
   type: select
   default: Tech
@@ -34,17 +45,6 @@ fields:
   config:
     maxSize: 64
   label: Hero Image
-- name: creation_date
-  type: text
-  label: Creation Date
-  description: ''
-  config:
-    required: true
-    date_format: YYYY/MM/DD
-    time_format: 
-    display_utc: false
-    export_format: YYYY-MM-DD
-  default: now
 - name: author
   type: text
   config:
