@@ -58,3 +58,5 @@ fields:
   default: Suhas Kashyap
   config:
     required: true
+pages:
+- Blog/todos.md
