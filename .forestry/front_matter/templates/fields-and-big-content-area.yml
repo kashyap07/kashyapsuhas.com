@@ -61,6 +61,7 @@ fields:
   description: Toggle on to hide from Prod Blog
   default: true
 pages:
+- Blog/blogpost-test-1.app
 - Blog/new-test.md
 - Blog/newnwe.md
 - Blog/newtest2.md
