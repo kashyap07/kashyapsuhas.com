@@ -55,6 +55,11 @@ fields:
   type: tag_list
   default: []
   label: Tags
+- name: draft
+  type: boolean
+  label: Draft
+  description: Toggle on to hide from Prod Blog
+  default: true
 pages:
 - Blog/new-test.md
 - Blog/newnwe.md
