@@ -6,9 +6,9 @@ tags: []
 draft: true
 title: Blogpost test 1
 description: Some description goes here
-hero_image: ""
----
+hero_image: ''
 
+---
 ## Hello
 
 goo day m8
@@ -17,7 +17,7 @@ hope you're having a **great time** out there
 
 ## Image test
 
-![](/public/blog/2021/cp2077.png)
+![](/uploads/2021/2021/cp2077.png)
 
 ## Spotify embed
 
@@ -40,5 +40,5 @@ hope you're having a **great time** out there
         </main>
       );
     };
-
+    
     export default Home;
