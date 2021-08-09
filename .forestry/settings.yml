@@ -11,12 +11,12 @@ sections:
   label: Blog
 - type: directory
   path: Blog
-  label: Blog
+  label: Posts
   create: all
   match: "**/*"
   new_doc_ext: md
   templates:
-  - fields-and-big-content-area
+  - blog-post
 upload_dir: uploads
 public_path: "/uploads/2021"
 front_matter_path: ''
