@@ -60,5 +60,3 @@ fields:
   label: Draft
   description: Toggle on to hide from Prod Blog
   default: true
-pages:
-- Blog/newnwe.md
