@@ -4,25 +4,57 @@ hide_body: false
 fields:
 - type: datetime
   name: creation_date
-  label: creation_date
-- type: text
-  name: category
-  label: category
+  label: Creation Date
+  default: now
+  config:
+    required: true
+    display_utc: true
+    export_format: YYYY-MM-DD
+    date_format: DD/MM/YY
 - type: text
   name: author
-  label: author
-- type: list
-  name: tags
-  label: tags
+  label: Author
+  hidden: true
+  default: Suhas Kashyap
+  config:
+    required: true
 - type: boolean
   name: draft
-  label: draft
+  label: Draft
+  default: true
+  description: Hide this in prod
 - type: text
   name: title
-  label: title
+  label: Title
+  config:
+    required: true
+  default: ''
 - type: text
   name: description
-  label: description
-- type: text
-  name: hero_image
-  label: hero_image
+  label: Description
+- name: category
+  type: select
+  default: Tech
+  config:
+    required: true
+    options:
+    - Tech
+    - Food
+    - Travel
+    - Life
+    source:
+      type: simple
+      section: 
+      file: 
+      path: 
+  label: Category
+  description: tech / food / travel / life
+- name: hero_image
+  type: file
+  config:
+    maxSize: 64
+  label: Hero Image
+- name: tags
+  type: tag_list
+  default: []
+  label: Tags
