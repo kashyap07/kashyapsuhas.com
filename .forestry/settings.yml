@@ -12,9 +12,11 @@ sections:
 - type: directory
   path: Blog
   label: Blog
-  create: all
+  create: documents
   match: "**/*"
-  new_doc_ext: md
+  new_doc_ext: ''
+  templates:
+  - fields-and-big-content-area
 upload_dir: uploads
 public_path: "/public/blog"
 front_matter_path: ''
