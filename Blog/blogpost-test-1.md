@@ -6,9 +6,9 @@ tags: []
 draft: true
 title: Blogpost test 1
 description: Some description goes here
-hero_image: ''
-
+hero_image: ""
 ---
+
 ## Hello
 
 goo day m8
@@ -21,7 +21,7 @@ hope you're having a **great time** out there
 
 ## Spotify embed
 
-<iframe src="[https://open.spotify.com/embed/track/4EWCNWgDS8707fNSZ1oaA5](https://open.spotify.com/embed/track/4EWCNWgDS8707fNSZ1oaA5 "https://open.spotify.com/embed/track/4EWCNWgDS8707fNSZ1oaA5")" width="100%" height="380" frameBorder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+<iframe src="https://open.spotify.com/embed/track/4EWCNWgDS8707fNSZ1oaA5" width="100%" height="380" frameBorder="0" allowtransparency="true" allow="encrypted-media"></iframe>
 
 ## Random
 
@@ -40,5 +40,5 @@ hope you're having a **great time** out there
         </main>
       );
     };
-    
+
     export default Home;
