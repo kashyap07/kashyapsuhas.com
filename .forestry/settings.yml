@@ -12,7 +12,7 @@ sections:
 - type: directory
   path: Blog
   label: Blog
-  create: documents
+  create: all
   match: "**/*"
   new_doc_ext: app
   templates:
