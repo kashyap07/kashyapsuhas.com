@@ -23,6 +23,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ["Inter", ...defaultTheme.fontFamily.sans],
+        fancy: ["Marck Script", "cursive", ...defaultTheme.fontFamily.sans],
       },
       colors: {
         primary: colors.blue,
@@ -39,7 +40,11 @@ module.exports = {
           start: "#007cf0",
           end: "#00dfd8",
         },
+        hero: {
+          splash: "#f3f4f5",
+        },
       },
+      translate: { "-footer": "-97%" },
       // 0 30px 60px -10px rgb(0 0 0 / 22%), 0 18px 36px -18px rgb(0 0 0 / 25%);
       typography: (theme) => ({
         DEFAULT: {

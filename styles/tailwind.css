@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.remark-code-title {
+  @apply px-5 py-3 font-mono text-sm font-bold text-gray-200 bg-gray-700 rounded-t;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.max-width-wrapper {
+  @apply max-w-3xl xl:max-w-5xl px-4 mx-auto sm:px-6 xl:px-0;
+}
+
+.custom-shape-divider-top-1628893113 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.custom-shape-divider-top-1628893113 svg {
+  position: relative;
+  display: block;
+  width: calc(100% + 1.3px);
+  height: 433px;
+}
+
+.custom-shape-divider-top-1628893113 .shape-fill {
+  fill: #ffffff;
+}

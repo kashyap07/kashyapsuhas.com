@@ -1,7 +1,8 @@
 import Head from "next/head";
 import Header from "../components/Header";
-import Wrapper from "../components/Wrapper";
+import Footer from "../components/Footer";
 
+import "../styles/tailwind.css";
 import "tailwindcss/tailwind.css";
 
 const MyApp = ({ Component, pageProps }) => {
@@ -13,10 +14,9 @@ const MyApp = ({ Component, pageProps }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Wrapper>
-        <Header />
-        <Component {...pageProps} />
-      </Wrapper>
+      <Header />
+      <Component {...pageProps} />
+      <Footer />
     </>
   );
 };
