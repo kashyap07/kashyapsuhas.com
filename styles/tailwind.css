@@ -16,7 +16,7 @@ html {
 }
 
 #__next {
-  @apply flex flex-col h-full;
+  @apply flex flex-col h-full overflow-x-hidden;
 }
 
 .wave-seperator-crop {

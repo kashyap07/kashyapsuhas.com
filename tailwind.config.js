@@ -51,7 +51,7 @@ module.exports = {
           splash: "#f3f4f5",
         },
       },
-      translate: { "-footer": "-97%" },
+      translate: { "-footer": "-96%" },
       // 0 30px 60px -10px rgb(0 0 0 / 22%), 0 18px 36px -18px rgb(0 0 0 / 25%);
       typography: (theme) => ({
         DEFAULT: {
