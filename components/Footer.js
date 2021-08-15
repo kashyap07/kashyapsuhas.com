@@ -1,25 +1,19 @@
 import Link from "next/link";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 
-const Footer = () => {
-  const FooterNavLinks = [
-    { title: "Blog", href: "/blog" },
-    { title: "Work", href: "/work" },
-    { title: "Contact", href: "/contact" },
-  ];
-
+const Footer = ({ className }) => {
   return (
-    <footer className="relative bg-white">
+    <footer className={`relative bg-white ${className}`}>
       <div className="h-0">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 1440 160"
-          className="transform -translate-y-footer"
+          viewBox="0 0 1440 163"
+          className="transform -translate-y-footer wave-seperator-crop"
         >
           <path
             fill="white"
             fillOpacity="1"
-            d="M0 33C17 64 112 75 151 70C284 60 404.011-23.041 568.842 14.249C698.546 34.245 927 151 1119 154C1236 146 1315 73 1440 120L1440 160 0 160Z"
+            d="M0 151C313 184 493 74 652 107C797 139 827 167 992 134C1144 106 1169 18 1440 32L1440 160 0 160Z"
           ></path>
         </svg>
       </div>

@@ -1,5 +1,6 @@
 import { readFiles } from "../../utils/fileUtils";
 import Link from "next/link";
+import Wrapper from "../../components/Wrapper";
 import matter from "gray-matter";
 
 export async function getStaticProps() {
@@ -24,26 +25,42 @@ export async function getStaticProps() {
   };
 }
 
-const Blog = (props) => {
+const Blog = ({ className, ...props }) => {
   // call it file meta data or something and also have title (slug)
   const fm = props.frontMatterData;
 
   return (
-    <main className="mb-auto">
-      <div className="flex items-center text-xl">
-        <ul className="flex flex-col max-w-none w-full">
-          <div className="prose max-w-none">
+    <main className={`${className}`}>
+      <div className="max-width-wrapper">
+        <div className=" text-xl">
+          <ul className="flex flex-col w-full">
             {fm.map((item, index) => {
               return (
                 <div key={index}>
-                  <Link href={`blog/post/${item.filename}`}>
-                    <a>{item.title}</a>
+                  {console.log(item)}
+                  <Link
+                    href={`/blog/post/${item.filename
+                      .split(".")
+                      .slice(0, -1)
+                      .join(".")}`}
+                  >
+                    <a>
+                      {item.title} --{" "}
+                      {new Date(item.creation_date).toLocaleDateString(
+                        "en-IN",
+                        {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        }
+                      )}
+                    </a>
                   </Link>
                 </div>
               );
             })}
-          </div>
-        </ul>
+          </ul>
+        </div>
       </div>
     </main>
   );

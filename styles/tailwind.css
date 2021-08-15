@@ -6,8 +6,21 @@
   @apply px-5 py-3 font-mono text-sm font-bold text-gray-200 bg-gray-700 rounded-t;
 }
 
+html,
+body {
+  height: 100%;
+}
+
 html {
   scroll-behavior: smooth;
+}
+
+#__next {
+  @apply flex flex-col h-full;
+}
+
+.wave-seperator-crop {
+  @apply scale-x-150 sm:scale-x-125 md:scale-x-100;
 }
 
 .max-width-wrapper {

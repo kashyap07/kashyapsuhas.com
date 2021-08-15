@@ -3,10 +3,12 @@ import Link from "next/link";
 import fs from "fs";
 import matter from "gray-matter";
 import marked from "marked";
+import InnerHTML from "dangerously-set-html-content";
 
 const getPost = async (slug) => {
   console.log(slug);
-  let postContent = fs.readFileSync("Blog/" + slug);
+  // FIXME: hardcoded to md
+  let postContent = fs.readFileSync("Blog/" + slug + ".md");
   let fm = matter(postContent);
 
   let post = {
@@ -35,32 +37,31 @@ export const getStaticPaths = () => {
   };
 };
 
-const Slug = (props) => {
+const Slug = ({ className, ...props }) => {
   const { post } = props;
   const router = useRouter();
 
   return (
-    <main className="mb-auto">
-      <div className="flex flex-col text-xl">
-        <Link href="/blog" passHref>
-          <a className="text-sm mb-2">{`<- Back to Blog`}</a>
-        </Link>
-        {router.isFallback ? (
-          <span>Loading post, please woldein...</span>
-        ) : (
-          <>
-            <div className="mb-8">
-              <h1 className="text-5xl font-bold">{post.title}</h1>
-              <span className="text-sm  text-gray-800 font-mono">
-                {post.date}
-              </span>
-            </div>
-            <div
-              dangerouslySetInnerHTML={{ __html: post.html }}
-              className="prose max-w-none"
-            />
-          </>
-        )}
+    <main className={`${className}`}>
+      <div className="max-width-wrapper">
+        <div className="flex flex-col text-xl">
+          <Link href="/blog" passHref>
+            <a className="text-sm mb-2">{`<- Back to Blog`}</a>
+          </Link>
+          {router.isFallback ? (
+            <span>Loading post, please wait...</span>
+          ) : (
+            <>
+              <div className="mb-8">
+                <h1 className="text-5xl font-bold">{post.title}</h1>
+                <span className="text-sm  text-gray-800 font-mono">
+                  {post.date}
+                </span>
+              </div>
+              <InnerHTML html={post.html} className="prose max-w-none" />
+            </>
+          )}
+        </div>
       </div>
     </main>
   );

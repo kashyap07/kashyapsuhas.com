@@ -12,6 +12,9 @@ module.exports = {
   darkMode: "class",
   theme: {
     extend: {
+      flex: {
+        body: "1 0 auto",
+      },
       spacing: {
         "9/16": "56.25%",
       },
@@ -23,7 +26,11 @@ module.exports = {
       },
       fontFamily: {
         sans: ["Inter", ...defaultTheme.fontFamily.sans],
-        fancy: ["Marck Script", "cursive", ...defaultTheme.fontFamily.sans],
+        fancy: [
+          "Architects Daughter",
+          "cursive",
+          ...defaultTheme.fontFamily.sans,
+        ],
       },
       colors: {
         primary: colors.blue,

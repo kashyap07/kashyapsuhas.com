@@ -3,7 +3,6 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 
 import "../styles/tailwind.css";
-import "tailwindcss/tailwind.css";
 
 const MyApp = ({ Component, pageProps }) => {
   return (
@@ -15,8 +14,8 @@ const MyApp = ({ Component, pageProps }) => {
       </Head>
 
       <Header />
-      <Component {...pageProps} />
-      <Footer />
+      <Component {...pageProps} className="flex-body overflow-hidden pb-7" />
+      <Footer className="flex-shrink-0" />
     </>
   );
 };
