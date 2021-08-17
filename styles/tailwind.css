@@ -28,7 +28,7 @@ html {
 }
 
 .wave-seperator-crop {
-  @apply scale-x-150 sm:scale-x-125 md:scale-x-100;
+  @apply scale-x-100 sm:scale-x-125 md:scale-x-100;
 }
 
 .max-width-wrapper {

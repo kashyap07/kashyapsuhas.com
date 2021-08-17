@@ -12,7 +12,7 @@ const Home = ({ className }) => {
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1440 130"
-          className="absolute top-0 wave-seperator-crop filter drop-shadow-wave-seperator z-10"
+          className="absolute top-0 filter drop-shadow-wave-seperator z-10"
         >
           <path
             className="fill-current text-background z-30"
@@ -46,7 +46,7 @@ const Home = ({ className }) => {
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 1440 163"
-        className="transform -translate-y-footer wave-seperator-crop filter -drop-shadow-wave-seperator z-10"
+        className="transform -translate-y-footer filter -drop-shadow-wave-seperator z-10"
       >
         <path
           className="fill-current text-background z-30"
