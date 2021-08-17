@@ -2,13 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --background-color: eff1f5;
+}
+
 .remark-code-title {
   @apply px-5 py-3 font-mono text-sm font-bold text-gray-200 bg-gray-700 rounded-t;
 }
 
 html,
 body {
-  height: 100%;
+  @apply bg-background h-full text-black;
 }
 
 html {
@@ -19,12 +23,20 @@ html {
   @apply flex flex-col h-full overflow-x-hidden;
 }
 
+.logo {
+  @apply text-4xl font-fancy font-bold p-1 cursor-pointer bg-gradient-to-r from-logo-start to-logo-end bg-clip-text text-transparent;
+}
+
 .wave-seperator-crop {
   @apply scale-x-150 sm:scale-x-125 md:scale-x-100;
 }
 
 .max-width-wrapper {
   @apply max-w-3xl xl:max-w-5xl px-4 mx-auto sm:px-6 xl:px-0;
+}
+
+.home-page-cards {
+  @apply bg-gray-300 bg-opacity-50 rounded p-4 w-fit-content;
 }
 
 .custom-shape-divider-top-1628893113 {
@@ -45,4 +57,9 @@ html {
 
 .custom-shape-divider-top-1628893113 .shape-fill {
   fill: #ffffff;
+}
+
+.bg-gg {
+  background: linear-gradient(180deg, transparent, white 50%),
+    linear-gradient(to top right, #4338ca, #00dfd8);
 }

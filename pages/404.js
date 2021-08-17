@@ -1,7 +1,34 @@
+import Link from "next/link";
+import MaxWidthWrapper from "../components/MaxWidthWrapper";
+
 const NotFound = () => {
   return (
     <main className="mb-auto">
-      <div className="flex text-xl">404. This page does not exist.</div>
+      <MaxWidthWrapper>
+        {/* idea from https://codepen.io/tsotsoblotso/pen/mVMvVv */}
+        <div className="mockup-code sm:w-1/2 rounded-lg my-14">
+          <pre data-prefix="1">
+            <code>{`// 404 page not found.`}</code>
+          </pre>
+          <pre data-prefix="2">
+            <code>{`if (!found) {`}</code>
+          </pre>
+          <pre data-prefix="3">
+            <code>{`    throw ("(╯°□°)╯︵ ┻━┻");`}</code>
+          </pre>
+          <pre data-prefix="4">
+            <code>{`}`}</code>
+          </pre>
+          <pre data-prefix="5">
+            <code>
+              {`//`} Go{" "}
+              <Link href="/">
+                <a>home!</a>
+              </Link>
+            </code>
+          </pre>
+        </div>
+      </MaxWidthWrapper>
     </main>
   );
 };

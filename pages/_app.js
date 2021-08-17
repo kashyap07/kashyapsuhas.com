@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 
 import "../styles/tailwind.css";
+import "../styles/daisyUI.css";
 
 const MyApp = ({ Component, pageProps }) => {
   return (
@@ -14,7 +15,7 @@ const MyApp = ({ Component, pageProps }) => {
       </Head>
 
       <Header />
-      <Component {...pageProps} className="flex-body overflow-hidden pb-7" />
+      <Component {...pageProps} className="flex-body overflow-hidden pb-0" />
       <Footer className="flex-shrink-0" />
     </>
   );

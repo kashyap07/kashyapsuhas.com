@@ -18,6 +18,9 @@ module.exports = {
       spacing: {
         "9/16": "56.25%",
       },
+      width: {
+        "fit-content": "fit-content",
+      },
       lineHeight: {
         11: "2.75rem",
         12: "3rem",
@@ -25,16 +28,13 @@ module.exports = {
         14: "3.5rem",
       },
       fontFamily: {
-        sans: ["Inter", ...defaultTheme.fontFamily.sans],
-        fancy: [
-          "Architects Daughter",
-          "cursive",
-          ...defaultTheme.fontFamily.sans,
-        ],
+        sans: ["Montserrat", ...defaultTheme.fontFamily.sans],
+        fancy: ["Gochi Hand", ...defaultTheme.fontFamily.sans],
       },
       colors: {
         primary: colors.blue,
         gray: colors.trueGray,
+        background: "#eff1f5",
         code: {
           green: "#b5f4a5",
           yellow: "#ffe484",
@@ -43,13 +43,20 @@ module.exports = {
           blue: "#93ddfd",
           white: "#fff",
         },
-        headings: {
-          start: "#007cf0",
-          end: "#00dfd8",
+        logo: {
+          start: "#7928ca",
+          end: "#ff0080",
         },
         hero: {
           splash: "#f3f4f5",
         },
+        special: {
+          teal: "#00dfd8",
+        },
+      },
+      dropShadow: {
+        "wave-seperator": "2px 12px 10px rgba(0,0,0,0.25)",
+        "-wave-seperator": "10px -12px 6px rgba(0,0,0,0.15)",
       },
       translate: { "-footer": "-96%" },
       // 0 30px 60px -10px rgb(0 0 0 / 22%), 0 18px 36px -18px rgb(0 0 0 / 25%);
@@ -85,6 +92,7 @@ module.exports = {
             "h4,h5,h6": {
               color: theme("colors.gray.900"),
             },
+
             code: {
               color: theme("colors.pink.500"),
               backgroundColor: theme("colors.gray.100"),
@@ -174,5 +182,16 @@ module.exports = {
   variants: {
     typography: ["dark"],
   },
-  plugins: [require("@tailwindcss/forms"), require("@tailwindcss/typography")],
+  plugins: [
+    require("@tailwindcss/forms"),
+    require("@tailwindcss/typography"),
+    require("daisyui"),
+  ],
+  daisyui: {
+    styled: true,
+    themes: true,
+    base: true,
+    utils: true,
+    logs: false,
+  },
 };
