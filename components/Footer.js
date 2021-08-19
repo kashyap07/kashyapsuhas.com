@@ -3,7 +3,7 @@ import MaxWidthWrapper from "./MaxWidthWrapper";
 
 const Footer = ({ className }) => {
   return (
-    <footer className={`relative bg-background ${className} border-t-2`}>
+    <footer className={`relative bg-gray-200 ${className} border-t-2`}>
       <MaxWidthWrapper className="flex flex-row justify-between items-center py-5">
         <span className="font-medium text-base">Thanks for visiting!</span>
         <div className="flex items-center text-sm">

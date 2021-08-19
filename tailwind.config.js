@@ -12,6 +12,9 @@ module.exports = {
   darkMode: "class",
   theme: {
     extend: {
+      height: {
+        112: "28rem",
+      },
       flex: {
         body: "1 0 auto",
       },
@@ -20,6 +23,10 @@ module.exports = {
       },
       width: {
         "fit-content": "fit-content",
+      },
+      scale: {
+        200: "2",
+        250: "2.5",
       },
       lineHeight: {
         11: "2.75rem",
@@ -58,7 +65,7 @@ module.exports = {
         "wave-seperator": "2px 12px 10px rgba(0,0,0,0.25)",
         "-wave-seperator": "10px -12px 6px rgba(0,0,0,0.15)",
       },
-      translate: { "-footer": "-96%" },
+      translate: { "-footer": "-5px" },
       // 0 30px 60px -10px rgb(0 0 0 / 22%), 0 18px 36px -18px rgb(0 0 0 / 25%);
       typography: (theme) => ({
         DEFAULT: {
