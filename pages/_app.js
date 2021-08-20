@@ -3,7 +3,6 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 
 import "../styles/tailwind.css";
-import "../styles/daisyUI.css";
 
 const MyApp = ({ Component, pageProps }) => {
   return (

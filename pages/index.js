@@ -33,7 +33,7 @@ const Home = ({ className }) => {
             ></path>
           </svg>
         </div>
-        <MaxWidthWrapper>
+        <MaxWidthWrapper body>
           <div className="flex flex-col gap-3 font-bold text-3xl text-white min-w-min home-page-cards">
             <span>Hello there! 👋</span>
             <span>I&apos;m Suhas.</span>

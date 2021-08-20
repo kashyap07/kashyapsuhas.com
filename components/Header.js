@@ -25,7 +25,7 @@ const Header = () => {
             <div className="flex gap-2">
               {headerNavLinks.map((link) => (
                 <Link key={link.title} href={link.href} passHref>
-                  <a className="px-5 py-0.5 border rounded-full text-gray-900">
+                  <a className="px-5 py-0.5 border rounded-lg text-gray-900">
                     {link.title}
                   </a>
                 </Link>

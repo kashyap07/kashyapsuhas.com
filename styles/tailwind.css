@@ -63,3 +63,15 @@ html {
   background: linear-gradient(180deg, transparent, white 50%),
     linear-gradient(to top right, #4338ca, #00dfd8);
 }
+
+.text-sideways {
+  text-orientation: sideways;
+}
+
+.right-arrow {
+  border: solid #c6c9d2;
+  border-width: 0 2px 2px 0;
+  padding: 3px;
+  transform: rotate(-45deg);
+  margin: 0 10px 0 5px;
+}
