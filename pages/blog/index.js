@@ -31,38 +31,40 @@ const Blog = ({ className, ...props }) => {
   const fm = props.frontMatterData;
 
   return (
-    <main className={` ${className} relative py-10`}>
+    <main className={` ${className} relative md:pt-10`}>
       <SideTitle>/blog</SideTitle>
 
-      <MaxWidthWrapper body>
-        <div className="text-xl">
-          <ul className="flex flex-col w-full">
-            {fm.map((item, index) => {
-              return (
-                <div key={index}>
-                  {console.log(item)}
-                  <Link
-                    href={`/blog/post/${item.filename
-                      .split(".")
-                      .slice(0, -1)
-                      .join(".")}`}
-                  >
-                    <a>
-                      {item.title} --{" "}
-                      {new Date(item.creation_date).toLocaleDateString(
-                        "en-IN",
-                        {
-                          year: "numeric",
-                          month: "short",
-                          day: "numeric",
-                        }
-                      )}
-                    </a>
-                  </Link>
-                </div>
-              );
-            })}
-          </ul>
+      <MaxWidthWrapper>
+        <div className="bg-white h-full -ml-6 -mr-6">
+          <div className="text-xl px-6 pt-5">
+            <ul className="flex flex-col   w-full">
+              {fm.map((item, index) => {
+                return (
+                  <li key={index}>
+                    {console.log(item)}
+                    <Link
+                      href={`/blog/post/${item.filename
+                        .split(".")
+                        .slice(0, -1)
+                        .join(".")}`}
+                    >
+                      <a>
+                        {item.title} --{" "}
+                        {new Date(item.creation_date).toLocaleDateString(
+                          "en-IN",
+                          {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                          }
+                        )}
+                      </a>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
         </div>
       </MaxWidthWrapper>
     </main>

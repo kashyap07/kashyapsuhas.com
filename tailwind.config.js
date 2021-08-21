@@ -19,6 +19,7 @@ module.exports = {
         "1p": "2%",
         "2p": "4%",
         "35vh": "35vh",
+        "side-title": "calc(50% - (10 * theme('screens.xl')/19))",
       },
       padding: {
         "1p": "2%",
@@ -31,9 +32,10 @@ module.exports = {
       },
       width: {
         "fit-content": "fit-content",
+        "home-card": "700px",
       },
       maxWidth: {
-        body: "60rem",
+        wrapper: "64rem",
         "1/4": "25%",
         "1/2": "50%",
         "3/4": "75%",
@@ -53,7 +55,9 @@ module.exports = {
         fancy: ["Gochi Hand", ...defaultTheme.fontFamily.sans],
       },
       colors: {
-        primary: colors.blue,
+        // Triadic colors from https://www.canva.com/colors/color-wheel/
+        primary: "#0080ff",
+        secondary: "#ff0080",
         // grays based on hsl(220, 12%, 93%)
         gray: {
           50: "#f1f2f4",
@@ -68,7 +72,7 @@ module.exports = {
           800: "#666c7f",
           900: "#4f5463",
         },
-        background: "#f9fafb",
+        background: "#f1f2f4",
         code: {
           green: "#b5f4a5",
           yellow: "#ffe484",
@@ -89,8 +93,11 @@ module.exports = {
         },
       },
       dropShadow: {
-        "wave-seperator": "2px 12px 10px rgba(0,0,0,0.25)",
+        "wave-seperator": "2px 12px 6px rgba(0,0,0,0.25)",
         "-wave-seperator": "10px -12px 6px rgba(0,0,0,0.15)",
+      },
+      outline: {
+        container: "",
       },
     },
   },

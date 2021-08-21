@@ -9,9 +9,9 @@ const Header = () => {
   ];
 
   return (
-    <header className="bg-background backdrop-filter backdrop-blur-sm">
+    <header className="sticky top-0 bg-background bg-opacity-50 backdrop-filter backdrop-blur-xl z-50">
       <MaxWidthWrapper>
-        <div className="flex flex-col items-center sm:flex-row sm:justify-between py-4 gap-y-2 z-20">
+        <div className="flex flex-col items-center sm:flex-row sm:justify-between py-4 gap-y-2 z-50">
           <div>
             <Link href="/" passHref>
               <div className="flex items-center justify-between">

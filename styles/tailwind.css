@@ -23,8 +23,12 @@ html {
   @apply flex flex-col h-full overflow-x-hidden;
 }
 
+.absolute-center {
+  @apply absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2;
+}
+
 .logo {
-  @apply text-4xl font-fancy font-bold p-1 cursor-pointer bg-gradient-to-r from-logo-start to-logo-end bg-clip-text text-transparent;
+  @apply text-4xl font-fancy font-bold cursor-pointer bg-gradient-to-r from-logo-start to-logo-end bg-clip-text text-transparent;
 }
 
 .wave-seperator-crop {
@@ -35,29 +39,9 @@ html {
   @apply max-w-3xl xl:max-w-5xl px-4 mx-auto sm:px-6 xl:px-0;
 }
 
-.home-page-cards {
-  @apply bg-gray-300 bg-opacity-50 rounded p-4 w-fit-content;
-}
-
-.custom-shape-divider-top-1628893113 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  overflow: hidden;
-  line-height: 0;
-}
-
-.custom-shape-divider-top-1628893113 svg {
-  position: relative;
-  display: block;
-  width: calc(100% + 1.3px);
-  height: 433px;
-}
-
-.custom-shape-divider-top-1628893113 .shape-fill {
-  fill: #ffffff;
-}
+/* .home-page-cards {
+  @apply bg-gray-300 bg-opacity-50 rounded p-10 w-fit-content;
+} */
 
 .bg-gg {
   background: linear-gradient(180deg, transparent, white 50%),

@@ -6,7 +6,7 @@ const contact = ({ className }) => {
     <main className={` ${className} relative py-24`}>
       <SideTitle>/contact</SideTitle>
 
-      <MaxWidthWrapper body>
+      <MaxWidthWrapper>
         <div className="flex text-xl">Contact page under construction</div>
       </MaxWidthWrapper>
     </main>

@@ -1,10 +1,16 @@
-const MaxWidthWrapper = ({ children, className, body = false, ...props }) => {
+const MaxWidthWrapper = ({
+  children,
+  className,
+  variant = false,
+  ...props
+}) => {
   return (
     <div
+      data-component="max-width-wrapper"
       className={
-        "max-w-3xl px-4 mx-auto sm:px-6 xl:px-0 " +
+        "max-w-3xl px-4 mx-auto sm:px-6 xl:px-0 h-full " +
         `${className ? className : ""}` +
-        `${body ? " xl:max-w-body" : " xl:max-w-5xl"}`
+        `${variant ? " xl:max-w-5xl" : " xl:max-w-wrapper"}`
       }
     >
       {children}

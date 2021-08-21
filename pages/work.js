@@ -6,7 +6,7 @@ const Work = ({ className }) => {
     <main className={` ${className} relative py-24`}>
       <SideTitle>/work</SideTitle>
 
-      <MaxWidthWrapper body>
+      <MaxWidthWrapper>
         <div className="flex text-xl">Work page under construction</div>
       </MaxWidthWrapper>
     </main>
