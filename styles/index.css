@@ -1,31 +1,16 @@
-.nav > .hamburger-btn {
-  display: none;
-}
-.nav > #nav-check {
-  display: none;
-}
-
 @media (max-width: 768px) {
   .nav > .mobile-menu {
-    position: absolute;
-    display: block;
-    width: 100%;
-    background-color: rgba(255,255,255);
-    height: 0px;
-    transition: all 0.3s ease-in;
-    overflow-y: hidden;
-    top: 72px;
-    left: 0px;
+    height: calc(100vh - 72px);
+    @apply absolute block md:hidden w-0 bg-gray-100 overflow-x-hidden transition-all duration-300 ease-out top-16 left-0;
   }
   .nav > .mobile-menu > a {
-    display: block;
-    width: 100%;
+    @apply block w-full;
   }
   .nav > #nav-check:not(:checked) ~ .mobile-menu {
-    height: 0px;
+    @apply w-0;
   }
   .nav > #nav-check:checked ~ .mobile-menu {
     height: calc(100vh - 72px);
-    overflow-y: auto;
+    @apply w-full overflow-x-auto;
   }
 }
