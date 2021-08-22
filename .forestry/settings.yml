@@ -18,7 +18,7 @@ sections:
   templates:
   - blog-post
 upload_dir: public/blog
-public_path: public/blog
+public_path: ''
 front_matter_path: ''
 use_front_matter_path: false
 file_template: ":year:/:filename:"
