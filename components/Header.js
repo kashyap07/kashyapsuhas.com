@@ -1,13 +1,13 @@
 import Link from "next/link";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 
-const Header = () => {
-  const headerNavLinks = [
-    { title: "Blog", href: "/blog" },
-    { title: "Work", href: "/work" },
-    { title: "Contact", href: "/contact" },
-  ];
+const headerNavLinks = [
+  { title: "Blog", href: "/blog" },
+  { title: "Work", href: "/work" },
+  { title: "Contact", href: "/contact" },
+];
 
+const Header = () => {
   return (
     <header className="sticky top-0 bg-background bg-opacity-50 backdrop-filter backdrop-blur-xl z-50">
       <MaxWidthWrapper>

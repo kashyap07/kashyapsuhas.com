@@ -46,47 +46,52 @@ const Home = ({ className }) => {
     <main className={`md:mt-10 md:mb-96 ${className}`}>
       <div
         data-element="section"
-        className="relative h-auto md:h-112 mb-auto py-6 md:py-24 bg-gradient-to-tr from-indigo-700 to-special-teal md:absolute md:left-1/2 md:top-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2 w-full"
+        className="relative h-full md:h-112 mb-auto py-6 md:py-24 bg-gradient-to-tr from-indigo-700 to-special-teal md:absolute md:left-1/2 md:top-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2 w-full"
       >
         <TopWave />
         <Kashyap />
         <BottomWave />
 
-        <MaxWidthWrapper
-          data-element="home-card"
-          className="flex justify-center z-20"
-        >
-          <div className="flex flex-col gap-3 font-bold text-2xl text-gray-900 min-w-min bg-gray-100 bg-opacity-50 rounded py-10 p-5 md:px-16 w-fit-content backdrop-blur-2xl md:absolute md:left-1/2 md:top-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2 md:w-home-card z-20">
-            <span>Hello there 👋</span>
-            <p>
-              I&apos;m Suhas.
-              <br />
-              Welcome to my slice of the Interwebs.
-            </p>
-            <p>
-              I&apos;m a dev at Quotient Technology Inc. at the moment.
-              <br />
-              Find more about work and my resume{" "}
-              <Link href="/work">
-                <a className="text-secondary">here.</a>
-              </Link>
-            </p>
-            <p>
-              I&apos;m really passionate about cooking🍕, solo-travel, and AOE2.
-              <br />
-              Feel free to check the{" "}
-              <Link href="/blog">
-                <a className="text-secondary">blog</a>
-              </Link>{" "}
-              for my musings on tech/food/travel.
-              <br />
-            </p>
-            <p>
-              Source for this site is{" "}
-              <Link href="https://github.com/kashyap07/kashyapsuhas.com">
-                <a className="text-secondary">here.</a>
-              </Link>
-            </p>
+        <MaxWidthWrapper className="flex justify-center z-20">
+          <div
+            className="flex min-w-min justify-center bg-gray-100 bg-opacity-50 rounded p-2 md:py-10 md:px-10 w-fit-content backdrop-blur-2xl md:absolute md:left-1/2 md:top-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2 md:w-home-card z-20"
+            data-element="home-card"
+          >
+            <div className="flex flex-col justify-center gap-6 font-bold text-2xl text-gray-900 p-2 py-5 md:p-10 bg-white bg-opacity-50 backdrop-blur-2xl">
+              <span className="text-3xl">
+                Hello there <span className="wiggle">👋</span>
+              </span>
+              <p>
+                I&apos;m Suhas.
+                <br />
+                Welcome to my slice of the Interwebs.
+              </p>
+              <p>
+                I&apos;m a dev at Quotient Technology Inc. at the moment.
+                <br />
+                Find more about work and my resume{" "}
+                <Link href="/work">
+                  <a className="text-secondary">here.</a>
+                </Link>
+              </p>
+              <p>
+                I&apos;m super passionate about cooking🍕, solo-travel, and
+                AOE2.
+                <br />
+                Feel free to check the{" "}
+                <Link href="/blog">
+                  <a className="text-secondary">blog</a>
+                </Link>{" "}
+                for my musings on tech/food/travel.
+                <br />
+              </p>
+              <p>
+                Source for this site is{" "}
+                <Link href="https://github.com/kashyap07/kashyapsuhas.com">
+                  <a className="text-secondary">here.</a>
+                </Link>
+              </p>
+            </div>
           </div>
         </MaxWidthWrapper>
       </div>

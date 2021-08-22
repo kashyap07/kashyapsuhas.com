@@ -1,5 +1,6 @@
 import MaxWidthWrapper from "../components/MaxWidthWrapper";
 import SideTitle from "../components/SideTitle";
+import Socials from "../components/Socials";
 
 const contact = ({ className }) => {
   return (
@@ -7,7 +8,9 @@ const contact = ({ className }) => {
       <SideTitle>/contact</SideTitle>
 
       <MaxWidthWrapper>
-        <div className="flex text-xl">Contact page under construction</div>
+        <div className="flex text-xl">
+          <Socials />
+        </div>
       </MaxWidthWrapper>
     </main>
   );

@@ -3,16 +3,39 @@
 @tailwind utilities;
 
 :root {
-  --background-color: eff1f5;
+  --background-color: #eff1f5;
+  --highlight-color: #ff0080;
 }
 
 .remark-code-title {
   @apply px-5 py-3 font-mono text-sm font-bold text-gray-200 bg-gray-700 rounded-t;
 }
 
+@media (orientation: landscape) {
+  ::-webkit-scrollbar {
+    @apply w-3 bg-gray-300 bg-opacity-50;
+  }
+}
+
+@media (orientation: landscape) {
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-xl bg-gray-600 border-2 border-solid border-gray-100;
+  }
+}
+
+@media (orientation: landscape) {
+  ::-webkit-scrollbar-track {
+    @apply rounded bg-transparent;
+  }
+}
+
+::selection {
+  @apply bg-tertiary text-white;
+}
+
 html,
 body {
-  @apply bg-background h-full text-black;
+  @apply bg-background h-full text-black antialiased;
 }
 
 html {
@@ -58,4 +81,45 @@ html {
   padding: 3px;
   transform: rotate(-45deg);
   margin: 0 10px 0 5px;
+}
+
+.wiggle {
+  animation: 3s wiggle infinite;
+  transform-origin: 70% 70%;
+  display: inline-block;
+}
+
+@keyframes wiggle {
+  /* reference: https://jarv.is/notes/css-waving-hand-emoji/ */
+  0% {
+    transform: rotate(0deg);
+  }
+  10% {
+    transform: rotate(8deg);
+  }
+  20% {
+    transform: rotate(-6deg);
+  }
+  30% {
+    transform: rotate(12deg);
+  }
+  40% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.social-icon > svg {
+  @apply h-7 flex items-center justify-center;
+}
+.social-icon > svg > path {
+  @apply fill-current text-gray-900;
+}
+.social-icon:hover > svg > path {
+  fill: var(--highlight-color);
 }

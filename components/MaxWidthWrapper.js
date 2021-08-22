@@ -1,7 +1,10 @@
+import WrapperBackground from "./WrapperBackground";
+
 const MaxWidthWrapper = ({
   children,
   className,
   variant = false,
+  withBg = false,
   ...props
 }) => {
   return (
@@ -13,7 +16,11 @@ const MaxWidthWrapper = ({
         `${variant ? " xl:max-w-5xl" : " xl:max-w-wrapper"}`
       }
     >
-      {children}
+      {withBg ? (
+        <WrapperBackground>{children}</WrapperBackground>
+      ) : (
+        <>{children}</>
+      )}
     </div>
   );
 };

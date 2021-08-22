@@ -32,7 +32,7 @@ module.exports = {
       },
       width: {
         "fit-content": "fit-content",
-        "home-card": "700px",
+        "home-card": "800px",
       },
       maxWidth: {
         wrapper: "64rem",
@@ -55,9 +55,10 @@ module.exports = {
         fancy: ["Gochi Hand", ...defaultTheme.fontFamily.sans],
       },
       colors: {
-        // Triadic colors from https://www.canva.com/colors/color-wheel/
+        // triadic colors from https://www.canva.com/colors/color-wheel/
         primary: "#0080ff",
         secondary: "#ff0080",
+        tertiary: "#7928ca",
         // grays based on hsl(220, 12%, 93%)
         gray: {
           50: "#f1f2f4",

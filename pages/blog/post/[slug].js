@@ -75,25 +75,23 @@ const Slug = ({ className, ...props }) => {
     <main className={`${className} relative md:pt-10`}>
       <SideTitle>/post</SideTitle>
 
-      <MaxWidthWrapper>
-        <div className="bg-white h-full md:-ml-6 md:-mr-6">
-          <div className="text-xl px-7 pt-5">
-            {router.isFallback ? (
-              <span>Loading post, please wait...</span>
-            ) : (
-              <>
-                {console.log(post.category)}
-                <Breadcrumb category={post.category} />
-                <div className="flex flex-row justify-between items-baseline">
-                  <h1 className="text-5xl font-bold">{post.title}</h1>
-                  <span className="text-base">{post.date}</span>
-                </div>
-                <hr className="mt-5 mb-8" />
+      <MaxWidthWrapper withBg>
+        <div className="text-xl px-7 pt-5">
+          {router.isFallback ? (
+            <span>Loading post, please wait...</span>
+          ) : (
+            <>
+              {console.log(post.category)}
+              <Breadcrumb category={post.category} />
+              <div className="flex flex-row justify-between items-baseline">
+                <h1 className="text-5xl font-bold">{post.title}</h1>
+                <span className="text-base">{post.date}</span>
+              </div>
+              <hr className="mt-5 mb-8" />
 
-                <InnerHTML html={post.html} className="prose max-w-none" />
-              </>
-            )}
-          </div>
+              <InnerHTML html={post.html} className="prose max-w-none" />
+            </>
+          )}
         </div>
       </MaxWidthWrapper>
     </main>
