@@ -23,7 +23,7 @@ We are going to make placeholder text great again. Greater than ever before. You
 
 ## Image test
 
-![](/public/blog/2021/cp2077.png)
+![](/blog/2021/cp2077.png)
 
 ## Twitter embed
 
