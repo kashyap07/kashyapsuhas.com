@@ -92,6 +92,10 @@ module.exports = {
         special: {
           teal: "#00dfd8",
         },
+        zIndex: {
+          60: "60",
+          70: "70",
+        },
       },
       dropShadow: {
         "wave-seperator": "2px 12px 6px rgba(0,0,0,0.25)",

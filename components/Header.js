@@ -4,14 +4,27 @@ import MaxWidthWrapper from "./MaxWidthWrapper";
 const headerNavLinks = [
   { title: "Blog", href: "/blog" },
   { title: "Work", href: "/work" },
+  { title: "Art", href: "/art" },
   { title: "Contact", href: "/contact" },
 ];
+
+const Hamburger = () => (
+  <svg
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg"
+    fillRule="evenodd"
+    clipRule="evenodd"
+    className="hover:fill-current text-secondary"
+  >
+    <path d="M23 19c.37 1.981-.544 3.99-3 4-4.611.019-11.389 0-16 0-2.492 0-3.348-1.976-3-4h22zm-.465-1c-.007 0-21.142-.002-21.17-.006-.764-.068-1.365-.711-1.365-1.494s.601-1.426 1.365-1.494c.028-.004 2.116-.006 2.116-.006 2.37.017 2.852 2.006 4.019 2 1.167-.006 1.781-1.976 3.965-2h11.07c.812.019 1.465.684 1.465 1.5s-.653 1.481-1.465 1.5zm-2.07-7h2.07c.812.019 1.465.684 1.465 1.5s-.653 1.481-1.465 1.5c-.007 0-21.142-.002-21.17-.006-.764-.068-1.365-.711-1.365-1.494s.601-1.426 1.365-1.494c.028-.004 11.116-.006 11.116-.006 2.37.017 2.852 2.006 4.019 2 1.167-.006 1.781-1.976 3.965-2zm2.535-1h-22c0-3.989 4.377-8 11-8s11 4.011 11 8zm-11.5-4c.276 0 .5.224.5.5s-.224.5-.5.5-.5-.224-.5-.5.224-.5.5-.5zm4 0c.276 0 .5.224.5.5s-.224.5-.5.5-.5-.224-.5-.5.224-.5.5-.5zm4 0c.276 0 .5.224.5.5s-.224.5-.5.5-.5-.224-.5-.5.224-.5.5-.5zm-12 0c.276 0 .5.224.5.5s-.224.5-.5.5-.5-.224-.5-.5.224-.5.5-.5zm-2-1c.276 0 .5.224.5.5s-.224.5-.5.5-.5-.224-.5-.5.224-.5.5-.5zm3-1c.276 0 .5.224.5.5s-.224.5-.5.5-.5-.224-.5-.5.224-.5.5-.5zm6 0c.276 0 .5.224.5.5s-.224.5-.5.5-.5-.224-.5-.5.224-.5.5-.5zm3 0c.276 0 .5.224.5.5s-.224.5-.5.5-.5-.224-.5-.5.224-.5.5-.5zm-6-1c.276 0 .5.224.5.5s-.224.5-.5.5-.5-.224-.5-.5.224-.5.5-.5z" />
+  </svg>
+);
 
 const Header = () => {
   return (
     <header className="sticky top-0 bg-background bg-opacity-50 backdrop-filter backdrop-blur-xl z-50">
       <MaxWidthWrapper>
-        <div className="flex flex-col items-center sm:flex-row sm:justify-between py-4 gap-y-2 z-50">
+        <div className="nav flex flex-col items-center sm:flex-row sm:justify-between py-4 gap-y-2 z-70">
           <div>
             <Link href="/" passHref>
               <div className="flex items-center justify-between">
@@ -21,8 +34,20 @@ const Header = () => {
               </div>
             </Link>
           </div>
-          <div className="items-center">
-            <div className="flex gap-2">
+
+          <input type="checkbox" id="nav-check" />
+          <div className="absolute md:hidden right-1">
+            <label
+              className="flex flex-col items-center w-14 h-10"
+              htmlFor="nav-check"
+            >
+              <Hamburger />
+            </label>
+          </div>
+
+          {/* <div className="absolute block md:hidden w-full bg-opacity-50 bg-background backdrop-blur-3xl overflow-y-hidden transition-all duration-300 ease-in top-16 left-0"> */}
+          <div className="mobile-menu">
+            <div className="flex flex-col md:flex-row gap-2">
               {headerNavLinks.map((link) => (
                 <Link key={link.title} href={link.href} passHref>
                   <a className="px-5 py-0.5 border rounded-lg text-gray-900">
@@ -33,81 +58,8 @@ const Header = () => {
             </div>
           </div>
         </div>
-
-        {/* <div className="drawer py-4 z-20">
-          <input
-            id="hamburger-menu"
-            type="checkbox"
-            className="drawer-toggle"
-          />
-          <div className="flex flex-col drawer-content">
-            <div className="w-full navbar p-0">
-              <div className="flex-1">
-                <Link href="/" passHref>
-                  <div className="flex items-center justify-between">
-                    <a className="logo" aria-label="Home Page">
-                      Suhas Kashyap
-                    </a>
-                  </div>
-                </Link>
-              </div>
-
-              <div className="flex-none hidden lg:block">
-                <ul className="menu horizontal gap-2">
-                  {headerNavLinks.map((link) => (
-                    <Link key={link.title} href={link.href} passHref>
-                      <li>
-                        <a className="px-5 py-0.5 border rounded-full text-gray-900">
-                          {link.title}
-                        </a>
-                      </li>
-                    </Link>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="flex-none lg:hidden">
-                <label
-                  htmlFor="hamburger-menu"
-                  className="btn btn-square btn-ghost"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    className="inline-block w-6 h-6 stroke-current"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M4 6h16M4 12h16M4 18h16"
-                    ></path>
-                  </svg>
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <div className="drawer-side">
-            <label htmlFor="hamburger-menu" className="drawer-overlay"></label>
-            <ul className="menu overflow-y-auto w-80 bg-base-100">
-              {headerNavLinks.map((link) => (
-                <Link key={link.title} href={link.href} passHref>
-                  <li>
-                    <a className="px-5 py-0.5 border rounded-full text-gray-900">
-                      {link.title}
-                    </a>
-                  </li>
-                </Link>
-              ))}
-            </ul>
-          </div>
-        </div> */}
       </MaxWidthWrapper>
-
       {/* Maybe have clean, color, dark themes */}
-      {/* Hamburger? */}
     </header>
   );
 };

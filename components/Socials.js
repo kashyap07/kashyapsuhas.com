@@ -25,7 +25,7 @@ const SocialsList = [
       </svg>
     ),
     url: "https://www.linkedin.com/in/suhas-kashyap/",
-    color: "#fff",
+    color: "#0077b5",
   },
   {
     title: "Gtihub",
@@ -35,7 +35,7 @@ const SocialsList = [
       </svg>
     ),
     url: "https://github.com/kashyap07",
-    color: "#fff",
+    color: "#6cc644",
   },
   {
     title: "Instagram",
@@ -45,7 +45,7 @@ const SocialsList = [
       </svg>
     ),
     url: "https://www.instagram.com/kashyap_07",
-    color: "#fff",
+    color: "#c72d8f",
   },
   {
     title: "Youtube",
@@ -55,7 +55,7 @@ const SocialsList = [
       </svg>
     ),
     url: "https://www.youtube.com/c/SuhasKashyap07",
-    color: "#fff",
+    color: "#ff0000",
   },
   {
     title: "Facebook",
@@ -65,7 +65,7 @@ const SocialsList = [
       </svg>
     ),
     url: "https://www.facebook.com/kashyapsuhas07",
-    color: "#fff",
+    color: "#4267b2",
   },
   {
     title: "Email",
@@ -75,7 +75,7 @@ const SocialsList = [
       </svg>
     ),
     url: "mailto:kashyapsuhas07@gmail.com",
-    color: "#fff",
+    color: "#ffcc00",
   },
 ];
 
@@ -88,13 +88,12 @@ const Socials = () => {
       className={`flex gap-3 justify-center`}
     >
       {SocialsList.map((social) => {
-        // TODO: on hover select right color
         return (
           <Link key={social.title} href={social.url} passHref>
             <a
               target="_blank"
               className="social-icon"
-              style={{ "&:hover": { fill: "pink" } }}
+              style={{ "--highlight-color": social.color }}
             >
               {social.icon}
             </a>

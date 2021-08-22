@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 
 import "../styles/tailwind.css";
+import "../styles/index.css";
 
 const MyApp = ({ Component, pageProps }) => {
   return (
