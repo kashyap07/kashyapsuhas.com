@@ -31,7 +31,7 @@ const Blog = ({ className, ...props }) => {
   const fm = props.frontMatterData;
 
   return (
-    <main className={` ${className} relative md:pt-10`}>
+    <main className={` ${className} relative`}>
       <SideTitle>/blog</SideTitle>
 
       <MaxWidthWrapper withBg>

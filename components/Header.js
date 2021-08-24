@@ -1,5 +1,7 @@
 import Link from "next/link";
 import MaxWidthWrapper from "./MaxWidthWrapper";
+import useScrollPosition from "../utils/useScrollPosition";
+import { FaHamburger } from "react-icons/fa";
 
 const headerNavLinks = [
   { title: "Blog", href: "/blog" },
@@ -21,14 +23,23 @@ const Hamburger = () => (
 );
 
 const Header = () => {
+  const scrollPosition = useScrollPosition();
+
   return (
-    <header className="sticky top-0 bg-background bg-opacity-50 backdrop-filter backdrop-blur-xl z-50">
+    <header
+      className={`fixed top-0 w-full bg-background bg-opacity-50 backdrop-filter backdrop-blur-sm z-50 h-16 ${
+        scrollPosition > 0 && "border-b"
+      }`}
+    >
       <MaxWidthWrapper>
-        <div className="nav flex flex-col md:items-center sm:flex-row sm:justify-between py-4 gap-y-2 z-70">
+        <div className="nav flex items-center justify-between py-4 gap-y-2 z-70">
           <div>
             <Link href="/" passHref>
               <div className="flex md:items-center justify-between">
-                <a className="logo" aria-label="Home Page">
+                <a
+                  className="text-3xl font-fancy font-bold bg-gradient-to-r from-indigo-700 to-special-teal bg-clip-text text-transparent"
+                  aria-label="Home Page"
+                >
                   Suhas Kashyap
                 </a>
               </div>
@@ -36,12 +47,16 @@ const Header = () => {
           </div>
 
           <input type="checkbox" className="hidden" id="nav-check" />
-          <div className="absolute md:hidden right-1">
+          <div className="md:hidden right-1">
             <label
-              className="flex flex-col items-center w-14 h-8"
+              className="text-gray-900 hover:text-secondary"
               htmlFor="nav-check"
             >
-              <Hamburger />
+              <FaHamburger
+                style={{
+                  transform: "scale(1.3) translateX(-5px) translateY(-2px)",
+                }}
+              />
             </label>
           </div>
 

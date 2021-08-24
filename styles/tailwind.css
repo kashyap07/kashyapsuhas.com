@@ -2,12 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  a {
+    @apply cursor-pointer hover:secondaryGradient;
+  }
+  h1 {
+    @apply text-5xl font-bold text-gray-900;
+  }
+  h2 {
+    @apply text-2xl font-bold text-gray-900;
+  }
+}
+
+@variants focus, hover {
+  .secondaryGradient {
+    @apply bg-gradient-to-r from-tertiary to-secondary bg-clip-text text-transparent;
+  }
+}
+
 :root {
 }
 
 html,
 body {
-  @apply bg-background h-full text-black antialiased;
+  @apply bg-background min-h-full text-black antialiased box-border m-0 relative;
 }
 html {
   scroll-behavior: smooth;
@@ -30,32 +48,19 @@ html {
 }
 
 ::selection {
-  @apply bg-tertiary text-white;
+  @apply bg-primary text-white;
 }
 
 #__next {
-  @apply flex flex-col h-full overflow-x-hidden;
+  @apply flex flex-col min-h-screen h-full overflow-x-hidden;
 }
 
 .absolute-center {
   @apply absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2;
 }
 
-.logo {
-  @apply text-4xl font-fancy font-bold cursor-pointer bg-gradient-to-r from-logo-start to-logo-end bg-clip-text text-transparent;
-}
-
 .wave-seperator-crop {
   @apply scale-x-100 sm:scale-x-125 md:scale-x-100;
-}
-
-.max-width-wrapper {
-  @apply max-w-3xl xl:max-w-5xl px-4 mx-auto sm:px-6 xl:px-0;
-}
-
-.bg-gg {
-  background: linear-gradient(180deg, transparent, white 50%),
-    linear-gradient(to top right, #4338ca, #00dfd8);
 }
 
 .text-sideways {
@@ -72,6 +77,12 @@ html {
 
 .wiggle {
   animation: 3s wiggle infinite;
+  transform-origin: 70% 70%;
+  display: inline-block;
+  cursor: pointer;
+}
+.wiggle:hover {
+  animation: 1.2s wiggle infinite;
   transform-origin: 70% 70%;
   display: inline-block;
 }

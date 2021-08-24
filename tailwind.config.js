@@ -1,5 +1,6 @@
 const defaultTheme = require("tailwindcss/defaultTheme");
 const colors = require("tailwindcss/colors");
+const { trueGray } = require("tailwindcss/colors");
 
 module.exports = {
   mode: "jit",
@@ -33,6 +34,9 @@ module.exports = {
       width: {
         "fit-content": "fit-content",
         "home-card": "800px",
+      },
+      minHeight: {
+        minusHeader: "calc(100vh - 120px)",
       },
       maxWidth: {
         wrapper: "64rem",
@@ -73,7 +77,8 @@ module.exports = {
           800: "#666c7f",
           900: "#4f5463",
         },
-        background: "#f1f2f4",
+        // gray: trueGray,
+        background: "#fff",
         code: {
           green: "#b5f4a5",
           yellow: "#ffe484",
