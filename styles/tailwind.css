@@ -33,12 +33,12 @@ html {
 
 @media (orientation: landscape) {
   ::-webkit-scrollbar {
-    @apply w-3 bg-gray-300 bg-opacity-50;
+    @apply w-3 bg-transparent bg-opacity-50;
   }
 }
 @media (orientation: landscape) {
   ::-webkit-scrollbar-thumb {
-    @apply rounded-xl bg-gray-600 border-2 border-solid border-gray-100;
+    @apply rounded-xl bg-gray-500 border-4 border-solid border-background;
   }
 }
 @media (orientation: landscape) {
