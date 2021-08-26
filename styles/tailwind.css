@@ -67,14 +67,6 @@ html {
   text-orientation: sideways;
 }
 
-.right-arrow {
-  border: solid #c6c9d2;
-  border-width: 0 2px 2px 0;
-  padding: 3px;
-  transform: rotate(-45deg);
-  margin: 0 10px 0 5px;
-}
-
 .wiggle {
   animation: 3s wiggle infinite;
   transform-origin: 70% 70%;

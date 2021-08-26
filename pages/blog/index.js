@@ -31,12 +31,12 @@ const Blog = ({ className, ...props }) => {
   const fm = props.frontMatterData;
 
   return (
-    <main className={`${className} relative mt-6`}>
+    <main className={`${className} relative md:mt-6`}>
       <SideTitle>/blog</SideTitle>
 
       <MaxWidthWrapper withBg>
         <div className="text-xl px-6 pt-5">
-          <ul className="flex flex-col   w-full">
+          <ul className="flex flex-col  w-full">
             {fm.map((item, index) => {
               return (
                 <li key={index}>

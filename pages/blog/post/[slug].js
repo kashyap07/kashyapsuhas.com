@@ -6,6 +6,7 @@ import marked from "marked";
 import InnerHTML from "dangerously-set-html-content";
 import SideTitle from "../../../components/SideTitle";
 import MaxWidthWrapper from "../../../components/MaxWidthWrapper";
+import { HiChevronRight } from "react-icons/hi";
 
 const getPost = async (slug) => {
   // FIXME: hardcoded to md
@@ -49,14 +50,14 @@ const Breadcrumb = ({ category }) => (
         <Link href="/">
           <a>Home</a>
         </Link>
-        <i className="right-arrow" />
+        <HiChevronRight className="text-xl" />
         {/* Convert to a component, set direction as props */}
       </li>
       <li className="inline-flex items-center">
         <Link href="/blog">
           <a>Blog</a>
         </Link>
-        <i className="right-arrow" />
+        <HiChevronRight className="text-xl" />
       </li>
       <li className="inline-flex items-center">
         <Link href="/">
@@ -72,20 +73,20 @@ const Slug = ({ className, ...props }) => {
   const router = useRouter();
 
   return (
-    <main className={`${className} relative mt-6`}>
+    <main className={`${className} relative md:mt-6`}>
       <SideTitle>/post</SideTitle>
 
       <MaxWidthWrapper withBg>
-        <div className="text-xl px-7 pt-5">
+        <div className="text-xl md:px-7 pt-5">
           {router.isFallback ? (
             <span>Loading post, please wait...</span>
           ) : (
             <>
               {console.log(post.category)}
               <Breadcrumb category={post.category} />
-              <div className="flex flex-row justify-between items-baseline">
+              <div className="flex flex-col md:flex-row gap-2 justify-between items-baseline">
                 <h1 className="text-5xl font-bold">{post.title}</h1>
-                <span className="text-base">{post.date}</span>
+                <span className="text-base text-gray-700">{post.date}</span>
               </div>
               <hr className="mt-5 mb-8" />
 
