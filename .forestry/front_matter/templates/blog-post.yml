@@ -59,4 +59,5 @@ fields:
   config:
     required: true
 pages:
+- Blog/blogpost-test-2.md
 - Blog/todos.md
