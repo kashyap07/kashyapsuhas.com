@@ -15,7 +15,7 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed top-0 w-full bg-background bg-opacity-80 backdrop-filter backdrop-blur-md backdrop-saturate-200 z-50 h-16 ${
+      className={`fixed top-0 w-full bg-background bg-opacity-80 backdrop-filter backdrop-blur backdrop-saturate-200 z-50 h-16 ${
         scrollPosition > 0 && "border-b"
       }`}
     >
@@ -25,7 +25,7 @@ const Header = () => {
             <Link href="/" passHref>
               <div className="flex md:items-center justify-between">
                 <a
-                  className="text-3xl font-fancy font-bold bg-gradient-to-r from-indigo-700 to-special-teal bg-clip-text text-transparent"
+                  className="text-3xl font-fancy font-bold bg-gradient-to-r from-indigo-600 via-pink-500 to-special-teal bg-clip-text text-transparent"
                   aria-label="Home Page"
                 >
                   Suhas Kashyap

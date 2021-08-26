@@ -1,0 +1,13 @@
+.scroll-down-indicator {
+  animation: jump 1.3s infinite;
+}
+
+@keyframes jump {
+  0%,
+  100% {
+    transform: translateY(-25%);
+  }
+  50% {
+    transform: none;
+  }
+}

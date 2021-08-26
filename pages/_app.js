@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 
 import "../styles/tailwind.css";
 import "../styles/index.css";
+import "../styles/CSSElements.css";
 
 const MyApp = ({ Component, pageProps }) => {
   return (

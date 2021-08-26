@@ -72,7 +72,7 @@ const Slug = ({ className, ...props }) => {
   const router = useRouter();
 
   return (
-    <main className={`${className} relative`}>
+    <main className={`${className} relative mt-6`}>
       <SideTitle>/post</SideTitle>
 
       <MaxWidthWrapper withBg>
