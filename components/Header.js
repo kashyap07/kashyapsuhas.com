@@ -15,9 +15,8 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed top-0 w-full bg-background bg-opacity-80 backdrop-filter backdrop-blur backdrop-saturate-200 z-50 h-16 ${
-        scrollPosition > 0 && "border-b"
-      }`}
+      className={`fixed top-0 w-full bg-background bg-opacity-80 backdrop-filter backdrop-blur backdrop-saturate-200 z-50 h-16 border-b transition-all duration-500 ease-out
+      ${scrollPosition > 0 ? "border-opacity-100" : "border-opacity-0"}`}
     >
       <MaxWidthWrapper>
         <div className="nav flex items-center justify-between py-4 gap-y-2 z-70">

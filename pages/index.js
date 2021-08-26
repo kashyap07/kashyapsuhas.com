@@ -1,8 +1,37 @@
+import Link from "next/link";
 import MaxWidthWrapper from "../components/MaxWidthWrapper";
-import Socials from "../components/Socials";
 import { ScrollDownIndicator } from "../components/CSSElements";
+import Socials from "../components/Socials";
+import matter from "gray-matter";
+import { readFiles } from "../utils/fileUtils";
+import useScrollPosition from "../utils/useScrollPosition";
 
-const Home = ({ className }) => {
+export async function getStaticProps() {
+  const frontMatters = [];
+  await readFiles("Blog").then((files) => {
+    files.forEach((post) => {
+      let fm = matter(post.contents);
+
+      // date is date object, fix this by modifying frontmatter config in forestry
+      let newFMData = { ...fm.data };
+      newFMData.filename = post.filename;
+      newFMData.creation_date = fm.data.creation_date.getTime();
+      frontMatters.push(newFMData);
+      console.log(newFMData);
+    });
+  });
+
+  return {
+    props: {
+      frontMatterData: frontMatters,
+    },
+  };
+}
+
+const Home = ({ className, ...props }) => {
+  const scrollPosition = useScrollPosition();
+  const fm = props.frontMatterData;
+
   return (
     <main className={`w-full ${className}`}>
       <div
@@ -22,13 +51,44 @@ const Home = ({ className }) => {
           </div>
         </MaxWidthWrapper>
 
-        <ScrollDownIndicator />
+        {scrollPosition > 0 ? (
+          <ScrollDownIndicator className="opacity-0 transition-opacity duration-500" />
+        ) : (
+          <ScrollDownIndicator className="opacity-100" />
+        )}
       </div>
 
       <div data-element="section" className="flex min-h-screen">
         <MaxWidthWrapper className="flex flex-col items-start w-full">
           <div data-element="preview-section" className="py-4 my-10">
             <h2>Recent Blog Posts</h2>
+            <ul className="flex flex-col  w-full">
+              {fm.slice(0, 3).map((item, index) => {
+                return (
+                  <li key={index}>
+                    {console.log(item)}
+                    <Link
+                      href={`/blog/post/${item.filename
+                        .split(".")
+                        .slice(0, -1)
+                        .join(".")}`}
+                    >
+                      <a>
+                        {item.title} --{" "}
+                        {new Date(item.creation_date).toLocaleDateString(
+                          "en-IN",
+                          {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                          }
+                        )}
+                      </a>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
           </div>
           <div data-element="preview-section" className="py-4 my-10">
             <h2>Recent Photos</h2>
