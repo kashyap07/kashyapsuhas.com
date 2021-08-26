@@ -2,6 +2,7 @@ import Link from "next/link";
 import MaxWidthWrapper from "../../components/MaxWidthWrapper";
 import SideTitle from "../../components/SideTitle";
 import { getFrontMatters } from "../../utils/getFrontMatters";
+import moment from "moment";
 
 export async function getStaticProps() {
   const frontMatters = await getFrontMatters();
@@ -14,39 +15,36 @@ export async function getStaticProps() {
 }
 
 const Blog = ({ className, ...props }) => {
-  // call it file meta data or something and also have title (slug)
   const fm = props.frontMatterData;
 
   return (
     <main className={`${className} relative md:mt-6`}>
       <SideTitle>/blog</SideTitle>
 
-      <MaxWidthWrapper withBg>
-        <div className="text-xl px-6 pt-5">
-          <ul className="flex flex-col  w-full">
+      <MaxWidthWrapper>
+        <div className="text-xl md:px-10 pt-5">
+          <ul className="flex flex-col w-full gap-4">
             {fm.map((item, index) => {
               return (
-                <li key={index}>
-                  {console.log(item)}
-                  <Link
-                    href={`/blog/post/${item.filename
-                      .split(".")
-                      .slice(0, -1)
-                      .join(".")}`}
-                  >
-                    <a>
-                      {item.title} --{" "}
-                      {new Date(item.creation_date).toLocaleDateString(
-                        "en-IN",
-                        {
-                          year: "numeric",
-                          month: "short",
-                          day: "numeric",
-                        }
-                      )}
-                    </a>
-                  </Link>
-                </li>
+                <>
+                  <li className="w-full" key={index}>
+                    <Link
+                      href={`/blog/post/${item.filename
+                        .split(".")
+                        .slice(0, -1)
+                        .join(".")}`}
+                    >
+                      <a className="flex flex-col font-medium justify-between">
+                        <span className="text-xl">{item.title}</span>
+                        <span className="text-gray-600 text-base">
+                          {/* {moment(item.creation_date).fromNow()} */}
+                          {moment(item.creation_date).format("MMM Do YYYY")}
+                        </span>
+                      </a>
+                    </Link>
+                  </li>
+                  <hr />
+                </>
               );
             })}
           </ul>

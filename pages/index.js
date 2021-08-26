@@ -4,6 +4,8 @@ import { ScrollDownIndicator } from "../components/CSSElements";
 import Socials from "../components/Socials";
 import { getFrontMatters } from "../utils/getFrontMatters";
 import useIsScrolled from "../utils/useScrollPosition";
+import { BsArrowRight } from "react-icons/bs";
+import moment from "moment";
 
 export async function getStaticProps() {
   const frontMatters = await getFrontMatters();
@@ -48,42 +50,45 @@ const Home = ({ className, ...props }) => {
 
       <div data-element="section" className="flex min-h-screen">
         <MaxWidthWrapper className="flex flex-col items-start w-full">
-          <div data-element="preview-section" className="py-4 my-10">
+          <div data-element="preview-section" className="w-full my-2">
             <h2>Recent Blog Posts</h2>
-            <ul className="flex flex-col  w-full">
+            <ul className="flex flex-col w-full p-2 gap-5 md:gap-1">
               {fm.slice(0, 3).map((item, index) => {
                 return (
-                  <li key={index}>
+                  <li className="w-full" key={index}>
                     <Link
                       href={`/blog/post/${item.filename
                         .split(".")
                         .slice(0, -1)
                         .join(".")}`}
                     >
-                      <a>
-                        {item.title} --{" "}
-                        {new Date(item.creation_date).toLocaleDateString(
-                          "en-IN",
-                          {
-                            year: "numeric",
-                            month: "short",
-                            day: "numeric",
-                          }
-                        )}
+                      <a className="flex flex-col md:flex-row font-medium justify-between">
+                        <span className="text-lg">{item.title}</span>
+                        <span className="text-gray-600">
+                          {moment(item.creation_date).fromNow()}
+                        </span>
                       </a>
                     </Link>
                   </li>
                 );
               })}
             </ul>
+
+            <Link href="/blog">
+              <a className="flex flex-row items-center gap-1 group">
+                See more{" "}
+                <BsArrowRight className="transition-transform duration-700 translate-x-0 group-hover:translate-x-2" />
+              </a>
+            </Link>
           </div>
-          <div data-element="preview-section" className="py-4 my-10">
+
+          <div data-element="preview-section" className="my-2">
             <h2>Recent Photos</h2>
           </div>
-          <div data-element="preview-section" className="py-4 my-10">
+          {/* <div data-element="preview-section" className="my-2">
             <h2>What I&apos;m listening to on spotify rn</h2>
-          </div>
-          <div data-element="preview-section" className="py-4 my-10">
+          </div> */}
+          <div data-element="preview-section" className="my-2">
             <h2>Socials</h2>
             <Socials />
           </div>

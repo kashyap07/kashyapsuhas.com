@@ -1,6 +1,6 @@
 import Link from "next/link";
 import MaxWidthWrapper from "./MaxWidthWrapper";
-import useScrollPosition from "../utils/useScrollPosition";
+import useIsScrolled from "../utils/useScrollPosition";
 import { FaHamburger } from "react-icons/fa";
 
 const headerNavLinks = [
@@ -11,12 +11,12 @@ const headerNavLinks = [
 ];
 
 const Header = () => {
-  const scrollPosition = useScrollPosition();
+  const isScrolled = useIsScrolled();
 
   return (
     <header
       className={`fixed top-0 w-full bg-background bg-opacity-80 backdrop-filter backdrop-blur backdrop-saturate-200 z-50 h-16 border-b transition-all duration-500 ease-out
-      ${scrollPosition > 0 ? "border-opacity-100" : "border-opacity-0"}`}
+      ${isScrolled ? "border-opacity-100" : "border-opacity-0"}`}
     >
       <MaxWidthWrapper>
         <div className="nav flex items-center justify-between py-4 gap-y-2 z-70">
