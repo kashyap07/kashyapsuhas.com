@@ -2,24 +2,11 @@ import Link from "next/link";
 import MaxWidthWrapper from "../components/MaxWidthWrapper";
 import { ScrollDownIndicator } from "../components/CSSElements";
 import Socials from "../components/Socials";
-import matter from "gray-matter";
-import { readFiles } from "../utils/fileUtils";
-import useScrollPosition from "../utils/useScrollPosition";
+import { getFrontMatters } from "../utils/getFrontMatters";
+import useIsScrolled from "../utils/useScrollPosition";
 
 export async function getStaticProps() {
-  const frontMatters = [];
-  await readFiles("Blog").then((files) => {
-    files.forEach((post) => {
-      let fm = matter(post.contents);
-
-      // date is date object, fix this by modifying frontmatter config in forestry
-      let newFMData = { ...fm.data };
-      newFMData.filename = post.filename;
-      newFMData.creation_date = fm.data.creation_date.getTime();
-      frontMatters.push(newFMData);
-      console.log(newFMData);
-    });
-  });
+  const frontMatters = await getFrontMatters();
 
   return {
     props: {
@@ -29,8 +16,9 @@ export async function getStaticProps() {
 }
 
 const Home = ({ className, ...props }) => {
-  const scrollPosition = useScrollPosition();
+  const isScrolled = useIsScrolled();
   const fm = props.frontMatterData;
+  console.log(fm);
 
   return (
     <main className={`w-full ${className}`}>
@@ -51,7 +39,7 @@ const Home = ({ className, ...props }) => {
           </div>
         </MaxWidthWrapper>
 
-        {scrollPosition > 0 ? (
+        {isScrolled ? (
           <ScrollDownIndicator className="opacity-0 transition-opacity duration-500" />
         ) : (
           <ScrollDownIndicator className="opacity-100" />
@@ -66,7 +54,6 @@ const Home = ({ className, ...props }) => {
               {fm.slice(0, 3).map((item, index) => {
                 return (
                   <li key={index}>
-                    {console.log(item)}
                     <Link
                       href={`/blog/post/${item.filename
                         .split(".")

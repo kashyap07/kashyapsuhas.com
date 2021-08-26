@@ -1,23 +1,10 @@
-import { readFiles } from "../../utils/fileUtils";
 import Link from "next/link";
 import MaxWidthWrapper from "../../components/MaxWidthWrapper";
 import SideTitle from "../../components/SideTitle";
-import matter from "gray-matter";
+import { getFrontMatters } from "../../utils/getFrontMatters";
 
 export async function getStaticProps() {
-  const frontMatters = [];
-  await readFiles("Blog").then((files) => {
-    files.forEach((post) => {
-      let fm = matter(post.contents);
-
-      // date is date object, fix this by modifying frontmatter config in forestry
-      let newFMData = { ...fm.data };
-      newFMData.filename = post.filename;
-      newFMData.creation_date = fm.data.creation_date.getTime();
-      frontMatters.push(newFMData);
-      console.log(newFMData);
-    });
-  });
+  const frontMatters = await getFrontMatters();
 
   return {
     props: {
