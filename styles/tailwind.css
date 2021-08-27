@@ -20,34 +20,6 @@
   }
 }
 
-html,
-body {
-  @apply bg-background min-h-full text-gray-700 antialiased box-border m-0 relative;
-}
-html {
-  scroll-behavior: smooth;
-}
-
-@media (orientation: landscape) {
-  ::-webkit-scrollbar {
-    @apply w-3 bg-transparent bg-opacity-50;
-  }
-  ::-webkit-scrollbar-thumb {
-    @apply rounded-xl bg-gray-300 border-2 border-solid border-background;
-  }
-  ::-webkit-scrollbar-track {
-    @apply rounded bg-transparent;
-  }
-}
-
-::selection {
-  @apply bg-primary text-white;
-}
-
-#__next {
-  @apply flex flex-col min-h-screen h-full overflow-x-hidden;
-}
-
 .absolute-center {
   @apply absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2;
 }
