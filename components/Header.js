@@ -20,18 +20,18 @@ const Header = () => {
       ${isScrolled ? "border-opacity-100" : "border-opacity-0"}`}
     >
       <MaxWidthWrapper>
-        <nav className="nav flex items-center justify-between py-4 gap-y-2 z-70">
+        <nav className="nav flex items-center justify-between py-4 gap-y-2 z-50">
           <div>
             <Link href="/" passHref>
               <a
                 data-element="logo"
-                className="text-3xl font-fancy font-bold bg-gradient-to-r from-special-logo-start to-special-logo-end bg-clip-text text-transparent  relative group z-50 hover:bg-none select-none"
+                className="text-3xl font-fancy font-bold bg-gradient-to-r from-special-logo-start to-special-logo-end bg-clip-text text-transparent  relative group hover:bg-none select-none"
                 aria-label="Home Page"
               >
-                <span className="group-hover:text-red-50 z-50 transition-colors duration-500 select-none">
+                <span className="group-hover:text-red-50 transition-colors duration-500 select-none">
                   Suhas Kashyap
                 </span>
-                <PinkHalo className="left-1/3 -z-10" />
+                <PinkHalo className="top-1/4 md:top-2/3 left-1/3 -z-10" />
                 <PinkHalo className="top-1/4 left-2/3 -z-10" />
               </a>
             </Link>
