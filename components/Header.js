@@ -25,10 +25,10 @@ const Header = () => {
             <Link href="/" passHref>
               <a
                 data-element="logo"
-                className="text-3xl font-fancy font-bold bg-gradient-to-r from-special-logo-start to-special-logo-end bg-clip-text text-transparent  relative group z-50 hover:bg-none"
+                className="text-3xl font-fancy font-bold bg-gradient-to-r from-special-logo-start to-special-logo-end bg-clip-text text-transparent  relative group z-50 hover:bg-none select-none"
                 aria-label="Home Page"
               >
-                <span className="group-hover:text-red-50 z-50 transition-colors duration-500">
+                <span className="group-hover:text-red-50 z-50 transition-colors duration-500 select-none">
                   Suhas Kashyap
                 </span>
                 <PinkHalo className="left-1/3" />
