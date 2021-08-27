@@ -19,4 +19,16 @@ const ScrollDownIndicator = () => {
   } else return <ScrollDownIndicatorIcon className="opacity-100" />;
 };
 
-export { ScrollDownIndicator };
+const HaloElem = ({ className }) => (
+  <div
+    className={`absolute top-0 left-1/2 w-40 h-24 rounded-3xl transform -translate-x-1/2 -translate-y-1/2 -skew-y-12 blur-xl opacity-0 group-hover:opacity-60 transition-opacity duration-500 -z-10 ${className}`}
+  />
+);
+const PinkHalo = ({ className }) => (
+  <HaloElem data-component="pink-halo" className={` pink-halo ${className}`} />
+);
+const TealHalo = ({ className }) => (
+  <HaloElem data-component="teal-halo" className={`teal-halo ${className}`} />
+);
+
+export { ScrollDownIndicator, PinkHalo, TealHalo };

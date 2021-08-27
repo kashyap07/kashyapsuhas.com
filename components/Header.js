@@ -2,6 +2,7 @@ import Link from "next/link";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import useIsScrolled from "../utils/useScrollPosition";
 import HamburgerMenu from "../components/HamburgerMenu";
+import { PinkHalo } from "../components/CSSElements";
 
 const headerNavLinks = [
   { title: "Blog", href: "/blog" },
@@ -22,15 +23,17 @@ const Header = () => {
         <nav className="nav flex items-center justify-between py-4 gap-y-2 z-70">
           <div>
             <Link href="/" passHref>
-              <div className="flex md:items-center justify-between">
-                <a
-                  data-element="logo"
-                  className="text-3xl font-fancy font-bold bg-gradient-to-r from-special-logo-start to-special-logo-end bg-clip-text text-transparent"
-                  aria-label="Home Page"
-                >
+              <a
+                data-element="logo"
+                className="text-3xl font-fancy font-bold bg-gradient-to-r from-special-logo-start to-special-logo-end bg-clip-text text-transparent  relative group z-50 hover:bg-none"
+                aria-label="Home Page"
+              >
+                <span className="group-hover:text-red-50 z-50 transition-colors duration-500">
                   Suhas Kashyap
-                </a>
-              </div>
+                </span>
+                <PinkHalo className="left-1/3" />
+                <PinkHalo className="top-1/4 left-2/3" />
+              </a>
             </Link>
           </div>
 

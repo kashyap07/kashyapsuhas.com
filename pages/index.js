@@ -5,6 +5,7 @@ import Socials from "../components/Socials";
 import { getFrontMatters } from "../utils/getFrontMatters";
 import { BsArrowRight } from "react-icons/bs";
 import moment from "moment";
+import { TealHalo } from "../components/CSSElements";
 
 export async function getStaticProps() {
   const frontMatters = await getFrontMatters();
@@ -26,9 +27,9 @@ const Home = ({ className, ...props }) => {
         data-element="main-section"
         className="flex flex-col mb-auto min-h-minusHeader justify-center items-center relative"
       >
-        <MaxWidthWrapper className="flex justify-center">
-          <div className="flex" data-element="home-card">
-            <div className="flex flex-col justify-center gap-6 mb-48 font-bold text-3xl">
+        <MaxWidthWrapper className="group flex justify-center relative mb-48">
+          <div className="flex z-10" data-element="home-card">
+            <div className="flex flex-col justify-center gap-6 font-bold text-3xl">
               <span className="text-5xl md:text-6xl">
                 Hello there, I&apos;m Suhas <span className="wiggle">👋</span>
               </span>
@@ -37,6 +38,7 @@ const Home = ({ className, ...props }) => {
               </span>
             </div>
           </div>
+          <TealHalo className="z-0 scale-250 top-1/2 left-1/2 group-hover:opacity-70 delay-500 ease-linear" />
         </MaxWidthWrapper>
 
         <ScrollDownIndicator />

@@ -30,6 +30,11 @@ module.exports = {
         body: "1 0 auto",
       },
       spacing: {
+        spacing: {
+          72: "18rem",
+          84: "21rem",
+          96: "24rem",
+        },
         "9/16": "56.25%",
       },
       width: {
@@ -61,9 +66,9 @@ module.exports = {
       },
       colors: {
         // triadic colors from https://www.canva.com/colors/color-wheel/
-        primary: "#5c8ba3",
-        secondary: "#ac6c96",
-        tertiary: "#8Ba35c",
+        primary: "#2ba5d4",
+        secondary: "#d42ba5",
+        tertiary: "#a5d42b",
         gray: {
           50: "hsl(220, 12%, 93%)",
           75: "hsl(220, 12%, 95%)",
@@ -75,7 +80,7 @@ module.exports = {
           600: "hsl(220, 12%, 40%)",
           700: "hsl(220, 12%, 30%)",
           800: "hsl(220, 12%, 20%)",
-          900: "hsl(220, 12%, 10%)",
+          900: "hsl(220, 12%, 12%)",
         },
         background: "#fff",
         hero: {
@@ -84,13 +89,9 @@ module.exports = {
         special: {
           teal: "#00dfd8",
           logo: {
-            start: "theme('colors.pink.500')",
-            end: "#2bA5d4",
+            start: "theme('colors.secondary')",
+            end: "theme('colors.primary')",
           },
-        },
-        zIndex: {
-          60: "60",
-          70: "70",
         },
       },
       dropShadow: {
@@ -99,6 +100,9 @@ module.exports = {
       },
       outline: {
         container: "",
+      },
+      zIndex: {
+        "-10": "-10",
       },
     },
   },
