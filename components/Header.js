@@ -24,7 +24,8 @@ const Header = () => {
             <Link href="/" passHref>
               <div className="flex md:items-center justify-between">
                 <a
-                  className="text-3xl font-fancy font-bold bg-gradient-to-r from-indigo-600 via-pink-500 to-special-teal bg-clip-text text-transparent"
+                  data-element="logo"
+                  className="text-3xl font-fancy font-bold bg-gradient-to-r from-special-logo-start to-special-logo-end bg-clip-text text-transparent"
                   aria-label="Home Page"
                 >
                   Suhas Kashyap

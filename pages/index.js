@@ -28,11 +28,11 @@ const Home = ({ className, ...props }) => {
       >
         <MaxWidthWrapper className="flex justify-center">
           <div className="flex" data-element="home-card">
-            <div className="flex flex-col justify-center gap-6 mb-48 font-bold text-3xl text-gray-900">
+            <div className="flex flex-col justify-center gap-6 mb-48 font-bold text-3xl">
               <span className="text-5xl md:text-6xl">
                 Hello there, I&apos;m Suhas <span className="wiggle">👋</span>
               </span>
-              <span className="text-3xl md:text-4xl text-gray-800">
+              <span className="text-3xl md:text-4xl">
                 Welcome to my slice of the Interwebs.
               </span>
             </div>
