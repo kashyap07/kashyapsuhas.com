@@ -80,12 +80,10 @@ const SocialsList = [
 ];
 
 const Socials = () => {
-  // let root = document.documentElement;
-
   return (
     <div
       data-component="socials-wrapper"
-      className={`flex gap-3 justify-center`}
+      className={`flex flex-col gap-3 justify-center p-10`}
     >
       {SocialsList.map((social) => {
         return (

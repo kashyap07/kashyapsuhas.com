@@ -1,7 +1,7 @@
 import Link from "next/link";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import useIsScrolled from "../utils/useScrollPosition";
-import { FaHamburger } from "react-icons/fa";
+import HamburgerMenu from "../components/HamburgerMenu";
 
 const headerNavLinks = [
   { title: "Blog", href: "/blog" },
@@ -19,7 +19,7 @@ const Header = () => {
       ${isScrolled ? "border-opacity-100" : "border-opacity-0"}`}
     >
       <MaxWidthWrapper>
-        <div className="nav flex items-center justify-between py-4 gap-y-2 z-70">
+        <nav className="nav flex items-center justify-between py-4 gap-y-2 z-70">
           <div>
             <Link href="/" passHref>
               <div className="flex md:items-center justify-between">
@@ -33,33 +33,19 @@ const Header = () => {
             </Link>
           </div>
 
-          <input type="checkbox" className="hidden" id="nav-check" />
-          <div className="md:hidden right-1">
-            <label
-              className="text-gray-900 hover:text-secondary"
-              htmlFor="nav-check"
-            >
-              <FaHamburger
-                style={{
-                  transform: "scale(1.3) translateX(-5px) translateY(-2px)",
-                }}
-              />
-            </label>
+          {/* desktop list */}
+          <div className="hidden md:flex flex-row gap-2">
+            {headerNavLinks.map((link) => (
+              <Link key={link.title} href={link.href} passHref>
+                <a className="px-5 py-0.5 border rounded-lg text-gray-900">
+                  {link.title}
+                </a>
+              </Link>
+            ))}
           </div>
 
-          {/* on click close */}
-          <div className="mobile-menu">
-            <div className="flex flex-col md:flex-row gap-2">
-              {headerNavLinks.map((link) => (
-                <Link key={link.title} href={link.href} passHref>
-                  <a className="px-5 py-0.5 border rounded-lg text-gray-900">
-                    {link.title}
-                  </a>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
+          <HamburgerMenu headerNavLinks={headerNavLinks} />
+        </nav>
       </MaxWidthWrapper>
     </header>
   );

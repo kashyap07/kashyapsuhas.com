@@ -15,6 +15,7 @@ module.exports = {
     extend: {
       height: {
         112: "28rem",
+        "hamburger-menu": "calc(100vh - 64px)",
       },
       inset: {
         "1p": "2%",
@@ -36,7 +37,7 @@ module.exports = {
         "home-card": "800px",
       },
       minHeight: {
-        minusHeader: "calc(100vh - 120px)",
+        minusHeader: "calc(100vh - 64px)",
       },
       maxWidth: {
         wrapper: "64rem",

@@ -3,7 +3,6 @@ import MaxWidthWrapper from "../components/MaxWidthWrapper";
 import { ScrollDownIndicator } from "../components/CSSElements";
 import Socials from "../components/Socials";
 import { getFrontMatters } from "../utils/getFrontMatters";
-import useIsScrolled from "../utils/useScrollPosition";
 import { BsArrowRight } from "react-icons/bs";
 import moment from "moment";
 
@@ -18,14 +17,13 @@ export async function getStaticProps() {
 }
 
 const Home = ({ className, ...props }) => {
-  const isScrolled = useIsScrolled();
   const fm = props.frontMatterData;
   console.log(fm);
 
   return (
     <main className={`w-full ${className}`}>
       <div
-        data-element="section"
+        data-element="main-section"
         className="flex flex-col mb-auto min-h-minusHeader justify-center items-center relative"
       >
         <MaxWidthWrapper className="flex justify-center">
@@ -41,17 +39,13 @@ const Home = ({ className, ...props }) => {
           </div>
         </MaxWidthWrapper>
 
-        {isScrolled ? (
-          <ScrollDownIndicator className="opacity-0 transition-opacity duration-500" />
-        ) : (
-          <ScrollDownIndicator className="opacity-100" />
-        )}
+        <ScrollDownIndicator />
       </div>
 
-      <div data-element="section" className="flex min-h-screen">
+      <div data-element="main-section" className="flex">
         <MaxWidthWrapper className="flex flex-col items-start w-full">
           <div data-element="preview-section" className="w-full my-2">
-            <h2>Recent Blog Posts</h2>
+            <h2 className="text-primary">Recent Blog Posts</h2>
             <ul className="flex flex-col w-full p-2 gap-5 md:gap-1">
               {fm.slice(0, 3).map((item, index) => {
                 return (
@@ -83,13 +77,13 @@ const Home = ({ className, ...props }) => {
           </div>
 
           <div data-element="preview-section" className="my-2">
-            <h2>Recent Photos</h2>
+            <h2 className="text-primary">Recent Photos</h2>
           </div>
           {/* <div data-element="preview-section" className="my-2">
             <h2>What I&apos;m listening to on spotify rn</h2>
           </div> */}
           <div data-element="preview-section" className="my-2">
-            <h2>Socials</h2>
+            <h2 className="text-primary">Socials</h2>
             <Socials />
           </div>
         </MaxWidthWrapper>

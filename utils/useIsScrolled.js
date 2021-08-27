@@ -4,9 +4,9 @@ const useIsScrolled = () => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
-    // FIXME: why?
     const updatePosition = () => {
       if (!isScrolled) setIsScrolled(window.pageYOffset > 0);
+      else setIsScrolled(window.pageYOffset == 0);
     };
     window.addEventListener("scroll", updatePosition, { passive: true });
     updatePosition();
