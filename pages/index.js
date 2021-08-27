@@ -29,7 +29,7 @@ const Home = ({ className, ...props }) => {
       >
         <MaxWidthWrapper className="group flex justify-center relative mb-48">
           <div className="flex z-20" data-element="home-card">
-            <div className="flex flex-col justify-center gap-6 font-bold text-3xl">
+            <div className="flex flex-col justify-center gap-6 font-bold text-3xl select-none">
               <span className="text-5xl md:text-6xl">
                 Hello there, I&apos;m Suhas <span className="wiggle">👋</span>
               </span>
@@ -38,7 +38,7 @@ const Home = ({ className, ...props }) => {
               </span>
             </div>
           </div>
-          <TealHalo className="scale-250 top-2/3 left-1/2 group-hover:opacity-70 group-hover:z-10 delay-200 ease-linear" />
+          <TealHalo className="scale-250 top-full md:top-2/3 left-1/2 group-hover:opacity-70 z-10 delay-500 ease-linear" />
         </MaxWidthWrapper>
 
         <ScrollDownIndicator />

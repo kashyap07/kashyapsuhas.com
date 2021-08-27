@@ -31,8 +31,8 @@ const Header = () => {
                 <span className="group-hover:text-red-50 z-50 transition-colors duration-500 select-none">
                   Suhas Kashyap
                 </span>
-                <PinkHalo className="left-1/3" />
-                <PinkHalo className="top-1/4 left-2/3" />
+                <PinkHalo className="left-1/3 -z-10" />
+                <PinkHalo className="top-1/4 left-2/3 -z-10" />
               </a>
             </Link>
           </div>
