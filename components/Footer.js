@@ -10,7 +10,7 @@ const Footer = ({ className }) => {
         <span>
           View
           <Link href="https://github.com/kashyap07/kashyapsuhas.com">
-            <a className="text-primary"> source.</a>
+            <a className="text-secondary"> source.</a>
           </Link>
         </span>
 

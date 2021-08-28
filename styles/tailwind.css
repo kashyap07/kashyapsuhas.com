@@ -4,7 +4,7 @@
 
 @layer base {
   a {
-    @apply cursor-pointer hover:text-primary;
+    @apply cursor-pointer hover:text-primary transition-colors ease-linear;
   }
   h1 {
     @apply text-5xl font-bold;
@@ -69,4 +69,10 @@
 }
 .social-icon:hover > svg {
   fill: var(--highlight-color);
+}
+
+@variants hover, focus {
+  .nav-button-hover {
+    @apply bg-gray-100;
+  }
 }

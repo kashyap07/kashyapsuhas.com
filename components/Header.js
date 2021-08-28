@@ -1,18 +1,25 @@
+import { useState } from "react";
 import Link from "next/link";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import useIsScrolled from "../utils/useScrollPosition";
 import HamburgerMenu from "../components/HamburgerMenu";
 import { PinkHalo } from "../components/CSSElements";
+import { DarkModeSwitch } from "react-toggle-dark-mode";
 
 const headerNavLinks = [
   { title: "Blog", href: "/blog" },
   { title: "Work", href: "/work" },
-  { title: "Art", href: "/art" },
-  { title: "Contact", href: "/contact" },
+  // { title: "Art", href: "/art" },
+  // { title: "Contact", href: "/contact" },
 ];
 
 const Header = () => {
   const isScrolled = useIsScrolled();
+  const [isDarkMode, setDarkMode] = useState(false);
+
+  const toggleDarkMode = (checked) => {
+    setDarkMode(checked);
+  };
 
   return (
     <header
@@ -20,7 +27,7 @@ const Header = () => {
       ${isScrolled ? "border-opacity-100" : "border-opacity-0"}`}
     >
       <MaxWidthWrapper>
-        <nav className="nav flex items-center justify-between py-4 gap-y-2 z-50">
+        <nav className="nav flex items-center justify-between py-4 z-50">
           <div>
             <Link href="/" passHref>
               <a
@@ -38,16 +45,22 @@ const Header = () => {
           </div>
 
           {/* desktop list */}
-          <div className="hidden md:flex flex-row gap-2">
+          <div className="hidden md:flex flex-row items-center gap-1">
             {headerNavLinks.map((link) => (
               <Link key={link.title} href={link.href} passHref>
-                <a className="px-5 py-0.5 border rounded-lg text-gray-900">
+                <a className="px-3 py-0.5 h-fit-content font-medium rounded-full hover:nav-button-hover">
                   {link.title}
                 </a>
               </Link>
             ))}
+            <DarkModeSwitch
+              className="-mt-1 ml-2"
+              checked={isDarkMode}
+              onChange={toggleDarkMode}
+            />
           </div>
 
+          {/* Mobile list */}
           <HamburgerMenu headerNavLinks={headerNavLinks} />
         </nav>
       </MaxWidthWrapper>

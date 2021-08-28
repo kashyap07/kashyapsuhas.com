@@ -30,15 +30,13 @@ module.exports = {
         body: "1 0 auto",
       },
       spacing: {
-        spacing: {
-          72: "18rem",
-          84: "21rem",
-          96: "24rem",
-        },
+        72: "18rem",
+        84: "21rem",
+        96: "24rem",
         "9/16": "56.25%",
+        "fit-content": "fit-content",
       },
       width: {
-        "fit-content": "fit-content",
         "home-card": "800px",
       },
       minHeight: {
