@@ -1,10 +1,12 @@
 * {
   -webkit-tap-highlight-color: transparent;
+  text-rendering: optimizeLegibility;
+  -webkit-font-feature-settings: "kern" 1;
 }
 
 html,
 body {
-  @apply bg-background min-h-full text-gray-700 antialiased box-border m-0 relative;
+  @apply bg-background min-h-full text-gray-700 box-border m-0 relative;
 }
 html {
   scroll-behavior: smooth;
