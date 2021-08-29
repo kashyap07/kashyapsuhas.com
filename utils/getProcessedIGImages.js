@@ -1,7 +1,7 @@
 const urlPre =
   process.env.NODE_ENV !== "production"
     ? "http://localhost:3000"
-    : "https://kashyapsuhas.com";
+    : "https://www.kashyapsuhas.com";
 
 /**
  * get last 5 images from Instagram along with url and caption for alt
