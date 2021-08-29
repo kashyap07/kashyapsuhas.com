@@ -1,5 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
-import Image from "next/image";
 import MaxWidthWrapper from "../components/MaxWidthWrapper";
 import { ScrollDownIndicator } from "../components/CSSElements";
 import Socials from "../components/Socials";
@@ -89,30 +89,30 @@ const Home = ({ className, ...props }) => {
             </Link>
           </div>
 
+          <div data-element="preview-section" className="my-2">
+            <h2 className="text-primary">Socials</h2>
+            <Socials />
+          </div>
+
           {router.isFallback ? (
             <span>Loading IG posts, please wait...</span>
           ) : (
             igPosts && (
-              // FIXME: temp disabled in mobile
-              <div
-                data-element="preview-section"
-                className="hidden md:block my-2 w-full"
-              >
+              <div data-element="preview-section" className="my-2 w-full">
                 <h2 className="text-primary">Recent Photos</h2>
 
                 <div
                   data-component="recent-instagrams"
-                  className="flex pl-2 py-2"
+                  className="flex md:pl-2 py-2"
                 >
-                  <div className="flex flex-coll md:flex-row w-full md:h-48 justify-between">
-                    {/* FIXME: Bad styling */}
+                  <div className="flex flex-row flex-wrap md:flex-nowrap w-full justify-between items-center">
                     {igPosts.map((post) => (
                       <Link key={post.id} href={post.permalink}>
-                        <a className="max-h-full w-1/5 mx-2 relative">
-                          <Image
+                        <a className="m-2 relative">
+                          <img
                             src={post.media_url}
                             alt="Open image in Instagram"
-                            layout="fill"
+                            className="max-h-igImagePreview"
                           />
                         </a>
                       </Link>
@@ -133,11 +133,6 @@ const Home = ({ className, ...props }) => {
               </div>
             )
           )}
-
-          <div data-element="preview-section" className="my-2">
-            <h2 className="text-primary">Socials</h2>
-            <Socials />
-          </div>
         </MaxWidthWrapper>
       </div>
     </main>

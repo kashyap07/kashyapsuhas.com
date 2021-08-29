@@ -42,6 +42,9 @@ module.exports = {
       minHeight: {
         minusHeader: "calc(100vh - 64px)",
       },
+      maxHeight: {
+        igImagePreview: "48rem",
+      },
       maxWidth: {
         wrapper: "64rem",
         "1/4": "25%",
