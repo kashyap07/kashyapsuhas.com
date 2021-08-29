@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import MaxWidthWrapper from "../components/MaxWidthWrapper";
 import { ScrollDownIndicator } from "../components/CSSElements";
 import Socials from "../components/Socials";
@@ -6,20 +7,27 @@ import { getFrontMatters } from "../utils/getFrontMatters";
 import { BsArrowRight } from "react-icons/bs";
 import moment from "moment";
 import { TealHalo } from "../components/CSSElements";
+// import RecentInstagrams from "../components/RecentInstagrams";
+import getProcessedIGImages from "../utils/getProcessedIGImages";
+import { useRouter } from "next/router";
 
 export async function getStaticProps() {
   const frontMatters = await getFrontMatters();
+  const posts = await getProcessedIGImages(5);
+  console.log(posts);
 
   return {
     props: {
       frontMatterData: frontMatters,
+      igPosts: posts,
     },
   };
 }
 
 const Home = ({ className, ...props }) => {
   const fm = props.frontMatterData;
-  console.log(fm);
+  const igPosts = props.igPosts;
+  const router = useRouter();
 
   return (
     <main className={`w-full ${className}`}>
@@ -71,19 +79,61 @@ const Home = ({ className, ...props }) => {
             </ul>
 
             <Link href="/blog">
-              <a className="flex flex-row items-center gap-1 group">
+              <a
+                className="flex flex-row items-center gap-1 group"
+                aria-label="See more in Blog page"
+              >
                 See more{" "}
                 <BsArrowRight className="transition-transform duration-700 translate-x-0 group-hover:translate-x-2" />
               </a>
             </Link>
           </div>
 
-          <div data-element="preview-section" className="my-2">
-            <h2 className="text-primary">Recent Photos</h2>
-          </div>
-          {/* <div data-element="preview-section" className="my-2">
-            <h2>What I&apos;m listening to on spotify rn</h2>
-          </div> */}
+          {router.isFallback ? (
+            <span>Loading IG posts, please wait...</span>
+          ) : (
+            igPosts && (
+              // FIXME: temp disabled in mobile
+              <div
+                data-element="preview-section"
+                className="hidden md:block my-2 w-full"
+              >
+                <h2 className="text-primary">Recent Photos</h2>
+
+                <div
+                  data-component="recent-instagrams"
+                  className="flex pl-2 py-2"
+                >
+                  <div className="flex flex-coll md:flex-row w-full md:h-48 justify-between">
+                    {/* FIXME: Bad styling */}
+                    {igPosts.map((post) => (
+                      <Link key={post.id} href={post.permalink}>
+                        <a className="max-h-full w-1/5 mx-2 relative">
+                          <Image
+                            src={post.media_url}
+                            alt="Open image in Instagram"
+                            layout="fill"
+                          />
+                        </a>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+
+                <Link href="https://www.instagram.com/kashyap_07">
+                  <a
+                    className="flex flex-row items-center gap-1 group"
+                    aria-label="See more Instagram.com"
+                    target="_blank"
+                  >
+                    See more{" "}
+                    <BsArrowRight className="transition-transform duration-700 translate-x-0 group-hover:translate-x-2" />
+                  </a>
+                </Link>
+              </div>
+            )
+          )}
+
           <div data-element="preview-section" className="my-2">
             <h2 className="text-primary">Socials</h2>
             <Socials />

@@ -1,4 +1,3 @@
-import Socials from "./Socials";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import Link from "next/link";
 

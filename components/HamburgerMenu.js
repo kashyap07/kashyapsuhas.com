@@ -6,7 +6,6 @@ const HamburgerMenu = ({ headerNavLinks }) => {
   const hamburger = useRef(null);
 
   const onLinkPress = () => {
-    console.log(hamburger);
     hamburger.current.click();
   };
   return (

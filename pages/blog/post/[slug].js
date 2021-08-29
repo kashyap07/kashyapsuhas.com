@@ -82,7 +82,6 @@ const Slug = ({ className, ...props }) => {
             <span>Loading post, please wait...</span>
           ) : (
             <>
-              {console.log(post.category)}
               <Breadcrumb category={post.category} />
               <div className="flex flex-col md:flex-row gap-2 justify-between items-baseline">
                 <h1 className="text-5xl font-bold">{post.title}</h1>

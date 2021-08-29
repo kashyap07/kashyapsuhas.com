@@ -17,13 +17,10 @@ const getFrontMatters = async () => {
       newFMData.filename = post.filename;
       newFMData.creation_date = fm.data.creation_date.getTime();
       frontMatters.push(newFMData);
-      console.log(newFMData);
     });
   });
 
   frontMatters.sort((a, b) => (a.creation_date > b.creation_date ? -1 : 1));
-
-  console.log(frontMatters);
 
   return frontMatters;
 };
