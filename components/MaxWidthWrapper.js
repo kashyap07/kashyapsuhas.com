@@ -9,7 +9,7 @@ const WrapperBackground = ({ children, className }) => {
   );
 };
 
-const MaxWidthWrapper = ({ children, className, withBg = false }) => {
+const MaxWidthWrapper = ({ children, className = "", withBg = false }) => {
   return (
     <div
       data-component="max-width-wrapper"

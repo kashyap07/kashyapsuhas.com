@@ -64,9 +64,6 @@
   }
 }
 
-.social-icon > svg {
-  @apply h-7 flex items-center justify-center fill-current text-gray-900;
-}
 .social-icon:hover > svg {
   fill: var(--highlight-color);
 }

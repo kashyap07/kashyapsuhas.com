@@ -4,7 +4,7 @@ import SideTitle from "../components/SideTitle";
 
 const NotFound = ({ className }) => {
   return (
-    <main className={` ${className} relative py-24`}>
+    <main className={`${className} relative md:mt-6`}>
       <SideTitle>/404</SideTitle>
 
       <MaxWidthWrapper>

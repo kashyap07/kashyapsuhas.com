@@ -16,10 +16,7 @@ const MyApp = ({ Component, pageProps }) => {
       </Head>
 
       <Header />
-      <Component
-        {...pageProps}
-        className="flex-body overflow-hidden pb-0 pt-16"
-      />
+      <Component {...pageProps} className="flex-body overflow-hidden py-16" />
       <Footer className="flex-shrink-0" />
     </>
   );

@@ -15,7 +15,7 @@ export async function getStaticProps() {
   };
 }
 
-const Blog = ({ className, ...props }) => {
+const Blog = ({ className = "", ...props }) => {
   const fm = props.frontMatterData;
 
   return (

@@ -68,7 +68,7 @@ const Breadcrumb = ({ category }) => (
   </>
 );
 
-const Slug = ({ className, ...props }) => {
+const Slug = ({ className = "", ...props }) => {
   const { post } = props;
   const router = useRouter();
 

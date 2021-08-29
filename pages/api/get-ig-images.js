@@ -14,7 +14,7 @@ const { ACCESS_TOKEN } = process.env;
 const getIGImages = async (req, res) => {
   try {
     const response = await fetch(
-      `https://graph.instagram.com/me/media?fields=id,media_url,permalink,caption&access_token=${ACCESS_TOKEN}`,
+      `https://graph.instagram.com/me/media?fields=id,media_url,permalink&access_token=${ACCESS_TOKEN}`,
       {
         method: "GET",
         redirect: "follow",

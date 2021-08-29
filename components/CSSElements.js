@@ -25,7 +25,7 @@ const HaloElem = ({ className }) => (
   />
 );
 const PinkHalo = ({ className }) => (
-  <HaloElem data-component="pink-halo" className={` pink-halo ${className}`} />
+  <HaloElem data-component="pink-halo" className={`pink-halo ${className}`} />
 );
 const TealHalo = ({ className }) => (
   <HaloElem data-component="teal-halo" className={`teal-halo ${className}`} />
