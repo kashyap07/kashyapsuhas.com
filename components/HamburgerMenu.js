@@ -45,7 +45,7 @@ const HamburgerMenu = ({ headerNavLinks, socialButtons, ThemeSwitcherBtn }) => {
             </Link>
           ))}
         </div>
-        <div className="flex justify-between px-6 py-4 w-full mb-8">
+        <div className="flex justify-between px-6 py-4 w-full mb-16">
           {socialButtons && (
             <Socials
               list={socialButtons}
