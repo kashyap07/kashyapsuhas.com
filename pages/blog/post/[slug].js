@@ -45,7 +45,7 @@ export const getStaticPaths = () => {
 const Breadcrumb = ({ category }) => (
   <>
     {/* https://tailwindesign.com/components/breadcrumbhttps://tailwindesign.com/components/breadcrumb */}
-    <ul className="flex text-gray-500 text-sm mb-1">
+    <ul className="flex text-gray-500 dark:text-gray-300 text-sm mb-1">
       <li className="inline-flex items-center">
         <Link href="/">
           <a>Home</a>
@@ -83,13 +83,28 @@ const Slug = ({ className = "", ...props }) => {
           ) : (
             <>
               <Breadcrumb category={post.category} />
-              <div className="flex flex-col md:flex-row gap-2 justify-between items-baseline">
+              <div className="flex flex-col gap-2 justify-between items-baseline">
                 <h1 className="text-5xl font-bold">{post.title}</h1>
-                <span className="text-base text-gray-700">{post.date}</span>
+                <span className="text-base text-gray-700 dark:text-gray-200">
+                  {post.date}
+                </span>
               </div>
               <hr className="mt-5 mb-8" />
 
-              <InnerHTML html={post.html} className="prose max-w-none" />
+              <div data-element="post-body" className="md:flex">
+                <div data-element="post-prose" className="lg:max-w-prose">
+                  <InnerHTML
+                    html={post.html}
+                    className="prose md:prose-lg dark:prose-dark max-w-none"
+                  />
+                </div>
+                <div
+                  data-element="post-table-of-contents"
+                  className="hidden lg:flex h-80 w-auto ml-10"
+                >
+                  <h2>Table of contents</h2>
+                </div>
+              </div>
             </>
           )}
         </div>

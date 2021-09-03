@@ -104,7 +104,7 @@ const Socials = ({
               <Link href={social.url}>
                 <a
                   target="_blank"
-                  className="fill-current text-gray-700 social-icon"
+                  className="fill-current text-gray-700 dark:text-gray-50 social-icon"
                   style={{ "--highlight-color": social.color }}
                 >
                   {altIcons ? social.icon2 || social.icon : social.icon}
@@ -117,8 +117,9 @@ const Socials = ({
           ) : (
             <Link href={social.url}>
               <a
+                key={social.title}
                 target="_blank"
-                className="fill-current text-gray-700 social-icon"
+                className="fill-current text-gray-700 dark:text-gray-50 social-icon"
                 style={{ "--highlight-color": social.color }}
               >
                 {altIcons ? social.icon2 || social.icon : social.icon}

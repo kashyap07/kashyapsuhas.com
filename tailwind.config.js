@@ -10,7 +10,7 @@ module.exports = {
     "./layouts/**/*.js",
     "./lib/**/*.js",
   ],
-  darkMode: "class",
+  darkMode: "media",
   theme: {
     extend: {
       height: {
@@ -46,7 +46,8 @@ module.exports = {
         igImagePreview: "48rem",
       },
       maxWidth: {
-        wrapper: "64rem",
+        wrapper: "68rem",
+        prose: "680px",
         "1/4": "25%",
         "1/2": "50%",
         "3/4": "75%",
@@ -105,10 +106,38 @@ module.exports = {
       zIndex: {
         "-10": "-10",
       },
+      typography(theme) {
+        return {
+          dark: {
+            css: {
+              color: theme("colors.gray.100"),
+              '[class~="lead"]': { color: theme("colors.gray.400") },
+              a: { color: theme("colors.gray.100") },
+              strong: { color: theme("colors.gray.50"), fontWeight: 800 },
+              "ul > li::before": { backgroundColor: theme("colors.gray.700") },
+              hr: { borderColor: theme("colors.gray.800") },
+              blockquote: {
+                color: theme("colors.secondary"),
+                borderLeftColor: theme("colors.gray.800"),
+              },
+              h1: { color: theme("colors.primary") },
+              h2: { color: theme("colors.primary") },
+              h3: { color: theme("colors.primary") },
+              h4: { color: theme("colors.primary") },
+              code: { color: theme("colors.gray.100") },
+              "a code": { color: theme("colors.gray.100") },
+              pre: {
+                color: theme("colors.gray.100"),
+                backgroundColor: "hsl(220, 25%, 25%)",
+              },
+            },
+          },
+        };
+      },
     },
   },
   variants: {
-    typography: ["dark"],
+    extend: { typography: ["dark"] },
   },
   plugins: [require("@tailwindcss/forms"), require("@tailwindcss/typography")],
 };

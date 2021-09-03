@@ -30,12 +30,13 @@ const Header = () => {
       checked={isDarkMode}
       onChange={toggleDarkMode}
       sunColor="hsl(220, 12%, 40%)"
+      moonColor="hsl(220, 12%, 80%)"
     />
   );
 
   return (
     <header
-      className={`fixed top-0 w-full bg-background bg-opacity-80 backdrop-filter backdrop-blur backdrop-saturate-200 z-50 h-16 border-b transition-all duration-500 ease-out
+      className={`fixed top-0 w-full bg-gray-900 bg-opacity-80 backdrop-filter backdrop-blur backdrop-saturate-200 z-50 h-16 border-b dark:border-gray-700 transition-all duration-500 ease-out
       ${isScrolled ? "border-opacity-100" : "border-opacity-0"}`}
     >
       <MaxWidthWrapper>
@@ -59,7 +60,7 @@ const Header = () => {
             <div className="hidden md:flex flex-row items-center">
               {headerNavLinks.map((link) => (
                 <Link key={link.title} href={link.href} passHref>
-                  <a className="px-2 py-0.5 text-gray-600 h-fit-content font-medium rounded-full hover:nav-button-hover">
+                  <a className="px-2 py-0.5 text-gray-600 dark:text-gray-50 h-fit-content font-medium rounded-full hover:nav-button-hover">
                     {link.title}
                   </a>
                 </Link>
@@ -71,10 +72,13 @@ const Header = () => {
           <div className="hidden md:flex items-center">
             <Socials
               list={[twitter, github, instagram]}
-              className="text-xl gap-3 text-gray-600"
+              className="text-xl gap-3 text-gray-600 dark:text-white"
               altIcons
             />
-            <span className="h-6 w-0 border mx-3 border-gray-300" aria-hidden />
+            <span
+              className="h-6 w-0 border mx-3 border-gray-300 dark:border-gray-600"
+              aria-hidden
+            />
             <ThemeSwitcherBtn />
           </div>
 

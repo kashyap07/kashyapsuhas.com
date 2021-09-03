@@ -37,7 +37,7 @@ const Home = ({ className = "", ...props }) => {
               <span className="text-5xl md:text-6xl">
                 Hello there, I&apos;m Suhas <span className="wiggle">👋</span>
               </span>
-              <span className="text-3xl md:text-4xl">
+              <span className="text-3xl md:text-4xl dark:text-gray-200">
                 Welcome to my slice of the Interwebs.
               </span>
             </div>

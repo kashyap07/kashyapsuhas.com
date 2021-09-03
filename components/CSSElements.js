@@ -5,7 +5,7 @@ const ScrollDownIndicatorIcon = ({ className }) => (
   <span
     className={`flex h-20 w-full items-center justify-center absolute bottom-14 ${className}`}
   >
-    <CgChevronDoubleDown className="scroll-down-indicator text-4xl text-gray-700" />
+    <CgChevronDoubleDown className="scroll-down-indicator text-4xl text-gray-700 dark:text-gray-400" />
   </span>
 );
 

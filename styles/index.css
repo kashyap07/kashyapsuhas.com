@@ -6,7 +6,7 @@
 
 html,
 body {
-  @apply bg-background min-h-full text-gray-700 box-border m-0 relative;
+  @apply bg-background dark:bg-gray-900 min-h-full text-gray-700 dark:text-white box-border m-0 relative;
 }
 html {
   scroll-behavior: smooth;
@@ -17,7 +17,7 @@ html {
     @apply w-3 bg-transparent bg-opacity-50;
   }
   ::-webkit-scrollbar-thumb {
-    @apply rounded-xl bg-gray-300 border-2 border-solid border-background;
+    @apply rounded-xl bg-gray-300 border-2 border-solid border-background dark:border-gray-900;
   }
   ::-webkit-scrollbar-track {
     @apply rounded bg-transparent;

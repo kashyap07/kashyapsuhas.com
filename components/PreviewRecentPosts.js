@@ -22,7 +22,7 @@ const PreviewRecentPosts = ({ fm, className }) => {
                 >
                   <a className="flex flex-col md:flex-row font-medium justify-between">
                     <span className="text-lg">{item.title}</span>
-                    <span className="text-gray-600">
+                    <span className="text-gray-600 dark:text-gray-300">
                       {moment(item.creation_date).fromNow()}
                     </span>
                   </a>
