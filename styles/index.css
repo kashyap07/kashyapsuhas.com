@@ -13,7 +13,7 @@ html {
 }
 
 @media (orientation: landscape) {
-  ::-webkit-scrollbar {
+  /* ::-webkit-scrollbar {
     @apply w-3 bg-transparent bg-opacity-50;
   }
   ::-webkit-scrollbar-thumb {
@@ -21,6 +21,9 @@ html {
   }
   ::-webkit-scrollbar-track {
     @apply rounded bg-transparent;
+  } */
+  ::-webkit-scrollbar {
+    @apply hidden;
   }
 }
 

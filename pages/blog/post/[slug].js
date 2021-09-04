@@ -102,7 +102,7 @@ const Slug = ({ className = "", ...props }) => {
                   data-element="post-table-of-contents"
                   className="hidden lg:flex h-80 w-auto ml-10"
                 >
-                  <h2>Table of contents</h2>
+                  <h2 className="text-secondary">Table of contents</h2>
                 </div>
               </div>
             </>

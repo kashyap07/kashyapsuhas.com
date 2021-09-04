@@ -82,7 +82,7 @@ module.exports = {
           600: "hsl(220, 12%, 40%)",
           700: "hsl(220, 12%, 30%)",
           800: "hsl(220, 12%, 20%)",
-          900: "hsl(220, 12%, 12%)",
+          900: "hsl(220, 12%, 8%)",
         },
         background: "#fff",
         hero: {
@@ -124,6 +124,7 @@ module.exports = {
               h2: { color: theme("colors.primary") },
               h3: { color: theme("colors.primary") },
               h4: { color: theme("colors.primary") },
+              p: { fontWeight: 500 },
               code: { color: theme("colors.gray.100") },
               "a code": { color: theme("colors.gray.100") },
               pre: {

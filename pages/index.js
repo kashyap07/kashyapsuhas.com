@@ -42,7 +42,7 @@ const Home = ({ className = "", ...props }) => {
               </span>
             </div>
           </div>
-          <TealHalo className="scale-250 top-2/3 left-1/2 group-hover:opacity-70 z-10 delay-500 ease-linear" />
+          <TealHalo className="scale-250 top-2/3 left-1/2 group-hover:opacity-70 dark:opacity-70 z-10 delay-500 ease-linear" />
         </MaxWidthWrapper>
 
         <ScrollDownIndicator />
