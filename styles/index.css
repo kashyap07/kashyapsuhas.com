@@ -34,3 +34,13 @@ html {
 #__next {
   @apply flex flex-col min-h-screen h-full overflow-x-hidden;
 }
+
+.table-of-contents {
+  @apply pt-5;
+}
+.table-of-contents li {
+  @apply text-base font-medium my-2 list-disc;
+}
+.table-of-contents ul {
+  @apply ml-6;
+}

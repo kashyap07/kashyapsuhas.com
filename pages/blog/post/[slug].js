@@ -7,6 +7,7 @@ import InnerHTML from "dangerously-set-html-content";
 import SideTitle from "../../../components/SideTitle";
 import MaxWidthWrapper from "../../../components/MaxWidthWrapper";
 import { HiChevronRight } from "react-icons/hi";
+import toc from "markdown-toc";
 
 const getPost = async (slug) => {
   // FIXME: hardcoded to md
@@ -14,6 +15,8 @@ const getPost = async (slug) => {
   const frontMatter = JSON.parse(JSON.stringify(matter(postContent)));
 
   const { creation_date, ...frontMatterWithoutDate } = frontMatter.data;
+
+  const tocList = toc(frontMatter.content);
 
   let post = {
     ...frontMatterWithoutDate,
@@ -23,6 +26,7 @@ const getPost = async (slug) => {
       day: "numeric",
     }),
     html: marked(frontMatter.content),
+    toc: marked(tocList.content),
   };
 
   return post;
@@ -91,7 +95,7 @@ const Slug = ({ className = "", ...props }) => {
               </div>
               <hr className="mt-5 mb-8" />
 
-              <div data-element="post-body" className="md:flex">
+              <div data-element="post-body" className="md:flex relative">
                 <div data-element="post-prose" className="lg:max-w-prose">
                   <InnerHTML
                     html={post.html}
@@ -100,9 +104,14 @@ const Slug = ({ className = "", ...props }) => {
                 </div>
                 <div
                   data-element="post-table-of-contents"
-                  className="hidden lg:flex h-80 w-auto ml-10"
+                  className="hidden lg:flex flex-col h-80 w-auto ml-10 sticky top-0 "
                 >
                   <h2 className="text-secondary">Table of contents</h2>
+                  <div
+                    data-element="table-of-contents"
+                    className="table-of-contents"
+                    dangerouslySetInnerHTML={{ __html: post.toc }}
+                  ></div>
                 </div>
               </div>
             </>
