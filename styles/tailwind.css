@@ -70,6 +70,6 @@
 
 @variants hover, focus {
   .nav-button-hover {
-    @apply bg-gray-100 dark:bg-gray-500;
+    @apply bg-gray-100 dark:bg-gray-800;
   }
 }

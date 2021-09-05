@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import useIsScrolled from "../utils/useScrollPosition";
@@ -10,34 +10,60 @@ import { Socials, socialsObj } from "../components/Socials";
 const headerNavLinks = [
   { title: "Blog", href: "/blog" },
   { title: "Work", href: "/work" },
-  // { title: "Art", href: "/art" },
   { title: "Contact", href: "/contact" },
 ];
 
 const Header = () => {
   const isScrolled = useIsScrolled();
-  const [isDarkMode, setDarkMode] = useState(false);
+  const [isDarkMode, setDarkMode] = useState(null);
 
   const { twitter, github, instagram } = socialsObj;
 
+  const defaultChecked =
+    typeof window !== "undefined" &&
+    document.documentElement.classList.contains("dark");
+
   const toggleDarkMode = (checked) => {
     setDarkMode(checked);
+
+    if (window !== undefined) {
+      const htmlRoot = document.documentElement;
+      if (htmlRoot.classList.contains("dark")) {
+        htmlRoot.classList.remove("dark");
+        htmlRoot.classList.add("light");
+        localStorage.theme = "light";
+      } else {
+        htmlRoot.classList.remove("light");
+        htmlRoot.classList.add("dark");
+        localStorage.theme = "dark";
+      }
+    }
   };
 
-  const ThemeSwitcherBtn = ({ className = "" }) => (
-    <DarkModeSwitch
-      className={className}
-      checked={isDarkMode}
-      onChange={toggleDarkMode}
-      sunColor="hsl(220, 12%, 40%)"
-      moonColor="hsl(220, 12%, 80%)"
-    />
-  );
+  // FIXME: Animation dies for some reason
+  const ThemeSwitcherBtn = ({ className = "" }) => {
+    const defaultChecked =
+      typeof window !== "undefined" &&
+      document.documentElement.classList.contains("dark");
+    return (
+      <DarkModeSwitch
+        className={className}
+        checked={defaultChecked || isDarkMode}
+        onChange={toggleDarkMode}
+        sunColor="hsl(220, 12%, 40%)"
+        moonColor="hsl(220, 12%, 80%)"
+      />
+    );
+  };
 
   return (
     <header
-      className={`fixed top-0 w-full bg-gray-900 bg-opacity-80 backdrop-filter backdrop-blur backdrop-saturate-200 z-50 h-16 border-b dark:border-gray-700 transition-all duration-500 ease-out
-      ${isScrolled ? "border-opacity-100" : "border-opacity-0"}`}
+      className={`fixed top-0 w-full bg-background dark:bg-gray-900 bg-opacity-80 dark:bg-opacity-80 backdrop-filter backdrop-blur backdrop-saturate-200 z-50 h-16 border-b dark:border-gray-800 transition-all duration-500 ease-out
+      ${
+        isScrolled
+          ? "border-opacity-100 dark:border-opacity-100"
+          : "border-opacity-0 dark:border-opacity-0"
+      }`}
     >
       <MaxWidthWrapper>
         <nav className="nav flex items-center justify-between py-4 z-50">
@@ -76,10 +102,17 @@ const Header = () => {
               altIcons
             />
             <span
-              className="h-6 w-0 border mx-3 border-gray-300 dark:border-gray-600"
+              className="h-6 w-0 border mx-3 border-gray-100 dark:border-gray-700"
               aria-hidden
             />
-            <ThemeSwitcherBtn />
+
+            {/* <ThemeSwitcherBtn /> */}
+            <DarkModeSwitch
+              checked={defaultChecked || isDarkMode}
+              onChange={toggleDarkMode}
+              sunColor="hsl(220, 12%, 40%)"
+              moonColor="hsl(220, 12%, 80%)"
+            />
           </div>
 
           {/* Mobile list */}

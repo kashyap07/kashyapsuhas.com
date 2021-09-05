@@ -1,7 +1,6 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
 import Script from "next/script";
-
-// https://nextjs.org/docs/messages/no-page-custom-font
+import { ThemeProvider } from "../components/ThemeProvider";
 
 class MyDocument extends Document {
   render() {
@@ -20,11 +19,11 @@ class MyDocument extends Document {
             dangerouslySetInnerHTML={{
               __html: `
                 let theme = "light";
-                 if ((localStorage.theme === 'dark') || window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                 if ((localStorage.theme === 'dark') || (!localStorage.theme === null && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                   theme = "dark"
                 }
-                document.documentElement.setAttribute("data-theme", theme);
-                localStorage.theme = theme`,
+                document.documentElement.classList.add(theme);
+                localStorage.theme = theme;`,
             }}
           />
         </Head>

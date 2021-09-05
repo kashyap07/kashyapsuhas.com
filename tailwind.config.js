@@ -1,6 +1,6 @@
 const defaultTheme = require("tailwindcss/defaultTheme");
 const colors = require("tailwindcss/colors");
-const { trueGray } = require("tailwindcss/colors");
+const { trueGray, blueGray } = require("tailwindcss/colors");
 
 module.exports = {
   mode: "jit",
@@ -10,7 +10,7 @@ module.exports = {
     "./layouts/**/*.js",
     "./lib/**/*.js",
   ],
-  darkMode: "media",
+  darkMode: "class",
   theme: {
     extend: {
       height: {
@@ -72,17 +72,17 @@ module.exports = {
         secondary: "#d42ba5",
         tertiary: "#a5d42b",
         gray: {
-          50: "hsl(220, 12%, 93%)",
-          75: "hsl(220, 12%, 95%)",
-          100: "hsl(220, 12%, 90%)",
-          200: "hsl(220, 12%, 80%)",
-          300: "hsl(220, 12%, 70%)",
-          400: "hsl(220, 12%, 60%)",
-          500: "hsl(220, 12%, 50%)",
-          600: "hsl(220, 12%, 40%)",
-          700: "hsl(220, 12%, 30%)",
-          800: "hsl(220, 12%, 20%)",
-          900: "hsl(220, 12%, 8%)",
+          50: "hsl(220, 20%, 93%)",
+          75: "hsl(220, 20%, 95%)",
+          100: "hsl(220, 20%, 90%)",
+          200: "hsl(220, 20%, 80%)",
+          300: "hsl(220, 20%, 70%)",
+          400: "hsl(220, 20%, 60%)",
+          500: "hsl(220, 20%, 50%)",
+          600: "hsl(220, 20%, 40%)",
+          700: "hsl(220, 20%, 30%)",
+          800: "hsl(220, 20%, 20%)",
+          900: "hsl(220, 20%, 8%)",
         },
         background: "#fff",
         hero: {
@@ -106,35 +106,42 @@ module.exports = {
       zIndex: {
         "-10": "-10",
       },
-      typography(theme) {
-        return {
-          dark: {
-            css: {
+      typography: (theme) => ({
+        DEFAULT: {
+          css: {
+            h1: { color: theme("colors.primary") },
+            h2: { color: theme("colors.primary") },
+            h3: { color: theme("colors.primary") },
+            h4: { color: theme("colors.primary") },
+            p: { fontWeight: 500 },
+          },
+        },
+        dark: {
+          css: {
+            color: theme("colors.gray.100"),
+            '[class~="lead"]': { color: theme("colors.gray.400") },
+            a: { color: theme("colors.gray.100") },
+            strong: { color: theme("colors.gray.50"), fontWeight: 800 },
+            "ul > li::before": { backgroundColor: theme("colors.gray.700") },
+            hr: { borderColor: theme("colors.gray.800") },
+            blockquote: {
+              color: theme("colors.secondary"),
+              borderLeftColor: theme("colors.gray.800"),
+            },
+            h1: { color: theme("colors.primary") },
+            h2: { color: theme("colors.primary") },
+            h3: { color: theme("colors.primary") },
+            h4: { color: theme("colors.primary") },
+            p: { fontWeight: 500 },
+            code: { color: theme("colors.gray.100") },
+            "a code": { color: theme("colors.gray.100") },
+            pre: {
               color: theme("colors.gray.100"),
-              '[class~="lead"]': { color: theme("colors.gray.400") },
-              a: { color: theme("colors.gray.100") },
-              strong: { color: theme("colors.gray.50"), fontWeight: 800 },
-              "ul > li::before": { backgroundColor: theme("colors.gray.700") },
-              hr: { borderColor: theme("colors.gray.800") },
-              blockquote: {
-                color: theme("colors.secondary"),
-                borderLeftColor: theme("colors.gray.800"),
-              },
-              h1: { color: theme("colors.primary") },
-              h2: { color: theme("colors.primary") },
-              h3: { color: theme("colors.primary") },
-              h4: { color: theme("colors.primary") },
-              p: { fontWeight: 500 },
-              code: { color: theme("colors.gray.100") },
-              "a code": { color: theme("colors.gray.100") },
-              pre: {
-                color: theme("colors.gray.100"),
-                backgroundColor: "hsl(220, 25%, 25%)",
-              },
+              backgroundColor: "hsl(220, 25%, 25%)",
             },
           },
-        };
-      },
+        },
+      }),
     },
   },
   variants: {
