@@ -12,6 +12,11 @@
   h2 {
     @apply text-2xl font-bold text-primary;
   }
+  h1,
+  h2,
+  h3 {
+    scroll-margin-top: 200px;
+  }
 }
 
 @variants focus, hover {
