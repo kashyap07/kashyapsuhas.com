@@ -95,24 +95,30 @@ const Slug = ({ className = "", ...props }) => {
               </div>
               <hr className="mt-5 mb-8" />
 
-              <div data-element="post-body" className="md:flex relative">
-                <div data-element="post-prose" className="lg:max-w-prose">
+              <div
+                data-element="post-body"
+                className="md:flex justify-between relative"
+              >
+                <div
+                  data-element="post-prose"
+                  className="lg:max-w-prose lg:w-full"
+                >
                   <InnerHTML
                     html={post.html}
                     className="prose md:prose-lg dark:prose-dark max-w-none"
                   />
                 </div>
-                <div
+                <aside
                   data-element="post-table-of-contents"
-                  className="hidden lg:flex flex-col h-80 w-auto ml-10 sticky top-0 "
+                  className="hidden lg:flex flex-col h-80 w-auto mx-10 sticky top-1/4"
                 >
                   <h2 className="text-secondary">Table of contents</h2>
-                  <div
+                  <nav
                     data-element="table-of-contents"
                     className="table-of-contents"
                     dangerouslySetInnerHTML={{ __html: post.toc }}
-                  ></div>
-                </div>
+                  ></nav>
+                </aside>
               </div>
             </>
           )}

@@ -32,7 +32,7 @@ html {
 }
 
 #__next {
-  @apply flex flex-col min-h-screen h-full overflow-x-hidden;
+  @apply flex flex-col min-h-screen h-full;
 }
 
 .table-of-contents {

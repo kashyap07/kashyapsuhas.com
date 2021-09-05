@@ -114,6 +114,7 @@ module.exports = {
             h3: { color: theme("colors.primary") },
             h4: { color: theme("colors.primary") },
             p: { fontWeight: 500 },
+            iframe: { width: "100%" },
           },
         },
         dark: {

@@ -15,7 +15,7 @@ const MyApp = ({ Component, pageProps }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <Component {...pageProps} className="flex-body overflow-hidden py-16" />
+      <Component {...pageProps} className="flex-body py-16" />
       <Footer className="flex-shrink-0" />
     </>
   );
