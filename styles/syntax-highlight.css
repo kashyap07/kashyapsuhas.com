@@ -1,0 +1,7 @@
+pre {
+  @apply !pt-4;
+}
+
+code span {
+  @apply text-lg font-semibold;
+}

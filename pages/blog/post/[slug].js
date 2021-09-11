@@ -3,26 +3,21 @@ import Link from "next/link";
 import fs from "fs";
 import matter from "gray-matter";
 import marked from "marked";
-import InnerHTML from "dangerously-set-html-content";
 import SideTitle from "../../../components/SideTitle";
 import MaxWidthWrapper from "../../../components/MaxWidthWrapper";
 import { HiChevronRight } from "react-icons/hi";
 import toc from "markdown-toc";
 import { serialize } from "next-mdx-remote/serialize";
 import { MDXRemote } from "next-mdx-remote";
-import TestComponent from "../../../components/TestComponent";
 import { MDXProvider } from "@mdx-js/react";
-import { code, h1, h2 } from "../../../components/OverrRideDefaultHTML";
+import { pre, h1, h2, h3, h4 } from "../../../components/OverrRideDefaultHTML";
 
 const getPost = async (slug) => {
   // FIXME: hardcoded to mdx
   const postContent = fs.readFileSync("Blog/" + slug + ".mdx");
   const frontMatter = JSON.parse(JSON.stringify(matter(postContent)));
-
   const { creation_date, ...frontMatterWithoutDate } = frontMatter.data;
-
   const tocList = toc(frontMatter.content);
-
   const mdxSource = await serialize(frontMatter.content);
 
   let post = {
@@ -32,7 +27,6 @@ const getPost = async (slug) => {
       month: "short",
       day: "numeric",
     }),
-    html: mdxSource,
     toc: marked(tocList.content),
     mdxSource: mdxSource,
   };
@@ -41,10 +35,11 @@ const getPost = async (slug) => {
 };
 
 const components = {
-  TestComponent,
-  code: code,
+  pre: pre,
   h1: h1,
   h2: h2,
+  h3: h3,
+  h4: h4,
 };
 
 export const getStaticProps = async ({ params }) => {
@@ -102,7 +97,6 @@ const Slug = ({ className = "", ...props }) => {
               <span>Loading post, please wait...</span>
             ) : (
               <>
-                {console.log(post.html.compiledSource)}
                 <Breadcrumb category={post.category} />
                 <div className="flex flex-col gap-2 justify-between items-baseline">
                   <h1 className="text-5xl font-bold">{post.title}</h1>

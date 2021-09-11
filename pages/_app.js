@@ -5,6 +5,7 @@ import Footer from "../components/Footer";
 import "../styles/tailwind.css";
 import "../styles/index.css";
 import "../styles/CSSElements.css";
+import "../styles/syntax-highlight.css";
 
 const MyApp = ({ Component, pageProps }) => {
   return (

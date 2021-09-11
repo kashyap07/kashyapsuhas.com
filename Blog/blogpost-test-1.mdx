@@ -21,10 +21,6 @@ I’m the best thing that ever happened to placeholder text. Lorem Ipsum's fathe
 You have so many different things placeholder text has to be able to do, and I don't believe Lorem Ipsum has the stamina. You have so many different things placeholder text has to be able to do, and I don't believe Lorem Ipsum has the stamina. I’m the best thing that ever happened to placeholder text.
 We are going to make placeholder text great again. Greater than ever before. You know, it really doesn’t matter what you write as long as you’ve got a young, and beautiful, piece of text. I'm speaking with myself, number one, because I have a very good brain and I've said a lot of things. Despite the constant negative ipsum covfefe
 
-## MDX test
-
-<TestComponent />
-
 ## Image test
 
 ![](/blog/2021/cp2077.png)
@@ -58,20 +54,25 @@ We are going to make placeholder text great again. Greater than ever before. You
 
 ## Code test
 
-    const Home = () => {
-      return (
-        <main className="mb-auto">
-          <div className="flex flex-col gap-4 sm:mt-20 font-bold text-5xl">
-            <span>Hello 👋. I&apos;m Suhas.</span>
-            <span>This is my slice on the Interwebs.</span>
-            <span>Woldein for full site. Coming Soon™.</span>
-            {/* <div
-              dangerouslySetInnerHTML={{ __html: asd }}
-              className="prose max-w-none"
-            /> */}
-          </div>
-        </main>
-      );
-    };
+```javascript testFile.js snippet
+const code = (props) => {
+  // comment 123
+  // wololo
+  // help me find a good syntax highlighting theme pls
+  // needs to have primary and secondary colors
 
-    export default Home;
+  const { className, metastring, children } = props.children?.props;
+  const language = className.split("-").slice(-1)[0];
+  return (
+    <SyntaxHighlighter
+      language={language}
+      style={atomOneDarkReasonable}
+      showLineNumbers
+    >
+      {children}
+    </SyntaxHighlighter>
+  );
+};
+
+export default code;
+```
