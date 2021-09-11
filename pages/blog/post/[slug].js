@@ -9,11 +9,13 @@ import MaxWidthWrapper from "../../../components/MaxWidthWrapper";
 import { HiChevronRight } from "react-icons/hi";
 import toc from "markdown-toc";
 import { serialize } from "next-mdx-remote/serialize";
-import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
+import { MDXRemote } from "next-mdx-remote";
 import TestComponent from "../../../components/TestComponent";
+import { MDXProvider } from "@mdx-js/react";
+import { code, h1, h2 } from "../../../components/OverrRideDefaultHTML";
 
 const getPost = async (slug) => {
-  // FIXME: hardcoded to md
+  // FIXME: hardcoded to mdx
   const postContent = fs.readFileSync("Blog/" + slug + ".mdx");
   const frontMatter = JSON.parse(JSON.stringify(matter(postContent)));
 
@@ -21,9 +23,7 @@ const getPost = async (slug) => {
 
   const tocList = toc(frontMatter.content);
 
-  const mdxSource = await serialize(frontMatter.content, {
-    scope: frontMatter.data,
-  });
+  const mdxSource = await serialize(frontMatter.content);
 
   let post = {
     ...frontMatterWithoutDate,
@@ -32,7 +32,7 @@ const getPost = async (slug) => {
       month: "short",
       day: "numeric",
     }),
-    html: marked(frontMatter.content),
+    html: mdxSource,
     toc: marked(tocList.content),
     mdxSource: mdxSource,
   };
@@ -42,6 +42,9 @@ const getPost = async (slug) => {
 
 const components = {
   TestComponent,
+  code: code,
+  h1: h1,
+  h2: h2,
 };
 
 export const getStaticProps = async ({ params }) => {
@@ -89,57 +92,60 @@ const Slug = ({ className = "", ...props }) => {
   const router = useRouter();
 
   return (
-    <main className={`${className} relative md:mt-6`}>
-      <SideTitle>/post</SideTitle>
+    <MDXProvider components={components}>
+      <main className={`${className} relative md:mt-6`}>
+        <SideTitle>/post</SideTitle>
 
-      <MaxWidthWrapper withBg>
-        <div className="text-xl md:px-7 pt-5">
-          {router.isFallback ? (
-            <span>Loading post, please wait...</span>
-          ) : (
-            <>
-              <Breadcrumb category={post.category} />
-              <div className="flex flex-col gap-2 justify-between items-baseline">
-                <h1 className="text-5xl font-bold">{post.title}</h1>
-                <span className="text-base text-gray-700 dark:text-gray-200">
-                  {post.date}
-                </span>
-              </div>
-              <hr className="mt-5 mb-8" />
-
-              <div
-                data-element="post-body"
-                className="md:flex justify-between relative"
-              >
-                <div
-                  data-element="post-prose"
-                  className="lg:max-w-prose lg:w-full"
-                >
-                  {/* <InnerHTML
-                    html={post.html}
-                    className="prose md:prose-lg dark:prose-dark max-w-none"
-                  // /> */}
-                  <div className="prose md:prose-lg dark:prose-dark max-w-none">
-                    <MDXRemote {...post.mdxSource} components={components} />
-                  </div>
+        <MaxWidthWrapper withBg>
+          <div className="text-xl md:px-7 pt-5">
+            {router.isFallback ? (
+              <span>Loading post, please wait...</span>
+            ) : (
+              <>
+                {console.log(post.html.compiledSource)}
+                <Breadcrumb category={post.category} />
+                <div className="flex flex-col gap-2 justify-between items-baseline">
+                  <h1 className="text-5xl font-bold">{post.title}</h1>
+                  <span className="text-base text-gray-700 dark:text-gray-200">
+                    {post.date}
+                  </span>
                 </div>
-                <aside
-                  data-element="post-table-of-contents"
-                  className="hidden lg:flex flex-col h-80 w-auto mx-10 sticky top-1/4"
+                <hr className="mt-5 mb-8" />
+
+                <div
+                  data-element="post-body"
+                  className="md:flex justify-between relative"
                 >
-                  <h2 className="text-secondary">Table of contents</h2>
-                  <nav
-                    data-element="table-of-contents"
-                    className="table-of-contents"
-                    dangerouslySetInnerHTML={{ __html: post.toc }}
-                  ></nav>
-                </aside>
-              </div>
-            </>
-          )}
-        </div>
-      </MaxWidthWrapper>
-    </main>
+                  <div
+                    data-element="post-prose"
+                    className="lg:max-w-prose lg:w-full"
+                  >
+                    {/* <InnerHTML
+                    html={post.html.compiledSource}
+                    className="prose md:prose-lg dark:prose-dark max-w-none"
+                  /> */}
+                    <div className="prose md:prose-lg dark:prose-dark max-w-none">
+                      <MDXRemote {...post.mdxSource} components={components} />
+                    </div>
+                  </div>
+                  <aside
+                    data-element="post-table-of-contents"
+                    className="hidden lg:flex flex-col h-80 w-auto mx-10 sticky top-1/4"
+                  >
+                    <h2 className="text-secondary">Table of contents</h2>
+                    <nav
+                      data-element="table-of-contents"
+                      className="table-of-contents"
+                      dangerouslySetInnerHTML={{ __html: post.toc }}
+                    ></nav>
+                  </aside>
+                </div>
+              </>
+            )}
+          </div>
+        </MaxWidthWrapper>
+      </main>
+    </MDXProvider>
   );
 };
 

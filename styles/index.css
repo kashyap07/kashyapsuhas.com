@@ -22,9 +22,9 @@ html {
   ::-webkit-scrollbar-track {
     @apply rounded bg-transparent;
   } */
-  ::-webkit-scrollbar {
+  /* ::-webkit-scrollbar {
     @apply hidden;
-  }
+  } */
 }
 
 ::selection {

@@ -121,7 +121,6 @@ module.exports = {
           css: {
             color: theme("colors.gray.100"),
             '[class~="lead"]': { color: theme("colors.gray.400") },
-            a: { color: theme("colors.gray.100") },
             strong: { color: theme("colors.gray.50"), fontWeight: 800 },
             "ul > li::before": { backgroundColor: theme("colors.gray.700") },
             hr: { borderColor: theme("colors.gray.800") },
@@ -134,12 +133,6 @@ module.exports = {
             h3: { color: theme("colors.primary") },
             h4: { color: theme("colors.primary") },
             p: { fontWeight: 500 },
-            code: { color: theme("colors.gray.100") },
-            "a code": { color: theme("colors.gray.100") },
-            pre: {
-              color: theme("colors.gray.100"),
-              backgroundColor: "hsl(220, 25%, 25%)",
-            },
           },
         },
       }),
