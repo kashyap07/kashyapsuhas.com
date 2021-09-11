@@ -58,7 +58,3 @@ fields:
   default: Suhas Kashyap
   config:
     required: true
-pages:
-- Blog/blogpost-test-2.md
-- Blog/how-i-set-up-this-blog-a-guide-for-dummies-copy.md
-- Blog/todos.md
