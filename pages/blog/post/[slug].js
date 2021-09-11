@@ -8,15 +8,22 @@ import SideTitle from "../../../components/SideTitle";
 import MaxWidthWrapper from "../../../components/MaxWidthWrapper";
 import { HiChevronRight } from "react-icons/hi";
 import toc from "markdown-toc";
+import { serialize } from "next-mdx-remote/serialize";
+import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
+import TestComponent from "../../../components/TestComponent";
 
 const getPost = async (slug) => {
   // FIXME: hardcoded to md
-  const postContent = fs.readFileSync("Blog/" + slug + ".md");
+  const postContent = fs.readFileSync("Blog/" + slug + ".mdx");
   const frontMatter = JSON.parse(JSON.stringify(matter(postContent)));
 
   const { creation_date, ...frontMatterWithoutDate } = frontMatter.data;
 
   const tocList = toc(frontMatter.content);
+
+  const mdxSource = await serialize(frontMatter.content, {
+    scope: frontMatter.data,
+  });
 
   let post = {
     ...frontMatterWithoutDate,
@@ -27,9 +34,14 @@ const getPost = async (slug) => {
     }),
     html: marked(frontMatter.content),
     toc: marked(tocList.content),
+    mdxSource: mdxSource,
   };
 
   return post;
+};
+
+const components = {
+  TestComponent,
 };
 
 export const getStaticProps = async ({ params }) => {
@@ -103,10 +115,13 @@ const Slug = ({ className = "", ...props }) => {
                   data-element="post-prose"
                   className="lg:max-w-prose lg:w-full"
                 >
-                  <InnerHTML
+                  {/* <InnerHTML
                     html={post.html}
                     className="prose md:prose-lg dark:prose-dark max-w-none"
-                  />
+                  // /> */}
+                  <div className="prose md:prose-lg dark:prose-dark max-w-none">
+                    <MDXRemote {...post.mdxSource} components={components} />
+                  </div>
                 </div>
                 <aside
                   data-element="post-table-of-contents"
