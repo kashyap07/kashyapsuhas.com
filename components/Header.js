@@ -71,7 +71,7 @@ const Header = () => {
             <Link href="/" passHref>
               <a
                 data-element="logo"
-                className="text-3xl font-fancy font-bold bg-gradient-to-r from-special-logo-start via-pink-400 to-special-logo-end bg-clip-text text-transparent  relative group hover:bg-none select-none mr-5"
+                className="text-3xl font-fancy font-bold bg-special-logo-start dark:bg-gradient-to-r dark:from-special-logo-start dark:via-pink-400 dark:to-special-logo-end bg-clip-text text-transparent  relative group hover:bg-none select-none mr-5"
                 aria-label="Home Page"
               >
                 <span className="group-hover:text-red-50 transition-colors duration-500 select-none delay-100">
