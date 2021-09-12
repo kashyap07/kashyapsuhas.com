@@ -25,6 +25,15 @@ const pre = (props) => {
   );
 };
 
+const inlineCode = (props) => {
+  const { children } = props;
+  return (
+    <pre className="!w-fit-content inline !py-1 !px-2 rounded font-medium font-sans !text-gray-900 !bg-gray-100 dark:!text-white dark:!bg-gray-800">
+      {children}
+    </pre>
+  );
+};
+
 const AnchorIcon = ({ id }) => {
   return (
     <a
@@ -77,4 +86,4 @@ const h4 = (props) => {
   );
 };
 
-export { pre, h1, h2, h3, h4 };
+export { pre, h1, h2, h3, h4, inlineCode };

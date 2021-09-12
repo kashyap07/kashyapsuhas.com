@@ -115,14 +115,12 @@ module.exports = {
             h4: { color: theme("colors.primary") },
             p: { fontWeight: 500 },
             iframe: { width: "100%" },
+            a: { color: theme("colors.secondary"), fontWeight: 700 },
           },
         },
         dark: {
           css: {
             color: theme("colors.gray.100"),
-            '[class~="lead"]': { color: theme("colors.gray.400") },
-            strong: { color: theme("colors.gray.50"), fontWeight: 800 },
-            "ul > li::before": { backgroundColor: theme("colors.gray.700") },
             hr: { borderColor: theme("colors.gray.800") },
             blockquote: {
               color: theme("colors.gray.300"),

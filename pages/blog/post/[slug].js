@@ -10,7 +10,14 @@ import toc from "markdown-toc";
 import { serialize } from "next-mdx-remote/serialize";
 import { MDXRemote } from "next-mdx-remote";
 import { MDXProvider } from "@mdx-js/react";
-import { pre, h1, h2, h3, h4 } from "../../../components/OverrRideDefaultHTML";
+import {
+  pre,
+  h1,
+  h2,
+  h3,
+  h4,
+  inlineCode,
+} from "../../../components/OverrRideDefaultHTML";
 
 const getPost = async (slug) => {
   // FIXME: hardcoded to mdx
@@ -40,6 +47,7 @@ const components = {
   h2: h2,
   h3: h3,
   h4: h4,
+  inlineCode: inlineCode,
 };
 
 export const getStaticProps = async ({ params }) => {
