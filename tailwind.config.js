@@ -68,9 +68,9 @@ module.exports = {
       },
       colors: {
         // triadic colors from https://www.canva.com/colors/color-wheel/
-        primary: "#2ba5d4",
-        secondary: "#d42ba5",
-        tertiary: "#a5d42b",
+        primary: "var(--color-primary)",
+        secondary: "var(--color-secondary)",
+        tertiary: "var(--color-tertiary)",
         gray: {
           50: "hsl(220, 20%, 93%)",
           75: "hsl(220, 20%, 95%)",
@@ -91,8 +91,8 @@ module.exports = {
         special: {
           teal: "#00dfd8",
           logo: {
-            start: "theme('colors.secondary')",
-            end: "theme('colors.primary')",
+            start: "#2ba5d4",
+            end: "#FD5B61",
           },
         },
       },
@@ -109,13 +109,13 @@ module.exports = {
       typography: (theme) => ({
         DEFAULT: {
           css: {
-            h1: { color: theme("colors.primary") },
-            h2: { color: theme("colors.primary") },
-            h3: { color: theme("colors.primary") },
-            h4: { color: theme("colors.primary") },
+            h1: { color: theme("colors.tertiary") },
+            h2: { color: theme("colors.tertiary") },
+            h3: { color: theme("colors.tertiary") },
+            h4: { color: theme("colors.tertiary") },
             p: { fontWeight: 500 },
             iframe: { width: "100%" },
-            a: { color: theme("colors.secondary"), fontWeight: 700 },
+            a: { color: theme("colors.primary"), fontWeight: 700 },
           },
         },
         dark: {

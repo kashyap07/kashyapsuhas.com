@@ -108,7 +108,7 @@ const Slug = ({ className = "", ...props }) => {
                 <Breadcrumb category={post.category} />
                 <div className="flex flex-col gap-2 justify-between items-baseline">
                   <h1 className="text-5xl font-bold">{post.title}</h1>
-                  <span className="text-base text-gray-700 dark:text-gray-200">
+                  <span className="text-base font-medium text-gray-700 dark:text-gray-200">
                     {post.date}
                   </span>
                 </div>
@@ -134,7 +134,7 @@ const Slug = ({ className = "", ...props }) => {
                     data-element="post-table-of-contents"
                     className="hidden lg:flex flex-col h-80 w-auto mx-10 sticky top-1/4"
                   >
-                    <h2 className="text-secondary">Table of contents</h2>
+                    <h2 className="text-tertiary">Table of contents</h2>
                     <nav
                       data-element="table-of-contents"
                       className="table-of-contents"

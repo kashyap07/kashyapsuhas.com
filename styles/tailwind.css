@@ -3,15 +3,31 @@
 @tailwind utilities;
 
 @layer base {
+  :root,
+  .light {
+    --color-primary: #096493;
+    --color-secondary: #930964;
+    --color-tertiary: #096493;
+  }
+
+  .dark {
+    --color-primary: #2ba5d4;
+    --color-secondary: #d45a2b;
+    --color-tertiary: #fd5b61;
+  }
+
   a {
     @apply cursor-pointer hover:text-primary transition-colors ease-linear;
   }
+
   h1 {
     @apply text-5xl font-bold;
   }
+
   h2 {
     @apply text-2xl font-bold text-primary;
   }
+
   h1,
   h2,
   h3 {

@@ -1,6 +1,7 @@
 import { BsLink45Deg } from "react-icons/bs";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { atomOneDarkReasonable } from "react-syntax-highlighter/dist/cjs/styles/hljs";
+import { slugify } from "../utils/stringUtils";
 
 // TODO: https://github.com/react-syntax-highlighter/react-syntax-highlighter#light-build
 
@@ -57,7 +58,8 @@ const h1 = (props) => {
 };
 
 const h2 = (props) => {
-  const id = props?.children.split(" ").join("-").toLowerCase();
+  const id = slugify(props.children);
+
   return (
     <h2 id={id} className="relative group -ml-12 pl-12">
       <AnchorIcon id={id} />
@@ -67,7 +69,8 @@ const h2 = (props) => {
 };
 
 const h3 = (props) => {
-  const id = props?.children.split(" ").join("-").toLowerCase();
+  const id = slugify(props.children);
+
   return (
     <h3 id={id} className="relative group -ml-12 pl-12">
       <AnchorIcon id={id} />
@@ -77,7 +80,8 @@ const h3 = (props) => {
 };
 
 const h4 = (props) => {
-  const id = props?.children.split(" ").join("-").toLowerCase();
+  const id = slugify(props.children);
+
   return (
     <h4 id={id} className="relative group -ml-12 pl-12">
       <AnchorIcon id={id} />
