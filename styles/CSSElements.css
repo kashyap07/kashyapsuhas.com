@@ -30,6 +30,10 @@
   );
 }
 
+.red-halo {
+  background-image: linear-gradient(to bottom, #e91e63, #ff4d89);
+}
+
 .teal-halo {
   background-image: linear-gradient(
     to bottom,

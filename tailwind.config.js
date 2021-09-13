@@ -67,7 +67,6 @@ module.exports = {
         fancy: ["Gochi Hand", ...defaultTheme.fontFamily.sans],
       },
       colors: {
-        // triadic colors from https://www.canva.com/colors/color-wheel/
         primary: "var(--color-primary)",
         secondary: "var(--color-secondary)",
         tertiary: "var(--color-tertiary)",
@@ -91,8 +90,8 @@ module.exports = {
         special: {
           teal: "#00dfd8",
           logo: {
-            start: "#2ba5d4",
-            end: "#FD5B61",
+            start: "theme('colors.secondary')",
+            end: "theme('colors.primary')",
           },
         },
       },
@@ -109,13 +108,25 @@ module.exports = {
       typography: (theme) => ({
         DEFAULT: {
           css: {
-            h1: { color: theme("colors.tertiary") },
-            h2: { color: theme("colors.tertiary") },
-            h3: { color: theme("colors.tertiary") },
-            h4: { color: theme("colors.tertiary") },
+            h1: { color: theme("colors.primary") },
+            h2: { color: theme("colors.primary") },
+            h3: { color: theme("colors.primary") },
+            h4: { color: theme("colors.primary") },
             p: { fontWeight: 500 },
             iframe: { width: "100%" },
-            a: { color: theme("colors.primary"), fontWeight: 700 },
+            a: { color: theme("colors.tertiary"), fontWeight: 700 },
+            strong: {
+              color: theme("colors.secondary"),
+              fontWeight: 700,
+              marginRight: "2px",
+            },
+            em: {
+              color: theme("colors.secondary"),
+              fontWeight: 700,
+              fontStyle: "italic",
+              marginRight: "2px",
+              marginLeft: "2px",
+            },
           },
         },
         dark: {

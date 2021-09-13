@@ -5,15 +5,17 @@
 @layer base {
   :root,
   .light {
-    --color-primary: #096493;
-    --color-secondary: #930964;
-    --color-tertiary: #096493;
+    --color-primary: #1955ae;
+    --color-secondary: #e25e71;
+    --color-tertiary: #68a29e;
   }
 
   .dark {
-    --color-primary: #2ba5d4;
-    --color-secondary: #d45a2b;
-    --color-tertiary: #fd5b61;
+    /* https://cdn.dribbble.com/users/2884462/screenshots/15777502/media/f86909f430b8ef603e47aa7e8fe6ea3f.png */
+    /* https://mycolor.space/?hex=%233F9FFE&sub=1 */
+    --color-primary: #3f9ffe;
+    --color-secondary: #fe4787;
+    --color-tertiary: #878eff;
   }
 
   a {
@@ -21,18 +23,22 @@
   }
 
   h1 {
-    @apply text-5xl font-bold;
+    @apply text-5xl font-bold break-words;
   }
-
   h2 {
     @apply text-2xl font-bold text-primary;
   }
-
   h1,
   h2,
   h3 {
     scroll-margin-top: 200px;
   }
+}
+
+/* default doesn't work well */
+.break-words {
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 @variants focus, hover {

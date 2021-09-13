@@ -106,13 +106,14 @@ const Slug = ({ className = "", ...props }) => {
             ) : (
               <>
                 <Breadcrumb category={post.category} />
-                <div className="flex flex-col gap-2 justify-between items-baseline">
-                  <h1 className="text-5xl font-bold">{post.title}</h1>
+                <div className="flex flex-col gap-2 justify-between items-baseline border-b-4 dark:border-gray-700 pb-5 mb-10">
+                  <h1 className="text-5xl font-bold break-words">
+                    {post.title}
+                  </h1>
                   <span className="text-base font-medium text-gray-700 dark:text-gray-200">
                     {post.date}
                   </span>
                 </div>
-                <hr className="mt-5 mb-8" />
 
                 <div
                   data-element="post-body"
@@ -126,7 +127,7 @@ const Slug = ({ className = "", ...props }) => {
                     html={post.html.compiledSource}
                     className="prose md:prose-lg dark:prose-dark max-w-none"
                   /> */}
-                    <div className="prose md:prose-lg dark:prose-dark max-w-none">
+                    <div className="prose prose-xl dark:prose-dark max-w-none">
                       <MDXRemote {...post.mdxSource} components={components} />
                     </div>
                   </div>
@@ -134,7 +135,7 @@ const Slug = ({ className = "", ...props }) => {
                     data-element="post-table-of-contents"
                     className="hidden lg:flex flex-col h-80 w-auto mx-10 sticky top-1/4"
                   >
-                    <h2 className="text-tertiary">Table of contents</h2>
+                    <h2 className="text-primary">Table of contents</h2>
                     <nav
                       data-element="table-of-contents"
                       className="table-of-contents"

@@ -27,8 +27,11 @@ const HaloElem = ({ className }) => (
 const PinkHalo = ({ className }) => (
   <HaloElem data-component="pink-halo" className={`pink-halo ${className}`} />
 );
+const RedHalo = ({ className }) => (
+  <HaloElem data-component="red-halo" className={`red-halo ${className}`} />
+);
 const TealHalo = ({ className }) => (
   <HaloElem data-component="teal-halo" className={`teal-halo ${className}`} />
 );
 
-export { ScrollDownIndicator, PinkHalo, TealHalo };
+export { ScrollDownIndicator, PinkHalo, TealHalo, RedHalo };

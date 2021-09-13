@@ -71,22 +71,22 @@ const Header = () => {
             <Link href="/" passHref>
               <a
                 data-element="logo"
-                className="text-3xl font-fancy font-bold bg-special-logo-start dark:bg-gradient-to-r dark:from-special-logo-start dark:via-pink-400 dark:to-special-logo-end bg-clip-text text-transparent  relative group hover:bg-none select-none mr-5"
+                className="text-3xl pr-1 font-fancy font-bold bg-primary dark:bg-gradient-to-r dark:from-special-logo-start dark:to-special-logo-end bg-clip-text text-transparent relative group hover:bg-none select-none tracking-tight"
                 aria-label="Home Page"
               >
                 <span className="group-hover:text-red-50 transition-colors duration-500 select-none delay-100">
                   Suhas Kashyap
                 </span>
-                <PinkHalo className="top-1/4 md:top-2/3 left-1/3 -z-10" />
+                <PinkHalo className="top-0 left-1/3 -z-10" />
                 <PinkHalo className="top-1/4 left-2/3 -z-10" />
               </a>
             </Link>
 
             {/* desktop list */}
-            <div className="hidden md:flex flex-row items-center">
+            <div className="hidden md:flex flex-row items-center ml-3">
               {headerNavLinks.map((link) => (
                 <Link key={link.title} href={link.href} passHref>
-                  <a className="px-2 py-0.5 text-gray-600 dark:text-gray-50 h-fit-content font-medium rounded-full hover:nav-button-hover">
+                  <a className="px-1.5 py-0.5 text-gray-600 dark:text-gray-50 h-fit-content font-semibold rounded-full hover:nav-button-hover">
                     {link.title}
                   </a>
                 </Link>
