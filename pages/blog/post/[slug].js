@@ -127,7 +127,7 @@ const Slug = ({ className = "", ...props }) => {
                     html={post.html.compiledSource}
                     className="prose md:prose-lg dark:prose-dark max-w-none"
                   /> */}
-                    <div className="prose prose-xl dark:prose-dark max-w-none">
+                    <div className="prose prose-lg dark:prose-dark max-w-none">
                       <MDXRemote {...post.mdxSource} components={components} />
                     </div>
                   </div>
