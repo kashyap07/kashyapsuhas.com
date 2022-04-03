@@ -11,7 +11,7 @@ const Work = ({ className }) => {
     <main className={`${className} relative md:mt-6`}>
       <SideTitle>/work</SideTitle>
 
-      <MaxWidthWrapper className="p-5 flex justify-center items-center">
+      <MaxWidthWrapper className="flex items-center justify-center p-5">
         <Link href="/Resume.pdf">
           <a target="_blank" className="overflow-scroll border border-gray-200">
             <Document file={pdfFile}>

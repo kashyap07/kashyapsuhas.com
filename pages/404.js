@@ -9,7 +9,7 @@ const NotFound = ({ className }) => {
 
       <MaxWidthWrapper>
         {/* idea from https://codepen.io/tsotsoblotso/pen/mVMvVv */}
-        <div className="mockup-code sm:w-1/2 rounded-lg my-14">
+        <div className="rounded-lg mockup-code sm:w-1/2 my-14">
           <pre data-prefix="1">
             <code>{`// 404 page not found.`}</code>
           </pre>

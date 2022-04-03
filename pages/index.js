@@ -9,7 +9,7 @@ import getProcessedIGImages from "../utils/getProcessedIGImages";
 
 export async function getStaticProps() {
   const frontMatters = await getFrontMatters();
-  const posts = await getProcessedIGImages(5);
+  // const posts = await getProcessedIGImages(5);
 
   return {
     props: {
@@ -29,11 +29,11 @@ const Home = ({ className = "", ...props }) => {
     <main className={`w-full ${className}`}>
       <div
         data-element="main-section"
-        className="flex flex-col mb-auto min-h-minusHeader justify-center items-center relative"
+        className="relative flex flex-col items-center justify-center mb-auto min-h-minusHeader"
       >
-        <MaxWidthWrapper className="flex justify-center relative mb-48">
-          <div className="flex z-20" data-element="home-card">
-            <div className="flex flex-col justify-center gap-6 font-bold text-3xl select-none">
+        <MaxWidthWrapper className="relative flex justify-center mb-48">
+          <div className="z-20 flex" data-element="home-card">
+            <div className="flex flex-col justify-center gap-6 text-3xl font-bold select-none">
               <span className="text-5xl md:text-6xl">
                 Hello there, I&apos;m Suhas <span className="wiggle">👋</span>
               </span>
@@ -42,7 +42,7 @@ const Home = ({ className = "", ...props }) => {
               </span>
             </div>
           </div>
-          <TealHalo className="scale-250 top-2/3 left-1/2 dark:opacity-70 z-10 delay-500 ease-linear " />
+          <TealHalo className="z-10 ease-linear delay-500 scale-250 top-2/3 left-1/2 dark:opacity-70 " />
         </MaxWidthWrapper>
 
         <ScrollDownIndicator />

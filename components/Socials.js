@@ -88,23 +88,20 @@ const socialsList = [
 
 const Socials = ({
   list = socialsList,
-  className = "text-2xl gap-3",
+  className = "gap-3 text-2xl",
   altIcons,
   withDescription,
 }) => {
   return (
     <div data-component="socials-wrapper" className={`flex ${className}`}>
       {list.map((social) => (
-        <>
+        <div key={social.title}>
           {withDescription ? (
-            <div
-              key={social.title}
-              className="flex items-start md:items-center px-2 md:px-4 py-3 md:py-5 w-full md:border-b"
-            >
+            <div className="flex items-start w-full px-2 py-3 md:items-center md:px-4 md:py-5 md:border-b">
               <Link href={social.url}>
                 <a
                   target="_blank"
-                  className="fill-current text-gray-700 dark:text-gray-50 social-icon"
+                  className="text-gray-700 fill-current dark:text-gray-50 social-icon"
                   style={{ "--highlight-color": social.color }}
                 >
                   {altIcons ? social.icon2 || social.icon : social.icon}
@@ -117,16 +114,15 @@ const Socials = ({
           ) : (
             <Link href={social.url}>
               <a
-                key={social.title}
                 target="_blank"
-                className="fill-current text-gray-700 dark:text-gray-50 social-icon"
+                className="text-gray-700 fill-current dark:text-gray-50 social-icon"
                 style={{ "--highlight-color": social.color }}
               >
                 {altIcons ? social.icon2 || social.icon : social.icon}
               </a>
             </Link>
           )}
-        </>
+        </div>
       ))}
     </div>
   );

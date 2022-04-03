@@ -1,5 +1,5 @@
 // reference: https://github.com/ishan-me/tailwind_darkmode/blob/main/src/components/themeContext.js
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState } from "react";
 
 // const getInitialTheme = () => {
 //   // if (typeof window !== 'undefined' && window.localStorage) {
@@ -19,7 +19,7 @@ import React, { useContext, useState } from 'react';
 //   localStorage.theme = theme
 // };
 
-const ThemeContext = React.createContext('darkela');
+const ThemeContext = React.createContext("darkela");
 
 const ThemeProvider = ({ initialTheme, children }) => {
   // const ThemeContext = useContext(null);
@@ -42,10 +42,8 @@ const ThemeProvider = ({ initialTheme, children }) => {
   // }, [theme]);
 
   return (
-    <ThemeContext.Provider value={'lightee'}>
-      {children}
-    </ThemeContext.Provider>
+    <ThemeContext.Provider value={"lightee"}>{children}</ThemeContext.Provider>
   );
 };
 
-export {ThemeContext, ThemeProvider}
+export { ThemeContext, ThemeProvider };

@@ -5,7 +5,7 @@ const ScrollDownIndicatorIcon = ({ className }) => (
   <span
     className={`flex h-20 w-full items-center justify-center absolute bottom-14 ${className}`}
   >
-    <CgChevronDoubleDown className="scroll-down-indicator text-4xl text-gray-700 dark:text-gray-400" />
+    <CgChevronDoubleDown className="text-4xl text-gray-700 scroll-down-indicator dark:text-gray-400" />
   </span>
 );
 
@@ -14,7 +14,7 @@ const ScrollDownIndicator = () => {
 
   if (isScrolled) {
     return (
-      <ScrollDownIndicatorIcon className="opacity-0 transition-opacity duration-500" />
+      <ScrollDownIndicatorIcon className="transition-opacity duration-500 opacity-0" />
     );
   } else return <ScrollDownIndicatorIcon className="opacity-100" />;
 };

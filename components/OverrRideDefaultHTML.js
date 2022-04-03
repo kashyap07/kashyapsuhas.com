@@ -11,7 +11,7 @@ const pre = (props) => {
   return (
     <div data-component="code-block" className="relative">
       {metastring && (
-        <span className="absolute text-white text-sm -top-5 -right-2 bg-secondary py-2 px-4 font-bold rounded">
+        <span className="absolute px-4 py-2 text-sm font-bold text-white rounded -top-5 -right-2 bg-secondary">
           {metastring}
         </span>
       )}
@@ -50,7 +50,7 @@ const AnchorIcon = ({ id }) => {
 const h1 = (props) => {
   const id = props?.children.split(" ").join("-").toLowerCase();
   return (
-    <h1 id={id} className="relative group -ml-12 pl-12">
+    <h1 id={id} className="relative pl-12 -ml-12 group">
       <AnchorIcon id={id} />
       {props.children}
     </h1>
@@ -61,7 +61,7 @@ const h2 = (props) => {
   const id = slugify(props.children);
 
   return (
-    <h2 id={id} className="relative group -ml-12 pl-12">
+    <h2 id={id} className="relative pl-12 -ml-12 group">
       <AnchorIcon id={id} />
       {props.children}
     </h2>
@@ -72,7 +72,7 @@ const h3 = (props) => {
   const id = slugify(props.children);
 
   return (
-    <h3 id={id} className="relative group -ml-12 pl-12">
+    <h3 id={id} className="relative pl-12 -ml-12 group">
       <AnchorIcon id={id} />
       {props.children}
     </h3>
@@ -83,7 +83,7 @@ const h4 = (props) => {
   const id = slugify(props.children);
 
   return (
-    <h4 id={id} className="relative group -ml-12 pl-12">
+    <h4 id={id} className="relative pl-12 -ml-12 group">
       <AnchorIcon id={id} />
       {props.children}
     </h4>

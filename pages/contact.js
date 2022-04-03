@@ -9,7 +9,7 @@ const contact = ({ className }) => {
 
       <MaxWidthWrapper className="pt-2">
         <div className="flex text-xl">
-          <Socials className="flex-col text-3xl gap-4" withDescription />
+          <Socials className="flex-col gap-4 text-3xl" withDescription />
         </div>
       </MaxWidthWrapper>
     </main>

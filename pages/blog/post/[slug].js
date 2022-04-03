@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import fs from "fs";
 import matter from "gray-matter";
-import marked from "marked";
+import { marked } from "marked";
 import SideTitle from "../../../components/SideTitle";
 import MaxWidthWrapper from "../../../components/MaxWidthWrapper";
 import { HiChevronRight } from "react-icons/hi";
@@ -67,7 +67,7 @@ export const getStaticPaths = () => {
 const Breadcrumb = ({ category }) => (
   <>
     {/* https://tailwindesign.com/components/breadcrumbhttps://tailwindesign.com/components/breadcrumb */}
-    <ul className="flex text-gray-500 dark:text-gray-300 text-sm mb-1">
+    <ul className="flex mb-1 text-sm text-gray-500 dark:text-gray-300">
       <li className="inline-flex items-center">
         <Link href="/">
           <a>Home</a>
@@ -100,13 +100,13 @@ const Slug = ({ className = "", ...props }) => {
         <SideTitle>/post</SideTitle>
 
         <MaxWidthWrapper withBg>
-          <div className="text-xl md:px-7 pt-5">
+          <div className="pt-5 text-xl md:px-7">
             {router.isFallback ? (
               <span>Loading post, please wait...</span>
             ) : (
               <>
                 <Breadcrumb category={post.category} />
-                <div className="flex flex-col gap-2 justify-between items-baseline border-b-4 dark:border-gray-700 pb-5 mb-10">
+                <div className="flex flex-col items-baseline justify-between gap-2 pb-5 mb-10 border-b-4 dark:border-gray-700">
                   <h1 className="text-5xl font-bold break-words">
                     {post.title}
                   </h1>
@@ -117,7 +117,7 @@ const Slug = ({ className = "", ...props }) => {
 
                 <div
                   data-element="post-body"
-                  className="md:flex justify-between relative"
+                  className="relative justify-between md:flex"
                 >
                   <div
                     data-element="post-prose"
@@ -133,7 +133,7 @@ const Slug = ({ className = "", ...props }) => {
                   </div>
                   <aside
                     data-element="post-table-of-contents"
-                    className="hidden lg:flex flex-col h-80 w-auto mx-10 sticky top-1/4"
+                    className="sticky flex-col hidden w-auto mx-10 lg:flex h-80 top-1/4"
                   >
                     <h2 className="text-primary">Table of contents</h2>
                     <nav

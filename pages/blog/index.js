@@ -34,12 +34,12 @@ const Blog = ({ className = "", ...props }) => {
                       .slice(0, -1)
                       .join(".")}`}
                   >
-                    <a className="group flex flex-col px-2 md:px-4 py-5 w-full font-medium justify-between border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-300 ease-in">
+                    <a className="flex flex-col justify-between w-full px-2 py-5 font-medium transition-colors duration-300 ease-in border-b group md:px-4 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">
                       <div className="flex items-center gap-4">
                         <span className="text-xl">{item.title}</span>
-                        <BsArrowRight className="hidden md:block transition-all duration-700 opacity-0 group-hover:opacity-100 translate-x-0 group-hover:translate-x-2 group-hover:text-gray-600" />
+                        <BsArrowRight className="hidden transition-all duration-700 translate-x-0 opacity-0 md:block group-hover:opacity-100 group-hover:translate-x-2 group-hover:text-gray-600" />
                       </div>
-                      <span className="text-gray-600 dark:text-gray-300 text-base">
+                      <span className="text-base text-gray-600 dark:text-gray-300">
                         {moment(item.creation_date).format("MMM Do YYYY")}
                       </span>
                     </a>

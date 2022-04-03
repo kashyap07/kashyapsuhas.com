@@ -31,13 +31,13 @@ const HamburgerMenu = ({ headerNavLinks, socialButtons, ThemeSwitcherBtn }) => {
       {/* Hamburger menu */}
       <div
         data-component="hamburger-menu"
-        className="flex flex-col justify-between md:hidden absolute top-16 left-0 bg-background dark:bg-gray-900 h-hamburger-menu w-full border-r-2 dark:border-gray-800 -translate-x-full peer-checked:translate-x-0 transition-all duration-200 ease-in-out z-50"
+        className="absolute left-0 z-50 flex flex-col justify-between w-full transition-all duration-200 ease-in-out -translate-x-full border-r-2 md:hidden top-16 bg-background dark:bg-gray-900 h-hamburger-menu dark:border-gray-800 peer-checked:translate-x-0"
       >
         <div className="flex flex-col first:border-t-4 dark:first:border-gray-800">
           {headerNavLinks.map((link) => (
             <Link key={link.title} href={link.href}>
               <a
-                className="px-6 py-4 w-full font-medium border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800"
+                className="w-full px-6 py-4 font-medium border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800"
                 onClick={onLinkPress}
               >
                 {link.title}
@@ -45,11 +45,11 @@ const HamburgerMenu = ({ headerNavLinks, socialButtons, ThemeSwitcherBtn }) => {
             </Link>
           ))}
         </div>
-        <div className="flex justify-between px-6 py-4 w-full mb-16">
+        <div className="flex justify-between w-full px-6 py-4 mb-16">
           {socialButtons && (
             <Socials
               list={socialButtons}
-              className="text-2xl gap-6 text-gray-600"
+              className="gap-6 text-2xl text-gray-600"
               altIcons
             />
           )}

@@ -66,15 +66,15 @@ const Header = () => {
       }`}
     >
       <MaxWidthWrapper>
-        <nav className="nav flex items-center justify-between py-4 z-50">
+        <nav className="z-50 flex items-center justify-between py-4 nav">
           <div className="flex">
             <Link href="/" passHref>
               <a
                 data-element="logo"
-                className="text-3xl pr-1 font-fancy font-bold bg-primary dark:bg-gradient-to-r dark:from-special-logo-start dark:to-special-logo-end bg-clip-text text-transparent relative group hover:bg-none select-none tracking-tight"
+                className="relative pr-1 text-3xl font-bold tracking-tight text-transparent select-none font-fancy bg-primary dark:bg-gradient-to-r dark:from-special-logo-start dark:to-special-logo-end bg-clip-text group hover:bg-none"
                 aria-label="Home Page"
               >
-                <span className="group-hover:text-red-50 transition-colors duration-500 select-none delay-100">
+                <span className="transition-colors duration-500 delay-100 select-none group-hover:text-red-50">
                   Suhas Kashyap
                 </span>
                 <PinkHalo className="top-0 left-1/3 -z-10" />
@@ -83,7 +83,7 @@ const Header = () => {
             </Link>
 
             {/* desktop list */}
-            <div className="hidden md:flex flex-row items-center ml-3">
+            <div className="flex-row items-center hidden ml-3 md:flex">
               {headerNavLinks.map((link) => (
                 <Link key={link.title} href={link.href} passHref>
                   <a className="px-1.5 py-0.5 text-gray-600 dark:text-gray-50 h-fit-content font-semibold rounded-full hover:nav-button-hover">
@@ -95,14 +95,14 @@ const Header = () => {
           </div>
 
           {/* desktop visible, mobile hidden */}
-          <div className="hidden md:flex items-center">
+          <div className="items-center hidden md:flex">
             <Socials
               list={[twitter, github, instagram]}
-              className="text-xl gap-3 text-gray-600 dark:text-white"
+              className="gap-3 text-xl text-gray-600 dark:text-white"
               altIcons
             />
             <span
-              className="h-6 w-0 border mx-3 border-gray-100 dark:border-gray-700"
+              className="w-0 h-6 mx-3 border border-gray-100 dark:border-gray-700"
               aria-hidden
             />
 
