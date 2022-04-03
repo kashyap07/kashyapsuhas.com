@@ -1,6 +1,5 @@
 const defaultTheme = require("tailwindcss/defaultTheme");
 const colors = require("tailwindcss/colors");
-const { trueGray, blueGray } = require("tailwindcss/colors");
 
 module.exports = {
   mode: "jit",
@@ -136,6 +135,9 @@ module.exports = {
             blockquote: {
               color: theme("colors.gray.300"),
               borderLeftColor: theme("colors.gray.800"),
+            },
+            code: {
+              color: theme("colors.secondary"),
             },
           },
         },
