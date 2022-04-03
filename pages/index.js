@@ -14,7 +14,7 @@ export async function getStaticProps() {
   return {
     props: {
       frontMatterData: frontMatters,
-      igPosts: posts,
+      // igPosts: posts,
     },
     revalidate: 1800, // check once every 30 seconds
   };
