@@ -2,48 +2,74 @@
 category: Tech
 creation_date: 2021-09-12T04:50:00+05:30
 tags:
-  - tech
-  - guide
+- tech
+- guide
 draft: true
 author: Suhas Kashyap
-title: "How I built this site: A guide for dummies"
-description:
-  How I set up a personal site and blog from scratch. Explained at a beginner
+title: 'How I built this site: A guide for dummies'
+description: How I set up a personal site and blog from scratch. Explained at a beginner
   level.
-hero_image: ""
----
+hero_image: ''
 
+---
 _Hello World!_
 
 I've been wanting to build a site to share my experiences in life - be it tech, food, or travel - for quite a while. I'm not quite sure what exactly prompted me to start building one, but I did so about a month ago. Paid for a domain and started going at it right away.
 
 I figured documenting how I did this could probably be helpful to someone or myself in the future. Quick shout-outs to [Josh Comeau](https://twitter.com/joshwcomeau)'s beautiful [website](https://www.joshwcomeau.com/) - where he has detailed his steps on blog building and my friend [Shreyash](https://twitter.com/shreyash14s) who helped me a ton along the way.
 
-## Go Daddy!
+## Go, Daddy!
 
-Step 1 of doing anything web - buying a domain for it. You build it or not, you gotto buy one. This was something new to me - I knew how I could setup a free-tier hosting service (like Heroku) but I wasn't aware of all the intricasies of linking a hosting site to a domain.
+Step 1 of doing anything web - buying a domain for it. You build it or not, you gotta buy one. This was something new to me - I knew how I could set up a free-tier hosting service (like Heroku) but I wasn't aware of all the intricacies of linking a hosting site to a domain.
 
 So I went along with GoDaddy - might not be the best bang for the buck, but there are tons of videos/articles on the internet detailing the steps to link it with a hosting provider.
 
 The pricing was 299Rs (year1) + 999Rs (year2) + tax. They upsell you quite a bit, just ignore those. Especially the "free" website builder. This was for a **.com** site. **.in**, **.co.in** are a lot more cheaper.
 
-Once you make the payment, you'll have to wait for a while for them to allocate it to you. Meanwhile I started setting up the project itself - a nextjs app.
+Once you make the payment, you'll have to wait for a while for them to allocate it to you. Meanwhile, I started setting up the project itself - a nextjs app.
 
 ## The Tech Stack
 
-Here's all the tech that I happened to use; I'll explain about each later on -  
-[NextJs](https://nextjs.org/) as the React Framework. This does SO MANY THINGS. The developer experience is amazing; Just `create-next-app`, add a few line and you're set. You now have an amazingly responsive Statically Generated Site.
+Here's all the tech that I happened to use; I'll explain each later on -  
+[NextJs](https://nextjs.org/) as the React Framework. This does SO MANY THINGS. The developer experience is amazing; Just `create-next-app`, add a few lines and you're set. You now have an amazingly responsive Statically Generated Site.
 
-[Heroku](https://www.heroku.com/) as the hosting provider. I did not know about Vercel/Netlify at the point I set this up. They could be better, I will explore about them in the future.
+\~\~[Heroku](https://www.heroku.com/) as the hosting provider. I did not know about Vercel/Netlify at the point I set this up. They could be better, I will explore them in the future.
 
-For now, Heroku does everything I want - 1 click to link up to my project git repo see: [github repo](https://github.com/kashyap07/kashyapsuhas.com), (almost) 0-configure auto-deploy whenever I commit to `main` branch with good build logs, and a reasonably low cost as well. I'm currently paying for the _Hobby tier_ which costs me $7 per month.
+For now, Heroku does everything I want - 1 click to link up to my project git repo see: [github repo](https://github.com/kashyap07/kashyapsuhas.com), (almost) 0-configure auto-deploy whenever I commit to `main` branch with good build logs, and a reasonably low cost as well. I'm currently paying for the _Hobby tier_ which costs me $7 per month.\~\~
 
-[Tailwind](https://tailwindcss.com/) for my styling. I'm still not used to looking at all the ugly essays of class names, but I'll you this - the developer experience is Amazing. Without Tailwind I wouldn't have been able to do reasonable and responsive styling this quick. I would highly recommend you try this in your next endeavour.
+Update March 3, 2022: Friendship ended with Heroku, [Vercel](https://vercel.com) is my new best friend. You borderline do not require a brain to use Vercel. Just connect your git account, point at the right repository and you're done. And it's FREE!
+
+[Tailwind](https://tailwindcss.com/) for my styling. I'm still not used to looking at all the ugly essays of class names, but I'll tell you this - the developer experience is Amazing. Without Tailwind I wouldn't have been able to do reasonable and responsive styling this quick. I would highly recommend you try this in your next endeavor.
 
 [MDX](https://mdxjs.com/) for blog posts. I wasn't happy enough with simple markdown posts - so I looked for this. You can have React components in your Markdown with this.
 
 I don't have a database at the moment. There is a 'backend' of sorts that is provided by NextJs. With the `/api` route I can write Node code to do secret backendy things - like fetching those Instagram images you see on the front page.
 
-## A plce for your code in the cloud
+## A place for your code in the cloud
 
-To be continued ...
+Well, the cloud is a lie; it's just someone else's box. In this case, it's Vercel's box. And boy is it a FAST box. Vercel, who happens to be behind NextJs, has loads of settings up and ready for a NextJs deployment. Connect your GitHub account, select repository, add your domain (that you bought from a domain provider) aaand that's really it. Vercel auto-deploys for you every time you commit; even adds this nice little comment to your commit. It even creates an SSL certificate and does the http to https redirection for you!
+
+![](/blog/2022/vercel-commit.png)
+
+I had used Heroku previously, but Indian Gov's RBI rules made it impossible for me to pay them for the monthly 7USD charge. My account is now suspended and permanently deleted, I still owe them $21 :(
+
+To conclude, Vercel is fast and free, requires almost 0 config work, and is very user-friendly.
+
+## The _Next_ level of doing React
+
+I can't quite remember where I read this quote, think of NextJS as React but with batteries included. You get to play around with your toy and have all the fun in the world without worrying about buying batteries or the capacity of those. NextJS has essentially replaced `creaate-react-app` at this point.
+
+Start with `npx create-next-app`, use typescript if required. NextJs does routing in a beautiful manner - just folders and files. Makes complete sense when you think of it. NextJs uses an array notation for wildcards. For example, to have a page named /blog/post/how-i-built-this-site-a-guide, I create a "blog" folder, a "post" folder, and a wildcard \[slug\] file for the blog itself.
+
+What also happens to come as standard is Server-side-rendering. There are 3 ways to go about this.
+
+1. SSG (Static Site Generation)
+   The best way to make sites. Perfect SEO. No calls to server when user requests for pages. NextJs pre-renders the HTML and fetches all the data one needs during build time.
+   // TODO: add more info
+2. SSR (Server Side Rendering)
+   // TODO
+3. ISG (Incremental Static Generation)
+   Best of both worlds bla bla.
+   // TODO
+
+To be continued...
