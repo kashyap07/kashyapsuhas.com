@@ -45,7 +45,7 @@ const Home = ({ className = "", ...props }) => {
 
           {/* https://stackoverflow.com/a/70255414/5111966 */}
           {/* https://css-tricks.com/almanac/properties/w/will-change/ */}
-          <TealHalo className="z-10 ease-linear delay-500 scale-250 top-2/3 left-1/2 dark:opacity-70 will-change-transform" />
+          <TealHalo className="z-10 ease-linear delay-500 scale-250 top-2/3 left-1/2 dark:opacity-70" />
         </MaxWidthWrapper>
 
         <ScrollDownIndicator />
