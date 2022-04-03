@@ -16,7 +16,7 @@ export async function getStaticProps() {
       frontMatterData: frontMatters,
       // igPosts: posts,
     },
-    revalidate: 1800, // check once every 30 seconds
+    // revalidate: 1800, // check once every 30 seconds
   };
 }
 
@@ -42,7 +42,10 @@ const Home = ({ className = "", ...props }) => {
               </span>
             </div>
           </div>
-          <TealHalo className="z-10 ease-linear delay-500 scale-250 top-2/3 left-1/2 dark:opacity-70 " />
+
+          {/* https://stackoverflow.com/a/70255414/5111966 */}
+          {/* https://css-tricks.com/almanac/properties/w/will-change/ */}
+          <TealHalo className="z-10 ease-linear delay-500 scale-250 top-2/3 left-1/2 dark:opacity-70 will-change-transform" />
         </MaxWidthWrapper>
 
         <ScrollDownIndicator />

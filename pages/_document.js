@@ -18,9 +18,9 @@ class MyDocument extends Document {
             type="text/javascript"
             dangerouslySetInnerHTML={{
               __html: `
-                let theme = "light";
-                 if ((localStorage.theme === 'dark') || (!localStorage.theme === null && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                  theme = "dark"
+                let theme = "dark";
+                 if ((localStorage.theme === 'light') || (!localStorage.theme === null && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+                  theme = "light"
                 }
                 document.documentElement.classList.add(theme);
                 localStorage.theme = theme;`,
