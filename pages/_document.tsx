@@ -1,6 +1,4 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
-import Script from "next/script";
-import { ThemeProvider } from "../components/ThemeProvider";
 
 class MyDocument extends Document {
   render() {

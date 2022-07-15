@@ -1,10 +1,11 @@
+import clsx from "clsx";
 import Link from "next/link";
 import MaxWidthWrapper from "../components/MaxWidthWrapper";
 import SideTitle from "../components/SideTitle";
 
-const NotFound = ({ className }) => {
+const NotFound = ({ className }: { className?: string }) => {
   return (
-    <main className={`${className} relative md:mt-6`}>
+    <main className={clsx(className, "relative md:mt-6")}>
       <SideTitle>/404</SideTitle>
 
       <MaxWidthWrapper>

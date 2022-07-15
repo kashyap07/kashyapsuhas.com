@@ -1,13 +1,13 @@
+import Footer from "../components/Footer";
 import Head from "next/head";
 import Header from "../components/Header";
-import Footer from "../components/Footer";
+import "@styles/tailwind.css";
+import "@styles/index.css";
+import "@styles/CSSElements.css";
+import "@styles/syntax-highlight.css";
+import type { AppProps } from "next/app";
 
-import "../styles/tailwind.css";
-import "../styles/index.css";
-import "../styles/CSSElements.css";
-import "../styles/syntax-highlight.css";
-
-const MyApp = ({ Component, pageProps }) => {
+function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
@@ -20,6 +20,6 @@ const MyApp = ({ Component, pageProps }) => {
       <Footer className="flex-shrink-0" />
     </>
   );
-};
+}
 
 export default MyApp;

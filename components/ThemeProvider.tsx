@@ -21,6 +21,7 @@ import React, { useContext, useState } from "react";
 
 const ThemeContext = React.createContext("darkela");
 
+// @ts-ignore
 const ThemeProvider = ({ initialTheme, children }) => {
   // const ThemeContext = useContext(null);
   // const [theme, toggleTheme] = useState(getInitialTheme);

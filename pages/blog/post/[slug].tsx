@@ -6,6 +6,7 @@ import { marked } from "marked";
 import SideTitle from "../../../components/SideTitle";
 import MaxWidthWrapper from "../../../components/MaxWidthWrapper";
 import { HiChevronRight } from "react-icons/hi";
+// @ts-ignore
 import toc from "markdown-toc";
 import { serialize } from "next-mdx-remote/serialize";
 import { MDXRemote } from "next-mdx-remote";
@@ -19,7 +20,7 @@ import {
   inlineCode,
 } from "../../../components/OverrRideDefaultHTML";
 
-const getPost = async (slug) => {
+const getPost = async (slug: string) => {
   // FIXME: hardcoded to mdx
   const postContent = fs.readFileSync("Blog/" + slug + ".mdx");
   const frontMatter = JSON.parse(JSON.stringify(matter(postContent)));
@@ -50,7 +51,7 @@ const components = {
   inlineCode: inlineCode,
 };
 
-export const getStaticProps = async ({ params }) => {
+export const getStaticProps = async ({ params }: { params: any }) => {
   const post = await getPost(params.slug);
   return {
     props: { post },
@@ -64,7 +65,7 @@ export const getStaticPaths = () => {
   };
 };
 
-const Breadcrumb = ({ category }) => (
+const Breadcrumb = ({ category }: { category: any }) => (
   <>
     {/* https://tailwindesign.com/components/breadcrumbhttps://tailwindesign.com/components/breadcrumb */}
     <ul className="flex mb-1 text-sm text-gray-500 dark:text-gray-300">
@@ -95,6 +96,7 @@ const Slug = ({ className = "", ...props }) => {
   const router = useRouter();
 
   return (
+    // @ts-ignore
     <MDXProvider components={components}>
       <main className={`${className} relative md:mt-6`}>
         <SideTitle>/post</SideTitle>

@@ -1,22 +1,23 @@
+import * as reactPdf from "react-pdf";
 import Link from "next/link";
 import MaxWidthWrapper from "../components/MaxWidthWrapper";
 import SideTitle from "../components/SideTitle";
-import { Document, Page, pdfjs } from "react-pdf";
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+import clsx from "clsx";
+reactPdf.pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${reactPdf.pdfjs.version}/pdf.worker.js`;
 
-const Work = ({ className }) => {
+const Work = ({ className }: { className?: string }) => {
   const pdfFile = "/Resume.pdf";
 
   return (
-    <main className={`${className} relative md:mt-6`}>
+    <main className={clsx("relative md:mt-6", className)}>
       <SideTitle>/work</SideTitle>
 
       <MaxWidthWrapper className="flex items-center justify-center p-5">
         <Link href="/Resume.pdf">
           <a target="_blank" className="overflow-scroll border border-gray-200">
-            <Document file={pdfFile}>
-              <Page pageNumber={1} />
-            </Document>
+            <reactPdf.Document file={pdfFile}>
+              <reactPdf.Page pageNumber={1} />
+            </reactPdf.Document>
           </a>
         </Link>
       </MaxWidthWrapper>

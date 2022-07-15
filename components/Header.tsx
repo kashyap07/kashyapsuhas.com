@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import useIsScrolled from "../utils/useScrollPosition";
-import HamburgerMenu from "../components/HamburgerMenu";
-import { PinkHalo } from "../components/CSSElements";
+import HamburgerMenu from "./HamburgerMenu";
+import { PinkHalo } from "./CSSElements";
 import { DarkModeSwitch } from "react-toggle-dark-mode";
-import { Socials, socialsObj } from "../components/Socials";
+import { Socials, socialsObj } from "./Socials";
 
 const headerNavLinks = [
   { title: "Blog", href: "/blog" },
@@ -23,7 +23,7 @@ const Header = () => {
     typeof window !== "undefined" &&
     document.documentElement.classList.contains("dark");
 
-  const toggleDarkMode = (checked) => {
+  const toggleDarkMode = (checked: any) => {
     setDarkMode(checked);
 
     if (window !== undefined) {
@@ -48,6 +48,7 @@ const Header = () => {
     return (
       <DarkModeSwitch
         className={className}
+        // @ts-ignore
         checked={defaultChecked || isDarkMode}
         onChange={toggleDarkMode}
         sunColor="hsl(220, 12%, 40%)"
@@ -108,6 +109,7 @@ const Header = () => {
 
             {/* <ThemeSwitcherBtn /> */}
             <DarkModeSwitch
+              // @ts-ignore
               checked={defaultChecked || isDarkMode}
               onChange={toggleDarkMode}
               sunColor="hsl(220, 12%, 40%)"

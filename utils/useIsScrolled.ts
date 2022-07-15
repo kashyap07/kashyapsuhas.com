@@ -6,6 +6,7 @@ const useIsScrolled = () => {
   useEffect(() => {
     const updatePosition = () => {
       if (!isScrolled) setIsScrolled(window.pageYOffset > 0);
+      // @ts-ignore
       else setIsScrolled(!window.pageYOffset == 0);
     };
     window.addEventListener("scroll", updatePosition, { passive: true });

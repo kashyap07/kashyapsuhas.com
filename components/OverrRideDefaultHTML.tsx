@@ -1,11 +1,14 @@
-import { BsLink45Deg } from "react-icons/bs";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { atomOneDarkReasonable } from "react-syntax-highlighter/dist/cjs/styles/hljs";
+import { BsLink45Deg } from "react-icons/bs";
+import { ReactChild, ReactFragment, ReactPortal } from "react";
 import { slugify } from "../utils/stringUtils";
 
 // TODO: https://github.com/react-syntax-highlighter/react-syntax-highlighter#light-build
 
-const pre = (props) => {
+const pre = (props: {
+  children: { props: { className?: any; metastring: any; children: any } };
+}) => {
   const { className, metastring, children } = props.children?.props;
   const language = className.split("-").slice(-1)[0];
   return (
@@ -26,7 +29,7 @@ const pre = (props) => {
   );
 };
 
-const inlineCode = (props) => {
+const inlineCode = (props: { children: any }) => {
   const { children } = props;
   return (
     <pre className="!w-fit-content inline !py-1 !px-2 rounded font-medium font-sans !text-gray-900 !bg-gray-100 dark:!text-white dark:!bg-gray-800">
@@ -35,6 +38,7 @@ const inlineCode = (props) => {
   );
 };
 
+// @ts-ignore
 const AnchorIcon = ({ id }) => {
   return (
     <a
@@ -47,8 +51,9 @@ const AnchorIcon = ({ id }) => {
   );
 };
 
-const h1 = (props) => {
-  const id = props?.children.split(" ").join("-").toLowerCase();
+const h1 = (props: { children: {} | null | undefined }) => {
+  // @ts-ignore
+  const id = props?.children?.split(" ").join("-").toLowerCase();
   return (
     <h1 id={id} className="relative pl-12 -ml-12 group">
       <AnchorIcon id={id} />
@@ -57,7 +62,7 @@ const h1 = (props) => {
   );
 };
 
-const h2 = (props) => {
+const h2 = (props: { children: any }) => {
   const id = slugify(props.children);
 
   return (
@@ -68,7 +73,7 @@ const h2 = (props) => {
   );
 };
 
-const h3 = (props) => {
+const h3 = (props: { children: any }) => {
   const id = slugify(props.children);
 
   return (
@@ -79,7 +84,7 @@ const h3 = (props) => {
   );
 };
 
-const h4 = (props) => {
+const h4 = (props: { children: any }) => {
   const id = slugify(props.children);
 
   return (

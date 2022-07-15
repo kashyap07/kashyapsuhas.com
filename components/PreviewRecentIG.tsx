@@ -1,8 +1,18 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
+import { Key } from "react";
 import { BsArrowRight } from "react-icons/bs";
+import { UrlObject } from "url";
 
-const PreviewRecentIG = ({ router, igPosts, className }) => {
+const PreviewRecentIG = ({
+  router,
+  igPosts,
+  className,
+}: {
+  router: any;
+  igPosts: any;
+  className?: string;
+}) => {
   if (router.isFallback) return <span>Loading IG posts, please wait...</span>;
   else if (igPosts) {
     return (
@@ -11,17 +21,23 @@ const PreviewRecentIG = ({ router, igPosts, className }) => {
 
         <div data-component="recent-instagrams" className="flex md:pl-2 py-2">
           <div className="flex flex-row flex-wrap md:flex-nowrap w-full justify-between items-center">
-            {igPosts.map((post) => (
-              <Link key={post.id} href={post.permalink}>
-                <a className="m-2 relative">
-                  <img
-                    src={post.media_url}
-                    alt="Open image in Instagram"
-                    className="max-h-igImagePreview"
-                  />
-                </a>
-              </Link>
-            ))}
+            {igPosts.map(
+              (post: {
+                id: Key | null | undefined;
+                permalink: string | UrlObject;
+                media_url: string | undefined;
+              }) => (
+                <Link key={post.id} href={post.permalink}>
+                  <a className="m-2 relative">
+                    <img
+                      src={post.media_url}
+                      alt="Open image in Instagram"
+                      className="max-h-igImagePreview"
+                    />
+                  </a>
+                </Link>
+              )
+            )}
           </div>
         </div>
 

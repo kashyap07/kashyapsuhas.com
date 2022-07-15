@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FiTwitter, FiGithub, FiMail } from "react-icons/fi";
+import { FiGithub, FiMail, FiTwitter } from "react-icons/fi";
 import {
   FaTwitter,
   FaLinkedin,
@@ -91,6 +91,11 @@ const Socials = ({
   className = "gap-3 text-2xl",
   altIcons,
   withDescription,
+}: {
+  list?: any[];
+  className?: string;
+  altIcons?: any;
+  withDescription?: any;
 }) => {
   return (
     <div data-component="socials-wrapper" className={`flex ${className}`}>
@@ -102,6 +107,7 @@ const Socials = ({
                 <a
                   target="_blank"
                   className="text-gray-700 fill-current dark:text-gray-50 social-icon"
+                  // @ts-ignore
                   style={{ "--highlight-color": social.color }}
                 >
                   {altIcons ? social.icon2 || social.icon : social.icon}
@@ -116,6 +122,7 @@ const Socials = ({
               <a
                 target="_blank"
                 className="text-gray-700 fill-current dark:text-gray-50 social-icon"
+                // @ts-ignore
                 style={{ "--highlight-color": social.color }}
               >
                 {altIcons ? social.icon2 || social.icon : social.icon}

@@ -1,4 +1,4 @@
-import { readFiles } from "../utils/fileUtils";
+import { readFiles } from "./fileUtils";
 import matter from "gray-matter";
 
 /**
@@ -6,9 +6,10 @@ import matter from "gray-matter";
  * @returns Array
  */
 const getFrontMatters = async () => {
-  const frontMatters = [];
+  const frontMatters: { [x: string]: any }[] = [];
 
   await readFiles("Blog").then((files) => {
+    // @ts-ignore
     files.forEach((post) => {
       let fm = matter(post.contents);
 
