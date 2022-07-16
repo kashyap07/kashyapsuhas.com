@@ -42,9 +42,7 @@ const ThemeProvider = ({ initialTheme, children }) => {
   //   checkTheme(theme);
   // }, [theme]);
 
-  return (
-    <ThemeContext.Provider value={"lightee"}>{children}</ThemeContext.Provider>
-  );
+  return <>{children}</>;
 };
 
 export { ThemeContext, ThemeProvider };

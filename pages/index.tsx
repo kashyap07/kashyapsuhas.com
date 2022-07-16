@@ -29,23 +29,23 @@ const Home = ({ className = "", ...props }) => {
     <main className={`w-full ${className}`}>
       <div
         data-element="main-section"
-        className="relative flex flex-col items-center justify-center mb-auto min-h-minusHeader"
+        className="relative mb-auto flex min-h-minusHeader flex-col items-center justify-center"
       >
-        <MaxWidthWrapper className="relative flex justify-center mb-48">
+        <MaxWidthWrapper className="relative mb-48 flex justify-center">
           <>
             <div className="z-20 flex" data-element="home-card">
-              <div className="flex flex-col justify-center gap-6 text-3xl font-bold select-none">
+              <div className="flex select-none flex-col justify-center gap-6 text-3xl font-bold">
                 <span className="text-5xl md:text-6xl">
                   Hello there, I&apos;m Suhas <span className="wiggle">👋</span>
                 </span>
-                <span className="text-3xl md:text-4xl dark:text-gray-200">
+                <span className="text-3xl md:text-4xl ">
                   Welcome to my slice of the Interwebs.
                 </span>
               </div>
             </div>
             {/* https://stackoverflow.com/a/70255414/5111966 */}
             {/* https://css-tricks.com/almanac/properties/w/will-change/ */}
-            <TealHalo className="z-10 ease-linear delay-500 scale-250 top-2/3 left-1/2 dark:opacity-70" />
+            <TealHalo className="top-2/3 left-1/2 z-10 scale-250 delay-500 ease-linear " />
           </>
         </MaxWidthWrapper>
 
@@ -53,7 +53,7 @@ const Home = ({ className = "", ...props }) => {
       </div>
 
       <div data-element="main-section" className="flex">
-        <MaxWidthWrapper className="flex flex-col items-start w-full">
+        <MaxWidthWrapper className="flex w-full flex-col items-start">
           <>
             {/* @ts-ignore */}
             <PreviewRecentPosts fm={fm} />

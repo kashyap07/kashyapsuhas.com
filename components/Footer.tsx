@@ -4,9 +4,7 @@ import MaxWidthWrapper from "./MaxWidthWrapper";
 
 const Footer = ({ className }: { className?: string }) => {
   return (
-    <footer
-      className={clsx("relative bg-gray-100 dark:bg-gray-800 z-40", className)}
-    >
+    <footer className={clsx("relative z-40  bg-gray-100", className)}>
       <MaxWidthWrapper className="flex flex-row items-center justify-between py-5">
         <>
           <span className="font-semibold">Thanks for visiting!</span>

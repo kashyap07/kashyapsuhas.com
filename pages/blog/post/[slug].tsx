@@ -68,7 +68,7 @@ export const getStaticPaths = () => {
 const Breadcrumb = ({ category }: { category: any }) => (
   <>
     {/* https://tailwindesign.com/components/breadcrumbhttps://tailwindesign.com/components/breadcrumb */}
-    <ul className="flex mb-1 text-sm text-gray-500 dark:text-gray-300">
+    <ul className="mb-1 flex text-sm text-gray-500 ">
       <li className="inline-flex items-center">
         <Link href="/">
           <a>Home</a>
@@ -108,11 +108,11 @@ const Slug = ({ className = "", ...props }) => {
             ) : (
               <>
                 <Breadcrumb category={post.category} />
-                <div className="flex flex-col items-baseline justify-between gap-2 pb-5 mb-10 border-b-4 dark:border-gray-700">
-                  <h1 className="text-5xl font-bold break-words">
+                <div className="mb-10 flex flex-col items-baseline justify-between gap-2 border-b-4 pb-5 ">
+                  <h1 className="break-words text-5xl font-bold">
                     {post.title}
                   </h1>
-                  <span className="text-base font-medium text-gray-700 dark:text-gray-200">
+                  <span className="text-base font-medium text-gray-700 ">
                     {post.date}
                   </span>
                 </div>
@@ -123,19 +123,19 @@ const Slug = ({ className = "", ...props }) => {
                 >
                   <div
                     data-element="post-prose"
-                    className="lg:max-w-prose lg:w-full"
+                    className="lg:w-full lg:max-w-prose"
                   >
                     {/* <InnerHTML
                     html={post.html.compiledSource}
-                    className="prose md:prose-lg dark:prose-dark max-w-none"
+                    className="prose md:prose-lg  max-w-none"
                   /> */}
-                    <div className="prose prose-lg dark:prose-dark max-w-none">
+                    <div className="prose prose-lg  max-w-none">
                       <MDXRemote {...post.mdxSource} components={components} />
                     </div>
                   </div>
                   <aside
                     data-element="post-table-of-contents"
-                    className="sticky flex-col hidden w-auto mx-10 lg:flex h-80 top-1/4"
+                    className="sticky top-1/4 mx-10 hidden h-80 w-auto flex-col lg:flex"
                   >
                     <h2 className="text-primary">Table of contents</h2>
                     <nav

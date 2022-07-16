@@ -25,7 +25,7 @@ const Blog = ({ className = "", ...props }) => {
 
       <MaxWidthWrapper>
         <div className="text-xl md:pt-2">
-          <ul className="flex flex-col w-full">
+          <ul className="flex w-full flex-col">
             {fm.map(
               (
                 item: {
@@ -43,12 +43,12 @@ const Blog = ({ className = "", ...props }) => {
                         .slice(0, -1)
                         .join(".")}`}
                     >
-                      <a className="flex flex-col justify-between w-full px-2 py-5 font-medium transition-colors duration-300 ease-in border-b group md:px-4 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">
+                      <a className=":bg-gray-800 group flex w-full flex-col justify-between border-b px-2 py-5 font-medium transition-colors duration-300 ease-in  hover:bg-gray-50 md:px-4">
                         <div className="flex items-center gap-4">
                           <span className="text-xl">{item.title}</span>
-                          <BsArrowRight className="hidden transition-all duration-700 translate-x-0 opacity-0 md:block group-hover:opacity-100 group-hover:translate-x-2 group-hover:text-gray-600" />
+                          <BsArrowRight className="hidden translate-x-0 opacity-0 transition-all duration-700 group-hover:translate-x-2 group-hover:text-gray-600 group-hover:opacity-100 md:block" />
                         </div>
-                        <span className="text-base text-gray-600 dark:text-gray-300">
+                        <span className="text-base text-gray-600 ">
                           {moment(item.creation_date).format("MMM Do YYYY")}
                         </span>
                       </a>

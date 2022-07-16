@@ -102,11 +102,11 @@ const Socials = ({
       {list.map((social) => (
         <div key={social.title}>
           {withDescription ? (
-            <div className="flex items-start w-full px-2 py-3 md:items-center md:px-4 md:py-5 md:border-b">
+            <div className="flex w-full items-start px-2 py-3 md:items-center md:border-b md:px-4 md:py-5">
               <Link href={social.url}>
                 <a
                   target="_blank"
-                  className="text-gray-700 fill-current dark:text-gray-50 social-icon"
+                  className="social-icon fill-current  text-gray-700"
                   // @ts-ignore
                   style={{ "--highlight-color": social.color }}
                 >
@@ -121,7 +121,7 @@ const Socials = ({
             <Link href={social.url}>
               <a
                 target="_blank"
-                className="text-gray-700 fill-current dark:text-gray-50 social-icon"
+                className="social-icon fill-current  text-gray-700"
                 // @ts-ignore
                 style={{ "--highlight-color": social.color }}
               >

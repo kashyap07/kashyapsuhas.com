@@ -6,7 +6,7 @@
 
 html,
 body {
-  @apply bg-background dark:bg-gray-900 min-h-full text-gray-700 dark:text-white box-border m-0 relative transition-all duration-500 ease-out;
+  @apply relative  m-0 box-border  min-h-full bg-background text-gray-700 transition-all duration-500 ease-out;
 }
 html {
   scroll-behavior: smooth;
@@ -17,7 +17,7 @@ html {
     @apply w-3 bg-transparent bg-opacity-50;
   }
   ::-webkit-scrollbar-thumb {
-    @apply rounded-xl bg-gray-300 border-2 border-solid border-background dark:border-gray-900;
+    @apply rounded-xl bg-gray-300 border-2 border-solid border-background ;
   }
   ::-webkit-scrollbar-track {
     @apply rounded bg-transparent;
@@ -32,14 +32,14 @@ html {
 }
 
 #__next {
-  @apply flex flex-col min-h-screen h-full;
+  @apply flex h-full min-h-screen flex-col;
 }
 
 .table-of-contents {
   @apply pt-5;
 }
 .table-of-contents li {
-  @apply text-base font-medium my-2 list-disc;
+  @apply my-2 list-disc text-base font-medium;
 }
 .table-of-contents ul {
   @apply ml-6;

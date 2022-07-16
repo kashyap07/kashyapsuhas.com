@@ -127,25 +127,10 @@ module.exports = {
             },
           },
         },
-        dark: {
-          css: {
-            color: theme("colors.gray.100"),
-            hr: { borderColor: theme("colors.gray.800") },
-            blockquote: {
-              color: theme("colors.gray.300"),
-              borderLeftColor: theme("colors.gray.800"),
-            },
-            code: {
-              color: theme("colors.secondary"),
-            },
-          },
-        },
       }),
     },
   },
-  variants: {
-    extend: { typography: ["dark"] },
-  },
+
   plugins: [
     require("@tailwindcss/forms"),
     require("@tailwindcss/typography"),
