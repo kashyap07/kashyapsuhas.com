@@ -1,15 +1,14 @@
+/** @type {import('tailwindcss').Config} */
 const defaultTheme = require("tailwindcss/defaultTheme");
-const colors = require("tailwindcss/colors");
+const plugin = require("tailwindcss/plugin");
 
 module.exports = {
-  mode: "jit",
-  purge: [
-    "./pages/**/*.js",
-    "./components/**/*.js",
-    "./layouts/**/*.js",
-    "./lib/**/*.js",
+  content: [
+    "./pages/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+    "./pageComponents/**/*.{js,ts,jsx,tsx}",
+    "./layouts/**/*.{js,ts,jsx,tsx}",
   ],
-  darkMode: "class",
   theme: {
     extend: {
       height: {
@@ -147,5 +146,27 @@ module.exports = {
   variants: {
     extend: { typography: ["dark"] },
   },
-  plugins: [require("@tailwindcss/forms"), require("@tailwindcss/typography")],
+  plugins: [
+    require("@tailwindcss/forms"),
+    require("@tailwindcss/typography"),
+    // require("@tailwindcss/line-clamp"),
+
+    plugin(function ({ addComponents }) {
+      const miscUtils = {
+        ".position-unset": {
+          position: "unset",
+        },
+      };
+      addComponents(miscUtils);
+    }),
+
+    plugin(function ({ addVariant }) {
+      addVariant("children-iterative", "& *");
+      addVariant("children", "& > *");
+      addVariant("optional", "&:optional");
+      addVariant("hocus", ["&:hover", "&:focus"]);
+      addVariant("supports-grid", "@supports (display: grid)");
+    }),
+  ],
+  mode: "jit",
 };
