@@ -68,23 +68,23 @@ export const getStaticPaths = () => {
 const Breadcrumb = ({ category }: { category: any }) => (
   <>
     {/* https://tailwindesign.com/components/breadcrumbhttps://tailwindesign.com/components/breadcrumb */}
-    <ul className="mb-1 flex text-sm text-gray-500 ">
+    <ul className="mb-1 flex text-sm text-black">
       <li className="inline-flex items-center">
         <Link href="/">
-          <a>Home</a>
+          <a>HOME</a>
         </Link>
         <HiChevronRight className="text-xl" />
         {/* Convert to a component, set direction as props */}
       </li>
       <li className="inline-flex items-center">
         <Link href="/blog">
-          <a>Blog</a>
+          <a>BLOG</a>
         </Link>
         <HiChevronRight className="text-xl" />
       </li>
       <li className="inline-flex items-center">
         <Link href="/">
-          <a>{category}</a>
+          <a className="uppercase">{category}</a>
         </Link>
       </li>
     </ul>
@@ -99,7 +99,7 @@ const Slug = ({ className = "", ...props }) => {
     // @ts-ignore
     <MDXProvider components={components}>
       <main className={`${className} relative md:mt-6`}>
-        <SideTitle>/post</SideTitle>
+        <SideTitle>POST</SideTitle>
 
         <MaxWidthWrapper withBg>
           <div className="pt-5 text-xl md:px-7">
@@ -108,11 +108,11 @@ const Slug = ({ className = "", ...props }) => {
             ) : (
               <>
                 <Breadcrumb category={post.category} />
-                <div className="mb-10 flex flex-col items-baseline justify-between gap-2 border-b-4 pb-5 ">
+                <div className="mb-10 flex flex-col items-baseline justify-between gap-2 border-b-4 pb-5 font-serif">
                   <h1 className="break-words text-5xl font-bold">
                     {post.title}
                   </h1>
-                  <span className="text-base font-medium text-gray-700 ">
+                  <span className="text-base font-medium text-black ">
                     {post.date}
                   </span>
                 </div>
@@ -129,7 +129,7 @@ const Slug = ({ className = "", ...props }) => {
                     html={post.html.compiledSource}
                     className="prose md:prose-lg  max-w-none"
                   /> */}
-                    <div className="prose prose-lg  max-w-none">
+                    <div className="prose prose-xl max-w-none font-serif">
                       <MDXRemote {...post.mdxSource} components={components} />
                     </div>
                   </div>

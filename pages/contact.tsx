@@ -5,7 +5,7 @@ import { Socials } from "../components/Socials";
 const contact = ({ className }: { className?: string }) => {
   return (
     <main className={`${className} relative md:mt-6`}>
-      <SideTitle className="mt-20">/contact</SideTitle>
+      <SideTitle className="mt-20">CONTACT</SideTitle>
 
       <MaxWidthWrapper className="pt-2">
         <div className="flex text-xl">

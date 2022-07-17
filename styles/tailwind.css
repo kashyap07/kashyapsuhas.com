@@ -21,7 +21,7 @@
   }
 
   * {
-    @apply box-border font-sans;
+    @apply box-border;
     text-rendering: optimizeLegibility;
     -webkit-tap-highlight-color: transparent;
     -webkit-font-feature-settings: "kern" 1;

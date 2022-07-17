@@ -7,9 +7,9 @@ import { PinkHalo } from "./CSSElements";
 import { Socials, socialsObj } from "./Socials";
 
 const headerNavLinks = [
-  { title: "Blog", href: "/blog" },
-  { title: "Work", href: "/work" },
-  { title: "Contact", href: "/contact" },
+  { title: "BLOG", href: "/blog" },
+  { title: "WORK", href: "/work" },
+  { title: "CONTACT", href: "/contact" },
 ];
 
 const Header = () => {
@@ -43,7 +43,7 @@ const Header = () => {
             <div className="ml-3 hidden flex-row items-center md:flex">
               {headerNavLinks.map((link) => (
                 <Link key={link.title} href={link.href} passHref>
-                  <a className="hover:nav-button-hover h-fit-content rounded-full  px-1.5 py-0.5 font-semibold text-gray-600">
+                  <a className="hover:nav-button-hover h-fit-content rounded-full  px-1.5 py-0.5 font-semibold text-black">
                     {link.title}
                   </a>
                 </Link>
@@ -55,10 +55,10 @@ const Header = () => {
           <div className="hidden items-center md:flex">
             <Socials
               list={[twitter, github, instagram]}
-              className="gap-3 text-xl text-gray-600"
+              className="gap-3 text-xl text-black"
               altIcons
             />
-            <span className="mx-3 h-6 w-0 border border-gray-100" aria-hidden />
+            {/* <span className="mx-3 h-6 w-0 border border-gray-100" aria-hidden /> */}
           </div>
 
           {/* Mobile list */}

@@ -61,26 +61,18 @@ module.exports = {
         14: "3.5rem",
       },
       fontFamily: {
-        sans: ["Montserrat", ...defaultTheme.fontFamily.sans],
+        sans: ["Syne", ...defaultTheme.fontFamily.sans],
+        serif: [
+          "charter",
+          "Source Serif Pro",
+          ...defaultTheme.fontFamily.serif,
+        ],
         fancy: ["Gochi Hand", ...defaultTheme.fontFamily.sans],
       },
       colors: {
         primary: "var(--color-primary)",
         secondary: "var(--color-secondary)",
         tertiary: "var(--color-tertiary)",
-        gray: {
-          50: "hsl(220, 20%, 93%)",
-          75: "hsl(220, 20%, 95%)",
-          100: "hsl(220, 20%, 90%)",
-          200: "hsl(220, 20%, 80%)",
-          300: "hsl(220, 20%, 70%)",
-          400: "hsl(220, 20%, 60%)",
-          500: "hsl(220, 20%, 50%)",
-          600: "hsl(220, 20%, 40%)",
-          700: "hsl(220, 20%, 30%)",
-          800: "hsl(220, 20%, 20%)",
-          900: "hsl(220, 20%, 8%)",
-        },
         background: "#fff",
         hero: {
           splash: "#f3f4f5",

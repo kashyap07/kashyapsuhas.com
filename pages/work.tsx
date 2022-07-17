@@ -10,7 +10,7 @@ const Work = ({ className }: { className?: string }) => {
 
   return (
     <main className={clsx("relative md:mt-6", className)}>
-      <SideTitle>/work</SideTitle>
+      <SideTitle>WORK</SideTitle>
 
       <MaxWidthWrapper className="flex items-center justify-center p-5">
         <Link href="/Resume.pdf">

@@ -11,7 +11,7 @@ const SideTitle = ({
     <div data-component="side-title">
       <span
         className={clsx(
-          "text-sideways absolute left-side-title top-64 z-0 hidden  origin-top -translate-x-1/2 -rotate-90 scale-125 transform select-none text-8xl font-extrabold text-gray-100 xl:block",
+          "text-sideways absolute left-side-title top-64 z-0 hidden  origin-top -translate-x-1/2 -rotate-90 scale-125 transform select-none text-8xl font-bold text-gray-300 xl:block",
           className
         )}
       >

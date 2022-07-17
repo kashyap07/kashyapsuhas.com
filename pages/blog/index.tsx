@@ -21,7 +21,7 @@ const Blog = ({ className = "", ...props }) => {
 
   return (
     <main className={`${className} relative md:mt-6`}>
-      <SideTitle>/blog</SideTitle>
+      <SideTitle>BLOG</SideTitle>
 
       <MaxWidthWrapper>
         <div className="text-xl md:pt-2">
@@ -46,9 +46,9 @@ const Blog = ({ className = "", ...props }) => {
                       <a className=":bg-gray-800 group flex w-full flex-col justify-between border-b px-2 py-5 font-medium transition-colors duration-300 ease-in  hover:bg-gray-50 md:px-4">
                         <div className="flex items-center gap-4">
                           <span className="text-xl">{item.title}</span>
-                          <BsArrowRight className="hidden translate-x-0 opacity-0 transition-all duration-700 group-hover:translate-x-2 group-hover:text-gray-600 group-hover:opacity-100 md:block" />
+                          <BsArrowRight className="hidden translate-x-0 opacity-0 transition-all duration-700 group-hover:translate-x-2 group-hover:text-black group-hover:opacity-100 md:block" />
                         </div>
-                        <span className="text-base text-gray-600 ">
+                        <span className="text-base text-black ">
                           {moment(item.creation_date).format("MMM Do YYYY")}
                         </span>
                       </a>

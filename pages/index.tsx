@@ -35,8 +35,8 @@ const Home = ({ className = "", ...props }) => {
           <>
             <div className="z-20 flex" data-element="home-card">
               <div className="flex select-none flex-col justify-center gap-6 text-3xl font-bold">
-                <span className="text-5xl md:text-6xl">
-                  Hello there, I&apos;m Suhas <span className="wiggle">👋</span>
+                <span className="text-5xl !font-bold text-black md:text-6xl">
+                  Hello there, I&apos;m SUHAS <span className="wiggle">👋</span>
                 </span>
                 <span className="text-3xl md:text-4xl ">
                   Welcome to my slice of the Interwebs.

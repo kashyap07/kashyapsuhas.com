@@ -6,7 +6,7 @@
 
 html,
 body {
-  @apply relative  m-0 box-border  min-h-full bg-background text-gray-700 transition-all duration-500 ease-out;
+  @apply relative  m-0 box-border  min-h-full bg-background text-black transition-all duration-500 ease-out;
 }
 html {
   scroll-behavior: smooth;

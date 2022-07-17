@@ -6,11 +6,11 @@ import SideTitle from "../components/SideTitle";
 const NotFound = ({ className }: { className?: string }) => {
   return (
     <main className={clsx(className, "relative md:mt-6")}>
-      <SideTitle>/404</SideTitle>
+      <SideTitle>404</SideTitle>
 
       <MaxWidthWrapper>
         {/* idea from https://codepen.io/tsotsoblotso/pen/mVMvVv */}
-        <div className="rounded-lg mockup-code sm:w-1/2 my-14">
+        <div className="mockup-code my-14 rounded-lg sm:w-1/2">
           <pre data-prefix="1">
             <code>{`// 404 page not found.`}</code>
           </pre>
