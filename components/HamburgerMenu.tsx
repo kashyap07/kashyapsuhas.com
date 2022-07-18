@@ -27,7 +27,7 @@ const HamburgerMenu = ({
         id="nav-check"
       />
       <div className="right-1 md:hidden">
-        <label className="text-white hover:text-primary" htmlFor="nav-check">
+        <label className="text-black hover:text-primary" htmlFor="nav-check">
           <FaHamburger
             style={{
               transform: "scale(1.3) translateX(-5px) translateY(-2px)",
@@ -63,7 +63,7 @@ const HamburgerMenu = ({
           {socialButtons && (
             <Socials
               list={socialButtons}
-              className="gap-6 text-2xl text-white"
+              className="gap-6 text-2xl text-black"
               altIcons
             />
           )}

@@ -39,7 +39,7 @@ const Home = ({ ...props }) => {
         <MaxWidthWrapper className="relative flex w-full items-center justify-center">
           <div className="flex w-full flex-col items-center justify-between gap-10 md:flex-row md:gap-0">
             <div className="flex w-full flex-col justify-center gap-6 md:w-2/3">
-              <span className="text-5xl !font-bold text-white md:text-6xl">
+              <span className="text-5xl !font-bold text-black md:text-6xl">
                 Hello there,
                 <br />
                 I&apos;m SUHAS <span className="wiggle">👋</span>
@@ -50,7 +50,7 @@ const Home = ({ ...props }) => {
             </div>
 
             {/* This was for gradient ring around pp */}
-            {/* <div className="absolute-center relative flex h-[310px] w-[310px] items-center justify-center rounded-full bg-black">
+            {/* <div className="absolute-center relative flex h-[310px] w-[310px] items-center justify-center rounded-full bg-white">
                 <div className="relative flex h-[295px] w-[295px] items-center justify-center rounded-full"> */}
 
             <div className="relative flex h-56 w-56 md:h-80 md:w-80">

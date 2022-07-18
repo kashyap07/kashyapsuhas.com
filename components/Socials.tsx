@@ -106,7 +106,7 @@ const Socials = ({
               <Link href={social.url}>
                 <a
                   target="_blank"
-                  className="social-icon fill-current  text-white"
+                  className="social-icon fill-current  text-black"
                   // @ts-ignore
                   style={{ "--highlight-color": social.color }}
                 >
@@ -121,7 +121,7 @@ const Socials = ({
             <Link href={social.url}>
               <a
                 target="_blank"
-                className="social-icon fill-current  text-white"
+                className="social-icon fill-current  text-black"
                 // @ts-ignore
                 style={{ "--highlight-color": social.color }}
               >

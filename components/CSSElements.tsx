@@ -9,7 +9,7 @@ const ScrollDownIndicatorIcon = ({ className }: { className?: string }) => (
       className
     )}
   >
-    <CgChevronDoubleDown className="scroll-down-indicator text-4xl text-white " />
+    <CgChevronDoubleDown className="scroll-down-indicator text-4xl text-black " />
   </span>
 );
 

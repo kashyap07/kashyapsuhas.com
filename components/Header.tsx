@@ -19,7 +19,7 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed top-0 z-50 h-16 w-full border-b bg-black bg-opacity-80 backdrop-blur backdrop-saturate-200 backdrop-filter transition-all duration-500 ease-out
+      className={`fixed top-0 z-50 h-16 w-full border-b bg-white bg-opacity-80 backdrop-blur backdrop-saturate-200 backdrop-filter transition-all duration-500 ease-out
       ${isScrolled ? "border-opacity-100" : "border-opacity-0"}`}
     >
       <MaxWidthWrapper>
@@ -43,7 +43,7 @@ const Header = () => {
             <div className="ml-3 hidden flex-row items-center md:flex">
               {headerNavLinks.map((link) => (
                 <Link key={link.title} href={link.href} passHref>
-                  <a className="hover:nav-button-hover h-fit-content rounded-full  px-1.5 py-0.5 font-semibold text-white">
+                  <a className="hover:nav-button-hover h-fit-content rounded-full  px-1.5 py-0.5 font-semibold text-black">
                     {link.title}
                   </a>
                 </Link>
@@ -55,7 +55,7 @@ const Header = () => {
           <div className="hidden items-center md:flex">
             <Socials
               list={[twitter, github, instagram]}
-              className="gap-3 text-xl text-white"
+              className="gap-3 text-xl text-black"
               altIcons
             />
             {/* <span className="mx-3 h-6 w-0 border border-gray-100" aria-hidden /> */}

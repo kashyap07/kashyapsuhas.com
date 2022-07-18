@@ -68,7 +68,7 @@ export const getStaticPaths = () => {
 const Breadcrumb = ({ category }: { category: any }) => (
   <>
     {/* https://tailwindesign.com/components/breadcrumbhttps://tailwindesign.com/components/breadcrumb */}
-    <ul className="mb-1 flex text-sm text-white">
+    <ul className="mb-1 flex text-sm text-black">
       <li className="inline-flex items-center">
         <Link href="/">
           <a>HOME</a>
@@ -112,7 +112,7 @@ const Slug = ({ className = "", ...props }) => {
                   <h1 className="break-words text-5xl font-bold">
                     {post.title}
                   </h1>
-                  <span className="text-base font-medium text-white">
+                  <span className="text-base font-medium text-black">
                     {post.date}
                   </span>
                 </div>
@@ -129,7 +129,7 @@ const Slug = ({ className = "", ...props }) => {
                     html={post.html.compiledSource}
                     className="prose md:prose-lg  max-w-none"
                   /> */}
-                    <div className="prose prose-xl max-w-none font-serif text-white">
+                    <div className="prose prose-xl max-w-none font-serif text-black">
                       <MDXRemote {...post.mdxSource} components={components} />
                     </div>
                   </div>
