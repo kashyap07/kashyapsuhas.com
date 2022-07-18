@@ -32,7 +32,7 @@ const pre = (props: {
 const inlineCode = (props: { children: any }) => {
   const { children } = props;
   return (
-    <pre className="inline !w-fit-content rounded !bg-gray-100 !py-1 !px-2 font-sans !text-sm font-medium !leading-tight !text-black">
+    <pre className="inline !w-fit-content rounded !bg-gray-900 !py-1 !px-2 font-sans !text-sm font-medium !leading-tight !text-white">
       {children}
     </pre>
   );
@@ -42,7 +42,7 @@ const inlineCode = (props: { children: any }) => {
 const AnchorIcon = ({ id }) => {
   return (
     <a
-      className="absolute -ml-8 hidden pr-10 pt-2 text-2xl !text-black md:hover:block md:group-hover:block"
+      className="absolute -ml-8 hidden pr-10 pt-2 text-2xl !text-white md:hover:block md:group-hover:block"
       aria-hidden="true"
       href={`#${id}`}
     >

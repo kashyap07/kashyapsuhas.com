@@ -83,3 +83,12 @@
   );
   will-change: transform;
 }
+
+.border-teal-halo {
+  background: linear-gradient(to right, #05fbff, #1e00ff);
+  color: #122dff;
+  display: inline-block;
+  font-size: 20px;
+  padding: 10px;
+  text-decoration: none;
+}

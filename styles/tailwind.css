@@ -4,9 +4,15 @@
 
 @layer base {
   :root {
-    --color-primary: #1955ae;
+    --color-primary: #3e4dd8;
     --color-secondary: #e25e71;
     --color-tertiary: #68a29e;
+
+    /* https://cdn.dribbble.com/users/2884462/screenshots/15777502/media/f86909f430b8ef603e47aa7e8fe6ea3f.png */
+    /* https://mycolor.space/?hex=%233F9FFE&sub=1 */
+    --color-primary: #3f9ffe;
+    --color-secondary: #fe4787;
+    --color-tertiary: #878eff;
   }
 
   a {
@@ -29,7 +35,7 @@
 
   html,
   body {
-    @apply relative m-0 box-border min-h-full overflow-x-hidden bg-black p-0 text-black duration-500 ease-out;
+    @apply relative m-0 box-border min-h-full overflow-x-hidden !bg-black p-0 text-white duration-500 ease-out;
   }
 
   html {
@@ -43,7 +49,7 @@
   h1,
   h2,
   h3 {
-    @apply scroll-mt-12 break-words text-black md:scroll-mt-52;
+    @apply scroll-mt-12 break-words text-white md:scroll-mt-52;
   }
 
   #__next {
@@ -135,6 +141,6 @@
 
 @variants hover, focus {
   .nav-button-hover {
-    @apply bg-gray-100;
+    @apply bg-gray-900;
   }
 }
