@@ -26,7 +26,7 @@ const ScrollDownIndicator = () => {
 const HaloElem = ({ className }: { className?: string }) => (
   <div
     className={clsx(
-      "absolute h-24 w-40 -translate-x-1/2 -translate-y-1/2 -skew-y-12 transform rounded-3xl opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-60",
+      "absolute h-24 w-40 -translate-x-1/2 -translate-y-1/2 -skew-y-12 transform rounded-3xl opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-90",
       className
     )}
   />
@@ -47,4 +47,14 @@ const TealHalo = ({ className }: { className?: string }) => (
   />
 );
 
-export { ScrollDownIndicator, PinkHalo, TealHalo, RedHalo };
+// hmm need to figure out ts better
+const TealHaloLogo = ({ className, ...rest }: { className: string }) => {
+  return (
+    <span
+      className={clsx("teal-halo -skew-y-12 rounded-3xl blur-xl", className)}
+      {...rest}
+    />
+  );
+};
+
+export { ScrollDownIndicator, PinkHalo, TealHalo, RedHalo, TealHaloLogo };
