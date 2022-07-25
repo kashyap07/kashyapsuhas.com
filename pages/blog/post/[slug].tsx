@@ -108,7 +108,7 @@ const Slug = ({ className = "", ...props }) => {
             ) : (
               <>
                 <Breadcrumb category={post.category} />
-                <div className="mb-10 flex flex-col items-baseline justify-between gap-2 border-b-4 pb-5 font-serif">
+                <div className="mb-10 flex flex-col items-baseline justify-between gap-2 border-b-4 pb-5 font-sans">
                   <h1 className="break-words text-5xl font-bold">
                     {post.title}
                   </h1>
