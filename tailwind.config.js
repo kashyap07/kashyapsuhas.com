@@ -61,13 +61,9 @@ module.exports = {
         14: "3.5rem",
       },
       fontFamily: {
-        sans: ["Syne", ...defaultTheme.fontFamily.sans],
-        serif: [
-          "charter",
-          "Source Serif Pro",
-          ...defaultTheme.fontFamily.serif,
-        ],
-        fancy: ["Gochi Hand", ...defaultTheme.fontFamily.sans],
+        sans: ["Montserrat", ...defaultTheme.fontFamily.sans],
+        serif: ["Square Peg", "charter", ...defaultTheme.fontFamily.serif],
+        fancy: ["Gochi Hand", ...defaultTheme.fontFamily.serif],
       },
       colors: {
         primary: "var(--color-primary)",
