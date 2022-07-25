@@ -61,8 +61,8 @@ module.exports = {
         14: "3.5rem",
       },
       fontFamily: {
-        sans: ["Montserrat", ...defaultTheme.fontFamily.sans],
-        serif: ["Square Peg", "charter", ...defaultTheme.fontFamily.serif],
+        sans: ["Rubik", "Montserrat", ...defaultTheme.fontFamily.sans],
+        serif: ["charter", ...defaultTheme.fontFamily.serif],
         fancy: ["Gochi Hand", ...defaultTheme.fontFamily.serif],
       },
       colors: {

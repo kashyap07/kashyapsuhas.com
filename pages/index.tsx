@@ -39,11 +39,15 @@ const Home = ({ ...props }) => {
         <MaxWidthWrapper className="relative flex w-full items-center justify-center">
           <div className="flex w-full flex-col items-center justify-between gap-10 md:flex-row md:gap-0">
             <div className="flex w-full flex-col justify-center gap-6 md:w-2/3">
-              <span className="text-5xl !font-bold text-black md:text-6xl">
-                Hello there,
-                <br />
-                I&apos;m SUHAS <span className="wiggle">👋</span>
-              </span>
+              <div className="flex w-full flex-col justify-center gap-2">
+                <span className="text-3xl !font-bold text-black md:text-4xl">
+                  <span className="wiggle">👋</span> Hello there, I&apos;m
+                </span>
+                <span className="text-5xl !font-bold text-black md:text-6xl">
+                  SUHAS KASHYAP
+                </span>
+              </div>
+
               <span className="text-3xl md:text-4xl ">
                 Welcome to my slice of the Interwebs.
               </span>
