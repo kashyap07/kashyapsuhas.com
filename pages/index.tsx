@@ -59,7 +59,7 @@ const Home = ({ ...props }) => {
 
             <div className="relative flex h-56 w-56 md:h-80 md:w-80">
               <Image
-                src={"/profile.jpeg"}
+                src={"/profile_640.jpg"}
                 alt="suhas image"
                 layout="fill"
                 className="select-none rounded-full"
