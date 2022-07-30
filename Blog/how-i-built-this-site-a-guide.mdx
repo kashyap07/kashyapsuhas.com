@@ -6,11 +6,10 @@ tags:
   - guide
 draft: true
 author: Suhas Kashyap
-title: "How I built this site: A guide for dummies"
-description:
-  How I set up a personal site and blog from scratch. Explained at a beginner
+title: 'How I built this site: A guide for dummies'
+description: How I set up a personal site and blog from scratch. Explained at a beginner
   level.
-hero_image: ""
+hero_image: ''
 ---
 
 _Hello World!_
@@ -34,9 +33,17 @@ Once you make the payment, you'll have to wait for a while for them to allocate 
 Here's all the tech that I happened to use; I'll explain each later on -  
 [NextJs](https://nextjs.org/) as the React Framework. This does SO MANY THINGS. The developer experience is amazing; Just `create-next-app`, add a few lines and you're set. You now have an amazingly responsive Statically Generated Site.
 
-<del>[Heroku](https://www.heroku.com/) as the hosting provider. I did not know about Vercel/Netlify at the point I set this up. They could be better, I will explore them in the future.</del>
+<del>
+  [Heroku](https://www.heroku.com/) as the hosting provider. I did not know about Vercel/Netlify at
+  the point I set this up. They could be better, I will explore them in the future.
+</del>
 
-<del>For now, Heroku does everything I want - 1 click to link up to my project git repo see: [github repo](https://github.com/kashyap07/kashyapsuhas.com), (almost) 0-configure auto-deploy whenever I commit to `main` branch with good build logs, and a reasonably low cost as well. I'm currently paying for the _Hobby tier_ which costs me $7 per month.</del>
+<del>
+  For now, Heroku does everything I want - 1 click to link up to my project git repo see: [github
+  repo](https://github.com/kashyap07/kashyapsuhas.com), (almost) 0-configure auto-deploy whenever I
+  commit to `main` branch with good build logs, and a reasonably low cost as well. I'm currently
+  paying for the _Hobby tier_ which costs me $7 per month.
+</del>
 
 Update March 3, 2022: Friendship ended with Heroku, [Vercel](https://vercel.com) is my new best friend. You borderline do not require a brain to use Vercel. Just connect your git account, point at the right repository and you're done. And it's FREE!
 
@@ -66,11 +73,20 @@ What also happens to come as standard is Server-side-rendering. There are 3 ways
 
 1. SSG (Static Site Generation)
    The best way to make sites. Perfect SEO. No calls to server when user requests for pages. NextJs pre-renders the HTML and fetches all the data one needs during build time.
-   // TODO: add more info
 2. SSR (Server Side Rendering)
-   // TODO
+   SSG works great for static sites, but the moment you need dynamic data, you need to speak to the server. With SSR, your pages will be fetched on-demad, but you will still have SEO benefits.
 3. ISG (Incremental Static Generation)
-   Best of both worlds bla bla.
-   // TODO
+   ISG is the best of both worlds. It works like SSG, but there is also an option to "revalidate" the cache - it fetches fresh data if there's any change to be found. This way, you can have very performant static sites, but also have updated content on the fly.
 
-To be continued...
+The way NextJs does things is that, the initial is statically generated, but any links in the page will have be generated on the client. It also happens to pre-fetch data in the form of json - works based on the intersection observer api - so when a user clicks on a link, there is no network call to the server at all! Kinda feels like magic but that's just how it is in NextJs' world.
+
+Also ships with next/image - great tool for automagcally optimizing images.
+
+## MDX - Markdown, but ✨ fancy ✨
+
+Markdown is the best way to write blogs - think everyone agrees with that. It's literally built for this purpose. Makes having consistent stying super easy, allows modifications to styling in the future simple as well. The only limiting factor is the kind of elements you can include in it. That's where MDX comes in. It's a React component that allows you to use React components in your markdown.
+
+See [components/OverrRideDefaultHTML.tsx](/components/OverrRideDefaultHTML.tsx) for an example.
+
+Ok, at this point I just got super bored.  
+Just see source code for this blog. It's under MIT. Enjoy.
