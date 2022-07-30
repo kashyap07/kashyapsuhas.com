@@ -4,13 +4,9 @@
 
 @layer base {
   :root {
-    --color-primary: #3e4dd8;
-    --color-secondary: #e25e71;
-    --color-tertiary: #68a29e;
-
     /* https://cdn.dribbble.com/users/2884462/screenshots/15777502/media/f86909f430b8ef603e47aa7e8fe6ea3f.png */
     /* https://mycolor.space/?hex=%233F9FFE&sub=1 */
-    --color-primary: #3f9ffe;
+    --color-primary: #1485f5;
     --color-secondary: #fe4787;
     --color-tertiary: #878eff;
   }
@@ -23,7 +19,7 @@
     @apply break-words text-5xl font-bold;
   }
   h2 {
-    @apply text-2xl font-bold text-primary;
+    @apply text-2xl font-bold;
   }
 
   * {

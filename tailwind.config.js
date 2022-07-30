@@ -94,24 +94,21 @@ module.exports = {
       typography: (theme) => ({
         DEFAULT: {
           css: {
-            h1: { color: theme("colors.primary") },
-            h2: { color: theme("colors.primary") },
-            h3: { color: theme("colors.primary") },
-            h4: { color: theme("colors.primary") },
-            p: { fontWeight: 500 },
+            // h1: { color: theme("colors.primary") },
+            // h2: { color: theme("colors.primary") },
+            // h3: { color: theme("colors.primary") },
+            // h4: { color: theme("colors.primary") },
+            p: { fontWeight: 400 },
             iframe: { width: "100%" },
-            a: { color: theme("colors.tertiary"), fontWeight: 700 },
+            a: {
+              color: theme("colors.primary"),
+              fontWeight: 700,
+              textDecoration: "none",
+            },
             strong: {
               color: theme("colors.secondary"),
               fontWeight: 700,
               marginRight: "2px",
-            },
-            em: {
-              color: theme("colors.secondary"),
-              fontWeight: 700,
-              fontStyle: "italic",
-              marginRight: "2px",
-              marginLeft: "2px",
             },
           },
         },
