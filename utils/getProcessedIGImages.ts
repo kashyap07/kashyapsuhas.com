@@ -7,7 +7,7 @@ const urlPre =
  */
 const getProcessedIGImages = async (items = 5) => {
   try {
-    const response = await fetch(`${urlPre}/api/get-ig-images`, {
+    const response = await fetch(`https://www.kashyapsuhas.com/api/get-ig-images`, {
       method: 'GET',
     });
 
