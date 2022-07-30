@@ -56,14 +56,16 @@ const Home = ({ ...props }) => {
             {/* <div className="absolute-center relative flex h-[310px] w-[310px] items-center justify-center rounded-full bg-white">
                 <div className="relative flex h-[295px] w-[295px] items-center justify-center rounded-full"> */}
 
-            <div className="relative flex h-56 w-56 md:h-80 md:w-80">
-              <Image
-                src={"/profile_640.jpg"}
-                alt="suhas image"
-                layout="fill"
-                className="select-none rounded-full"
-              />
-            </div>
+            {/* <div className="relative flex h-56 w-56 md:h-80 md:w-80"> */}
+            <Image
+              src={"/profile_640.jpg"}
+              alt="suhas image"
+              layout="fixed"
+              height={320}
+              width={320}
+              className="select-none rounded-full"
+            />
+            {/* </div> */}
           </div>
         </MaxWidthWrapper>
 
