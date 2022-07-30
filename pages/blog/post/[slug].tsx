@@ -53,8 +53,8 @@ export const getStaticProps = async ({ params }: { params: any }) => {
 
 export const getStaticPaths = () => {
   return {
-    paths: ['/blog/post/how-i-built-this-site-a-guide'],
-    fallback: false,
+    paths: [],
+    fallback: true,
   };
 };
 
@@ -108,17 +108,15 @@ const Slug = ({ className = '', ...props }) => {
 
                 <div data-element="post-body" className="relative justify-between md:flex">
                   <div data-element="post-prose" className="lg:w-full lg:max-w-prose">
-                    {/* <InnerHTML
-                    html={post.html.compiledSource}
-                    className="prose md:prose-lg  max-w-none"
-                  /> */}
+                    {/* FIXME:  overflow-x-hidden SHITTY FIX FOR NON-STYLED CODE SNIPPET */}
+                    {/* FIXME:  MANUAL PRE ADDED */}
                     <div className="prose prose-lg max-w-none font-serif text-black">
                       <MDXRemote {...post.mdxSource} components={components} />
                     </div>
                   </div>
                   <aside
                     data-element="post-table-of-contents"
-                    className="sticky top-1/4 hidden h-80 w-auto flex-col lg:flex"
+                    className="sticky top-1/4 ml-10 hidden h-80 w-auto flex-col lg:flex"
                   >
                     <h2 className="text-primary">Table of contents</h2>
                     <nav
