@@ -1,0 +1,83 @@
+---
+category: Tech
+creation_date: 2022-07-31T02:16:04+05:30
+tags:
+- tech
+- guide
+draft: false
+author: Suhas Kashyap
+title: Display images from your instagram
+description: Displaying images from IG account using Instagram display and graph API
+hero_image: "/blog/2022/screenshot-2022-07-31-at-2-13-38-am.png"
+
+---
+If you've been wanting to fetch images from your Instagram and display them on your site, thus not maintaining a double gallery of sorts - you've come to the right place.
+
+This guide will briefly go through this non-trivial process.
+
+Follow Meta Developer guide for an in-depth tutorial: [https://developers.facebook.com/docs/instagram-basic-display-api/getting-started](https://developers.facebook.com/docs/instagram-basic-display-api/getting-started "Instagram-basic-display-api/getting-started")
+
+## Initial set up
+
+You'll need a 
+
+1. Facebook app
+2. Instagram Basic Display app
+3. Instagram test user
+4. A Privacy Policy page
+
+Details for the first 3 are in the document shared above.
+
+You'll also need a privacy policy page, I generated mine using [https://www.termsfeed.com/privacy-policy-generator/](https://www.termsfeed.com/privacy-policy-generator/ "Privacy Policy Generator")
+
+## Authenticate test user
+
+Following the official tutorial, construct the auth URL, and paste it into the browser where you've already logged into Instagram. It looks something like this for me: 
+
+    https://api.instagram.com/oauth/authorize?client_id=<CLIENT_ID>&redirect_uri=https://www.kashyapsuhas.com/&scope=user_profile,user_media&response_type=code
+
+This opens up an OAuth form, allowing you to authorize this test user.
+
+Once, done, you'll be redirected to your app's redirection page, in this case, kashyapsuhas.com, with the authorization URI appended to the end of the url. Ignore the `#_` part and save that string.
+
+## Fetch access token from auth code
+
+You can't do much with that string yet; To get the access token, request the `access_token` api while passing in previously obtained code. Looks something like this for me:
+
+    curl -L -X POST 'https://api.instagram.com/oauth/access_token' -F 'client_id="<CLIENT_ID>"' -F 'client_secret="<CLIENT_SECRET>"' -F 'grant_type="authorization_code"' -F 'redirect_uri="https://www.kashyapsuhas.com/"' -F 'code="<AUTH_CODE>"'
+
+![](/blog/2022/screenshot-2022-07-31-at-2-37-39-am.png)
+
+You now have access_token.
+
+However, this token is short-lived.
+
+## Exchange short token for long-lived token
+
+To get a decently long-lived (60 days) token, run the access_token api again but with `grant` as \`ig_exchange_token\`
+
+Looked something like this in my case:
+
+    curl -L -X GET 'https://graph.instagram.com/access_token?grant_type=ig_exchange_token&client_secret=<CLIENT_SECRET>&access_token=<SECRET_TOKEN>'
+
+![](/blog/2022/screenshot-2022-07-31-at-2-45-59-am.png)
+
+We now have an access token TTL as 5184000.
+
+## Fetching the images
+
+To fetch the images themselves, use the `graph` api.
+
+    https://graph.instagram.com/me/media?fields=id,media_url,permalink,caption&access_token=<TOKEN>
+
+Now, I would obviously not want to expose any of these keys to the client. To do so, I'd have to have a separate backend, which is a bit of an overkill. Luckily for us, NextJs has the "API" routes - routes that essentially work like the backend for us. I can now move the fetching logic to this file, while invoking the backend function through a simple fetch-image API, thus hiding the network call.
+
+See [https://github.com/kashyap07/kashyapsuhas.com/blob/main/pages/api/get-ig-images.ts](https://github.com/kashyap07/kashyapsuhas.com/blob/main/pages/api/get-ig-images.ts "https://github.com/kashyap07/kashyapsuhas.com/blob/main/pages/api/get-ig-images.ts") for reference.
+
+## TODO
+
+Refreshing these tokens is a manual process that I need to do every 2 months at the moment. I haven't figured out how to automate this yet, especially the authorizing test user part. Will update this guide if I figure that out.
+
+Also to note: the ig/fb APIs seem a bit buggy - they simply do not work at time for no apparent reason.
+
+That is all, now head to [https://www.instagram.com/kashyap_07/](https://www.instagram.com/kashyap_07/ "https://www.instagram.com/kashyap_07/") and enjoy some exquisite photography.

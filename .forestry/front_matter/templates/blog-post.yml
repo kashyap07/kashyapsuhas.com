@@ -59,4 +59,5 @@ fields:
   config:
     required: true
 pages:
+- Blog/display-images-from-your-instagram.mdx
 - Blog/how-i-built-this-site-a-guide.mdx
