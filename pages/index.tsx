@@ -1,15 +1,11 @@
-import { useRouter } from "next/router";
-import MaxWidthWrapper from "../components/MaxWidthWrapper";
-import {
-  PinkHalo,
-  ScrollDownIndicator,
-  TealHalo,
-} from "../components/CSSElements";
-import PreviewRecentIG from "../components/PreviewRecentIG";
-import PreviewRecentPosts from "../components/PreviewRecentPosts";
-import { getFrontMatters } from "../utils/getFrontMatters";
-import getProcessedIGImages from "../utils/getProcessedIGImages";
-import Image from "next/image";
+import { useRouter } from 'next/router';
+import MaxWidthWrapper from '../components/MaxWidthWrapper';
+import { PinkHalo, ScrollDownIndicator, TealHalo } from '../components/CSSElements';
+import PreviewRecentIG from '../components/PreviewRecentIG';
+import PreviewRecentPosts from '../components/PreviewRecentPosts';
+import { getFrontMatters } from '../utils/getFrontMatters';
+import getProcessedIGImages from '../utils/getProcessedIGImages';
+import Image from 'next/image';
 
 export async function getStaticProps() {
   const frontMatters = await getFrontMatters();
@@ -42,14 +38,10 @@ const Home = ({ ...props }) => {
                 <span className="text-3xl !font-bold text-black md:text-4xl">
                   <span className="wiggle">👋</span> Hello there, I&apos;m
                 </span>
-                <span className="text-5xl !font-bold text-black md:text-6xl">
-                  SUHAS KASHYAP
-                </span>
+                <span className="text-5xl !font-bold text-black md:text-6xl">SUHAS KASHYAP</span>
               </div>
 
-              <span className="text-3xl md:text-4xl ">
-                Welcome to my slice of the Interwebs.
-              </span>
+              <span className="text-3xl md:text-4xl ">Welcome to my slice of the Interwebs.</span>
             </div>
 
             {/* This was for gradient ring around pp */}
@@ -58,7 +50,7 @@ const Home = ({ ...props }) => {
 
             {/* <div className="relative flex h-56 w-56 md:h-80 md:w-80"> */}
             <Image
-              src={"/profile_640.jpg"}
+              src={'/profile_640.jpg'}
               alt="suhas image"
               layout="fixed"
               height={320}

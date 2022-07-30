@@ -1,15 +1,15 @@
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import MaxWidthWrapper from "./MaxWidthWrapper";
-import useIsScrolled from "../utils/useScrollPosition";
-import HamburgerMenu from "./HamburgerMenu";
-import { PinkHalo, TealHalo } from "./CSSElements";
-import { Socials, socialsObj } from "./Socials";
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import MaxWidthWrapper from './MaxWidthWrapper';
+import useIsScrolled from '../utils/useScrollPosition';
+import HamburgerMenu from './HamburgerMenu';
+import { PinkHalo, TealHalo } from './CSSElements';
+import { Socials, socialsObj } from './Socials';
 
 const headerNavLinks = [
-  { title: "BLOG", href: "/blog" },
-  { title: "WORK", href: "/work" },
-  { title: "CONTACT", href: "/contact" },
+  { title: 'BLOG', href: '/blog' },
+  { title: 'WORK', href: '/work' },
+  { title: 'CONTACT', href: '/contact' },
 ];
 
 const Header = () => {
@@ -20,7 +20,7 @@ const Header = () => {
   return (
     <header
       className={`fixed top-0 z-50 h-16 w-full border-b bg-white bg-opacity-80 backdrop-blur backdrop-saturate-200 backdrop-filter transition-all duration-500 ease-out
-      ${isScrolled ? "border-opacity-100" : "border-opacity-0"}`}
+      ${isScrolled ? 'border-opacity-100' : 'border-opacity-0'}`}
     >
       <MaxWidthWrapper>
         <nav className="nav z-50 flex items-center justify-between py-4">
@@ -41,9 +41,9 @@ const Header = () => {
 
             {/* desktop list */}
             <div className="ml-3 hidden flex-row items-center md:flex">
-              {headerNavLinks.map((link) => (
+              {headerNavLinks.map(link => (
                 <Link key={link.title} href={link.href} passHref>
-                  <a className="hover:nav-button-hover h-fit-content rounded-full  px-1.5 py-0.5 font-semibold text-black">
+                  <a className="h-fit-content rounded-full px-1.5 py-0.5 font-semibold text-black hover:bg-gray-200">
                     {link.title}
                   </a>
                 </Link>

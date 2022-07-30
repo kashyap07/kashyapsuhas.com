@@ -1,8 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
-import Link from "next/link";
-import { Key } from "react";
-import { BsArrowRight } from "react-icons/bs";
-import { UrlObject } from "url";
+import Link from 'next/link';
+import { Key } from 'react';
+import { BsArrowRight } from 'react-icons/bs';
+import { UrlObject } from 'url';
 
 const PreviewRecentIG = ({
   router,
@@ -19,8 +19,8 @@ const PreviewRecentIG = ({
       <div data-element="preview-section" className="my-2 w-full">
         <h2 className="text-primary">Recent Photos</h2>
 
-        <div data-component="recent-instagrams" className="flex md:pl-2 py-2">
-          <div className="flex flex-row flex-wrap md:flex-nowrap w-full justify-between items-center">
+        <div data-component="recent-instagrams" className="flex py-2 md:pl-2">
+          <div className="flex w-full flex-row flex-wrap items-center justify-between md:flex-nowrap">
             {igPosts.map(
               (post: {
                 id: Key | null | undefined;
@@ -28,7 +28,7 @@ const PreviewRecentIG = ({
                 media_url: string | undefined;
               }) => (
                 <Link key={post.id} href={post.permalink}>
-                  <a className="m-2 relative">
+                  <a className="relative m-2">
                     <img
                       src={post.media_url}
                       alt="Open image in Instagram"
@@ -36,19 +36,19 @@ const PreviewRecentIG = ({
                     />
                   </a>
                 </Link>
-              )
+              ),
             )}
           </div>
         </div>
 
         <Link href="https://www.instagram.com/kashyap_07">
           <a
-            className="flex flex-row items-center gap-1 group"
+            className="group flex flex-row items-center gap-1"
             aria-label="See more Instagram.com"
             target="_blank"
           >
-            See more{" "}
-            <BsArrowRight className="transition-transform duration-700 translate-x-0 group-hover:translate-x-2" />
+            See more{' '}
+            <BsArrowRight className="translate-x-0 transition-transform duration-700 group-hover:translate-x-2" />
           </a>
         </Link>
       </div>

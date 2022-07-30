@@ -1,5 +1,5 @@
-import fs from "fs";
-import path from "path";
+import fs from 'fs';
+import path from 'path';
 
 /**
  * Promise all
@@ -10,7 +10,7 @@ function promiseAllP(
   block: {
     (filename: any, index: any, resolve: any, reject: any): void;
     apply?: any;
-  }
+  },
 ) {
   var promises: any[] = [];
   items.forEach(function (item: any, index: any) {
@@ -20,7 +20,7 @@ function promiseAllP(
           // @ts-ignore
           return block.apply(this, [item, index, resolve, reject]);
         });
-      })(item, index)
+      })(item, index),
     );
   });
   return Promise.all(promises);
@@ -43,23 +43,23 @@ function readFiles(dirname: fs.PathLike) {
           filename: string,
           index: any,
           resolve: (arg0: { filename: any; contents: string }) => void,
-          reject: (arg0: NodeJS.ErrnoException) => void
+          reject: (arg0: NodeJS.ErrnoException) => void,
         ) => {
           fs.readFile(
             // @ts-ignore
             path.resolve(dirname, filename),
-            "utf-8",
+            'utf-8',
             function (err, content) {
               if (err) return reject(err);
               return resolve({ filename: filename, contents: content });
-            }
+            },
           );
-        }
+        },
       )
-        .then((results) => {
+        .then(results => {
           return resolve(results);
         })
-        .catch((error) => {
+        .catch(error => {
           return reject(error);
         });
     });

@@ -1,10 +1,10 @@
-import Link from "next/link";
-import MaxWidthWrapper from "../../components/MaxWidthWrapper";
-import moment from "moment";
-import SideTitle from "../../components/SideTitle";
-import { BsArrowRight } from "react-icons/bs";
-import { getFrontMatters } from "../../utils/getFrontMatters";
-import { Key } from "react";
+import Link from 'next/link';
+import MaxWidthWrapper from '../../components/MaxWidthWrapper';
+import moment from 'moment';
+import SideTitle from '../../components/SideTitle';
+import { BsArrowRight } from 'react-icons/bs';
+import { getFrontMatters } from '../../utils/getFrontMatters';
+import { Key } from 'react';
 
 export async function getStaticProps() {
   const frontMatters = await getFrontMatters();
@@ -16,7 +16,7 @@ export async function getStaticProps() {
   };
 }
 
-const Blog = ({ className = "", ...props }) => {
+const Blog = ({ className = '', ...props }) => {
   const fm = props.frontMatterData;
 
   return (
@@ -33,29 +33,24 @@ const Blog = ({ className = "", ...props }) => {
                   title: any;
                   creation_date: moment.MomentInput;
                 },
-                index: Key | null | undefined
+                index: Key | null | undefined,
               ) => {
                 return (
                   <li className="w-full" key={index}>
-                    <Link
-                      href={`/blog/post/${item.filename
-                        .split(".")
-                        .slice(0, -1)
-                        .join(".")}`}
-                    >
+                    <Link href={`/blog/post/${item.filename.split('.').slice(0, -1).join('.')}`}>
                       <a className=":bg-gray-900 group flex w-full flex-col justify-between border-b px-2 py-5 font-medium transition-colors duration-300 ease-in  hover:bg-gray-50 md:px-4">
                         <div className="flex items-center gap-4">
                           <span className="text-xl">{item.title}</span>
                           <BsArrowRight className="hidden translate-x-0 opacity-0 transition-all duration-700 group-hover:translate-x-2 group-hover:text-black group-hover:opacity-100 md:block" />
                         </div>
                         <span className="text-base text-black ">
-                          {moment(item.creation_date).format("MMM Do YYYY")}
+                          {moment(item.creation_date).format('MMM Do YYYY')}
                         </span>
                       </a>
                     </Link>
                   </li>
                 );
-              }
+              },
             )}
           </ul>
         </div>

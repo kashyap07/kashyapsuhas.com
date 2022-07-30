@@ -1,5 +1,5 @@
 // from https://designcode.io/react-hooks-handbook-usescrollposition-hook
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 const useScrollPosition = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -8,9 +8,9 @@ const useScrollPosition = () => {
     const updatePosition = () => {
       setScrollPosition(window.pageYOffset);
     };
-    window.addEventListener("scroll", updatePosition, { passive: true });
+    window.addEventListener('scroll', updatePosition, { passive: true });
     updatePosition();
-    return () => window.removeEventListener("scroll", updatePosition);
+    return () => window.removeEventListener('scroll', updatePosition);
   }, []);
 
   return scrollPosition;

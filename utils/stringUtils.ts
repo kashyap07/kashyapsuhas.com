@@ -4,12 +4,10 @@
 // yields: go-daddy-daddys-go-and-then-i-eat-pokemon-go-what
 const slugify = (str: string) => {
   str = str.toLowerCase();
-  str = str.split(" ").join("-");
-  str = str.split(/\t/).join("--");
-  str = str.split(/[|$&`~=\\\/@+*!?({[\]})<>=.,;:'"^]/).join("");
-  str = str
-    .split(/[。？！，、；：“”【】（）〔〕［］﹃﹄“ ”‘’﹁﹂—…－～《》〈〉「」]/)
-    .join("");
+  str = str.split(' ').join('-');
+  str = str.split(/\t/).join('--');
+  str = str.split(/[|$&`~=\\\/@+*!?({[\]})<>=.,;:'"^]/).join('');
+  str = str.split(/[。？！，、；：“”【】（）〔〕［］﹃﹄“ ”‘’﹁﹂—…－～《》〈〉「」]/).join('');
 
   return str;
 };

@@ -16,9 +16,9 @@ const getIGImages = async (req: any, res: any) => {
     const response = await fetch(
       `https://graph.instagram.com/me/media?fields=id,media_url,permalink&access_token=${ACCESS_TOKEN}`,
       {
-        method: "GET",
-        redirect: "follow",
-      }
+        method: 'GET',
+        redirect: 'follow',
+      },
     );
 
     if (!response.ok) {

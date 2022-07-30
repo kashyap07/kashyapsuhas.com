@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 const useIsScrolled = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -9,9 +9,9 @@ const useIsScrolled = () => {
       // @ts-ignore
       else setIsScrolled(!window.pageYOffset == 0);
     };
-    window.addEventListener("scroll", updatePosition, { passive: true });
+    window.addEventListener('scroll', updatePosition, { passive: true });
     updatePosition();
-    return () => window.removeEventListener("scroll", updatePosition);
+    return () => window.removeEventListener('scroll', updatePosition);
   }, [isScrolled]);
 
   return isScrolled;

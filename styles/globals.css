@@ -134,9 +134,3 @@
     @apply bg-gradient-to-r from-tertiary to-secondary bg-clip-text text-transparent;
   }
 }
-
-@variants hover, focus {
-  .nav-button-hover {
-    @apply bg-gray-900;
-  }
-}

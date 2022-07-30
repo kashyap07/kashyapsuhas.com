@@ -2,7 +2,7 @@ const TopWave = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 1440 130"
-    className="absolute z-10 hidden md:block -top-1 filter drop-shadow-wave-seperator"
+    className="absolute -top-1 z-10 hidden drop-shadow-wave-seperator filter md:block"
   >
     {/* from https://yqnn.github.io/svg-path-editor/ */}
     <path
@@ -17,7 +17,7 @@ const BottomWave = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 1440 163"
-    className="absolute hidden md:block -bottom-2 filter -drop-shadow-wave-seperator md:z-10"
+    className="absolute -bottom-2 hidden -drop-shadow-wave-seperator filter md:z-10 md:block"
   >
     <path
       className="z-30 fill-current text-background"
@@ -28,7 +28,7 @@ const BottomWave = () => (
 );
 
 const Kashyap = () => (
-  <div className="absolute z-0 hidden transform scale-125 -rotate-90 xl:block top-52 opacity-10 text-neutral">
+  <div className="text-neutral absolute top-52 z-0 hidden -rotate-90 scale-125 transform opacity-10 xl:block">
     <svg width="100%" viewBox="0 0 500 100" xmlns="http://www.w3.org/2000/svg">
       <path
         className="z-0 fill-current text-background"

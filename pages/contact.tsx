@@ -1,6 +1,6 @@
-import MaxWidthWrapper from "../components/MaxWidthWrapper";
-import SideTitle from "../components/SideTitle";
-import { Socials } from "../components/Socials";
+import MaxWidthWrapper from '../components/MaxWidthWrapper';
+import SideTitle from '../components/SideTitle';
+import { Socials } from '../components/Socials';
 
 const contact = ({ className }: { className?: string }) => {
   return (

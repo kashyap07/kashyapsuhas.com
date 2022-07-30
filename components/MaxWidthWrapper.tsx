@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import clsx from 'clsx';
 
 const WrapperBackground = ({
   children,
@@ -7,9 +7,7 @@ const WrapperBackground = ({
   children: JSX.Element;
   className?: string;
 }) => {
-  return (
-    <div className={`h-full md:-ml-6 md:-mr-6 ${className}`}>{children}</div>
-  );
+  return <div className={`h-full md:-ml-6 md:-mr-6 ${className}`}>{children}</div>;
 };
 
 const MaxWidthWrapper = ({
@@ -24,16 +22,9 @@ const MaxWidthWrapper = ({
   return (
     <div
       data-component="max-width-wrapper"
-      className={clsx(
-        "max-w-full lg:max-w-wrapper mx-auto px-4 sm:px-6",
-        className
-      )}
+      className={clsx('mx-auto max-w-full px-4 sm:px-6 lg:max-w-wrapper', className)}
     >
-      {withBg ? (
-        <WrapperBackground>{children}</WrapperBackground>
-      ) : (
-        <>{children}</>
-      )}
+      {withBg ? <WrapperBackground>{children}</WrapperBackground> : <>{children}</>}
     </div>
   );
 };

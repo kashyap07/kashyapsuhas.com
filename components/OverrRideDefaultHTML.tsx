@@ -1,8 +1,8 @@
-import SyntaxHighlighter from "react-syntax-highlighter";
-import { atomOneDarkReasonable } from "react-syntax-highlighter/dist/cjs/styles/hljs";
-import { BsLink45Deg } from "react-icons/bs";
-import { ReactChild, ReactFragment, ReactPortal } from "react";
-import { slugify } from "../utils/stringUtils";
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { atomOneDarkReasonable } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
+import { BsLink45Deg } from 'react-icons/bs';
+import { ReactChild, ReactFragment, ReactPortal } from 'react';
+import { slugify } from '../utils/stringUtils';
 
 // TODO: https://github.com/react-syntax-highlighter/react-syntax-highlighter#light-build
 
@@ -10,7 +10,7 @@ const pre = (props: {
   children: { props: { className?: any; metastring: any; children: any } };
 }) => {
   const { className, metastring, children } = props.children?.props;
-  const language = className.split("-").slice(-1)[0];
+  const language = className.split('-').slice(-1)[0];
   return (
     <div data-component="code-block" className="relative">
       {metastring && (
@@ -18,11 +18,7 @@ const pre = (props: {
           {metastring}
         </span>
       )}
-      <SyntaxHighlighter
-        language={language}
-        style={atomOneDarkReasonable}
-        showLineNumbers
-      >
+      <SyntaxHighlighter language={language} style={atomOneDarkReasonable} showLineNumbers>
         {children}
       </SyntaxHighlighter>
     </div>
@@ -53,7 +49,7 @@ const AnchorIcon = ({ id }) => {
 
 const h1 = (props: { children: {} | null | undefined }) => {
   // @ts-ignore
-  const id = props?.children?.split(" ").join("-").toLowerCase();
+  const id = props?.children?.split(' ').join('-').toLowerCase();
   return (
     <h1 id={id} className="group relative -ml-12 pl-12">
       <AnchorIcon id={id} />

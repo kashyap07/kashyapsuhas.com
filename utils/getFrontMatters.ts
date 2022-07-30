@@ -1,5 +1,5 @@
-import { readFiles } from "./fileUtils";
-import matter from "gray-matter";
+import { readFiles } from './fileUtils';
+import matter from 'gray-matter';
 
 /**
  * get Front Matters of all files sorted by date
@@ -8,9 +8,9 @@ import matter from "gray-matter";
 const getFrontMatters = async () => {
   const frontMatters: { [x: string]: any }[] = [];
 
-  await readFiles("Blog").then((files) => {
+  await readFiles('Blog').then(files => {
     // @ts-ignore
-    files.forEach((post) => {
+    files.forEach(post => {
       let fm = matter(post.contents);
 
       // date is date object, fix this by modifying frontmatter config in forestry
