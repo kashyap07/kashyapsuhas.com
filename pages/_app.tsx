@@ -1,7 +1,7 @@
 import Footer from "../components/Footer";
 import Head from "next/head";
 import Header from "../components/Header";
-import "@styles/tailwind.css";
+import "@styles/globals.css";
 import "@styles/index.css";
 import "@styles/CSSElements.css";
 import "@styles/syntax-highlight.css";
