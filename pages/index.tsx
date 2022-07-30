@@ -9,14 +9,14 @@ import Image from 'next/image';
 
 export async function getStaticProps() {
   const frontMatters = await getFrontMatters();
-  // const posts = await getProcessedIGImages(5);
+  const posts = await getProcessedIGImages(5);
 
   return {
     props: {
       frontMatterData: frontMatters,
-      // igPosts: posts,
+      igPosts: posts,
     },
-    // revalidate: 1800, // check once every 30 seconds
+    revalidate: 1800, // check once every 30 seconds
   };
 }
 
@@ -55,6 +55,7 @@ const Home = ({ ...props }) => {
               layout="fixed"
               height={320}
               width={320}
+              priority={true}
               className="select-none rounded-full"
             />
             {/* </div> */}
