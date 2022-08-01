@@ -56,6 +56,7 @@ export const getStaticPaths = () => {
     paths: [
       '/blog/post/how-i-built-this-site-a-guide',
       '/blog/post/display-images-from-your-instagram',
+      '/blog/post/debugging-the-nextjs-fallback-true-error',
     ],
     fallback: false,
   };
