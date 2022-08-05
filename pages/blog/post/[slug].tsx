@@ -16,9 +16,7 @@ import path from 'path';
 
 const getPost = async (slug: string) => {
   // FIXME: hardcoded to mdx
-  console.log(path.join(process.cwd(), 'Blog', `${slug}.mdx`));
   const postContent = fs.readFileSync(path.join(process.cwd(), 'Blog', `${slug}.mdx`), 'utf8');
-  // const postContent = fs.readFileSync('Blog/' + slug + '.mdx');
   const frontMatter = JSON.parse(JSON.stringify(matter(postContent)));
   const { creation_date, ...frontMatterWithoutDate } = frontMatter.data;
   const tocList = toc(frontMatter.content);
@@ -49,7 +47,6 @@ const components = {
 
 export const getStaticProps = async ({ params }: { params: any }) => {
   const post = await getPost(params.slug);
-  console.log();
   return {
     props: { post },
   };
@@ -57,11 +54,6 @@ export const getStaticProps = async ({ params }: { params: any }) => {
 
 export const getStaticPaths = () => {
   return {
-    // paths: [
-    //   '/blog/post/how-i-built-this-site-a-guide',
-    //   '/blog/post/display-images-from-your-instagram',
-    //   '/blog/post/debugging-the-nextjs-fallback-true-error',
-    // ],
     paths: [],
     fallback: true,
   };
