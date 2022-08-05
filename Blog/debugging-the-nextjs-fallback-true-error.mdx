@@ -2,18 +2,35 @@
 category: Tech
 creation_date: 2022-08-01T09:10:55+05:30
 tags:
-- tech
+  - tech
 draft: true
 author: Suhas Kashyap
 title: 'Debugging the NextJs fallback: true error'
 description: bla bla
 hero_image: ''
-
 ---
-There's currently a bug with my NextJs SSG implementation - `fallback: true` doesn't seem to work. 
 
-The way NextJs's fallback should work is that I pass an empty array as paths, and then say fallback is true - ok too much to explain, just read the docs: [https://nextjs.org/docs/api-reference/data-fetching/get-static-paths](https://nextjs.org/docs/api-reference/data-fetching/get-static-paths "https://nextjs.org/docs/api-reference/data-fetching/get-static-paths")
+There's currently a bug with my NextJs SSG implementation - `fallback: true` doesn't seem to work.
 
-## Maybe I should re-read the docs.
+The way NextJs's fallback should work is that I pass an empty array as paths, and then say fallback is true - ok too much to explain, just read the docs: [https://nextjs.org/docs/api-reference/data-fetching/get-static-paths](https://nextjs.org/docs/api-reference/data-fetching/get-static-paths 'https://nextjs.org/docs/api-reference/data-fetching/get-static-paths')
 
-There's some new stuff in there
+## Current implementation
+
+Here&apos;s the way the blog is set up currently -
+Blog mdx files are in-repo, they&apos;re updated through forestry.io (or manually by me), they are essentially not served from external sources. So everytime there is an update to the repo, the entire project is re-built by Vercel and thus I get the latest updated blog.
+
+To get this to work, in my "slug" file - the individual blog file, I open the file through `fs.readFileSync('Blog/' + slug + '.mdx');` (hardcoded) and pass it onto `next-mdx-remote`&apos;s `serialize` function.
+
+## The issue
+
+I was searching around and game across this issue on Guthub - https://github.com/vercel/next.js/discussions/13013. This got me thinking, "what&apos; the ONE thing that differs between local and production?" - messed around and found that it was `readFileSync`&apos;s path. It was taking in an absolute path that dirrered between local and Vercel.
+
+## The fix
+
+Changed the path to be relative to the project root.
+The new line of code is:
+
+<pre>fs.readFileSync(path.join(process.cwd(), 'Blog', `${slug}.mdx`), 'utf8');</pre>
+
+That&apos;s it, folks!
+Enjoy the day.
