@@ -95,11 +95,11 @@ const Slug = ({ className = '', ...props }) => {
   return (
     <>
       <NextSeo
-        title={post.title || "Suhas Kashyap's personal site"}
-        description={post.postDescription}
+        title={post?.title || "Suhas Kashyap's personal site"}
+        description={post?.postDescription}
         openGraph={{
-          title: post.title || "Suhas Kashyap's personal site",
-          description: post.postDescription,
+          title: post?.title || "Suhas Kashyap's personal site",
+          description: post?.postDescription,
           images: [
             {
               url: '/profile_640.jpg',
