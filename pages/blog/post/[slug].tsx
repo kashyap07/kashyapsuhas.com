@@ -1,18 +1,19 @@
-import { useRouter } from 'next/router';
-import Link from 'next/link';
 import fs from 'fs';
+import Link from 'next/link';
 import matter from 'gray-matter';
-import { marked } from 'marked';
-import SideTitle from '../../../components/SideTitle';
 import MaxWidthWrapper from '../../../components/MaxWidthWrapper';
-import { HiChevronRight } from 'react-icons/hi';
+import path from 'path';
+import SideTitle from '../../../components/SideTitle';
 // @ts-ignore
 import toc from 'markdown-toc';
-import { serialize } from 'next-mdx-remote/serialize';
-import { MDXRemote } from 'next-mdx-remote';
+import { h1, h2, h3, h4, inlineCode, pre } from '../../../components/OverrRideDefaultHTML';
+import { HiChevronRight } from 'react-icons/hi';
+import { marked } from 'marked';
 import { MDXProvider } from '@mdx-js/react';
-import { pre, h1, h2, h3, h4, inlineCode } from '../../../components/OverrRideDefaultHTML';
-import path from 'path';
+import { MDXRemote } from 'next-mdx-remote';
+import { NextSeo } from 'next-seo';
+import { serialize } from 'next-mdx-remote/serialize';
+import { useRouter } from 'next/router';
 
 const getPost = async (slug: string) => {
   // FIXME: hardcoded to mdx
@@ -21,6 +22,7 @@ const getPost = async (slug: string) => {
   const { creation_date, ...frontMatterWithoutDate } = frontMatter.data;
   const tocList = toc(frontMatter.content);
   const mdxSource = await serialize(frontMatter.content);
+  const postDescription = frontMatter.data.description || '';
 
   let post = {
     ...frontMatterWithoutDate,
@@ -31,6 +33,7 @@ const getPost = async (slug: string) => {
     }),
     toc: marked(tocList.content),
     mdxSource: mdxSource,
+    postDescription,
   };
 
   return post;
@@ -90,49 +93,74 @@ const Slug = ({ className = '', ...props }) => {
   const router = useRouter();
 
   return (
-    // @ts-ignore
-    <MDXProvider components={components}>
-      <main className={`${className} relative md:mt-6`}>
-        <SideTitle>POST</SideTitle>
+    <>
+      <NextSeo
+        title={post.title || "Suhas Kashyap's personal site"}
+        description={post.postDescription}
+        openGraph={{
+          title: post.title || "Suhas Kashyap's personal site",
+          description: post.postDescription,
+          images: [
+            {
+              url: '/profile_640.jpg',
+              width: 320,
+              height: 320,
+              alt: 'Suhas Kashyap',
+              type: 'image/jpg',
+            },
+          ],
+          site_name: 'SiteName',
+        }}
+        twitter={{
+          handle: 'kashyapS07',
+          site: 'https://www.kashyapsuhas.com',
+          cardType: 'summary_large_image',
+        }}
+      />
+      {/* @ts-ignore */}
+      <MDXProvider components={components}>
+        <main className={`${className} relative md:mt-6`}>
+          <SideTitle>POST</SideTitle>
 
-        <MaxWidthWrapper withBg>
-          <div className="pt-5 text-xl md:px-7">
-            {router.isFallback ? (
-              <span>Loading post, please wait...</span>
-            ) : (
-              <>
-                <Breadcrumb category={post.category} />
-                <div className="mb-10 flex flex-col items-baseline justify-between gap-2 border-b-4 pb-5 font-sans">
-                  <h1 className="break-words text-5xl font-bold">{post.title}</h1>
-                  <span className="text-base font-medium text-black">{post.date}</span>
-                </div>
-
-                <div data-element="post-body" className="relative justify-between md:flex">
-                  <div data-element="post-prose" className="lg:w-full lg:max-w-prose">
-                    {/* FIXME:  overflow-x-hidden SHITTY FIX FOR NON-STYLED CODE SNIPPET */}
-                    {/* FIXME:  MANUAL PRE ADDED */}
-                    <div className="prose prose-lg max-w-none font-serif text-black">
-                      <MDXRemote {...post.mdxSource} components={components} />
-                    </div>
+          <MaxWidthWrapper withBg>
+            <div className="pt-5 text-xl md:px-7">
+              {router.isFallback ? (
+                <span>Loading post, please wait...</span>
+              ) : (
+                <>
+                  <Breadcrumb category={post.category} />
+                  <div className="mb-10 flex flex-col items-baseline justify-between gap-2 border-b-4 pb-5 font-sans">
+                    <h1 className="break-words text-5xl font-bold">{post.title}</h1>
+                    <span className="text-base font-medium text-black">{post.date}</span>
                   </div>
-                  <aside
-                    data-element="post-table-of-contents"
-                    className="sticky top-1/4 ml-10 hidden h-80 w-auto flex-col lg:flex"
-                  >
-                    <h2 className="text-primary">Table of contents</h2>
-                    <nav
-                      data-element="table-of-contents"
-                      className="table-of-contents"
-                      dangerouslySetInnerHTML={{ __html: post.toc }}
-                    ></nav>
-                  </aside>
-                </div>
-              </>
-            )}
-          </div>
-        </MaxWidthWrapper>
-      </main>
-    </MDXProvider>
+
+                  <div data-element="post-body" className="relative justify-between md:flex">
+                    <div data-element="post-prose" className="lg:w-full lg:max-w-prose">
+                      {/* FIXME:  overflow-x-hidden SHITTY FIX FOR NON-STYLED CODE SNIPPET */}
+                      {/* FIXME:  MANUAL PRE ADDED */}
+                      <div className="prose prose-lg max-w-none font-serif text-black">
+                        <MDXRemote {...post.mdxSource} components={components} />
+                      </div>
+                    </div>
+                    <aside
+                      data-element="post-table-of-contents"
+                      className="sticky top-1/4 ml-10 hidden h-80 w-auto flex-col lg:flex"
+                    >
+                      <h2 className="text-primary">Table of contents</h2>
+                      <nav
+                        data-element="table-of-contents"
+                        className="table-of-contents"
+                        dangerouslySetInnerHTML={{ __html: post.toc }}
+                      ></nav>
+                    </aside>
+                  </div>
+                </>
+              )}
+            </div>
+          </MaxWidthWrapper>
+        </main>
+      </MDXProvider>
+    </>
   );
 };
 
