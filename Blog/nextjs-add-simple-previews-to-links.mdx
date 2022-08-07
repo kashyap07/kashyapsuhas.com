@@ -7,37 +7,39 @@ author: Suhas Kashyap
 title: 'NextJs: Add simple previews to links'
 description: Basics of SEO and stuff
 hero_image: ''
-
 ---
+
 Bruh why isn't NextSeo working
 
 ## Bruh
 
 no work this why
 
-    <NextSeo
-      title={post?.title || 'LOL'}
-      description={post?.postDescription}
-      openGraph={{
-        title: post?.title || 'There is no title',
-        description: post?.postDescription,
-        images: [
-          {
-            url: 'https://www.kashyapsuhas.com/_next/image?url=%2Fprofile_640.jpg&w=640&q=75',
-            width: 320,
-            height: 320,
-            alt: 'Suhas Kashyap',
-            type: 'image/jpg',
-          },
-        ],
-        site_name: 'SiteName',
-      }}
-      twitter={{
-        handle: 'kashyapS07',
-        site: 'https://www.kashyapsuhas.com',
-        cardType: 'summary_large_image',
-      }}
-    />
+```javascript
+<NextSeo
+  title={post?.title || 'LOL'}
+  description={post?.postDescription}
+  openGraph={{
+    title: post?.title || 'There is no title',
+    description: post?.postDescription,
+    images: [
+      {
+        url: 'https://www.kashyapsuhas.com/_next/image?url=%2Fprofile_640.jpg&w=640&q=75',
+        width: 320,
+        height: 320,
+        alt: 'Suhas Kashyap',
+        type: 'image/jpg',
+      },
+    ],
+    site_name: 'SiteName',
+  }}
+  twitter={{
+    handle: 'kashyapS07',
+    site: 'https://www.kashyapsuhas.com',
+    cardType: 'summary_large_image',
+  }}
+/>
+```
 
 ![SiteName](https://slack-imgs.com/?c=1&o1=wi32.he32.si&url=https%3A%2F%2Fwww.kashyapsuhas.com%2Ffavicon.ico =16x16)**SiteName**
 
