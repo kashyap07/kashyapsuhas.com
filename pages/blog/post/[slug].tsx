@@ -102,7 +102,7 @@ const Slug = ({ className = '', ...props }) => {
           description: post?.postDescription,
           images: [
             {
-              url: '/profile_640.jpg',
+              url: 'https://www.kashyapsuhas.com/_next/image?url=%2Fprofile_640.jpg&w=640&q=75',
               width: 320,
               height: 320,
               alt: 'Suhas Kashyap',
