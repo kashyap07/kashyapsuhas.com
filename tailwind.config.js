@@ -62,7 +62,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ['Rubik', 'Montserrat', ...defaultTheme.fontFamily.sans],
-        serif: ['Arvo', 'charter', ...defaultTheme.fontFamily.serif],
+        serif: ['Roboto Mono', 'Arvo', 'charter', ...defaultTheme.fontFamily.serif],
         fancy: ['Gochi Hand', ...defaultTheme.fontFamily.serif],
       },
       colors: {

@@ -149,9 +149,9 @@ const Slug = ({ className = '', ...props }) => {
                       <h2 className="text-primary">Table of contents</h2>
                       <nav
                         data-element="table-of-contents"
-                        className="table-of-contents"
+                        className="table-of-contents font-serif"
                         dangerouslySetInnerHTML={{ __html: post.toc }}
-                      ></nav>
+                      />
                     </aside>
                   </div>
                 </>
