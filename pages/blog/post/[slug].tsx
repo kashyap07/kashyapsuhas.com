@@ -95,10 +95,10 @@ const Slug = ({ className = '', ...props }) => {
   return (
     <>
       <NextSeo
-        title={post?.title || 'LOL'}
+        title={post?.title}
         description={post?.postDescription}
         openGraph={{
-          title: post?.title || 'There is no title',
+          title: post?.title,
           description: post?.postDescription,
           images: [
             {
@@ -138,7 +138,7 @@ const Slug = ({ className = '', ...props }) => {
                     <div data-element="post-prose" className="lg:w-full lg:max-w-prose">
                       {/* FIXME:  overflow-x-hidden SHITTY FIX FOR NON-STYLED CODE SNIPPET */}
                       {/* FIXME:  MANUAL PRE ADDED */}
-                      <div className="prose prose-lg max-w-none font-serif text-black">
+                      <div className="prose prose-base max-w-none font-serif text-black md:prose-lg">
                         <MDXRemote {...post.mdxSource} components={components} />
                       </div>
                     </div>

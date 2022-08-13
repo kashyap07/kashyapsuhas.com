@@ -1,11 +1,11 @@
-import { useRouter } from 'next/router';
+import getProcessedIGImages from '../utils/getProcessedIGImages';
+import Image from 'next/image';
 import MaxWidthWrapper from '../components/MaxWidthWrapper';
-import { PinkHalo, ScrollDownIndicator, TealHalo } from '../components/CSSElements';
 import PreviewRecentIG from '../components/PreviewRecentIG';
 import PreviewRecentPosts from '../components/PreviewRecentPosts';
 import { getFrontMatters } from '../utils/getFrontMatters';
-import getProcessedIGImages from '../utils/getProcessedIGImages';
-import Image from 'next/image';
+import { ScrollDownIndicator } from '../components/CSSElements';
+import { useRouter } from 'next/router';
 
 export async function getStaticProps() {
   const frontMatters = await getFrontMatters();
