@@ -1,0 +1,50 @@
+---
+category: Tech
+creation_date: 2023-02-16T06:03:05+05:30
+tags: []
+draft: false
+author: Suhas Kashyap
+title: Weird JS error!
+description: Just sharing a weird JS error I came across
+hero_image: ''
+
+---
+## Quick Intro
+
+I've been working on implementing a feature at work that requires the integration of a video player library, specifically `videojs`, to support `hls` streams. This feature involves several React components that interacted with each other in a not-so-simple fashion and to manage that I have been relying on Jotai for some time, which is a simple and uncomplicated state management library.
+
+Today, I encountered an unusual bug that has me dumbfounded. Although I have a general understanding of why it has occurred, I am super confused that this is even a thing.
+
+## The Code
+
+    const player = playerRef?.current;
+    const currentPlayerTime = Math.floor(player?.currentTime());
+
+I'm getting the element that `playerRef` is pointing to and fetching its current time. This element is videojs' video player.
+
+Seems normal so far, yes? I've got some decent optional chaining in there to make sure I don't run in to run time errors.
+
+## WTF?
+
+![js-bad](/blog/2023/whatsapp-image-2023-02-15-at-10-56-42-am.jpeg "js-bad")
+
+Why? How? WTF?
+
+I'm checking if `player` is null,  
+if not,  
+I log my player to make sure it exists,  
+and only then do I try to access `currentTime` with optional chaining again.
+
+And yet, I get a run time error!
+
+_Please help me solve this lol!_
+
+## Kinda-sorta why this is happening
+
+This error happens when I go from a page where video player is unmounted and back to a page where it should be mounted. Thus, my player ref checks. 
+
+For some reason, the player exists but with a property `isDisposed` claiming that it's been disposed (and yet the video is playing all well and good). 
+
+Now, whenever `isDisposed` is `true`, the above mentioned error happens. 
+
+_I am still unsure why JS says the player is null, however!_
