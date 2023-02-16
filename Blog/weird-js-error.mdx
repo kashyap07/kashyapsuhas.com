@@ -17,8 +17,10 @@ Today, I encountered an unusual bug that has me dumbfounded. Although I have a g
 
 ## The Code
 
-    const player = playerRef?.current;
-    const currentPlayerTime = Math.floor(player?.currentTime());
+```javascript
+const player = playerRef?.current;
+const currentPlayerTime = Math.floor(player?.currentTime());
+```
 
 I'm getting the element that `playerRef` is pointing to and fetching its current time. This element is videojs' video player.
 
