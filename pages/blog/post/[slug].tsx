@@ -125,7 +125,8 @@ const Slug = ({ className = '', ...props }) => {
       {/* @ts-ignore */}
       <MDXProvider components={components}>
         <main className={`${className} relative md:mt-6`}>
-          <SideTitle>{post?.date?.split(' ')?.at(-1) || 'POST'}</SideTitle>
+          {/* <SideTitle>{post?.date?.split(' ')?.at(-1) || 'POST'}</SideTitle> */}
+          <SideTitle>POST</SideTitle>
 
           <MaxWidthWrapper withBg>
             <div className="pt-5 text-xl md:px-7">
