@@ -18,14 +18,16 @@ import { useRouter } from 'next/router';
 const getPost = async (slug: string) => {
   // FIXME: hardcoded to mdx
   const postContent = fs.readFileSync(path.join(process.cwd(), 'Blog', `${slug}.mdx`), 'utf8');
-
-  console.log({ postContent });
-
   const frontMatter = JSON.parse(JSON.stringify(matter(postContent)));
   const { creation_date, ...frontMatterWithoutDate } = frontMatter.data;
   const tocList = toc(frontMatter.content);
+
+  console.log({ tocList });
+
   const mdxSource = await serialize(frontMatter.content);
   const postDescription = frontMatter.data.description || '';
+
+  console.log({ postDescription });
 
   let post = {
     ...frontMatterWithoutDate,
@@ -38,8 +40,6 @@ const getPost = async (slug: string) => {
     mdxSource: mdxSource,
     postDescription,
   };
-
-  console.log({ post });
 
   return post;
 };
