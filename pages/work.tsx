@@ -6,14 +6,14 @@ import clsx from 'clsx';
 reactPdf.pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${reactPdf.pdfjs.version}/pdf.worker.js`;
 
 const Work = ({ className }: { className?: string }) => {
-  const pdfFile = '/Resume.pdf';
+  const pdfFile = '/suhas-resume.pdf';
 
   return (
     <main className={clsx('relative md:mt-6', className)}>
       <SideTitle>WORK</SideTitle>
 
       <MaxWidthWrapper className="flex items-center justify-center p-5">
-        <Link href="/Resume.pdf">
+        <Link href="/suhas-resume.pdf">
           <a target="_blank" className="overflow-scroll border border-gray-200">
             <reactPdf.Document file={pdfFile}>
               <reactPdf.Page pageNumber={1} />
