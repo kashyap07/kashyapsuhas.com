@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Key } from 'react';
 import { BsArrowRight } from 'react-icons/bs';
 import { UrlObject } from 'url';
+import Image from 'next/image';
 
 const PreviewRecentIG = ({
   router,
@@ -29,6 +30,7 @@ const PreviewRecentIG = ({
               }) => (
                 <Link key={post.id} href={post.permalink}>
                   <a className="relative m-2">
+                    {/* TODO: use next/image */}
                     <img
                       src={post.media_url}
                       alt="Open image in Instagram"
