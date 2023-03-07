@@ -1,0 +1,75 @@
+---
+category: Tech
+creation_date: 2023-03-08T04:11:26+05:30
+tags: []
+draft: true
+author: Suhas Kashyap
+title: Tailwind Supremacy
+description: ''
+hero_image: ''
+
+---
+## Controversies
+
+If you're on FE Tech twitter, you'll come across some controversial take on Tailwind every other week. For whatever reason, so many people just seem to not go beyond "ugly classes" and come up with bad takes on it. Let me try to explain why they are ALL wrong.
+
+(Or read this I guess?: [https://adamwathan.me/css-utility-classes-and-separation-of-concerns/](https://adamwathan.me/css-utility-classes-and-separation-of-concerns/ "adamwathan.me/css-utility-classes-and-separation-of-concerns/"))
+
+## Control
+
+I like having control over the UI I write. What gives me the utmost control? CSS.  
+Can I keep writing CSS? likely no
+
+What's the closest, maintainable way to write CSS? utility classes.
+
+Think of this-   
+You have several divs that need nothing more than a simple `display: flex`  
+One easy way to do this is create a CSS class called `flex` and have it set the element's display property to flex.   
+Now you can keep using this, along with other very specific CSS classes.
+
+You see where I'm getting at? Utlity classes are good.
+
+Try using Chakra UI or Ant Design or Bootstrap or something else. Your site is going to look like every other website that uses these UI libraries. With Tailwind you get to build your own Design System - the way YOU like it!
+
+## Simplicity
+
+When we were creating a design system at Quotient, we made use of Emotion (css in js). It was absolutely wonderful and an absolute delight to use it for the first 5 months or so. At this point, 4 developers started working on it, and now the requirements want said components to look or behave slightly differently. 
+
+Modifying the original component is tough, might break a lot of things. Thus begins the patchwork. Eventually we have `!important`s everywhere!
+
+Tailwind likes patchwork, it supports patchwork. It likes chaos.
+
+## Chaos
+
+Ok, fine, I will admit it. I too was disgusted at ugly class names at first.
+
+But I changed my mind to think "So what!?". Right, what if it's ugly?  
+Who cares?  
+It's not going to make your page load speeds bad, its going to be nicely zipped.
+
+Sure, you might think it's unmaintainable, so did I, but there are several tools to help you with it:
+
+1. prettier: makes sure classes are set in a set order, makes your brain start learning how to read things well.
+2. Editor plugins: VSCode has a beautiful first-party plugin for Tailwind. Auto suggests built-in classes and custom classes that you have created. You don't have to learn everything.
+3. Documentation: Absolute Gold standard docs from the Tailwind guys.Just look at it! [https://tailwindcss.com/docs/installation](https://tailwindcss.com/docs/installation "tailwindcss.com/docs/installation")
+
+## Beauty
+
+Once you configure or look at a nice tailwind config file there's no going back. The way it lets you add spicy classes and juicy functions everything's going to make sense. Try it!
+
+Tailwind isn't a Free For All. Not complete chaos. It follows certain design principles like having spaces being multiple of 4, using ems everywhere, having the right set of jumps in shadows and sizes - all industry standards.
+
+It lets you carve out your UI or design system out of these standardized yet malleable rocks.
+
+It's performant - with the postCSS unused class purging. Hello 6kb CSS files.
+
+It's fast - lets you add ANY css with \[square brackets\] (yup, this is new for V3). It also has JIT, so you don't have to wait any amount of time during development.
+
+## Smol Con
+
+Ok, the one con is that you have TOO much control. You get to build your components on your own and come up with the design system. The obvious issue here is the amount of time things are going to take for this.
+
+There are solutions to this obviously - Daisy UI and such.  
+(No, it's no a 360 back to bootstrap. The difference here is the amount of control you still have over things).
+
+That's it, please give Tailwind a shot!
