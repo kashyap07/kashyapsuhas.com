@@ -12,26 +12,27 @@
 const { ACCESS_TOKEN } = process.env;
 
 const getIGImages = async (req: any, res: any) => {
-  try {
-    const response = await fetch(
+  const fetchImages = new Promise((resolve, reject) => {
+    fetch(
       `https://graph.instagram.com/me/media?fields=id,media_url,permalink&access_token=${ACCESS_TOKEN}`,
       {
         method: 'GET',
         redirect: 'follow',
       },
-    );
+    )
+      .then(async response => {
+        const body = await response.json();
+        resolve(body);
+      })
+      .catch(err => {
+        const message = `An error has occured: ${err.status}`;
+        reject(message);
+      });
+  });
 
-    if (!response.ok) {
-      const message = `An error has occured: ${response.status}`;
-      throw new Error(message);
-    }
-
-    const body = await response.json();
-    res.status(200).json(body);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
-  }
+  // TODO: clean this up perhaps
+  const response = await fetchImages;
+  res.status(200).json(response);
 };
 
 export default getIGImages;

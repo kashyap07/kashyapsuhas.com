@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import MaxWidthWrapper from '../../components/MaxWidthWrapper';
+import MaxWidthWrapper from '@components/MaxWidthWrapper';
 import moment from 'moment';
-import SideTitle from '../../components/SideTitle';
+import SideTitle from '@components/SideTitle';
 import { BsArrowRight } from 'react-icons/bs';
-import { getFrontMatters } from '../../utils/getFrontMatters';
+import { getFrontMatters } from '@utils/getFrontMatters';
 import { Key } from 'react';
 
 export async function getStaticProps() {

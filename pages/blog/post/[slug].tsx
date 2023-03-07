@@ -1,12 +1,12 @@
 import fs from 'fs';
 import Link from 'next/link';
 import matter from 'gray-matter';
-import MaxWidthWrapper from '../../../components/MaxWidthWrapper';
+import MaxWidthWrapper from '@components/MaxWidthWrapper';
 import path from 'path';
-import SideTitle from '../../../components/SideTitle';
+import SideTitle from '@components/SideTitle';
 // @ts-ignore
 import toc from 'markdown-toc';
-import { h1, h2, h3, h4, inlineCode, pre } from '../../../components/OverrRideDefaultHTML';
+import { h1, h2, h3, h4, inlineCode, pre } from '@components/OverrRideDefaultHTML';
 import { HiChevronRight } from 'react-icons/hi';
 import { marked } from 'marked';
 import { MDXProvider } from '@mdx-js/react';

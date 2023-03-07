@@ -5,23 +5,22 @@ const urlPre =
  * get last 5 images from Instagram along with url and caption for alt
  * @returns Array
  */
-const getProcessedIGImages = async (items = 5) => {
-  try {
-    const response = await fetch(`https://www.kashyapsuhas.com/api/get-ig-images`, {
+
+const getProcessedIGImages = (items = 5) => {
+  return new Promise((resolve, reject) => {
+    fetch(`https://www.kashyapsuhas.com/api/get-ig-images`, {
       method: 'GET',
-    });
-
-    if (!response.ok) {
-      const message = `An error has occured: ${response.status}`;
-      throw new Error(message);
-    }
-
-    const body = await response.json();
-    return body.data.slice(0, items);
-  } catch (err) {
-    console.log(err);
-    return false;
-  }
+    })
+      .then(async response => {
+        const a = await response.json();
+        console.log({ response });
+        resolve(a);
+      })
+      .catch(err => {
+        console.log({ err });
+        reject(err);
+      });
+  });
 };
 
 export default getProcessedIGImages;

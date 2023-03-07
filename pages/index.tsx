@@ -1,15 +1,17 @@
-import getProcessedIGImages from '../utils/getProcessedIGImages';
+import getProcessedIGImages from '@utils/getProcessedIGImages';
 import Image from 'next/image';
-import MaxWidthWrapper from '../components/MaxWidthWrapper';
-import PreviewRecentIG from '../components/PreviewRecentIG';
-import PreviewRecentPosts from '../components/PreviewRecentPosts';
-import { getFrontMatters } from '../utils/getFrontMatters';
-import { ScrollDownIndicator } from '../components/CSSElements';
+import MaxWidthWrapper from '@components/MaxWidthWrapper';
+import PreviewRecentIG from '@components/PreviewRecentIG';
+import PreviewRecentPosts from '@components/PreviewRecentPosts';
+import { getFrontMatters } from '@utils/getFrontMatters';
+import { ScrollDownIndicator } from '@components/CSSElements';
 import { useRouter } from 'next/router';
 
 export async function getStaticProps() {
   const frontMatters = await getFrontMatters();
   const posts = await getProcessedIGImages(5);
+
+  console.log({ posts });
 
   return {
     props: {

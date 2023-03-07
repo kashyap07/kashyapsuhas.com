@@ -14,7 +14,7 @@ const PreviewRecentIG = ({
   className?: string;
 }) => {
   if (router.isFallback) return <span>Loading IG posts, please wait...</span>;
-  else if (igPosts) {
+  else if (Object.keys(igPosts).length > 0) {
     return (
       <div data-element="preview-section" className="my-2 w-full">
         <h2 className="text-primary">Recent Photos</h2>
