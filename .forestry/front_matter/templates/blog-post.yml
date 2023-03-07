@@ -59,9 +59,7 @@ fields:
   config:
     required: true
 pages:
-- Blog/debugging-the-nextjs-fallback-true-error.mdx
+- Blog/designing-a-good-react-component.mdx
 - Blog/display-images-from-your-instagram.mdx
 - Blog/how-i-built-this-site-a-guide.mdx
-- Blog/nextjs-add-simple-previews-to-links.mdx
 - Blog/recipe-0-potato-fry-thingamajig.mdx
-- Blog/weird-js-error.md
