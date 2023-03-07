@@ -1,0 +1,25 @@
+---
+category: Tech
+creation_date: 2022-12-04T04:03:05+05:30
+tags: []
+draft: true
+author: Suhas Kashyap
+title: Why doesn't my z-index:99999 work!?
+description: ''
+hero_image: ''
+
+---
+## The z-index problem in CSS
+
+You've likely come across - so have I - no matter how high of a z-index value you set, the element simply refuses to go on top of the other element.
+
+Some common examples - 
+
+1. A small button that protrudes out of your side bar that lets you close said side bar
+2. User cards with their profile picture sticking out
+
+## Fix
+
+The reason this happens is because of "stacking context" in CSS. Essentially, think of Photoshop layers and then re-order your elements in the DOM structure so that they're at the same level.
+
+Josh Comeau's blog post explains this extremely well, do go through it thoroughly: [https://www.joshwcomeau.com/css/stacking-contexts/](https://www.joshwcomeau.com/css/stacking-contexts/ "joshwcomeau.com/css/stacking-contexts/")
