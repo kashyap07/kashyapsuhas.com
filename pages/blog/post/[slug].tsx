@@ -21,13 +21,8 @@ const getPost = async (slug: string) => {
   const frontMatter = JSON.parse(JSON.stringify(matter(postContent)));
   const { creation_date, ...frontMatterWithoutDate } = frontMatter.data;
   const tocList = toc(frontMatter.content);
-
-  console.log({ tocList });
-
   const mdxSource = await serialize(frontMatter.content);
   const postDescription = frontMatter.data.description || '';
-
-  console.log({ postDescription });
 
   let post = {
     ...frontMatterWithoutDate,
@@ -129,7 +124,9 @@ const Slug = ({ className = '', ...props }) => {
           {router.isFallback ? (
             <span></span>
           ) : (
-            <SideTitle>{post?.date?.split(' ')?.at(-1) || 'POST'}</SideTitle>
+            <SideTitle>
+              {(post && post.date && post.date.split(' ') && post.date.split(' ').at(-1)) || 'POST'}
+            </SideTitle>
           )}
 
           <MaxWidthWrapper withBg>
