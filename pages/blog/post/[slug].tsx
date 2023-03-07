@@ -120,14 +120,18 @@ const Slug = ({ className = '', ...props }) => {
       {/* @ts-ignore */}
       <MDXProvider components={components}>
         <main className={`${className} relative md:mt-6`}>
-          {/* FIXME: without this, breaks in prod */}
-          {router.isFallback ? (
-            <span></span>
-          ) : (
-            <SideTitle>
-              {(post && post.date && post.date.split(' ') && post.date.split(' ').at(-1)) || 'POST'}
-            </SideTitle>
-          )}
+          {
+            // {router.isFallback ? (
+            //   <span></span>
+            // ) : (
+            //   <SideTitle>
+            //     {/* FIXME: i give up. breaks only in prod*/}
+            //     {(post && post.date && post.date.split(' ') && post.date.split(' ').at(-1)) || 'POST'}
+            //   </SideTitle>
+            // )}
+          }
+
+          <SideTitle>POST</SideTitle>
 
           <MaxWidthWrapper withBg>
             <div className="pt-5 text-xl md:px-7">
