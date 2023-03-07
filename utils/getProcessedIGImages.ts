@@ -12,9 +12,8 @@ const getProcessedIGImages = (items = 5) => {
       method: 'GET',
     })
       .then(async response => {
-        const a = await response.json();
-        console.log({ response });
-        resolve(a);
+        const body = await response.json();
+        resolve(body.data.slice(0, items));
       })
       .catch(err => {
         console.log({ err });
