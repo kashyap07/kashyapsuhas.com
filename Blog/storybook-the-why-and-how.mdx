@@ -1,0 +1,134 @@
+---
+category: Tech
+creation_date: 2022-10-13T05:30:00+05:30
+tags: []
+draft: true
+author: Suhas Kashyap
+title: 'Storybook: The why and how'
+description: ''
+hero_image: ''
+
+---
+## The What
+
+"Storybook is a frontend workshop for building UI components and pages in isolation" - is what their site says.  
+Sure, but that's not it.
+
+"Stories capture the “known good” states of UI components. They’re a pragmatic, reproducible way to keep track of UI edge cases. Reuse stories to power automated tests."  
+Suure, but nahh.
+
+Scroll down a decent bit and you'll finally hit the  
+"Storybook brings together UI, examples, and documentation in one place. That helps your team adopt existing UI patterns."
+
+Now THAT's what Storybook is!
+
+## The Why
+
+Imagine a team of 5 devs working on the same Frontend application. Dev A creates component A, thinks it's pretty good, asks dev B to review, and goes on to using it in several places.
+
+6 months in, Dev C wants to do a task that component A did, but is simply unaware of its existence. The project has grown too fast and there are 30+ components lying in your components folder.
+
+Scenario A:  
+The project does not have Storybook.  
+Dev C starts creating this component that already exists in the codebase but maybe just hidden because of a bad name or bad location. 2 weeks pass and now when Dev A review the code Dev C suddenly gets to know of their wasted effort. "Oh no!".
+
+Scenario B:  
+The project has Storybook.  
+Dev C opens the storybook, checks if there's any component that matches their requirement, spots one, easily learns how to use it because there's free documentation, and saves those nice 2 weeks. "Nice".
+
+That's really it -  
+It's a nice little tool to document your components and tell others that it exists and show how to use them. That's really it.  
+It adds tiny bit of effort to add a storybook each time a component is created, but the end result, IMO, is very well worth it.
+
+## The How
+
+Follow the documentation from their site: [https://storybook.js.org/docs/react/get-started/install](https://storybook.js.org/docs/react/get-started/install "https://storybook.js.org/docs/react/get-started/install")
+
+### Configure TS Paths
+
+Create `main.js` under `.storybook` folder and add the following
+
+    const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+    
+    module.exports = {
+      stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
+      addons: [
+        '@storybook/addon-links',
+        '@storybook/addon-essentials',
+        '@storybook/addon-interactions',
+      ],
+      framework: '@storybook/react',
+      webpackFinal: async config => {
+        config.resolve.plugins = [
+          ...(config.resolve.plugins || []),
+          new TsconfigPathsPlugin({
+            extensions: config.resolve.extensions,
+          }),
+        ];
+        return config;
+      },
+    };
+
+### Add Tailwind/use NextJS components
+
+    import '!style-loader!css-loader!postcss-loader!tailwindcss/tailwind.css';
+    import '../src/styles/globals.css';
+    import { themes } from '@storybook/theming';
+    import * as NextImage from "next/legacy/image";
+    
+    export const parameters = {
+      actions: { argTypesRegex: '^on[A-Z].*' },
+      controls: {
+        matchers: {
+          color: /(background|color)$/i,
+          date: /Date$/,
+        },
+      },
+      docs: {
+        theme: themes.dark,
+      },
+    };
+    
+    const OriginalNextImage = NextImage.default;
+    
+    Object.defineProperty(NextImage, 'default', {
+      configurable: true,
+      value: props => <OriginalNextImage {...props} unoptimized loader={({ src }) => src} />,
+    });
+
+The codeblock also sets dark theme, if your projects primarily is a dark themed one.
+
+### Creating individual stories
+
+Create a .stories.tsx for each component, import the component and pass some values to them.
+
+Here's an example story for a button component:
+
+    import Button from './index';
+    import { ComponentMeta, ComponentStory } from '@storybook/react';
+    
+    export default {
+      title: 'Button',
+      component: Button,
+    } as ComponentMeta<typeof Button>;
+    
+    const PrimaryTemplate: ComponentStory<typeof Button> = args => <Button {...args}>Click me!</Button>;
+    const TextTemplate: ComponentStory<typeof Button> = args => <Button {...args}>Click me!</Button>;
+    
+    export const Primary = PrimaryTemplate.bind({});
+    Primary.args = {
+      variant: 'primary',
+    };
+    
+    export const Text = TextTemplate.bind({});
+    Text.args = {
+      variant: 'text',
+    };
+
+With some npm scripts you should be able to have it up and running on a separate port.
+
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook", 
+
+  
+Add `storybook.js` and make your (future) life easy!
