@@ -7,8 +7,8 @@ author: Suhas Kashyap
 title: 'Storybook: The why and how'
 description: ''
 hero_image: ''
-
 ---
+
 ## The What
 
 "Storybook is a frontend workshop for building UI components and pages in isolation" - is what their site says.  
@@ -42,59 +42,63 @@ It adds tiny bit of effort to add a storybook each time a component is created, 
 
 ## The How
 
-Follow the documentation from their site: [https://storybook.js.org/docs/react/get-started/install](https://storybook.js.org/docs/react/get-started/install "https://storybook.js.org/docs/react/get-started/install")
+Follow the documentation from their site: [https://storybook.js.org/docs/react/get-started/install](https://storybook.js.org/docs/react/get-started/install 'https://storybook.js.org/docs/react/get-started/install')
 
 ### Configure TS Paths
 
 Create `main.js` under `.storybook` folder and add the following
 
-    const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
-    
-    module.exports = {
-      stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
-      addons: [
-        '@storybook/addon-links',
-        '@storybook/addon-essentials',
-        '@storybook/addon-interactions',
-      ],
-      framework: '@storybook/react',
-      webpackFinal: async config => {
-        config.resolve.plugins = [
-          ...(config.resolve.plugins || []),
-          new TsconfigPathsPlugin({
-            extensions: config.resolve.extensions,
-          }),
-        ];
-        return config;
-      },
-    };
+```javascript
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+
+module.exports = {
+  stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
+  addons: [
+    '@storybook/addon-links',
+    '@storybook/addon-essentials',
+    '@storybook/addon-interactions',
+  ],
+  framework: '@storybook/react',
+  webpackFinal: async config => {
+    config.resolve.plugins = [
+      ...(config.resolve.plugins || []),
+      new TsconfigPathsPlugin({
+        extensions: config.resolve.extensions,
+      }),
+    ];
+    return config;
+  },
+};
+```
 
 ### Add Tailwind/use NextJS components
 
-    import '!style-loader!css-loader!postcss-loader!tailwindcss/tailwind.css';
-    import '../src/styles/globals.css';
-    import { themes } from '@storybook/theming';
-    import * as NextImage from "next/legacy/image";
-    
-    export const parameters = {
-      actions: { argTypesRegex: '^on[A-Z].*' },
-      controls: {
-        matchers: {
-          color: /(background|color)$/i,
-          date: /Date$/,
-        },
-      },
-      docs: {
-        theme: themes.dark,
-      },
-    };
-    
-    const OriginalNextImage = NextImage.default;
-    
-    Object.defineProperty(NextImage, 'default', {
-      configurable: true,
-      value: props => <OriginalNextImage {...props} unoptimized loader={({ src }) => src} />,
-    });
+```javascript
+import '!style-loader!css-loader!postcss-loader!tailwindcss/tailwind.css';
+import '../src/styles/globals.css';
+import { themes } from '@storybook/theming';
+import * as NextImage from 'next/legacy/image';
+
+export const parameters = {
+  actions: { argTypesRegex: '^on[A-Z].*' },
+  controls: {
+    matchers: {
+      color: /(background|color)$/i,
+      date: /Date$/,
+    },
+  },
+  docs: {
+    theme: themes.dark,
+  },
+};
+
+const OriginalNextImage = NextImage.default;
+
+Object.defineProperty(NextImage, 'default', {
+  configurable: true,
+  value: props => <OriginalNextImage {...props} unoptimized loader={({ src }) => src} />,
+});
+```
 
 The codeblock also sets dark theme, if your projects primarily is a dark themed one.
 
@@ -104,31 +108,33 @@ Create a .stories.tsx for each component, import the component and pass some val
 
 Here's an example story for a button component:
 
-    import Button from './index';
-    import { ComponentMeta, ComponentStory } from '@storybook/react';
-    
-    export default {
-      title: 'Button',
-      component: Button,
-    } as ComponentMeta<typeof Button>;
-    
-    const PrimaryTemplate: ComponentStory<typeof Button> = args => <Button {...args}>Click me!</Button>;
-    const TextTemplate: ComponentStory<typeof Button> = args => <Button {...args}>Click me!</Button>;
-    
-    export const Primary = PrimaryTemplate.bind({});
-    Primary.args = {
-      variant: 'primary',
-    };
-    
-    export const Text = TextTemplate.bind({});
-    Text.args = {
-      variant: 'text',
-    };
+```javascript
+import Button from './index';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
+
+export default {
+  title: 'Button',
+  component: Button,
+} as ComponentMeta<typeof Button>;
+
+const PrimaryTemplate: ComponentStory<typeof Button> = args => <Button {...args}>Click me!</Button>;
+const TextTemplate: ComponentStory<typeof Button> = args => <Button {...args}>Click me!</Button>;
+
+export const Primary = PrimaryTemplate.bind({});
+Primary.args = {
+  variant: 'primary',
+};
+
+export const Text = TextTemplate.bind({});
+Text.args = {
+  variant: 'text',
+};
+```
 
 With some npm scripts you should be able to have it up and running on a separate port.
 
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook", 
+```javascript
+"storybook": "start-storybook -p 6006", "build-storybook": "build-storybook",
+```
 
-  
 Add `storybook.js` and make your (future) life easy!
