@@ -1,7 +1,7 @@
 * {
   -webkit-tap-highlight-color: transparent;
   text-rendering: optimizeLegibility;
-  -webkit-font-feature-settings: "kern" 1;
+  -webkit-font-feature-settings: 'kern' 1;
 }
 
 html,
@@ -28,7 +28,7 @@ html {
 }
 
 ::selection {
-  @apply bg-primary text-black;
+  @apply bg-secondary text-white;
 }
 
 #__next {

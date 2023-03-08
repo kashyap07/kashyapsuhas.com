@@ -66,6 +66,7 @@ module.exports = {
         fancy: ['Gochi Hand', ...defaultTheme.fontFamily.serif],
       },
       colors: {
+        select: 'rgba(254,71,135,1)',
         primary: 'var(--color-primary)',
         secondary: 'var(--color-secondary)',
         tertiary: 'var(--color-tertiary)',

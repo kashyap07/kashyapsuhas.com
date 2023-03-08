@@ -48,7 +48,7 @@ Follow the documentation from their site: [storybook.js.org/docs/react/get-start
 
 Create `main.js` under `.storybook` folder and add the following
 
-```javascript
+```typescript
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 module.exports = {
@@ -73,7 +73,7 @@ module.exports = {
 
 ### Add Tailwind/use NextJS components
 
-```javascript
+```typescript
 import '!style-loader!css-loader!postcss-loader!tailwindcss/tailwind.css';
 import '../src/styles/globals.css';
 import { themes } from '@storybook/theming';
@@ -108,7 +108,7 @@ Create a .stories.tsx for each component, import the component and pass some val
 
 Here's an example story for a button component:
 
-```javascript
+```typescript
 import Button from './index';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
@@ -133,8 +133,9 @@ Text.args = {
 
 With some npm scripts you should be able to have it up and running on a separate port.
 
-```javascript
-"storybook": "start-storybook -p 6006", "build-storybook": "build-storybook",
+```typescript
+"storybook": "start-storybook -p 6006",
+"build-storybook": "build-storybook",
 ```
 
 Add `storybook.js` and make your (future) life easy!

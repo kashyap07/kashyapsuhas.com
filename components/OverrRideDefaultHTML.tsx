@@ -1,5 +1,10 @@
 import SyntaxHighlighter from 'react-syntax-highlighter';
-import { atomOneDarkReasonable } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
+import {
+  arduinoLight,
+  github,
+  githubGist,
+  atomOneLight,
+} from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 import { BsLink45Deg } from 'react-icons/bs';
 import { ReactChild, ReactFragment, ReactPortal } from 'react';
 import { slugify } from '../utils/stringUtils';
@@ -11,6 +16,7 @@ const pre = (props: {
 }) => {
   const { className, metastring, children } = props.children?.props;
   const language = className.split('-').slice(-1)[0];
+
   return (
     <div data-component="code-block" className="relative">
       {metastring && (
@@ -18,8 +24,13 @@ const pre = (props: {
           {metastring}
         </span>
       )}
-      <SyntaxHighlighter language={language} style={atomOneDarkReasonable} showLineNumbers>
-        {children}
+      <SyntaxHighlighter
+        language={language}
+        style={atomOneLight}
+        showLineNumbers
+        className="children-iterative:!text-[15px] children-iterative:font-medium"
+      >
+        {children.trim()}
       </SyntaxHighlighter>
     </div>
   );
