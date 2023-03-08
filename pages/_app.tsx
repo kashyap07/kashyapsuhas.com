@@ -1,6 +1,7 @@
 import Footer from '../components/Footer';
 import Head from 'next/head';
 import Header from '../components/Header';
+import { Analytics } from '@vercel/analytics/react';
 import '@styles/globals.css';
 import '@styles/index.css';
 import '@styles/CSSElements.css';
@@ -18,6 +19,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Header />
       <Component {...pageProps} className="flex-body py-16" />
       <Footer className="flex-shrink-0" />
+      <Analytics />
     </>
   );
 }
