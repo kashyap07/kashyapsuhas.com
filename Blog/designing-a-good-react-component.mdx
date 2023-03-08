@@ -7,11 +7,11 @@ author: Suhas Kashyap
 title: Designing a good React component
 description: ''
 hero_image: ''
-
 ---
+
 _Or what I think is a good way to create one_
 
-I attended a tech meetup hosted by GeekyAnts a few months ago. The speaker, [twitter.com/siddharthkp](https://twitter.com/siddharthkp "Siddharth"), who happens to be a design system engineer at Github talked about how they go about creating components over there.
+I attended a tech meetup hosted by GeekyAnts a few months ago. The speaker, [twitter.com/siddharthkp](https://twitter.com/siddharthkp 'Siddharth'), who happens to be a design system engineer at Github talked about how they go about creating components over there.
 
 This got me thinking about creating components beyond basic pops and children. I started looking up sources of some OSS libraries - the first one being headless UI.
 
@@ -29,75 +29,73 @@ That's when I realized, this is how you SHOULD be doing it.
 
 Simple example:
 
-Take a look at Ant Design's menu component: [https://ant.design/components/menu](https://ant.design/components/menu "https://ant.design/components/menu")
+Take a look at Ant Design's menu component: [https://ant.design/components/menu](https://ant.design/components/menu 'https://ant.design/components/menu')
 
-Now look at headless ui's: [https://headlessui.com/react/menu](https://headlessui.com/react/menu "https://headlessui.com/react/menu")
+Now look at headless ui's: [https://headlessui.com/react/menu](https://headlessui.com/react/menu 'https://headlessui.com/react/menu')
 
 What difference do you notice?  
 It's this part:
 
 Ant:
 
-    const items: MenuItem[] = [
-      getItem('Option 1', '1', <PieChartOutlined />),
-      getItem('Option 2', '2', <DesktopOutlined />),
-      getItem('Option 3', '3', <ContainerOutlined />),
-    
-      getItem('Navigation One', 'sub1', <MailOutlined />, [
-        getItem('Option 5', '5'),
-        getItem('Option 6', '6'),
-        getItem('Option 7', '7'),
-        getItem('Option 8', '8'),
-      ]),
-    
-      getItem('Navigation Two', 'sub2', <AppstoreOutlined />, [
-        getItem('Option 9', '9'),
-        getItem('Option 10', '10'),
-    
-        getItem('Submenu', 'sub3', null, [getItem('Option 11', '11'), getItem('Option 12', '12')]),
-      ]),
-    ];
-    
-    <Menu
-      defaultSelectedKeys={['1']}
-      defaultOpenKeys={['sub1']}
-      mode="inline"
-      theme="dark"
-      inlineCollapsed={collapsed}
-      items={items}
-    />
+```javascript
+const items: MenuItem[] = [
+  getItem('Option 1', '1', <PieChartOutlined />),
+  getItem('Option 2', '2', <DesktopOutlined />),
+  getItem('Option 3', '3', <ContainerOutlined />),
 
-vs   
+  getItem('Navigation One', 'sub1', <MailOutlined />, [
+    getItem('Option 5', '5'),
+    getItem('Option 6', '6'),
+    getItem('Option 7', '7'),
+    getItem('Option 8', '8'),
+  ]),
+
+  getItem('Navigation Two', 'sub2', <AppstoreOutlined />, [
+    getItem('Option 9', '9'),
+    getItem('Option 10', '10'),
+
+    getItem('Submenu', 'sub3', null, [getItem('Option 11', '11'), getItem('Option 12', '12')]),
+  ]),
+];
+
+<Menu
+  defaultSelectedKeys={['1']}
+  defaultOpenKeys={['sub1']}
+  mode="inline"
+  theme="dark"
+  inlineCollapsed={collapsed}
+  items={items}
+/>;
+```
+
+vs  
 Headless UI:
 
-    <Menu>
-          <Menu.Button>More</Menu.Button>
-          <Menu.Items>
-            <Menu.Item>
-              {({ active }) => (
-                <a
-                  className={`${active && 'bg-blue-500'}`}
-                  href="/account-settings"
-                >
-                  Account settings
-                </a>
-              )}
-            </Menu.Item>
-            <Menu.Item>
-              {({ active }) => (
-                <a
-                  className={`${active && 'bg-blue-500'}`}
-                  href="/account-settings"
-                >
-                  Documentation
-                </a>
-              )}
-            </Menu.Item>
-            <Menu.Item disabled>
-              <span className="opacity-75">Invite a friend (coming soon!)</span>
-            </Menu.Item>
-          </Menu.Items>
-        </Menu>
+```javascript
+<Menu>
+  <Menu.Button>More</Menu.Button>
+  <Menu.Items>
+    <Menu.Item>
+      {({ active }) => (
+        <a className={`${active && 'bg-blue-500'}`} href="/account-settings">
+          Account settings
+        </a>
+      )}
+    </Menu.Item>
+    <Menu.Item>
+      {({ active }) => (
+        <a className={`${active && 'bg-blue-500'}`} href="/account-settings">
+          Documentation
+        </a>
+      )}
+    </Menu.Item>
+    <Menu.Item disabled>
+      <span className="opacity-75">Invite a friend (coming soon!)</span>
+    </Menu.Item>
+  </Menu.Items>
+</Menu>
+```
 
 And what's the difference you say? The freedom! The control! The ability to modify component to my liking. What if I suddenly want just an image in my menu in Ant? I can't do that outright. But in the case of Headless UI, I just create a `Menu.Item` component and throw in whatever the heck I want inside it!
 
@@ -105,7 +103,7 @@ Isn't this so much more elegant?
 
 All props aren't thrown at top level component - only given to the specific sub-component that needs it
 
-Primer (Github's design system/component library) follows the same design - [https://primer.style/react/CheckboxGroup](https://primer.style/react/CheckboxGroup "https://primer.style/react/CheckboxGroup")
+Primer (Github's design system/component library) follows the same design as well - [https://primer.style/react/CheckboxGroup](https://primer.style/react/CheckboxGroup 'https://primer.style/react/CheckboxGroup')
 
 ## Show me how to do this
 
@@ -118,151 +116,119 @@ The "root" or top level component is only just a context Provider - it stores st
 
 If that wasn't clear, let me give an example of a carousel component that I had created at ProjectPro:
 
-    const CarouselRoot = ({
-      children,
-      loop = false,
-      freeWidth = false,
-      orientation = 'horizontal',
-      slidesToScroll = 1,
-    }: {
-      children: ReactNode;
-      loop?: boolean;
-      freeWidth?: boolean;
-      orientation?: 'vertical' | 'horizontal';
-      slidesToScroll?: number;
-    }) => {
-      // ref that created the "embla" carousel
-    
-      const [canScrollPrev, setCanScrollPrev] = useState(false);
-      const [canScrollNext, setCanScrollNext] = useState(true);
-    
-      // control functions
-      const movePrevious = useCallback(() => {
-        embla?.scrollPrev();
-      }, [embla]);
-      const moveNext = useCallback(() => {
-        embla?.scrollNext();
-      }, [embla]);
-    
-      return (
-        <CarouselContextNew.Provider
-          value={{
-            embla,
-            canScrollPrev,
-            canScrollNext,
-            moveNext,
-            movePrevious,
-            emblaRefElement,
-          }}
-        >
-        {/*nothing rendered! */}
-            {children}
-        </CarouselContext.Provider>
-      );
-    };
+```typescript
+const CarouselRoot = ({
+  children,
+  loop = false,
+  freeWidth = false,
+  orientation = 'horizontal',
+  slidesToScroll = 1,
+}: {
+  children: ReactNode;
+  loop?: boolean;
+  freeWidth?: boolean;
+  orientation?: 'vertical' | 'horizontal';
+  slidesToScroll?: number;
+}) => {
+  // ref that created the "embla" carousel
+
+  const [canScrollPrev, setCanScrollPrev] = useState(false);
+  const [canScrollNext, setCanScrollNext] = useState(true);
+
+  // control functions
+  const movePrevious = useCallback(() => {
+    embla?.scrollPrev();
+  }, [embla]);
+  const moveNext = useCallback(() => {
+    embla?.scrollNext();
+  }, [embla]);
+
+  return (
+    <CarouselContext.Provider
+      value={{
+        embla,
+        canScrollPrev,
+        canScrollNext,
+        moveNext,
+        movePrevious,
+        emblaRefElement,
+      }}
+    >
+      {/* nothing rendered! */}
+      {children}
+    </CarouselContext.Provider>
+  );
+};
+```
 
 and the context being:
 
-    const CarouselContext = createContext<{
-      embla: EmblaCarouselType | undefined | null;
-      emblaRefElement: any; // lol
-      canScrollPrev: boolean;
-      canScrollNext: boolean;
-      movePrevious: Function;
-      moveNext: Function;
-    } // and initialisation
+```typescript
+const CarouselContext = createContext<{
+  embla: EmblaCarouselType | undefined | null;
+  emblaRefElement: any; // lol
+  canScrollPrev: boolean;
+  canScrollNext: boolean;
+  movePrevious: Function;
+  moveNext: Function;
+} // and initialisation
+```
 
 Now, I could create my sub-components checking if the carousel context was present or not.
 
-    const ScrollNextBtn = ({ className }: { className?: string }) => {
-      const context = useContext(CarouselContextNew);
-      // ^ that
-      
-      const { canScrollNext, moveNext } = context;
-      // fetch things that were set at root
-      
-      if (context.embla === null) {
-        throw new Error('<ScrollNextBtn /> is missing a parent <Carousel /> component.');
-      }
-      // ^ this way, I can't randomly have this sib-component anywhere
-      // it HAS to be inside root component
-    
-      return (
-        // rendering logic
-      );
-    };
+```typescript
+const ScrollNextBtn = ({ className }: { className?: string }) => {
+  const context = useContext(CarouselContext);
+  // ^ that
 
-And in the end, I can nicely package the whole shebang with `Object.assign` 
+  const { canScrollNext, moveNext } = context;
+  // fetch things that were set at root
 
-    const Carousel = Object.assign(CarouselRoot, {
-      ScrollPrevBtn,
-      ScrollNextBtn,
-      Item,
-      ItemList,
-    });
+  if (context.embla === null) {
+    throw  Error('<ScrollNextBtn /> is missing a parent <Carousel /> component.');
+  }
+  // ^ this way, I can't randomly have this sib-component anywhere
+  // it HAS to be inside root component
+
+  return (
+    // rendering logic
+  );
+};
+```
+
+And in the end, I can nicely package the whole shebang with `Object.assign`
+
+```typescript
+const Carousel = Object.assign(CarouselRoot, {
+  ScrollPrevBtn,
+  ScrollNextBtn,
+  Item,
+  ItemList,
+});
+```
 
 so that I can use this carousel like so:
 
-    <CarouselNew freeWidth={false} slidesToScroll={1} loop={true}>
-                    <CarouselNew.ItemListNew>
-                      <CarouselNew.ItemNew className="flex-[0_0_100%]">
-                        <Image
-                          src={
-                            'https://s3.amazonaws.com/files.dezyre.com/images/ProjectPro2.0/home/projectpro-image1.png'
-                          }
-                          height={500}
-                          width={1020}
-                          alt="something"
-                        />
-                      </CarouselNew.ItemNew>
-    
-                      <CarouselNew.ItemNew className="flex-[0_0_100%]">
-                        <Image
-                          src={
-                            'https://s3.amazonaws.com/files.dezyre.com/images/ProjectPro2.0/home/projectpro-image5.png'
-                          }
-                          height={500}
-                          width={1020}
-                          alt="something"
-                        />
-                      </CarouselNew.ItemNew>
-    
-                      <CarouselNew.ItemNew className="flex-[0_0_100%] ">
-                        <Image
-                          src={
-                            'https://s3.amazonaws.com/files.dezyre.com/images/ProjectPro2.0/home/projectpro-image4.png'
-                          }
-                          height={500}
-                          width={1020}
-                          alt="something"
-                        />
-                      </CarouselNew.ItemNew>
-    
-                      <CarouselNew.ItemNew className="flex-[0_0_100%] ">
-                        <Image
-                          src={
-                            'https://s3.amazonaws.com/files.dezyre.com/images/ProjectPro2.0/home/projectpro-image3.png'
-                          }
-                          height={500}
-                          width={1020}
-                          alt="something"
-                        />
-                      </CarouselNew.ItemNew>
-    
-                      <CarouselNew.ItemNew className="flex-[0_0_100%] ">
-                        <Image
-                          src={
-                            'https://s3.amazonaws.com/files.dezyre.com/images/ProjectPro2.0/home/projectpro-image2.png'
-                          }
-                          height={500}
-                          width={1020}
-                          alt="something"
-                        />
-                      </CarouselNew.ItemNew>
-                    </CarouselNew.ItemListNew>
-    
-                    <div className="absolute left-1/2 my-5 flex -translate-x-1/2 ">
-                      <CarouselNew.ScrollPrevBtn className="h-8 w-8" />
-                      <CarouselNew.ScrollNextBtn className="ml-3 h-8 w-8" />
-                    </div>
-                  </CarouselNew>
+```typescript
+<Carousel slidesToScroll={1} loop={true}>
+  <Carousel.ItemList>
+    <Carousel.Item className="flex-[0_0_100%]">
+      <Image />
+    </Carousel.Item>
+
+    <Carousel.Item className="flex-[0_0_100%]">
+      <Text />
+    </Carousel.Item>
+
+    <Carousel.Item className="flex-[0_0_100%]">
+      <Div />
+    </Carousel.Item>
+  </Carousel.ItemList>
+
+  {/* control buttons */}
+  <div>
+    <Carousel.ScrollPrevBtn className="h-8 w-8" />
+    <Carousel.ScrollNextBtn className="ml-3 h-8 w-8" />
+  </div>
+</Carousel>
+```
