@@ -29,20 +29,23 @@ const PreviewRecentIG = ({
                 id: Key | null | undefined;
                 permalink: string | UrlObject;
                 media_url: string | undefined;
-              }) => (
-                <Link key={post.id} href={post.permalink}>
-                  <a className="relative">
-                    <div className="h-48 w-48">
-                      <Image
-                        src={post.media_url!}
-                        alt="Open image in Instagram"
-                        className="!h-unset !relative max-h-igImagePreview !w-full !object-contain"
-                        layout="fill"
-                      />
-                    </div>
-                  </a>
-                </Link>
-              ),
+              }) => {
+                if (post.media_url !== undefined)
+                  return (
+                    <Link key={post.id} href={post.permalink}>
+                      <a className="relative">
+                        <div className="h-48 w-48">
+                          <Image
+                            src={post.media_url}
+                            alt="Open image in Instagram"
+                            className="!h-unset !relative max-h-igImagePreview !w-full !object-contain"
+                            layout="fill"
+                          />
+                        </div>
+                      </a>
+                    </Link>
+                  );
+              },
             )}
           </div>
         </div>
