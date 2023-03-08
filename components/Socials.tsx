@@ -16,8 +16,7 @@ const socialsObj = {
     icon2: <FiTwitter />,
     url: 'https://twitter.com/kashyapS07',
     color: '#1DA1F2',
-    description:
-      "I don't really use Twitter all that much, but this is probably the quickest way to get to me.",
+    description: 'Open this at least once every day, quickest way to get to me.',
   },
   linkedin: {
     title: 'LinkedIn',
