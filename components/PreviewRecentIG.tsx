@@ -4,6 +4,8 @@ import { Key } from 'react';
 import { BsArrowRight } from 'react-icons/bs';
 import { UrlObject } from 'url';
 import Image from 'next/image';
+import ImageAutoHeight from './ImageAutoHeight';
+import clsx from 'clsx';
 
 const PreviewRecentIG = ({
   router,
@@ -21,7 +23,7 @@ const PreviewRecentIG = ({
         <h2 className="text-primary">Recent Photos</h2>
 
         <div data-component="recent-instagrams" className="flex py-2 md:pl-2">
-          <div className="flex w-full flex-row flex-wrap items-center justify-between md:flex-nowrap">
+          <div className="flex w-full flex-col flex-wrap items-center justify-between gap-4 md:flex-row md:flex-nowrap md:justify-center">
             {igPosts.map(
               (post: {
                 id: Key | null | undefined;
@@ -29,13 +31,15 @@ const PreviewRecentIG = ({
                 media_url: string | undefined;
               }) => (
                 <Link key={post.id} href={post.permalink}>
-                  <a className="relative m-2">
-                    {/* TODO: use next/image */}
-                    <img
-                      src={post.media_url}
-                      alt="Open image in Instagram"
-                      className="max-h-igImagePreview"
-                    />
+                  <a className="relative">
+                    <div className="h-48 w-48">
+                      <Image
+                        src={post.media_url!}
+                        alt="Open image in Instagram"
+                        className="!h-unset !relative max-h-igImagePreview !w-full !object-contain"
+                        layout="fill"
+                      />
+                    </div>
                   </a>
                 </Link>
               ),

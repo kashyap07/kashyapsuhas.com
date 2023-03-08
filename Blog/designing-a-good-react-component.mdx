@@ -7,15 +7,15 @@ author: Suhas Kashyap
 title: Designing a good React component
 description: ''
 hero_image: ''
-
 ---
+
 _Or what I think is a good way to create one_
 
-I attended a tech meetup hosted by GeekyAnts a few months ago. The speaker, [twitter.com/siddharthkp](https://twitter.com/siddharthkp "Siddharth"), who happens to be a design system engineer at Github talked about how they go about creating components over there.
+I attended a tech meetup hosted by GeekyAnts a few months ago. The speaker, [twitter.com/siddharthkp](https://twitter.com/siddharthkp 'Siddharth'), who happens to be a design system engineer at Github talked about how they go about creating components over there.
 
 This got me thinking about creating components beyond basic pops and children. I started looking up sources of some OSS libraries - the first one being headless UI.
 
-## Headless UI
+## Headless UI - a good component library
 
 Headless UI is created by the guys behind Tailwind CSS. Did I happen to mention how much I like Tailwind?
 
@@ -25,13 +25,13 @@ I liked the way their API is presented, you have the main component as the wrapp
 
 That's when I realized, this is how you SHOULD be doing it.
 
-## How should I be doing tje what now?
+## How should I be doing the what now?
 
 Simple example:
 
-Take a look at Ant Design's menu component: [https://ant.design/components/menu](https://ant.design/components/menu "https://ant.design/components/menu")
+Take a look at Ant Design's menu component: [ant.design/components/menu](https://ant.design/components/menu)
 
-Now look at headless ui's: [https://headlessui.com/react/menu](https://headlessui.com/react/menu "https://headlessui.com/react/menu")
+Now look at headless ui's: [headlessui.com/react/menu](https://headlessui.com/react/menu)
 
 What difference do you notice?  
 It's this part:
@@ -97,13 +97,13 @@ Headless UI:
 </Menu>
 ```
 
-And what's the difference you say? The freedom! The control! The ability to modify component to my liking. What if I suddenly want just an image in my menu in Ant? I can't do that outright. But in the case of Headless UI, I just create a `Menu.Item` component and throw in whatever the heck I want inside it!
+And what's the difference you say? The freedom! The control! The ability to modify component to my liking. If I want to add an image to my menu, in the case of Headless UI, I just create a `Menu.Item` component and throw in whatever the heck I want inside it!
 
 Isn't this so much more elegant?
 
-All props aren't thrown at top level component - only given to the specific sub-component that needs it
+All props aren't thrown at top level component - only given to the specific sub-component that needs it.
 
-Primer (Github's design system/component library) follows the same design as well - [https://primer.style/react/CheckboxGroup](https://primer.style/react/CheckboxGroup "https://primer.style/react/CheckboxGroup")
+Primer (Github's design system/component library) follows the same design as well - [primer.style/react/CheckboxGroup](https://primer.style/react/CheckboxGroup)
 
 ## Show me how to do this
 
@@ -235,6 +235,6 @@ so that I can use this carousel like so with whatever item I want inside it:
 
 ## Further Reading
 
-Read how Headless UI is written - [https://github.com/tailwindlabs/headlessui/blob/main/packages/%40headlessui-react/src/components/menu/menu.tsx](https://github.com/tailwindlabs/headlessui/blob/main/packages/%40headlessui-react/src/components/menu/menu.tsx "https://github.com/tailwindlabs/headlessui/blob/main/packages/%40headlessui-react/src/components/menu/menu.tsx")
+Read how Headless UI is written - [github.com/tailwindlabs/headlessui/blob/main/packages/%40headlessui-react/src/components/menu/menu.tsx](https://github.com/tailwindlabs/headlessui/blob/main/packages/%40headlessui-react/src/components/menu/menu.tsx)
 
-They've written some fantastic code![https://github.com/tailwindlabs/headlessui/blob/main/packages/%40headlessui-react/src/components/menu/menu.tsx](https://github.com/tailwindlabs/headlessui/blob/main/packages/%40headlessui-react/src/components/menu/menu.tsx "https://github.com/tailwindlabs/headlessui/blob/main/packages/%40headlessui-react/src/components/menu/menu.tsx")
+They've written some fantastic code!

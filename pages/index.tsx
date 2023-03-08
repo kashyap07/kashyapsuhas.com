@@ -11,8 +11,6 @@ export async function getStaticProps() {
   const frontMatters = await getFrontMatters();
   const posts = await getProcessedIGImages(5);
 
-  console.log({ posts });
-
   return {
     props: {
       frontMatterData: frontMatters,
