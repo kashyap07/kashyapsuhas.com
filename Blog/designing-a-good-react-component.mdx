@@ -7,11 +7,11 @@ author: Suhas Kashyap
 title: Designing a good React component
 description: ''
 hero_image: ''
----
 
+---
 _Or what I think is a good way to create one_
 
-I attended a tech meetup hosted by GeekyAnts a few months ago. The speaker, [twitter.com/siddharthkp](https://twitter.com/siddharthkp 'Siddharth'), who happens to be a design system engineer at Github talked about how they go about creating components over there.
+I attended a tech meetup hosted by GeekyAnts a few months ago. The speaker, [twitter.com/siddharthkp](https://twitter.com/siddharthkp "Siddharth"), who happens to be a design system engineer at Github talked about how they go about creating components over there.
 
 This got me thinking about creating components beyond basic pops and children. I started looking up sources of some OSS libraries - the first one being headless UI.
 
@@ -29,9 +29,9 @@ That's when I realized, this is how you SHOULD be doing it.
 
 Simple example:
 
-Take a look at Ant Design's menu component: [https://ant.design/components/menu](https://ant.design/components/menu 'https://ant.design/components/menu')
+Take a look at Ant Design's menu component: [https://ant.design/components/menu](https://ant.design/components/menu "https://ant.design/components/menu")
 
-Now look at headless ui's: [https://headlessui.com/react/menu](https://headlessui.com/react/menu 'https://headlessui.com/react/menu')
+Now look at headless ui's: [https://headlessui.com/react/menu](https://headlessui.com/react/menu "https://headlessui.com/react/menu")
 
 What difference do you notice?  
 It's this part:
@@ -103,7 +103,7 @@ Isn't this so much more elegant?
 
 All props aren't thrown at top level component - only given to the specific sub-component that needs it
 
-Primer (Github's design system/component library) follows the same design as well - [https://primer.style/react/CheckboxGroup](https://primer.style/react/CheckboxGroup 'https://primer.style/react/CheckboxGroup')
+Primer (Github's design system/component library) follows the same design as well - [https://primer.style/react/CheckboxGroup](https://primer.style/react/CheckboxGroup "https://primer.style/react/CheckboxGroup")
 
 ## Show me how to do this
 
@@ -207,7 +207,7 @@ const Carousel = Object.assign(CarouselRoot, {
 });
 ```
 
-so that I can use this carousel like so:
+so that I can use this carousel like so with whatever item I want inside it:
 
 ```typescript
 <Carousel slidesToScroll={1} loop={true}>
@@ -232,3 +232,9 @@ so that I can use this carousel like so:
   </div>
 </Carousel>
 ```
+
+## Further Reading
+
+Read how Headless UI is written - [https://github.com/tailwindlabs/headlessui/blob/main/packages/%40headlessui-react/src/components/menu/menu.tsx](https://github.com/tailwindlabs/headlessui/blob/main/packages/%40headlessui-react/src/components/menu/menu.tsx "https://github.com/tailwindlabs/headlessui/blob/main/packages/%40headlessui-react/src/components/menu/menu.tsx")
+
+They've written some fantastic code!
