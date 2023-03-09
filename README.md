@@ -1,4 +1,4 @@
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/kashyap07/kashyapsuhas.com)
+[![This is for myself, dont click this lol.](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/github-huf1db)
 
 ## Blog ideas
 
@@ -12,5 +12,3 @@
 8. camera why
 9. pizza
 10. replit for pair programming
-
-[![This is for myself, dont click this lol.](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/github-huf1db)
