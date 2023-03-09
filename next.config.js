@@ -15,4 +15,13 @@ module.exports = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: '/resume',
+        destination: '/suhas-resume.pdf',
+        permanent: true,
+      },
+    ];
+  },
 };
