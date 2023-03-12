@@ -48,3 +48,12 @@ html {
 .react-pdf__Page__annotations {
   @apply hidden;
 }
+
+.resume-pdf::-webkit-scrollbar {
+  display: none;
+}
+
+.resume-pdf {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}

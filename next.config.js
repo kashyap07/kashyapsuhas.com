@@ -22,6 +22,11 @@ module.exports = {
         destination: '/suhas-resume.pdf',
         permanent: true,
       },
+      {
+        source: '/work',
+        destination: '/hire-me',
+        permanent: true,
+      },
     ];
   },
 };

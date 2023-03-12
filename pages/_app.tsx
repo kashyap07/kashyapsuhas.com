@@ -13,7 +13,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <title>Suhas Kashyap</title>
-        <meta name="description" content="Suhas Kashyap's Personal site" />
+        <meta name="description" content="Welcome to Suhas Kashyap's slice of the interwebs" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />

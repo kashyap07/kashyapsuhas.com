@@ -4,7 +4,7 @@ const WrapperBackground = ({
   children,
   className,
 }: {
-  children: JSX.Element;
+  children: JSX.Element | JSX.Element[];
   className?: string;
 }) => {
   return <div className={`h-full md:-ml-6 md:-mr-6 ${className}`}>{children}</div>;
@@ -15,7 +15,7 @@ const MaxWidthWrapper = ({
   className,
   withBg = false,
 }: {
-  children: JSX.Element;
+  children: JSX.Element | JSX.Element[];
   className?: string;
   withBg?: boolean;
 }) => {

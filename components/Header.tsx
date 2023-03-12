@@ -8,7 +8,7 @@ import { Socials, socialsObj } from './Socials';
 
 const headerNavLinks = [
   { title: 'BLOG', href: '/blog' },
-  { title: 'WORK', href: '/work' },
+  { title: 'HIRE ME!', href: '/hire-me' },
   { title: 'CONTACT', href: '/contact' },
 ];
 
