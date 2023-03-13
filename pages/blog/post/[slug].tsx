@@ -23,6 +23,9 @@ const getPost = async (slug: string) => {
   const tocList = toc(frontMatter.content);
   const mdxSource = await serialize(frontMatter.content);
   const postDescription = frontMatter.data.description || '';
+  const postHero =
+    frontMatter.data.hero_image ||
+    'https://www.kashyapsuhas.com/_next/image?url=%2Fprofile_640.jpg&w=640&q=75';
 
   let post = {
     ...frontMatterWithoutDate,
@@ -34,6 +37,7 @@ const getPost = async (slug: string) => {
     toc: marked(tocList.content),
     mdxSource: mdxSource,
     postDescription,
+    postHero,
   };
 
   return post;
@@ -102,7 +106,7 @@ const Slug = ({ className = '', ...props }) => {
           description: post?.postDescription,
           images: [
             {
-              url: 'https://www.kashyapsuhas.com/_next/image?url=%2Fprofile_640.jpg&w=640&q=75',
+              url: post?.postHero,
               width: 320,
               height: 320,
               alt: 'Suhas Kashyap',
