@@ -34,10 +34,10 @@ const HireMe = ({ className }: { className?: string }) => {
             <li>
               - Expertise in <u>Accessibility</u> (ADA Compliance) on the web.
             </li>
-            {/* <li> - Ability to write clean and maintainable code and mentor juniors.</li> */}
+            <li> - Ability to write clean and maintainable code and mentor juniors.</li>
             <li>
-              - A passion for UI building with an eye for design, I hold <u>senior degrees</u> in
-              Drawing and Carnatic Classical music.
+              - A passion for building good UI/UX and an eye for design - with an arts background; I
+              hold <u>senior degrees</u> in Drawing and Carnatic Classical music.
             </li>
             <li>
               - A fun person in general with loads of hobbies. I can teach you a thing or two about
