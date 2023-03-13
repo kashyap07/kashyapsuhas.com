@@ -36,12 +36,12 @@ const PreviewRecentIG = ({
                       <a className="relative">
                         <div className="h-48 w-48">
                           <Image
-                            priority
+                            // priority
                             src={post.media_url}
                             alt="Open image in Instagram"
                             className="!h-unset !relative max-h-igImagePreview !w-full !object-contain"
                             layout="fill"
-                            loading="eager"
+                            // loading="eager"
                           />
                         </div>
                       </a>
