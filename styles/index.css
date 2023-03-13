@@ -48,6 +48,10 @@ html {
 .react-pdf__Page__annotations {
   @apply hidden;
 }
+.react-pdf__Page__canvas {
+  width: calc(100vw - 45px) !important;
+  height: auto !important;
+}
 
 .resume-pdf::-webkit-scrollbar {
   display: none;
