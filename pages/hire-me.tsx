@@ -13,7 +13,7 @@ const HireMe = ({ className }: { className?: string }) => {
       <SideTitle className="mt-20">HIRE ME!</SideTitle>
 
       <MaxWidthWrapper className="flex flex-col gap-20 p-5">
-        <div className="px-12 text-xl font-normal">
+        <div className="text-xl font-normal md:px-12">
           <p className="pb-2 text-2xl">
             Hey there <span className="wiggle">👋</span>
           </p>
