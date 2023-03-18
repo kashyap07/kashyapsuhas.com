@@ -13,11 +13,6 @@ hero_image: ''
 
 You've likely come across - so have I - no matter how high of a z-index value you set, the element simply refuses to go on top of the other element.
 
-Some common examples -
-
-1. A small button that protrudes out of your side bar that lets you close said side bar
-2. User cards with their profile picture sticking out
-
 ## Fix
 
 The reason this happens is because of "stacking contexts" in CSS. Essentially, think of Photoshop layers and then re-order your elements in the DOM structure so that they're at the same level.

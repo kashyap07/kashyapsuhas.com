@@ -18,7 +18,7 @@ const Work = ({ className }: { className?: string }) => {
             Hey there <span className="wiggle">👋</span>
           </p>
           <p className="">
-            I&apos;m looking for a new job at the moment.
+            I&apos;m looking for a new opportunity at the moment.
             <br />
             <br />
             Here&apos;s what I bring to the table:
