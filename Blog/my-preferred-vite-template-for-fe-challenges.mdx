@@ -17,8 +17,8 @@ This is what I use for any kind of Frontend challenges thrown at me.
 
 1. Tailwind - I've gotten very used to Tailwind at this point, I'm much faster with it compared to plain old CSS or any pre-processor. I've included `clsx` for combining classes and conditionally adding tw classes. Also, read my post on why Tailwind is Amazing: [kashyapsuhas.com/blog/post/tailwind-supremacy](https://www.kashyapsuhas.com/blog/post/tailwind-supremacy)
 2. TS - Because ...TS.
-3. Sass - For times when Tailwind cannot support some complex styles. Or I have to edit the tailwind config file - which isn't good.
-4. Generouted - Adds NextJS-like file-based routing. Super handy when you are doing multiple versions of something. Just create a file or folder and `pages` and the library should handle the rest.
+3. Sass - For times when Tailwind cannot support some complex styles. Or I have to edit the tailwind config file - which isn't good (for our case).
+4. Generouted - Adds NextJS-like file-based routing. Super handy when you are doing multiple versions of something. Just create a file or folder under `pages` and the library should handle the rest.
 
 ## Setup options
 
@@ -38,21 +38,28 @@ This project is set up as a template. When creating a new project, select this a
 ### 3. Local development
 
 Instructions for npm:
+
 1. Create empty directory.
+
 ```bash
 mkdir <my-vite-app>
 cd <my-vite-app>
 ```
+
 2. Install a cloning tool like degit
+
 ```bash
 npm install -g degit
 ```
+
 3. Clone this template
+
 ```bash
 npx degit kashyap07/vite-react-tailwind-sass-routes-starter
 ```
 
 And to run:
+
 ```bash
 npm install
 npm run dev
