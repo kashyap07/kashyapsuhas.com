@@ -10,12 +10,12 @@ import { NextSeo } from 'next-seo';
 
 export async function getStaticProps() {
   const frontMatters = await getFrontMatters();
-  const posts = await getProcessedIGImages(5);
+  // const posts = await getProcessedIGImages(5);
 
   return {
     props: {
       frontMatterData: frontMatters,
-      igPosts: posts,
+      // igPosts: posts,
     },
     revalidate: 1800, // check once every 30 seconds
   };
@@ -23,7 +23,7 @@ export async function getStaticProps() {
 
 const Home = ({ ...props }) => {
   const fm = props.frontMatterData;
-  const igPosts = props.igPosts;
+  // const igPosts = props.igPosts;
   const router = useRouter();
 
   return (
@@ -96,7 +96,7 @@ const Home = ({ ...props }) => {
             {/* @ts-ignore */}
             <PreviewRecentPosts fm={fm} />
             {/* @ts-ignore */}
-            <PreviewRecentIG router={router} igPosts={igPosts} />
+            {/* <PreviewRecentIG router={router} igPosts={igPosts} /> */}
           </MaxWidthWrapper>
         </div>
       </main>
