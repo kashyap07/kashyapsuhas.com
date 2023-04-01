@@ -159,7 +159,7 @@ const Slug = ({ className = '', ...props }) => {
                     </div>
                     <aside
                       data-element="post-table-of-contents"
-                      className="sticky top-1/4 ml-10 hidden h-80 w-auto flex-col lg:flex"
+                      className="sticky top-1/4 ml-10 hidden h-80 w-auto w-auto max-w-[30%] flex-col lg:flex"
                     >
                       <h2 className="text-primary">Table of contents</h2>
                       <nav
