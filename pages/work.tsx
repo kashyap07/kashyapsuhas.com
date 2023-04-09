@@ -21,29 +21,8 @@ const Work = ({ className }: { className?: string }) => {
             I&apos;m looking for a new opportunity at the moment.
             <br />
             <br />
-            Here&apos;s what I bring to the table:
+            Prefer: Full-stack web-dev roles with a focus on the Frontend side of things.
           </p>
-          <ul className="">
-            <li>
-              - ~5 years of <u>Full-Stack</u> development experience in the JS world.
-            </li>
-            <li>
-              - Experience in developing Applications from <u>scratch</u>, and moving older tech
-              stacks to <u>newer ones</u>.
-            </li>
-            <li>
-              - Expertise in <u>Accessibility</u> (ADA Compliance) on the web.
-            </li>
-            <li> - Ability to write clean and maintainable code and mentor juniors.</li>
-            <li>
-              - A passion for building good UI/UX and an eye for design - with an arts background; I
-              hold <u>senior degrees</u> in Drawing and Carnatic Classical music.
-            </li>
-            <li>
-              - A fun person in general with loads of hobbies. I can teach you a thing or two about
-              a few things :)
-            </li>
-          </ul>
 
           <p className="pt-16">
             Follow link for my resume:{' '}
