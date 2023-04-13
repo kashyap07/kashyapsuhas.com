@@ -1,4 +1,5 @@
 [![This is for myself, dont click this lol.](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/github-huf1db)
+This is for myself, dont click it lol.
 
 ## Blog ideas
 
