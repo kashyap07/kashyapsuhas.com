@@ -16,7 +16,7 @@ const getFrontMatters = async () => {
       // date is date object, fix this by modifying frontmatter config in forestry
       let newFMData = { ...fm.data };
       newFMData.filename = post.filename;
-      newFMData.creation_date = fm.data.creation_date.getTime();
+      newFMData.creation_date = new Date(fm.data.creation_date).getTime();
       frontMatters.push(newFMData);
     });
   });
