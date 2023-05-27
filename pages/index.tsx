@@ -7,6 +7,7 @@ import { getFrontMatters } from '@utils/getFrontMatters';
 import { ScrollDownIndicator } from '@components/CSSElements';
 import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';
+import ReactCurvedText from 'react-curved-text';
 
 export async function getStaticProps() {
   const frontMatters = await getFrontMatters();
@@ -66,7 +67,7 @@ const Home = ({ ...props }) => {
                   <span className="text-5xl !font-bold text-black md:text-6xl">SUHAS KASHYAP</span>
                 </div>
 
-                <span className="text-3xl md:text-4xl ">Welcome to my slice of the Interwebs.</span>
+                <span className="text-3xl md:text-4xl">Welcome to my slice of the Interwebs.</span>
               </div>
 
               {/* This was for gradient ring around pp */}
@@ -75,15 +76,40 @@ const Home = ({ ...props }) => {
 
               {/* <div className="relative flex h-56 w-56 md:h-80 md:w-80"> */}
               {/* TODO: have some fun here */}
-              <Image
-                src={'/profile_640.jpg'}
-                alt="suhas image"
-                layout="fixed"
-                height={320}
-                width={320}
-                priority={true}
-                className="select-none rounded-full"
-              />
+
+              <div className="relative h-[322px] w-[322px] overflow-hidden">
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform font-mono">
+                  <ReactCurvedText
+                    width={322}
+                    height={322}
+                    cx={161}
+                    cy={161}
+                    rx={158}
+                    ry={158}
+                    startOffset={0}
+                    reversed={false}
+                    text="forever curious 🤔 pizza connoisseur 🍕 web guy 💻 likes taking photos a bit too much 📷"
+                    textProps={{ style: { fontSize: 20 } }}
+                    textPathProps={null}
+                    tspanProps={null}
+                    ellipseProps={null}
+                    svgProps={{ className: 'rotating-curved-text' }}
+                  />
+                </div>
+
+                <div className="absolute left-1/2 top-1/2 h-5/6 w-5/6 -translate-x-1/2 -translate-y-1/2 transform">
+                  <Image
+                    src={'/profile_640.jpg'}
+                    alt="suhas image"
+                    layout="fixed"
+                    height={320}
+                    width={320}
+                    priority={true}
+                    className="rounded-full"
+                  />
+                </div>
+              </div>
+
               {/* </div> */}
             </div>
           </MaxWidthWrapper>
