@@ -38,10 +38,10 @@ const HamburgerMenu = ({
       >
         <div className="flex flex-col first:border-t-4">
           {headerNavLinks.map(
-            (link: { title: {} | null | undefined; href: string | UrlObject }) => (
+            (link: { title: {} | null | undefined; href: string | UrlObject }, i: number) => (
               // @ts-ignore
               <Link
-                key={link.title}
+                key={i}
                 href={link.href}
                 className="w-full border-b px-6 py-4 font-medium hover:bg-gray-50"
                 onClick={onLinkPress}

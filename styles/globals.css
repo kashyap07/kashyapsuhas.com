@@ -67,7 +67,7 @@
   }
 
   .wiggle {
-    animation: 3s wiggle infinite;
+    animation: 2s wiggle infinite;
     transform-origin: 70% 70%;
     display: inline-block;
     cursor: pointer;
