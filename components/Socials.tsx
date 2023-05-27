@@ -85,28 +85,26 @@ const Socials = ({
         <div key={social.title}>
           {withDescription ? (
             <div className="flex w-full items-start px-2 py-3 md:items-center md:border-b md:px-4 md:py-5">
-              <Link href={social.url}>
-                <a
-                  target="_blank"
-                  className="social-icon fill-current  text-black"
-                  // @ts-ignore
-                  style={{ '--highlight-color': social.color }}
-                >
-                  {altIcons ? social.icon2 || social.icon : social.icon}
-                </a>
-              </Link>
-              <span className="ml-4 text-lg">{social.description && social.description}</span>
-            </div>
-          ) : (
-            <Link href={social.url}>
-              <a
+              <Link
+                href={social.url}
                 target="_blank"
                 className="social-icon fill-current  text-black"
                 // @ts-ignore
                 style={{ '--highlight-color': social.color }}
               >
                 {altIcons ? social.icon2 || social.icon : social.icon}
-              </a>
+              </Link>
+              <span className="ml-4 text-lg">{social.description && social.description}</span>
+            </div>
+          ) : (
+            <Link
+              href={social.url}
+              target="_blank"
+              className="social-icon fill-current  text-black"
+              // @ts-ignore
+              style={{ '--highlight-color': social.color }}
+            >
+              {altIcons ? social.icon2 || social.icon : social.icon}
             </Link>
           )}
         </div>

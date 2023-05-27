@@ -25,27 +25,30 @@ const Header = () => {
       <MaxWidthWrapper>
         <nav className="nav z-50 flex items-center justify-between py-4">
           <div className="flex">
-            <Link href="/" passHref>
-              <a
-                data-element="logo"
-                className="group relative select-none bg-primary bg-clip-text pr-1 font-fancy text-3xl font-bold tracking-tight text-transparent hover:bg-none"
-                aria-label="Home Page"
-              >
-                <span className="select-none transition-colors delay-100 duration-500 group-hover:text-red-50">
-                  Suhas Kashyap
-                </span>
-                <TealHalo className="top-0 left-1/3 -z-10" />
-                <TealHalo className="top-1/4 left-2/3 -z-10" />
-              </a>
+            <Link
+              href="/"
+              passHref
+              data-element="logo"
+              className="group relative select-none bg-primary bg-clip-text pr-1 font-fancy text-3xl font-bold tracking-tight text-transparent hover:bg-none"
+              aria-label="Home Page"
+            >
+              <span className="select-none transition-colors delay-100 duration-500 group-hover:text-red-50">
+                Suhas Kashyap
+              </span>
+              <TealHalo className="left-1/3 top-0 -z-10" />
+              <TealHalo className="left-2/3 top-1/4 -z-10" />
             </Link>
 
             {/* desktop list */}
             <div className="ml-3 hidden flex-row items-center md:flex">
               {headerNavLinks.map(link => (
-                <Link key={link.title} href={link.href} passHref>
-                  <a className="h-fit-content rounded-full px-1.5 py-0.5 font-semibold text-black hover:bg-gray-200">
-                    {link.title}
-                  </a>
+                <Link
+                  key={link.title}
+                  href={link.href}
+                  passHref
+                  className="h-fit-content rounded-full px-1.5 py-0.5 font-semibold text-black hover:bg-gray-200"
+                >
+                  {link.title}
                 </Link>
               ))}
             </div>

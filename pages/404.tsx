@@ -25,10 +25,7 @@ const NotFound = ({ className }: { className?: string }) => {
           </pre>
           <pre data-prefix="5">
             <code>
-              {`//`} Go{' '}
-              <Link href="/">
-                <a>home!</a>
-              </Link>
+              {`//`} Go <Link href="/">home!</Link>
             </code>
           </pre>
         </div>

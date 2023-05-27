@@ -32,19 +32,17 @@ const PreviewRecentIG = ({
               }) => {
                 if (post.media_url !== undefined)
                   return (
-                    <Link key={post.id} href={post.permalink}>
-                      <a className="relative">
-                        <div className="h-48 w-48">
-                          <Image
-                            // priority
-                            src={post.media_url}
-                            alt="Open image in Instagram"
-                            className="!h-unset !relative max-h-igImagePreview !w-full !object-contain"
-                            layout="fill"
-                            // loading="eager"
-                          />
-                        </div>
-                      </a>
+                    <Link key={post.id} href={post.permalink} className="relative">
+                      <div className="h-48 w-48">
+                        <Image
+                          // priority
+                          src={post.media_url}
+                          alt="Open image in Instagram"
+                          className="!h-unset !relative max-h-igImagePreview !w-full !object-contain"
+                          layout="fill"
+                          // loading="eager"
+                        />
+                      </div>
                     </Link>
                   );
               },
@@ -52,15 +50,14 @@ const PreviewRecentIG = ({
           </div>
         </div>
 
-        <Link href="https://www.instagram.com/kashyap_07">
-          <a
-            className="group flex flex-row items-center gap-1"
-            aria-label="See more Instagram.com"
-            target="_blank"
-          >
-            See more{' '}
-            <BsArrowRight className="translate-x-0 transition-transform duration-700 group-hover:translate-x-2" />
-          </a>
+        <Link
+          href="https://www.instagram.com/kashyap_07"
+          className="group flex flex-row items-center gap-1"
+          aria-label="See more Instagram.com"
+          target="_blank"
+        >
+          See more{' '}
+          <BsArrowRight className="translate-x-0 transition-transform duration-700 group-hover:translate-x-2" />
         </Link>
       </div>
     );

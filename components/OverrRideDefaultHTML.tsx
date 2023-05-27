@@ -20,7 +20,7 @@ const pre = (props: {
   return (
     <div data-component="code-block" className="relative">
       {metastring && (
-        <span className="absolute -top-5 -right-2 rounded bg-secondary px-4 py-2 text-sm font-bold">
+        <span className="absolute -right-2 -top-5 rounded bg-secondary px-4 py-2 text-sm font-bold">
           {metastring}
         </span>
       )}
@@ -39,7 +39,7 @@ const pre = (props: {
 const inlineCode = (props: { children: any }) => {
   const { children } = props;
   return (
-    <pre className="inline !w-fit-content rounded !bg-gray-900 !py-1 !px-2 font-sans !text-sm font-medium !leading-tight !text-black">
+    <pre className="inline !w-fit-content rounded !bg-gray-900 !px-2 !py-1 font-sans !text-sm font-medium !leading-tight !text-black">
       {children}
     </pre>
   );

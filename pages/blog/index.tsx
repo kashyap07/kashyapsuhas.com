@@ -37,16 +37,17 @@ const Blog = ({ className = '', ...props }) => {
               ) => {
                 return (
                   <li className="w-full" key={index}>
-                    <Link href={`/blog/post/${item.filename.split('.').slice(0, -1).join('.')}`}>
-                      <a className="group flex w-full flex-col justify-between border-b px-2 py-5 font-medium transition-colors duration-300 ease-in hover:bg-gray-200 md:px-4">
-                        <div className="flex items-center gap-4">
-                          <span className="text-xl">{item.title}</span>
-                          <BsArrowRight className="hidden translate-x-0 opacity-0 transition-all duration-700 group-hover:translate-x-2 group-hover:text-black group-hover:opacity-100 md:block" />
-                        </div>
-                        <span className="text-sm uppercase text-gray-700">
-                          {moment(item.creation_date).format('D MMM YYYY')}
-                        </span>
-                      </a>
+                    <Link
+                      href={`/blog/post/${item.filename.split('.').slice(0, -1).join('.')}`}
+                      className="group flex w-full flex-col justify-between border-b px-2 py-5 font-medium transition-colors duration-300 ease-in hover:bg-gray-200 md:px-4"
+                    >
+                      <div className="flex items-center gap-4">
+                        <span className="text-xl">{item.title}</span>
+                        <BsArrowRight className="hidden translate-x-0 opacity-0 transition-all duration-700 group-hover:translate-x-2 group-hover:text-black group-hover:opacity-100 md:block" />
+                      </div>
+                      <span className="text-sm uppercase text-gray-700">
+                        {moment(item.creation_date).format('D MMM YYYY')}
+                      </span>
                     </Link>
                   </li>
                 );

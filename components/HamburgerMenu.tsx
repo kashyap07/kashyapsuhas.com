@@ -40,13 +40,13 @@ const HamburgerMenu = ({
           {headerNavLinks.map(
             (link: { title: {} | null | undefined; href: string | UrlObject }) => (
               // @ts-ignore
-              <Link key={link.title} href={link.href}>
-                <a
-                  className="w-full border-b px-6 py-4 font-medium hover:bg-gray-50"
-                  onClick={onLinkPress}
-                >
-                  {link.title}
-                </a>
+              <Link
+                key={link.title}
+                href={link.href}
+                className="w-full border-b px-6 py-4 font-medium hover:bg-gray-50"
+                onClick={onLinkPress}
+              >
+                {link.title}
               </Link>
             ),
           )}

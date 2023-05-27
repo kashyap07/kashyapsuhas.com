@@ -10,8 +10,11 @@ const Footer = ({ className }: { className?: string }) => {
           <span className="font-semibold">Thanks for visiting!</span>
           <span>
             View
-            <Link href="https://github.com/kashyap07/kashyapsuhas.com">
-              <a className="font-bold text-secondary"> source.</a>
+            <Link
+              href="https://github.com/kashyap07/kashyapsuhas.com"
+              className="font-bold text-secondary"
+            >
+              source.
             </Link>
           </span>
         </>

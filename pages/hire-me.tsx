@@ -62,12 +62,14 @@ const HireMe = ({ className }: { className?: string }) => {
         </div>
 
         <div className="flex w-full items-center justify-center">
-          <Link href="/suhas-resume.pdf">
-            <a target="_blank" className="resume-pdf overflow-scroll border border-gray-200">
-              <reactPdf.Document file={pdfFile}>
-                <reactPdf.Page pageNumber={1} />
-              </reactPdf.Document>
-            </a>
+          <Link
+            href="/suhas-resume.pdf"
+            target="_blank"
+            className="resume-pdf overflow-scroll border border-gray-200"
+          >
+            <reactPdf.Document file={pdfFile}>
+              <reactPdf.Page pageNumber={1} />
+            </reactPdf.Document>
           </Link>
         </div>
       </MaxWidthWrapper>

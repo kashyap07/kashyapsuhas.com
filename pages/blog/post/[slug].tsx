@@ -71,21 +71,17 @@ const Breadcrumb = ({ category }: { category: any }) => (
     {/* https://tailwindesign.com/components/breadcrumbhttps://tailwindesign.com/components/breadcrumb */}
     <ul className="mb-1 flex text-sm text-black">
       <li className="inline-flex items-center">
-        <Link href="/">
-          <a>HOME</a>
-        </Link>
+        <Link href="/">HOME</Link>
         <HiChevronRight className="text-xl" />
         {/* Convert to a component, set direction as props */}
       </li>
       <li className="inline-flex items-center">
-        <Link href="/blog">
-          <a>BLOG</a>
-        </Link>
+        <Link href="/blog">BLOG</Link>
         <HiChevronRight className="text-xl" />
       </li>
       <li className="inline-flex items-center">
-        <Link href="/">
-          <a className="uppercase">{category}</a>
+        <Link href="/" className="uppercase">
+          {category}
         </Link>
       </li>
     </ul>
