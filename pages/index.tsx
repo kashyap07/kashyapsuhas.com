@@ -70,15 +70,8 @@ const Home = ({ ...props }) => {
                 <span className="text-3xl md:text-4xl">Welcome to my slice of the Interwebs.</span>
               </div>
 
-              {/* This was for gradient ring around pp */}
-              {/* <div className="absolute-center relative flex h-[310px] w-[310px] items-center justify-center rounded-full bg-white">
-                <div className="relative flex h-[295px] w-[295px] items-center justify-center rounded-full"> */}
-
-              {/* <div className="relative flex h-56 w-56 md:h-80 md:w-80"> */}
-              {/* TODO: have some fun here */}
-
               <div className="relative h-[322px] w-[322px] overflow-hidden">
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform font-mono">
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform font-mono text-lg md:text-xl">
                   <ReactCurvedText
                     width={322}
                     height={322}
@@ -89,7 +82,7 @@ const Home = ({ ...props }) => {
                     startOffset={0}
                     reversed={false}
                     text="forever curious 🤔 pizza connoisseur 🍕 web guy 💻 likes taking photos a bit too much 📷"
-                    textProps={{ style: { fontSize: 20 } }}
+                    // textProps={{ style: { fontSize: 20 } }}
                     textPathProps={null}
                     tspanProps={null}
                     ellipseProps={null}

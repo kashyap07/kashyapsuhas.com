@@ -17,12 +17,7 @@ const Work = ({ className }: { className?: string }) => {
           <p className="pb-2 text-2xl">
             Hey there <span className="wiggle">👋</span>
           </p>
-          <p className="">
-            I&apos;m looking for a new opportunity at the moment.
-            <br />
-            <br />
-            Prefer: Full-stack web-dev roles with a focus on the Frontend side of things.
-          </p>
+          <p className="">I currently work for Rakuten India as a Senior Software Engineer II</p>
 
           <p className="pt-16">
             Follow link for my resume:{' '}
