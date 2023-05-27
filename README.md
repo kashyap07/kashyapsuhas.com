@@ -1,5 +1,9 @@
 [![This is for myself, dont click this lol.](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/github-huf1db)
 
+## Note for self
+
+npm install -g npm-check-updates && ncu -u for package update dependecy headaches
+
 ## Blog ideas
 
 1. google font size and what I found out about it (unicode)
