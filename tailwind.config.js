@@ -44,7 +44,7 @@ module.exports = {
         igImagePreview: '48rem',
       },
       maxWidth: {
-        wrapper: '68rem',
+        wrapper: '72rem',
         prose: '680px',
         '1/4': '25%',
         '1/2': '50%',

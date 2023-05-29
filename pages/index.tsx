@@ -57,53 +57,60 @@ const Home = ({ ...props }) => {
           data-element="main-section"
           className="relative mb-auto flex min-h-screen w-full flex-col items-center justify-center"
         >
-          <MaxWidthWrapper className="relative flex w-full items-center justify-center">
-            <div className="flex w-full flex-col items-center justify-between gap-10 md:flex-row md:gap-0">
-              <div className="flex w-full flex-col justify-center gap-6 md:w-2/3">
-                <div className="flex w-full flex-col justify-center gap-2">
-                  <span className="text-3xl !font-bold text-black md:text-4xl">
-                    <span className="wiggle">👋</span> Hello there, I&apos;m
-                  </span>
-                  <span className="text-5xl !font-bold text-black md:text-6xl">SUHAS KASHYAP</span>
-                </div>
+          <MaxWidthWrapper
+            className="flex w-full flex-col items-center justify-center gap-20"
+            data-element="fold-content"
+          >
+            {/* 3 lines - hello, name, welcome */}
+            <div className="flex flex-col gap-0">
+              <span className="text-3xl !font-bold text-slate-900 md:text-4xl">
+                <span className="wiggle">👋</span> Hello there, I&apos;m
+              </span>
 
-                <span className="text-3xl md:text-4xl">Welcome to my slice of the Interwebs.</span>
+              <span className="text-5xl !font-bold text-slate-900 md:text-[8rem]">
+                SUHAS KASHYAP
+              </span>
+
+              <span className="text-3xl text-slate-900 md:text-4xl">
+                Welcome to my slice of the Interwebs.
+              </span>
+            </div>
+
+            {/* image + circle thingy. absolute pos'd elements */}
+            <div
+              className="relative h-[322px] w-[322px] overflow-hidden"
+              data-element="image-and-circle"
+            >
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform font-mono text-lg md:text-xl">
+                <ReactCurvedText
+                  width={322}
+                  height={322}
+                  cx={161}
+                  cy={161}
+                  rx={158}
+                  ry={158}
+                  startOffset={0}
+                  reversed={false}
+                  text="forever curious 🤔 pizza connoisseur 🍕 web guy 💻 likes taking photos a bit too much 📷"
+                  // textProps={{ style: { fontSize: 20 } }}
+                  textPathProps={null}
+                  tspanProps={null}
+                  ellipseProps={null}
+                  svgProps={{ className: 'rotating-curved-text' }}
+                />
               </div>
 
-              <div className="relative h-[322px] w-[322px] overflow-hidden">
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform font-mono text-lg md:text-xl">
-                  <ReactCurvedText
-                    width={322}
-                    height={322}
-                    cx={161}
-                    cy={161}
-                    rx={158}
-                    ry={158}
-                    startOffset={0}
-                    reversed={false}
-                    text="forever curious 🤔 pizza connoisseur 🍕 web guy 💻 likes taking photos a bit too much 📷"
-                    // textProps={{ style: { fontSize: 20 } }}
-                    textPathProps={null}
-                    tspanProps={null}
-                    ellipseProps={null}
-                    svgProps={{ className: 'rotating-curved-text' }}
-                  />
-                </div>
-
-                <div className="absolute left-1/2 top-1/2 h-5/6 w-5/6 -translate-x-1/2 -translate-y-1/2 transform">
-                  <Image
-                    src={'/profile_640.jpg'}
-                    alt="suhas image"
-                    layout="fixed"
-                    height={320}
-                    width={320}
-                    priority={true}
-                    className="rounded-full"
-                  />
-                </div>
+              <div className="absolute left-1/2 top-1/2 h-5/6 w-5/6 -translate-x-1/2 -translate-y-1/2 transform">
+                <Image
+                  src={'/profile_640.jpg'}
+                  alt="suhas image"
+                  layout="fixed"
+                  height={320}
+                  width={320}
+                  priority={true}
+                  className="rounded-full"
+                />
               </div>
-
-              {/* </div> */}
             </div>
           </MaxWidthWrapper>
 

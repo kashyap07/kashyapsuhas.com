@@ -39,7 +39,7 @@
 
   html,
   body {
-    @apply relative m-0 box-border min-h-full !bg-white p-0 text-black duration-500 ease-out;
+    @apply relative m-0 box-border min-h-full !bg-slate-100 p-0 text-black duration-500 ease-out;
   }
 
   html {
