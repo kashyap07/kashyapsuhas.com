@@ -2,9 +2,12 @@ import { MaxWidthWrapper } from '@/components/Wrapper';
 import { MaxWidth } from '@/variables/sizes';
 import Image from 'next/image';
 
+
 export default function Home() {
   return (
     <main className="pt-20 md:px-20 md:pt-32">
+
+
       <MaxWidthWrapper maxWidth={MaxWidth.Wide}>
         <div className="flex w-full flex-col items-center justify-center">
           <div className="mx-auto mb-20 flex flex-col gap-2 md:mb-28">
