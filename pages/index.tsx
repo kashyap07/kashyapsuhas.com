@@ -81,7 +81,7 @@ const Home = ({ ...props }) => {
               className="relative h-[322px] w-[322px] overflow-hidden"
               data-element="image-and-circle"
             >
-              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform font-mono text-lg md:text-xl">
+              {/* <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform font-mono text-lg md:text-xl">
                 <ReactCurvedText
                   width={322}
                   height={322}
@@ -98,7 +98,7 @@ const Home = ({ ...props }) => {
                   ellipseProps={null}
                   svgProps={{ className: 'rotating-curved-text' }}
                 />
-              </div>
+              </div> */}
 
               <div className="absolute left-1/2 top-1/2 h-5/6 w-5/6 -translate-x-1/2 -translate-y-1/2 transform">
                 <Image
