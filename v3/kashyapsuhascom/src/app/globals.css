@@ -1,0 +1,155 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #000;
+    --foreground: #fff;
+
+    /** primary hsl start **/
+    --primary-h: 3;
+    --primary-s: 100%;
+    --primary-l: 100%;
+
+    --neon-glow-primary-shadow-1: hsl(
+      var(--primary-h),
+      var(--primary-s),
+      var(--primary-l)
+    );
+    --neon-glow-primary-shadow-2: hsl(
+      var(--primary-h),
+      var(--primary-s),
+      calc(var(--primary-l) - 10%)
+    );
+    --neon-glow-primary-shadow-3: hsl(
+      var(--primary-h),
+      var(--primary-s),
+      calc(var(--primary-l) - 20%)
+    );
+    --neon-glow-primary-shadow-4: hsl(
+      var(--primary-h),
+      var(--primary-s),
+      calc(var(--primary-l) - 30%)
+    );
+    --neon-glow-primary-shadow-5: hsl(
+      var(--primary-h),
+      var(--primary-s),
+      calc(var(--primary-l) - 40%)
+    );
+    --neon-glow-primary-shadow-6: hsl(
+      var(--primary-h),
+      var(--primary-s),
+      calc(var(--primary-l) - 50%)
+    );
+    --neon-glow-primary-shadow-7: hsl(
+      var(--primary-h),
+      var(--primary-s),
+      calc(var(--primary-l) - 60%)
+    );
+
+    --neon-glow-primary: 0 0 0px var(--neon-glow-primary-shadow-1),
+      0 0 5px var(--neon-glow-primary-shadow-2),
+      0 0 10px var(--neon-glow-primary-shadow-3),
+      0 0 20px var(--neon-glow-primary-shadow-4),
+      0 0 50px var(--neon-glow-primary-shadow-5),
+      0 0 80px var(--neon-glow-primary-shadow-6),
+      0 0 100px var(--neon-glow-primary-shadow-7);
+    /** primary hsl end **/
+
+    /** secondary hsl start **/
+    --secondary-h: 60;
+    --secondary-s: 100%;
+    --secondary-l: 100%;
+
+    --neon-glow-secondary-shadow-1: hsl(
+      var(--secondary-h),
+      var(--secondary-s),
+      var(--secondary-l)
+    );
+    --neon-glow-secondary-shadow-2: hsl(
+      var(--secondary-h),
+      var(--secondary-s),
+      calc(var(--secondary-l) - 10%)
+    );
+    --neon-glow-secondary-shadow-3: hsl(
+      var(--secondary-h),
+      var(--secondary-s),
+      calc(var(--secondary-l) - 20%)
+    );
+    --neon-glow-secondary-shadow-4: hsl(
+      var(--secondary-h),
+      var(--secondary-s),
+      calc(var(--secondary-l) - 30%)
+    );
+    --neon-glow-secondary-shadow-5: hsl(
+      var(--secondary-h),
+      var(--secondary-s),
+      calc(var(--secondary-l) - 40%)
+    );
+    --neon-glow-secondary-shadow-6: hsl(
+      var(--secondary-h),
+      var(--secondary-s),
+      calc(var(--secondary-l) - 50%)
+    );
+    --neon-glow-secondary-shadow-7: hsl(
+      var(--secondary-h),
+      var(--secondary-s),
+      calc(var(--secondary-l) - 60%)
+    );
+
+    --neon-glow-secondary: 0 0 0px var(--neon-glow-secondary-shadow-1),
+      0 0 5px var(--neon-glow-secondary-shadow-2),
+      0 0 10px var(--neon-glow-secondary-shadow-3),
+      0 0 20px var(--neon-glow-secondary-shadow-4),
+      0 0 50px var(--neon-glow-secondary-shadow-5),
+      0 0 80px var(--neon-glow-secondary-shadow-6),
+      0 0 100px var(--neon-glow-secondary-shadow-7);
+    /** secondary hsl end **/
+
+    --white-glow: 0 0 0.8rem #ffffff70;
+  }
+
+  body {
+    @apply text-foreground bg-background;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  a:hover {
+    @apply neon-flicker--primary;
+  }
+}
+
+@layer utilities {
+  .neon-flicker--primary {
+    @apply text-shadow-neon-glow--primary ease-in-out transition-all duration-200 flicker z-10;
+  }
+  .neon-flicker--secondary {
+    @apply text-shadow-neon-glow--secondary ease-in-out transition-all duration-200 flicker z-10;
+  }
+
+  .flicker {
+    animation: flicker 3s linear infinite;
+    animation-delay: 0.5s;
+  }
+
+  @keyframes flicker {
+    0%,
+    19.999%,
+    22%,
+    62.999%,
+    64%,
+    64.999%,
+    70%,
+    100% {
+      opacity: 0.99;
+    }
+    20%,
+    21.999%,
+    63%,
+    63.999%,
+    65%,
+    69.999% {
+      opacity: 0.4;
+    }
+  }
+}
