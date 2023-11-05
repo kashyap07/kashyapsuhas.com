@@ -1,3 +1,3 @@
-import MaxWidthWrapper from './MaxWidthWrapper';
+import Wrapper from './Wrapper';
 
-export { MaxWidthWrapper };
+export { Wrapper };

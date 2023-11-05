@@ -1,10 +1,11 @@
-import Link from 'next/link';
-import MaxWidthWrapper from '@components/MaxWidthWrapper';
 import moment from 'moment';
-import SideTitle from '@components/SideTitle';
-import { BsArrowRight } from 'react-icons/bs';
-import { getFrontMatters } from '@utils/getFrontMatters';
+import Link from 'next/link';
 import { Key } from 'react';
+import { BsArrowRight } from 'react-icons/bs';
+
+import MaxWidthWrapper from '@components/MaxWidthWrapper';
+import SideTitle from '@components/SideTitle';
+import { getFrontMatters } from '@utils/getFrontMatters';
 
 export async function getStaticProps() {
   const frontMatters = await getFrontMatters();

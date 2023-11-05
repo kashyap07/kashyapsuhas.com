@@ -1,12 +1,13 @@
-import { MaxWidthWrapper } from '@/components/Wrapper';
-import { MaxWidth } from '@/variables/sizes';
 import Image from 'next/image';
 import Link from 'next/link';
+
+import { Wrapper } from '@/components/Wrapper';
+import { MaxWidth } from '@/variables/sizes';
 
 export default function Home() {
   return (
     <main className="pt-20 md:px-20 md:pt-24">
-      <MaxWidthWrapper
+      <Wrapper
         maxWidth={MaxWidth.Wide}
         className="mb-20 flex w-full flex-col items-center justify-center"
       >
@@ -24,9 +25,9 @@ export default function Home() {
           priority={true}
           className="mx-auto rounded-2xl"
         />
-      </MaxWidthWrapper>
+      </Wrapper>
 
-      <MaxWidthWrapper
+      <Wrapper
         maxWidth={MaxWidth.Narrow}
         className="mb-40 flex w-full flex-col justify-center"
       >
@@ -42,7 +43,7 @@ export default function Home() {
             <Link href={'/contact'}>CONTACT</Link>
           </li>
         </ul>
-      </MaxWidthWrapper>
+      </Wrapper>
     </main>
   );
 }

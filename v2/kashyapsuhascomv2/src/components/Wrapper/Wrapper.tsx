@@ -1,8 +1,9 @@
 import clsx from 'clsx';
 import { ReactNode } from 'react';
+
 import { MaxWidth } from '@/variables/sizes';
 
-export interface MaxWidthWrapperProps {
+export interface WrapperProps {
   children: ReactNode;
   className?: string;
   maxWidth?: MaxWidth;
@@ -16,20 +17,20 @@ export interface MaxWidthWrapperProps {
  * @component
  * @example
  * // Usage:
- * <MaxWidthWrapper maxWidth={MaxWidth.Narrow}>
+ * <Wrapper maxWidth={MaxWidth.Narrow}>
  *   // Content to be wrapped
- * </MaxWidthWrapper>
+ * </Wrapper>
  *
  * @param {ReactNode} props.children - The content to be wrapped.
  * @param {string} [props.className] - Additional CSS classes to be applied to the wrapper.
  * @param {MaxWidth} props.maxWidth - The maximum width to be applied. Default is MaxWidth.Wide.
- * @returns {JSX.Element} The JSX element representing the MaxWidthWrapper component.
+ * @returns {JSX.Element} The JSX element representing the Wrapper component.
  */
-const MaxWidthWrapper = ({
+const Wrapper = ({
   children,
   className,
   maxWidth = MaxWidth.Wide,
-}: MaxWidthWrapperProps): JSX.Element => {
+}: WrapperProps): JSX.Element => {
   return (
     <div
       data-component="max-width-wrapper"
@@ -44,4 +45,4 @@ const MaxWidthWrapper = ({
   );
 };
 
-export default MaxWidthWrapper;
+export default Wrapper;
