@@ -37,7 +37,7 @@ export default function Home() {
             <Link href={"/photos"}>PHOTOS</Link>
           </li>
           <li className="flex items-center justify-between text-5xl md:text-9xl">
-            <Link href={"/resume"}>RESUME</Link>
+            <Link href={"/work"}>WORK</Link>
           </li>
           <li className="flex items-center justify-between text-5xl md:text-9xl">
             <Link href={"/contact"}>CONTACT</Link>
