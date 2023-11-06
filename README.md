@@ -16,3 +16,6 @@ npm install -g npm-check-updates && ncu -u for package update dependecy headache
 8. camera why
 9. pizza
 10. replit for pair programming
+
+
+## STUFF IS UNDER CONSTRUCTION PLEASE BE PATIENT THANK YOU
