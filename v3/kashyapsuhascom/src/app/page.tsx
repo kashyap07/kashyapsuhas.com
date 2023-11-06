@@ -1,8 +1,8 @@
-import Image from "next/image";
-import Link from "next/link";
+import Image from 'next/image';
+import Link from 'next/link';
 
-import { Wrapper } from "@/components/Wrapper";
-import { MaxWidth } from "@/variables/sizes";
+import { Wrapper } from '@/components/Wrapper';
+import { MaxWidth } from '@/variables/sizes';
 
 export default function Home() {
   return (

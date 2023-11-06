@@ -1,7 +1,7 @@
-import Link from "next/link";
+import Link from 'next/link';
 
-import { Wrapper } from "@/components/Wrapper";
-import { MaxWidth } from "@/variables/sizes";
+import { Wrapper } from '@/components/Wrapper';
+import { MaxWidth } from '@/variables/sizes';
 
 export default function Contact() {
   return (
