@@ -2,10 +2,8 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { Gallery } from 'react-grid-gallery';
 
 import { Wrapper } from '@/components/Wrapper';
-import { MaxWidth } from '@/variables/sizes';
 
 const galleryImages = [
   {
@@ -116,33 +114,30 @@ const galleryImages = [
 
 export default function Blog() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between pt-24 md:p-24">
-      <Wrapper
-        maxWidth={MaxWidth.Wide}
-        className="mb-12 md:mb-20 flex w-full flex-col items-center justify-center gap-4"
-      >
-        <div className="mx-auto mb-10 flex flex-col gap-2">
-          <span className="text-3xl">THIS PAGE IS UNDER CONSTRUCTION</span>
-        </div>
+    <Wrapper
+      className="mb-12 md:mb-20 flex w-full flex-col items-center justify-center gap-4"
+    >
+      <div className="mx-auto mb-10 flex flex-col gap-2">
+        <span className="text-3xl">THIS PAGE IS UNDER CONSTRUCTION</span>
+      </div>
 
-        <div className="columns-1 gap-4 sm:columns-2 xl:columns-3 ">
-          {galleryImages.map(({ src, alt }, idx) => (
-            <Image
-              key={idx}
-              alt={alt}
-              src={src}
-              width={720}
-              height={480}
-              sizes="(max-width: 640px) 100vw,
+      <div className="columns-1 gap-4 sm:columns-2 xl:columns-3 ">
+        {galleryImages.map(({ src, alt }, idx) => (
+          <Image
+            key={idx}
+            alt={alt}
+            src={src}
+            width={720}
+            height={480}
+            sizes="(max-width: 640px) 100vw,
                   (max-width: 1280px) 50vw,
                   (max-width: 1536px) 33vw,
                   25vw"
-              className="mb-4 pointer-events-none"
-            />
-          ))}
-        </div>
-      </Wrapper>
-    </main>
+            className="mb-4 pointer-events-none"
+          />
+        ))}
+      </div>
+    </Wrapper>
   );
 }
 
