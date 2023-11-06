@@ -21,16 +21,14 @@ export default function Home() {
           </span>
         </div>
 
-        <a className="" href="/" target="_blank" rel="noopener noreferrer">
-          <Image
-            src={"/profile_640.jpg"}
-            alt="suhas kashyap image"
-            height={300}
-            width={300}
-            priority
-            className="mx-auto rounded-2xl pointer-events-none"
-          />
-        </a>
+        <Image
+          src={"/profile_640.jpg"}
+          alt="suhas kashyap image"
+          height={300}
+          width={300}
+          priority
+          className="mx-auto rounded-2xl pointer-events-none"
+        />
       </Wrapper>
 
       <Wrapper
