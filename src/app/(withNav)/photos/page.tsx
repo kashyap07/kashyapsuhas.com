@@ -45,7 +45,7 @@ export default function Photos() {
           data-locatorID="photos-selected-image-wrapper"
         >
           <div
-            className="fixed p-4 pt-24 md:p-24 z-50 top-0 left-0 w-full h-full flex flex-col gap-4 items-center justify-center bg-black bg-opacity-50 backdrop-blur-xl cursor-pointer"
+            className="fixed p-4 pt-24 md:p-32 z-50 top-0 left-0 w-full h-full flex flex-col gap-4 md:gap-8 items-center justify-center bg-black bg-opacity-50 backdrop-blur-xl cursor-pointer"
             onClick={closeImage}
           >
             <ImageAutoHeight
@@ -53,7 +53,7 @@ export default function Photos() {
               alt={selectedImage.title || "selected image"}
               className="max-w-full max-h-full"
             />
-            
+
             <div
               className="mx-auto mb-10 text-center"
               data-locatorID="photos-selected-title-text"
