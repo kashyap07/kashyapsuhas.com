@@ -12,8 +12,8 @@ export default function RootLayout({
       <header>
         <Wrapper className="pt-12 w-full">
           <Link
-            className="text-5xl hover:text-shadow-neon-glow--secondary"
-            href={"/"}
+            className="text-5xl hover:text-shadow-neon-glow--primary"
+            href={'/'}
           >
             SUHAS KASHYAP
           </Link>

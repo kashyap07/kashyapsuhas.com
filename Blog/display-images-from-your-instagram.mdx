@@ -8,10 +8,9 @@ draft: false
 author: Suhas Kashyap
 title: Display images from your instagram
 description: Displaying images from IG account using Instagram display and graph API
-hero_image: /blog/2022/screenshot-2022-07-31-at-2-13-38-am.png
+hero_image: /blog/screenshot-2022-07-31-at-2-13-38-am.png
 _template: blog_post
 ---
-
 
 If you've been wanting to fetch images from your Instagram and display them on your site, thus not maintaining a double gallery of sorts - you've come to the right place.
 
@@ -48,7 +47,7 @@ You can't do much with that string yet; To get the access token, request the `ac
 
 <pre>curl -L -X POST 'https://api.instagram.com/oauth/access_token' -F 'client_id="\<CLIENT_ID>"' -F 'client_secret="\<CLIENT_SECRET>"' -F 'grant_type="authorization_code"' -F 'redirect_uri="https://www.kashyapsuhas.com/"' -F 'code="\<AUTH_CODE>"'</pre>
 
-![](/blog/2022/screenshot-2022-07-31-at-2-37-39-am.png)
+![](/blog/screenshot-2022-07-31-at-2-37-39-am.png)
 
 You now have access_token.
 
@@ -62,7 +61,7 @@ Looked something like this in my case:
 
 <pre>curl -L -X GET 'https://graph.instagram.com/access_token?grant_type=ig_exchange_token&client_secret=\<CLIENT_SECRET>&access_token=\<SECRET_TOKEN>'</pre>
 
-![](/blog/2022/screenshot-2022-07-31-at-2-45-59-am.png)
+![](/blog/screenshot-2022-07-31-at-2-45-59-am.png)
 
 We now have an access token TTL as 5184000.
 
