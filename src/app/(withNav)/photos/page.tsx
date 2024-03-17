@@ -6,6 +6,7 @@ import { Wrapper } from "@/components/Wrapper";
 import { MaxWidth } from "@/variables/sizes";
 import { useState } from "react";
 import galleryImages, { GalleryImage } from "./galleryImages";
+import ImageAutoHeight from "@/components/ImageAutoHeight";
 
 // Maybe in the future: https://vercel.com/blog/building-a-fast-animated-image-gallery-with-next-js
 
@@ -44,23 +45,17 @@ export default function Photos() {
           data-locatorID="photos-selected-image-wrapper"
         >
           <div
-            className="fixed p-12 z-50 top-0 left-0 w-full h-full flex flex-col gap-4 items-center justify-center bg-black bg-opacity-50 backdrop-blur-xl cursor-pointer"
+            className="fixed p-4 pt-24 md:p-24 z-50 top-0 left-0 w-full h-full flex flex-col gap-4 items-center justify-center bg-black bg-opacity-50 backdrop-blur-xl cursor-pointer"
             onClick={closeImage}
           >
+            <ImageAutoHeight
+              src={selectedImage.src}
+              alt={selectedImage.title || "selected image"}
+              className="max-w-full max-h-full"
+            />
+            
             <div
-              className="relative min-w-[80vw] h-full"
-              data-locatorID="photos-selected-image"
-            >
-              <Image
-                src={selectedImage.src}
-                alt={selectedImage.title || "selected image"}
-                layout="fill"
-                objectFit="contain"
-                className=""
-              />
-            </div>
-            <div
-              className="mx-auto mb-10 text-center z-50"
+              className="mx-auto mb-10 text-center"
               data-locatorID="photos-selected-title-text"
             >
               <span className="text-3xl">{selectedImage.title}</span>
