@@ -1,14 +1,19 @@
-"use client";
+'use client';
 
-import Image from "next/image";
+import Image from 'next/image';
 
-import { Wrapper } from "@/components/Wrapper";
-import { MaxWidth } from "@/variables/sizes";
-import { useState } from "react";
-import galleryImages, { GalleryImage } from "./galleryImages";
-import ImageAutoHeight from "@/components/ImageAutoHeight";
+import { Wrapper } from '@/components/Wrapper';
+import { MaxWidth } from '@/variables/sizes';
+import { useState } from 'react';
+import galleryImages, { GalleryImage } from './galleryImages';
+import ImageAutoHeight from '@/components/ImageAutoHeight';
 
 // Maybe in the future: https://vercel.com/blog/building-a-fast-animated-image-gallery-with-next-js
+
+export const metadata = {
+  title: 'Blog',
+  description: "Kashyap's photo gallery",
+};
 
 export default function Photos() {
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
@@ -50,7 +55,7 @@ export default function Photos() {
           >
             <ImageAutoHeight
               src={selectedImage.src}
-              alt={selectedImage.title || "selected image"}
+              alt={selectedImage.title || 'selected image'}
               className="max-w-full max-h-full"
             />
 
