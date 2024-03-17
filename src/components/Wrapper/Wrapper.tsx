@@ -31,12 +31,28 @@ const Wrapper = ({
   className,
   maxWidth = MaxWidth.Narrow,
 }: WrapperProps): JSX.Element => {
+  let maxWidthClass;
+  switch (maxWidth) {
+    case MaxWidth.Wide:
+      maxWidthClass = "max-w-7xl";
+      break;
+    case MaxWidth.Narrow:
+      maxWidthClass = "max-w-[68rem]";
+      break;
+    case MaxWidth.FullWidth:
+      maxWidthClass = "max-w-full";
+      break;
+    default:
+      maxWidthClass = "max-w-[68rem]";
+      break;
+  }
+
   return (
     <div
       data-component="max-width-wrapper"
       className={clsx(
         "relative mx-auto w-full px-6",
-        maxWidth === MaxWidth.Wide ? "max-w-7xl" : "max-w-[68rem]",
+        maxWidthClass,
         className
       )}
     >

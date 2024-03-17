@@ -1,144 +1,73 @@
 "use client";
 
-import Image from 'next/image';
-import Link from 'next/link';
+import Image from "next/image";
 
-import { Wrapper } from '@/components/Wrapper';
+import { Wrapper } from "@/components/Wrapper";
+import { MaxWidth } from "@/variables/sizes";
+import { useState } from "react";
+import galleryImages, { GalleryImage } from "./galleryImages";
 
-const galleryImages = [
-  {
-    src: "/gallery/bees.jpg",
-    alt: "profile",
-  },
-  {
-    src: "/gallery/vade_vibes.jpg",
-    alt: "profile",
-  },
-  {
-    src: "/gallery/reddy_anna.jpg",
-    alt: "profile",
-  },
-  {
-    src: "/gallery/badigegagi.jpg",
-    alt: "profile",
-  },
-  {
-    src: "/gallery/sugar.jpg",
-    alt: "profile",
-  },
-  {
-    src: "/gallery/monke.jpg",
-    alt: "profile",
-  },
-  {
-    src: "/gallery/alloys.jpg",
-    alt: "profile",
-  },
-  {
-    src: "/gallery/bees_2.jpg",
-    alt: "profile",
-  },
-  {
-    src: "/gallery/chandni.jpg",
-    alt: "profile",
-  },
-  {
-    src: "/gallery/buddy.jpg",
-    alt: "profile",
-  },
-  {
-    src: "/gallery/bangles.jpg",
-    alt: "profile",
-  },
-  {
-    src: "/gallery/moo_1.jpg",
-    alt: "profile",
-  },
-  {
-    src: "/gallery/moon.jpg",
-    alt: "profile",
-  },
-  {
-    src: "/gallery/juice.jpg",
-    alt: "profile",
-  },
-  {
-    src: "/gallery/brain.jpg",
-    alt: "profile",
-  },
-  {
-    src: "/gallery/feet.jpg",
-    alt: "profile",
-  },
-  {
-    src: "/gallery/turkey.jpg",
-    alt: "profile",
-  },
-  {
-    src: "/gallery/thai_coconut.jpg",
-    alt: "profile",
-  },
-  {
-    src: "/gallery/pink.jpg",
-    alt: "profile",
-  },
-  {
-    src: "/gallery/goa_1.jpg",
-    alt: "profile",
-  },
-  {
-    src: "/gallery/india.jpg",
-    alt: "profile",
-  },
-  {
-    src: "/gallery/ulta.jpg",
-    alt: "profile",
-  },
-  {
-    src: "/gallery/gods.jpg",
-    alt: "profile",
-  },
-  {
-    src: "/gallery/doll.jpg",
-    alt: "profile",
-  },
-  {
-    src: "/gallery/seltos_1.jpg",
-    alt: "profile",
-  },
-  {
-    src: "/gallery/minar.jpg",
-    alt: "profile",
-  },
-];
+// Maybe in the future: https://vercel.com/blog/building-a-fast-animated-image-gallery-with-next-js
 
-export default function Blog() {
+export default function Photos() {
+  const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
+
+  const openImage = (src: GalleryImage) => setSelectedImage(src);
+  const closeImage = () => setSelectedImage(null);
+
   return (
-    <Wrapper
-      className="mb-12 md:mb-20 flex w-full flex-col items-center justify-center gap-4"
-    >
-      <div className="mx-auto mb-10 flex flex-col gap-2">
-        <span className="text-3xl">THIS PAGE IS UNDER CONSTRUCTION</span>
-      </div>
-
-      <div className="columns-1 gap-4 sm:columns-2 xl:columns-3 ">
-        {galleryImages.map(({ src, alt }, idx) => (
-          <Image
-            key={idx}
-            alt={alt}
-            src={src}
-            width={720}
-            height={480}
-            sizes="(max-width: 640px) 100vw,
+    <>
+      <Wrapper className="mb-12 md:mb-20 flex w-full flex-col items-center justify-center gap-4">
+        <div className="columns-1 gap-4 sm:columns-2 xl:columns-3 ">
+          {galleryImages.map(({ src, title }, idx) => (
+            <Image
+              key={idx}
+              alt={title}
+              src={src}
+              width={720}
+              height={480}
+              sizes="(max-width: 640px) 100vw,
                   (max-width: 1280px) 50vw,
                   (max-width: 1536px) 33vw,
                   25vw"
-            className="mb-4 pointer-events-none"
-          />
-        ))}
-      </div>
-    </Wrapper>
+              className="mb-4 cursor-pointer"
+              onClick={() => openImage({ src, title })}
+            />
+          ))}
+        </div>
+      </Wrapper>
+
+      {/* this should be a path maybe */}
+      {selectedImage && (
+        <Wrapper
+          maxWidth={MaxWidth.FullWidth}
+          data-locatorID="photos-selected-image-wrapper"
+        >
+          <div
+            className="fixed p-12 z-50 top-0 left-0 w-full h-full flex flex-col gap-4 items-center justify-center bg-black bg-opacity-50 backdrop-blur-xl cursor-pointer"
+            onClick={closeImage}
+          >
+            <div
+              className="relative min-w-[80vw] h-full"
+              data-locatorID="photos-selected-image"
+            >
+              <Image
+                src={selectedImage.src}
+                alt={selectedImage.title || "selected image"}
+                layout="fill"
+                objectFit="contain"
+                className=""
+              />
+            </div>
+            <div
+              className="mx-auto mb-10 text-center z-50"
+              data-locatorID="photos-selected-title-text"
+            >
+              <span className="text-3xl">{selectedImage.title}</span>
+            </div>
+          </div>
+        </Wrapper>
+      )}
+    </>
   );
 }
-
-// https://vercel.com/blog/building-a-fast-animated-image-gallery-with-next-js
