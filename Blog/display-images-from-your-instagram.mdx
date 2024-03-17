@@ -47,7 +47,10 @@ You can't do much with that string yet; To get the access token, request the `ac
 
 <pre>curl -L -X POST 'https://api.instagram.com/oauth/access_token' -F 'client_id="\<CLIENT_ID>"' -F 'client_secret="\<CLIENT_SECRET>"' -F 'grant_type="authorization_code"' -F 'redirect_uri="https://www.kashyapsuhas.com/"' -F 'code="\<AUTH_CODE>"'</pre>
 
-![](/blog/screenshot-2022-07-31-at-2-37-39-am.png)
+<Image
+  alt={`screenshot`}
+  src={'/blog/screenshot-2022-07-31-at-2-37-39-am.png'}
+/>
 
 You now have access_token.
 
@@ -61,7 +64,10 @@ Looked something like this in my case:
 
 <pre>curl -L -X GET 'https://graph.instagram.com/access_token?grant_type=ig_exchange_token&client_secret=\<CLIENT_SECRET>&access_token=\<SECRET_TOKEN>'</pre>
 
-![](/blog/screenshot-2022-07-31-at-2-45-59-am.png)
+<Image
+  alt={`screenshot`}
+  src={'/blog/screenshot-2022-07-31-at-2-45-59-am.png'}
+/>
 
 We now have an access token TTL as 5184000.
 
