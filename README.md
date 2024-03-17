@@ -1,3 +1,5 @@
+## STUFF IS UNDER CONSTRUCTION PLEASE BE PATIENT THANK YOU
+
 [![This is for myself, dont click this lol.](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/github-huf1db)
 
 ## Note for self
@@ -16,6 +18,3 @@ npm install -g npm-check-updates && ncu -u for package update dependecy headache
 8. camera why
 9. pizza
 10. replit for pair programming
-
-
-## STUFF IS UNDER CONSTRUCTION PLEASE BE PATIENT THANK YOU
