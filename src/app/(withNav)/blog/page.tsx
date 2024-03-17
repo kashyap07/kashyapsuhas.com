@@ -1,21 +1,21 @@
-import Image from "next/image";
-import Link from "next/link";
-import { Wrapper } from "@/components/Wrapper";
-import { Suspense } from "react";
-import { getBlogPosts } from "@/db/blog";
+import Image from 'next/image';
+import Link from 'next/link';
+import { Wrapper } from '@/components/Wrapper';
+import { Suspense } from 'react';
+import { getBlogPosts } from '@/db/blog';
 
 export const metadata = {
-  title: "Blog",
-  description: "Read my thoughts on software development, design, and more.",
+  title: 'Blog',
+  description: "Kashyap's blog",
 };
 
 export default function Blog() {
   const blogPosts = getBlogPosts();
 
-  const formatter = new Intl.DateTimeFormat("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "2-digit",
+  const formatter = new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: '2-digit',
   });
 
   return (
@@ -32,8 +32,8 @@ export default function Blog() {
               <span className="text-2xl min-w-fit">
                 {formatter
                   .format(new Date(post.metadata.creation_date))
-                  .split(",")
-                  .join("")}
+                  .split(',')
+                  .join('')}
               </span>
             </li>
           </Link>

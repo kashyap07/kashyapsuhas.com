@@ -1,11 +1,11 @@
-import type { Metadata } from "next";
-import { Suspense, cache } from "react";
-import { notFound } from "next/navigation";
-import CustomMDX from "@/components/Mdx";
-import { getBlogPosts } from "@/db/blog";
-import { unstable_noStore as noStore } from "next/cache";
-import { Wrapper } from "@/components/Wrapper";
-import { MaxWidth } from "@/variables/sizes";
+import type { Metadata } from 'next';
+import { Suspense, cache } from 'react';
+import { notFound } from 'next/navigation';
+import CustomMDX from '@/components/Mdx';
+import { getBlogPosts } from '@/db/blog';
+import { unstable_noStore as noStore } from 'next/cache';
+import { Wrapper } from '@/components/Wrapper';
+import { MaxWidth } from '@/variables/sizes';
 
 export async function generateMetadata({
   params,
@@ -32,10 +32,9 @@ export async function generateMetadata({
     openGraph: {
       title,
       description,
-      type: "article",
+      type: 'article',
       publishedTime: creation_date,
       authors: author,
-
       url: `https://kashyapsuhas.com/blog/${post.slug}`,
       images: [
         {
@@ -49,7 +48,7 @@ export async function generateMetadata({
 function formatDate(date: string) {
   noStore();
   let currentDate = new Date();
-  if (!date.includes("T")) {
+  if (!date.includes('T')) {
     date = `${date}T00:00:00`;
   }
   let targetDate = new Date(date);
@@ -58,7 +57,7 @@ function formatDate(date: string) {
   let monthsAgo = currentDate.getMonth() - targetDate.getMonth();
   let daysAgo = currentDate.getDate() - targetDate.getDate();
 
-  let formattedDate = "";
+  let formattedDate = '';
 
   if (yearsAgo > 0) {
     formattedDate = `${yearsAgo}y ago`;
@@ -67,13 +66,13 @@ function formatDate(date: string) {
   } else if (daysAgo > 0) {
     formattedDate = `${daysAgo}d ago`;
   } else {
-    formattedDate = "Today";
+    formattedDate = 'Today';
   }
 
-  let fullDate = targetDate.toLocaleString("en-us", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
+  let fullDate = targetDate.toLocaleString('en-us', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
   });
 
   return `${fullDate} (${formattedDate})`;
@@ -95,8 +94,8 @@ export default function Blog({ params }) {
           suppressHydrationWarning
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "BlogPosting",
+              '@context': 'https://schema.org',
+              '@type': 'BlogPosting',
               headline: post.metadata.title,
               datePublished: post.metadata.creation_date,
               dateModified: post.metadata.creation_date,
@@ -104,8 +103,8 @@ export default function Blog({ params }) {
               image: post.metadata.hero_image,
               url: `https://kashyapsuhas.com/blog/${post.slug}`,
               author: {
-                "@type": "Person",
-                name: "Suhas Kashyap",
+                '@type': 'Person',
+                name: 'Suhas Kashyap',
               },
             }),
           }}
@@ -118,7 +117,7 @@ export default function Blog({ params }) {
             {formatDate(post.metadata.creation_date)}
           </p>
         </Suspense>
-        <hr/>
+        <hr />
 
         <article className="prose prose-quoteless prose-neutral dark:prose-invert">
           <CustomMDX source={post.content} />
