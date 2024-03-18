@@ -12,7 +12,7 @@ import ImageAutoHeight from '@/components/ImageAutoHeight';
 
 export const metadata = {
   title: 'Blog',
-  description: "Kashyap's photo gallery",
+  description: "Photo gallery",
 };
 
 export default function Photos() {
