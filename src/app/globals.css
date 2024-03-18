@@ -8,8 +8,8 @@
     --foreground: #fff;
 
     /** primary hsl start **/
-    --primary-h: 208;
-    --primary-s: 64%;
+    --primary-h: 350;
+    --primary-s: 100%;
     --primary-l: 100%;
 
     --neon-glow-primary-shadow-1: hsl(
