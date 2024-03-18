@@ -10,11 +10,6 @@ import ImageAutoHeight from '@/components/ImageAutoHeight';
 
 // Maybe in the future: https://vercel.com/blog/building-a-fast-animated-image-gallery-with-next-js
 
-export const metadata = {
-  title: 'Blog',
-  description: "Photo gallery",
-};
-
 export default function Photos() {
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
 
