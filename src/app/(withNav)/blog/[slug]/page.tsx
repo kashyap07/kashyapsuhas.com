@@ -113,13 +113,13 @@ export default function Blog({ params }) {
           {post.metadata.title}
         </h1>
         <Suspense fallback={<p className="h-5" />}>
-          <p className="my-4 text-2xl text-neutral-600 dark:text-neutral-400">
+          <p className="my-4 text-2xl text-white">
             {formatDate(post.metadata.creation_date)}
           </p>
         </Suspense>
         <hr />
 
-        <article className="prose prose-quoteless prose-neutral dark:prose-invert">
+        <article className="prose prose-2xl">
           <CustomMDX source={post.content} />
         </article>
       </section>

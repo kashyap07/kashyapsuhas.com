@@ -159,8 +159,7 @@
 /* TODO: clean these. From leerob */
 
 .prose .anchor {
-  @apply absolute invisible no-underline;
-
+  @apply absolute no-underline;
   margin-left: -1em;
   padding-right: 0.5em;
   width: 80%;
@@ -173,7 +172,7 @@
 }
 
 .prose {
-  @apply text-3xl max-w-none;
+  @apply  max-w-none text-white;
 }
 
 .prose a {
@@ -216,6 +215,22 @@
 h3,
 h4 {
   @apply font-medium text-5xl;
+}
+
+.prose h1, h2, h3, a, strong {
+  @apply !text-white
+}
+
+.prose pre {
+  @apply !text-black;
+}
+
+.prose code:not(pre) {
+  @apply !text-white;
+}
+
+.prose pre code {
+  @apply !text-black;
 }
 
 .prose strong {
