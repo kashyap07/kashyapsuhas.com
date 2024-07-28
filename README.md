@@ -2,7 +2,7 @@
 
 [![This is for myself, dont click this lol.](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/github-huf1db)
 
-## Note for self
+## Note for self:
 
 npm install -g npm-check-updates && ncu -u for package update dependecy headaches
 
