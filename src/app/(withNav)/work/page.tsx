@@ -1,7 +1,7 @@
-import Image from 'next/image';
-import Link from 'next/link';
+import Image from "next/image";
+import Link from "next/link";
 
-import { Wrapper } from '@/components/Wrapper';
+import { Wrapper } from "@/components/Wrapper";
 
 export default function Work() {
   return (
@@ -25,7 +25,6 @@ export default function Work() {
             href={"https://www.kashyapsuhas.com/resume"}
             aria-label="Follow for resume"
             target="_blank"
-            className="neon-flicker--primary"
           >
             kashyapsuhas.com/resume
           </Link>

@@ -1,7 +1,7 @@
-import clsx from 'clsx';
-import { ReactNode } from 'react';
+import clsx from "clsx";
+import { ReactNode } from "react";
 
-import { MaxWidth } from '@/variables/sizes';
+import { MaxWidth } from "@/variables/sizes";
 
 export interface WrapperProps {
   children: ReactNode;
@@ -42,6 +42,9 @@ const Wrapper = ({
     case MaxWidth.FullWidth:
       maxWidthClass = "max-w-full";
       break;
+    case MaxWidth.Screen:
+      maxWidthClass = "h-screen w-screen";
+      break;
     default:
       maxWidthClass = "max-w-[68rem]";
       break;
@@ -50,11 +53,7 @@ const Wrapper = ({
   return (
     <div
       data-component="max-width-wrapper"
-      className={clsx(
-        "relative mx-auto w-full px-6",
-        maxWidthClass,
-        className
-      )}
+      className={clsx("relative mx-auto w-full px-6", maxWidthClass, className)}
     >
       {children}
     </div>
