@@ -1,6 +1,6 @@
-import Link from 'next/link';
+import Link from "next/link";
 
-import { Wrapper } from '@/components/Wrapper';
+import { Wrapper } from "@/components/Wrapper";
 
 export default function RootLayout({
   children,
@@ -11,10 +11,7 @@ export default function RootLayout({
     <>
       <header>
         <Wrapper className="pt-12 w-full">
-          <Link
-            className="text-5xl hover:text-shadow-neon-glow--primary"
-            href={'/'}
-          >
+          <Link className="text-5xl" href={"/"}>
             SUHAS KASHYAP
           </Link>
         </Wrapper>
