@@ -5,7 +5,7 @@ import { Wrapper } from "@/components/Wrapper";
 import { MaxWidth } from "@/variables/sizes";
 
 const BGImg = () => (
-  <div className="fixed -z-10 w-full h-full overflow-hidden">
+  <div className="fixed -z-10 w-dvw h-dvh overflow-hidden">
     <Image
       src="/suhas_hike.jpg"
       alt="suhas kashyap image"
