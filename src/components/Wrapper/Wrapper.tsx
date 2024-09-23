@@ -43,7 +43,7 @@ const Wrapper = ({
       maxWidthClass = "max-w-full";
       break;
     case MaxWidth.Screen:
-      maxWidthClass = "h-screen w-screen";
+      maxWidthClass = "h-dvh w-dvw";
       break;
     default:
       maxWidthClass = "max-w-[68rem]";
