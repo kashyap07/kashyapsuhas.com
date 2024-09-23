@@ -56,7 +56,7 @@ const PostFold = () => (
 
 export default function Home() {
   return (
-    <main className="flex min-h-lvh flex-col items-center justify-between text-background textShadow">
+    <main className="flex min-h-lvh h-lvh flex-col items-center justify-between text-background textShadow">
       <BGImg />
       <PreFold />
       <PostFold />
