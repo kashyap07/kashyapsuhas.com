@@ -22,15 +22,13 @@ const BGImg = () => (
 const PreFold = () => (
   <Wrapper
     maxWidth={MaxWidth.Screen}
-    className="flex justify-end flex-col py-24"
+    className="flex justify-end flex-col py-12"
   >
-    <span className="text-2xl drop-shadow-sm textShadow">Hi. I&apos;m</span>
-    <h1 className="mb-2 text-7xl md:text-[11rem] md:leading-[8rem] textShadow">
+    <span className="text-2xl drop-shadow-sm">Hi. I&apos;m</span>
+    <h1 className="mb-2 text-7xl md:text-[11rem] md:leading-[8rem]">
       SUHAS KASHYAP
     </h1>
-    <span className="text-2xl textShadow">
-      Welcome to my slice of the Interwebs.
-    </span>
+    <span className="text-2xl">Welcome to my slice of the Interwebs.</span>
   </Wrapper>
   // </div>
 );
@@ -38,7 +36,7 @@ const PreFold = () => (
 const PostFold = () => (
   <Wrapper
     maxWidth={MaxWidth.Screen}
-    className="flex justify-end flex-col py-24"
+    className="flex justify-end flex-col py-12"
   >
     <h2 className="text-2xl">LINKS</h2>
     <ul className="flex flex-col gap-4 md:gap-8">
@@ -60,8 +58,8 @@ const PostFold = () => (
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between md:p-24 text-background">
-      <BGImg />
+    <main className="flex min-h-screen flex-col items-center justify-between md:p-24 text-background topMain textShadow">
+      {/* <BGImg /> */}
       <PreFold />
       <PostFold />
     </main>

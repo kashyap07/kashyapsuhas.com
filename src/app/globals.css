@@ -12,6 +12,19 @@
     @apply text-foreground bg-background;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
+
+  .topMain:after {
+    content: "";
+    position: fixed;
+    top: -50px;
+    left: 0;
+    right: 0;
+    height: 100vh;
+    z-index: -1;
+    background: url("/suhas_hike.jpg") no-repeat 0% -50%;
+    background-size: cover;
+    scale: 1.2;
+  }
 }
 
 @layer utilities {
