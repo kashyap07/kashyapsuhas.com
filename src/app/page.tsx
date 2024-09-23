@@ -8,7 +8,7 @@ const BGImg = () => (
   <div className="fixed -z-10 w-lvw h-lvh overflow-hidden">
     <Image
       src="/suhas_hike.jpg"
-      alt="suhas kashyap image"
+      alt="suhas kashyap hiking"
       layout="fill"
       objectFit="cover"
       objectPosition="0% 0%"
@@ -22,19 +22,18 @@ const BGImg = () => (
 const PreFold = () => (
   <Wrapper
     maxWidth={MaxWidth.Screen}
-    className="flex justify-end flex-col py-32 h-lvh"
+    className="flex justify-end flex-col py-32 min-h-lvh h-lvh"
   >
     <span className="text-2xl drop-shadow-sm">Hi. I&apos;m</span>
     <h1 className="mb-2 text-7xl">SUHAS KASHYAP</h1>
     <span className="text-2xl">Welcome to my slice of the Interwebs.</span>
   </Wrapper>
-  // </div>
 );
 
 const PostFold = () => (
   <Wrapper
     maxWidth={MaxWidth.Screen}
-    className="flex justify-end flex-col py-32 h-lvh"
+    className="flex justify-end flex-col py-32 min-h-lvh h-lvh"
   >
     <h2 className="text-2xl">LINKS</h2>
     <ul className="flex flex-col gap-4">
