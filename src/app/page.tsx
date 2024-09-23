@@ -5,16 +5,16 @@ import { Wrapper } from "@/components/Wrapper";
 import { MaxWidth } from "@/variables/sizes";
 
 const BGImg = () => (
-  <div className="fixed -z-10 w-dvw h-dvh overflow-hidden">
+  <div className="fixed -z-10 w-lvw h-lvh overflow-hidden">
     <Image
       src="/suhas_hike.jpg"
       alt="suhas kashyap image"
       layout="fill"
       objectFit="cover"
-      objectPosition="10% 50%"
+      objectPosition="0% 0%"
       priority
       quality={100}
-      className="transform scale-110"
+      className="transform scale-110 origin-bottom-left left-0 top-0"
     />
   </div>
 );
@@ -22,12 +22,10 @@ const BGImg = () => (
 const PreFold = () => (
   <Wrapper
     maxWidth={MaxWidth.Screen}
-    className="flex justify-end flex-col py-12"
+    className="flex justify-end flex-col py-32 h-lvh"
   >
     <span className="text-2xl drop-shadow-sm">Hi. I&apos;m</span>
-    <h1 className="mb-2 text-7xl md:text-[11rem] md:leading-[8rem]">
-      SUHAS KASHYAP
-    </h1>
+    <h1 className="mb-2 text-7xl">SUHAS KASHYAP</h1>
     <span className="text-2xl">Welcome to my slice of the Interwebs.</span>
   </Wrapper>
   // </div>
@@ -36,20 +34,20 @@ const PreFold = () => (
 const PostFold = () => (
   <Wrapper
     maxWidth={MaxWidth.Screen}
-    className="flex justify-end flex-col py-12"
+    className="flex justify-end flex-col py-32 h-lvh"
   >
     <h2 className="text-2xl">LINKS</h2>
-    <ul className="flex flex-col gap-4 md:gap-8">
-      <li className="flex items-center justify-between text-4xl md:text-9xl">
+    <ul className="flex flex-col gap-4">
+      <li className="flex items-center justify-between text-4xl">
         <Link href={"/blog"}>BLOG</Link>
       </li>
-      <li className="flex items-center justify-between text-4xl md:text-9xl">
+      <li className="flex items-center justify-between text-4xl">
         <Link href={"/photos"}>PHOTOS</Link>
       </li>
-      <li className="flex items-center justify-between text-4xl md:text-9xl">
+      <li className="flex items-center justify-between text-4xl">
         <Link href={"/resume"}>RESUME</Link>
       </li>
-      <li className="flex items-center justify-between text-4xl md:text-9xl">
+      <li className="flex items-center justify-between text-4xl">
         <Link href={"/contact"}>CONTACT</Link>
       </li>
     </ul>
@@ -58,8 +56,8 @@ const PostFold = () => (
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between md:p-24 text-background topMain textShadow">
-      {/* <BGImg /> */}
+    <main className="flex min-h-lvh h-lvh flex-col items-center justify-between text-background textShadow">
+      <BGImg />
       <PreFold />
       <PostFold />
     </main>
