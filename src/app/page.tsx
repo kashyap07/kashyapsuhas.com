@@ -10,7 +10,7 @@ export const metadata = {
 };
 
 const BGImg = () => (
-  <div className="stuff absolute -z-10 h-svh w-lvw overflow-hidden md:left-0 md:w-full">
+  <div className="stuff absolute h-svh w-lvw overflow-hidden md:left-0 md:w-full">
     <Image
       src="/suhas_hike.jpg"
       alt="suhas kashyap hiking"
@@ -44,7 +44,7 @@ const PreFold = () => (
 const PostFold = () => (
   <Wrapper
     maxWidth={MaxWidth.Narrow}
-    className="flex flex-col justify-center py-32 text-foreground"
+    className="flex flex-col justify-center bg-foreground py-32"
   >
     <h2 className="text-2xl">Links</h2>
     <ul className="flex flex-col gap-4">
@@ -66,7 +66,7 @@ const PostFold = () => (
 
 export default function Home() {
   return (
-    <main className="flex h-lvh min-h-lvh flex-col items-center justify-between text-background">
+    <main className="flex h-lvh min-h-lvh flex-col items-center justify-between bg-foreground text-background">
       <PreFold />
       <PostFold />
     </main>
