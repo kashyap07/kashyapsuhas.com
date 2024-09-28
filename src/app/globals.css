@@ -18,11 +18,11 @@
 
 @layer utilities {
   .textShadow {
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
   }
 
   .imageMask {
-    mask-image: linear-gradient(180deg, #fff 0 55%, transparent 95%);
+    mask-image: linear-gradient(180deg, #fff 0 66%, transparent 95%);
   }
 }
 

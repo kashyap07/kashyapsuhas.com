@@ -44,7 +44,7 @@ const PreFold = () => (
 const PostFold = () => (
   <Wrapper
     maxWidth={MaxWidth.Narrow}
-    className="flex flex-col justify-center bg-foreground py-32"
+    className="flex flex-col justify-center pb-32"
   >
     <h2 className="text-2xl">Links</h2>
     <ul className="flex flex-col gap-4">
@@ -66,7 +66,7 @@ const PostFold = () => (
 
 export default function Home() {
   return (
-    <main className="flex h-lvh min-h-lvh flex-col items-center justify-between bg-foreground text-background">
+    <main className="flex h-lvh min-h-lvh flex-col items-center justify-between font-semibold">
       <PreFold />
       <PostFold />
     </main>
