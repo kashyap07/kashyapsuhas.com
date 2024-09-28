@@ -34,9 +34,7 @@ const PreFold = () => (
     >
       <span className="text-2xl drop-shadow-sm">Hi. I&apos;m</span>
       <h1 className="mb-2 text-7xl leading-[0.9]">Suhas Kashyap</h1>
-      <span className="mb-6 text-2xl">
-        Welcome to my slice of the Interwebs.
-      </span>
+      <span className="text-2xl">Welcome to my slice of the Interwebs.</span>
     </Wrapper>
   </section>
 );
