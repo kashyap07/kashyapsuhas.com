@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
+import Image from "next/image";
 
-import { Wrapper } from '@/components/Wrapper';
-import { MaxWidth } from '@/variables/sizes';
-import { useState } from 'react';
-import galleryImages, { GalleryImage } from './galleryImages';
-import ImageAutoHeight from '@/components/ImageAutoHeight';
+import { Wrapper } from "@/components/Wrapper";
+import { MaxWidth } from "@/variables/sizes";
+import { useState } from "react";
+import galleryImages, { GalleryImage } from "./galleryImages";
+import ImageAutoHeight from "@/components/ImageAutoHeight";
 
 // Maybe in the future: https://vercel.com/blog/building-a-fast-animated-image-gallery-with-next-js
 
@@ -18,8 +18,8 @@ export default function Photos() {
 
   return (
     <>
-      <Wrapper className="mb-12 md:mb-20 flex w-full flex-col items-center justify-center gap-4">
-        <div className="columns-1 gap-4 sm:columns-2 xl:columns-3 ">
+      <Wrapper className="mb-12 flex w-full flex-col items-center justify-center gap-4 md:mb-20">
+        <div className="columns-1 gap-4 sm:columns-2 xl:columns-3">
           {galleryImages.map(({ src, title }, idx) => (
             <Image
               key={idx}
@@ -45,13 +45,13 @@ export default function Photos() {
           data-locatorID="photos-selected-image-wrapper"
         >
           <div
-            className="fixed p-4 pt-24 md:p-32 z-50 top-0 left-0 w-full h-full flex flex-col gap-4 md:gap-8 items-center justify-center bg-black bg-opacity-50 backdrop-blur-xl cursor-pointer"
+            className="fixed left-0 top-0 z-50 flex h-full w-full cursor-pointer flex-col items-center justify-center gap-4 bg-black bg-opacity-50 p-4 pt-24 backdrop-blur-xl md:gap-8 md:p-32"
             onClick={closeImage}
           >
             <ImageAutoHeight
               src={selectedImage.src}
-              alt={selectedImage.title || 'selected image'}
-              className="max-w-full max-h-full"
+              alt={selectedImage.title || "selected image"}
+              className="max-h-full max-w-full"
             />
 
             <div

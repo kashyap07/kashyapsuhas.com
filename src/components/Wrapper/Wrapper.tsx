@@ -43,7 +43,7 @@ const Wrapper = ({
       maxWidthClass = "max-w-full";
       break;
     case MaxWidth.Screen:
-      maxWidthClass = "h-dvh w-dvw";
+      maxWidthClass = "h-lvh w-lvh min-h-lvh";
       break;
     default:
       maxWidthClass = "max-w-[68rem]";
@@ -51,12 +51,12 @@ const Wrapper = ({
   }
 
   return (
-    <div
+    <section
       data-component="max-width-wrapper"
       className={clsx("relative mx-auto w-full px-6", maxWidthClass, className)}
     >
       {children}
-    </div>
+    </section>
   );
 };
 

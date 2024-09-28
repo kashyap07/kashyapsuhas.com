@@ -10,9 +10,9 @@ export default function RootLayout({
   return (
     <>
       <header>
-        <Wrapper className="pt-12 w-full">
+        <Wrapper className="w-full pt-12">
           <Link className="text-5xl" href={"/"}>
-            SUHAS KASHYAP
+            Suhas Kashyap
           </Link>
         </Wrapper>
       </header>

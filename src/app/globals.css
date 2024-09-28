@@ -9,27 +9,20 @@
   }
 
   body {
-    @apply text-foreground bg-background;
-    font-feature-settings: "rlig" 1, "calt" 1;
-  }
-
-  .topMain:after {
-    content: "";
-    position: fixed;
-    top: -50px;
-    left: 0;
-    right: 0;
-    height: 100vh;
-    z-index: -1;
-    background: url("/suhas_hike.jpg") no-repeat 0% -50%;
-    background-size: cover;
-    scale: 1.2;
+    @apply bg-background text-foreground;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
   }
 }
 
 @layer utilities {
   .textShadow {
     text-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  }
+
+  .imageMask {
+    mask-image: linear-gradient(180deg, #fff 0 85%, transparent);
   }
 }
 
@@ -53,7 +46,7 @@
 }
 
 .prose a {
-  @apply transition-all underline-offset-2 decoration-[0.1em];
+  @apply decoration-[0.1em] underline-offset-2 transition-all;
 }
 
 .prose .anchor:after {
@@ -65,11 +58,11 @@
 }
 
 .prose pre {
-  @apply rounded-lg overflow-x-auto border;
+  @apply overflow-x-auto rounded-lg border;
 }
 
 .prose code {
-  @apply px-1 py-0.5 rounded-lg;
+  @apply rounded-lg px-1 py-0.5;
 }
 
 .prose pre code {
@@ -90,7 +83,7 @@
 .prose h2,
 h3,
 h4 {
-  @apply font-medium text-5xl;
+  @apply text-5xl font-medium;
 }
 
 .prose pre code {
