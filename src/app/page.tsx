@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { Wrapper } from "@/components/Wrapper";
 import { MaxWidth } from "@/variables/sizes";
+import { useEffect, useState } from "react";
 
 export const metadata = {
   title: "Suhas Kashyap",
@@ -10,31 +11,34 @@ export const metadata = {
 };
 
 const BGImg = () => (
-  <div className="stuff absolute h-svh w-lvw overflow-hidden md:left-0 md:w-full">
-    <Image
-      src="/suhas_hike.jpg"
-      alt="suhas kashyap hiking"
-      layout="fill"
-      objectFit="cover"
-      objectPosition="0% 0%"
-      priority
-      quality={100}
-      className="imageMask top-0 origin-bottom-left scale-[1.15] transform md:absolute md:!left-1/2 md:max-w-[40rem] md:-translate-x-1/2 md:scale-100"
-    />
+  <div className="fixed">
+    <div className="h-svh w-lvw overflow-hidden md:left-0 md:w-full">
+      <Image
+        src="/suhas_hike_2.jpg"
+        alt="suhas kashyap hiking"
+        fill={true}
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        priority
+        quality={100}
+        className="imageMask top-0 origin-bottom-left transform object-cover md:absolute md:!left-1/2 md:max-w-[40rem] md:-translate-x-1/2"
+      />
+    </div>
+
+    <div className="navbarHeight fixed w-lvw overflow-hidden bg-black" />
   </div>
 );
 
 const PreFold = () => (
   <section>
-    <BGImg />
-
     <Wrapper
       maxWidth={MaxWidth.Narrow}
       className="textShadow relative flex h-lvh min-h-lvh flex-col justify-end py-32"
     >
       <span className="text-2xl drop-shadow-sm">Hi. I&apos;m</span>
       <h1 className="mb-2 text-7xl leading-[0.9]">Suhas Kashyap</h1>
-      <span className="text-2xl">Welcome to my slice of the Interwebs.</span>
+      <span className="mb-2 text-2xl">
+        Welcome to my slice of the Interwebs.
+      </span>
     </Wrapper>
   </section>
 );
@@ -64,7 +68,8 @@ const PostFold = () => (
 
 export default function Home() {
   return (
-    <main className="flex h-lvh min-h-lvh flex-col items-center justify-between font-semibold">
+    <main className="flex flex-col items-center justify-between font-semibold">
+      <BGImg />
       <PreFold />
       <PostFold />
     </main>
