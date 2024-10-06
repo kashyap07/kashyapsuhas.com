@@ -4,8 +4,8 @@
 
 @layer base {
   :root {
-    --background: #fff;
-    --foreground: #000;
+    --background: #000;
+    --foreground: #fff;
   }
 
   body {
@@ -22,7 +22,11 @@
   }
 
   .imageMask {
-    mask-image: linear-gradient(180deg, #fff 0 66%, transparent 95%);
+    mask-image: linear-gradient(180deg, #fff 0 46%, transparent 95%);
+  }
+
+  .navbarHeight {
+    height: calc(100lvh - 100svh);
   }
 }
 
