@@ -4,8 +4,8 @@
 
 @layer base {
   :root {
-    --background: #000;
-    --foreground: #fff;
+    --background: #fff;
+    --foreground: #000;
   }
 
   body {
@@ -21,8 +21,12 @@
     text-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
   }
 
-  .imageMask {
-    mask-image: linear-gradient(180deg, #fff 0 46%, transparent 95%);
+  .imageMask_SP {
+    mask-image: linear-gradient(180deg, #fff 0 36%, transparent 95%);
+  }
+
+  .imageMask_PC {
+    mask-image: linear-gradient(180deg, #fff 0 50%, transparent 95%);
   }
 
   .navbarHeight {
@@ -57,7 +61,7 @@
   content: "#";
 }
 
-.prose *:hover > .anchor {
+.prose *:hover>.anchor {
   @apply visible;
 }
 
@@ -90,14 +94,13 @@ h4 {
   @apply text-5xl font-medium;
 }
 
-.prose pre code {
-}
+.prose pre code {}
 
 .prose strong {
   @apply font-medium;
 }
 
-.prose > :first-child {
+.prose> :first-child {
   /* Override removing top margin, causing layout shift */
   margin-top: 1.25em !important;
   margin-bottom: 1.25em !important;
@@ -108,8 +111,10 @@ pre::-webkit-scrollbar {
 }
 
 pre {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 /* Remove Safari input shadow on mobile */
@@ -132,7 +137,7 @@ table {
   white-space: nowrap;
 }
 
-.prose .callout > p {
+.prose .callout>p {
   margin: 0 !important;
 }
 
