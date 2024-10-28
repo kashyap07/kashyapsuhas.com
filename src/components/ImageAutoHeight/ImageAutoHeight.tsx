@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import cn from "@/utils/cn";
 import Image, { ImageProps } from 'next/image';
 
 type ImageAutoHeightProps = ImageProps & {
@@ -35,7 +35,7 @@ const ImageAutoHeight = ({
 }: ImageAutoHeightProps) => {
   return (
     <div
-      className={clsx("children:!position-unset", className)}
+      className={cn("children:!position-unset", className)}
       style={{
         width: parentWidth ? parentWidth : "100%",
       }}

@@ -1,5 +1,5 @@
-import clsx from "clsx";
 import { ReactNode } from "react";
+import cn from "@/utils/cn";
 
 import { MaxWidth } from "@/variables/sizes";
 
@@ -53,7 +53,7 @@ const Wrapper = ({
   return (
     <section
       data-component="max-width-wrapper"
-      className={clsx("relative mx-auto w-full px-6", maxWidthClass, className)}
+      className={cn("relative mx-auto w-full px-6", maxWidthClass, className)}
     >
       {children}
     </section>

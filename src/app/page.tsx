@@ -3,7 +3,6 @@ import Link from "next/link";
 
 import { Wrapper } from "@/components/Wrapper";
 import { MaxWidth } from "@/variables/sizes";
-import { useEffect, useState } from "react";
 
 export const metadata = {
   title: "Suhas Kashyap",
@@ -11,16 +10,16 @@ export const metadata = {
 };
 
 const BGImg = () => (
-  <div className="fixed">
-    <div className="h-svh w-lvw overflow-hidden md:left-0 md:w-full">
+  <div className="absolute">
+    <div className="aspect-[1/2] w-screen overflow-hidden">
       <Image
         src="/suhas_hike_2.jpg"
         alt="suhas kashyap hiking"
         fill={true}
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        sizes=""
         priority
         quality={100}
-        className="imageMask top-0 origin-bottom-left transform object-cover md:absolute md:!left-1/2 md:max-w-[40rem] md:-translate-x-1/2"
+        className="imageMask top-0 origin-bottom-left transform object-cover md:!left-1/2 md:max-w-[40rem] md:-translate-x-1/2"
       />
     </div>
 
@@ -29,10 +28,12 @@ const BGImg = () => (
 );
 
 const PreFold = () => (
-  <section>
+  <Wrapper maxWidth={MaxWidth.FullWidth} className="px-0 h-screen min-h-[880px]">
+    <BGImg/>
+
     <Wrapper
       maxWidth={MaxWidth.Narrow}
-      className="textShadow relative flex h-lvh min-h-lvh flex-col justify-end py-32"
+      className="textShadow relative flex flex-col justify-end py-32"
     >
       <span className="text-2xl drop-shadow-sm">Hi. I&apos;m</span>
       <h1 className="mb-2 text-7xl leading-[0.9]">Suhas Kashyap</h1>
@@ -40,7 +41,7 @@ const PreFold = () => (
         Welcome to my slice of the Interwebs.
       </span>
     </Wrapper>
-  </section>
+  </Wrapper>
 );
 
 const PostFold = () => (
@@ -69,7 +70,6 @@ const PostFold = () => (
 export default function Home() {
   return (
     <main className="flex flex-col items-center justify-between font-semibold">
-      <BGImg />
       <PreFold />
       <PostFold />
     </main>
