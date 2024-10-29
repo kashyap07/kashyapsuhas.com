@@ -37,7 +37,7 @@ const Wrapper = ({
       maxWidthClass = "max-w-7xl";
       break;
     case MaxWidth.Narrow:
-      maxWidthClass = "max-w-[68rem]";
+      maxWidthClass = "max-w-5xl";
       break;
     case MaxWidth.FullWidth:
       maxWidthClass = "max-w-full";
