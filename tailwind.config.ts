@@ -23,6 +23,9 @@ const config: Config = {
         foreground: "var(--foreground)",
       },
       dropShadow: {},
+      screens: {
+        'xs': '320px',
+      }
     },
   },
   plugins: [

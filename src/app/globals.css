@@ -40,16 +40,16 @@
     transform: translateX(0);
   }
   100% {
-    transform: translateX(-1000%);
+    transform: translateX(-5000%);
   }
 }
 
 .animate-marquee {
-  animation: marquee 20s linear infinite;
+  animation: marquee 50s linear infinite;
 }
 
 .animate-marquee_SP {
-  animation: marquee 5s linear infinite;
+  animation: marquee 20s linear infinite;
 }
 
 /* TODO: clean these. From leerob */

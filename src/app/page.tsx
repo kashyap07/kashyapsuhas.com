@@ -10,7 +10,7 @@ const TopSP = () => {
     <div className="sm:hidden">
       <Wrapper
         maxWidth={MaxWidth.FullWidth}
-        className="group flex h-screen min-h-[880px] px-0 sm:hidden"
+        className="group flex h-screen min-h-[880px] max-h-[1200px] px-0 sm:hidden"
       >
         <div className="relative">
           <div className="absolute aspect-[1/2] w-screen overflow-hidden sm:hidden">
@@ -114,9 +114,9 @@ const TopPC = () => (
 
     <div className="group relative">
       {/* Marquee background */}
-      <div className="absolute inset-0 -z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+      <div className="absolute inset-0 -z-10 opacity-0 transition-opacity duration-300 -rotate-12 group-hover:opacity-100">
         <div className="absolute inset-0">
-          <div className="animate-marquee absolute -inset-10 mt-5 whitespace-nowrap text-nowrap text-[14rem] text-[#fecb47] drop-shadow-[0_10px_30px_rgba(0,0,0,0.4)]">
+          <div className="animate-marquee absolute -inset-10 -mt-10 whitespace-nowrap text-nowrap text-[14rem] text-[#fecb47] drop-shadow-[0_10px_30px_rgba(0,0,0,0.4)]">
             {Array(20)
               .fill("SUHAS KASHYAP")
               .map((text, i) => (
@@ -128,9 +128,9 @@ const TopPC = () => (
         </div>
       </div>
 
-      <div className="absolute inset-0 -z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-55">
+      <div className="absolute inset-0 -z-10 opacity-0 transition-opacity duration-300 -rotate-12 group-hover:opacity-55">
         <div className="absolute inset-0">
-          <div className="animate-marquee absolute -inset-10 mt-[210px] whitespace-nowrap text-nowrap text-[14rem] text-[#595D68] drop-shadow-[0_10px_30px_rgba(0,0,0,0.4)]">
+          <div className="animate-marquee absolute -inset-10 mt-[140px] whitespace-nowrap text-nowrap text-[14rem] text-[#595D68] drop-shadow-[0_10px_30px_rgba(0,0,0,0.4)]">
             {Array(20)
               .fill("SUHAS KASHYAP")
               .map((text, i) => (
@@ -142,9 +142,9 @@ const TopPC = () => (
         </div>
       </div>
 
-      <div className="absolute inset-0 -z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-20">
+      <div className="absolute inset-0 -z-10 opacity-0 transition-opacity duration-300 -rotate-12 group-hover:opacity-20">
         <div className="absolute inset-0">
-          <div className="animate-marquee absolute -inset-10 mt-[410px] whitespace-nowrap text-nowrap text-[14rem] text-gray-100 drop-shadow-[0_10px_30px_rgba(0,0,0,0.4)]">
+          <div className="animate-marquee absolute -inset-10 mt-[320px] whitespace-nowrap text-nowrap text-[14rem] text-gray-100 drop-shadow-[0_10px_30px_rgba(0,0,0,0.4)]">
             {Array(20)
               .fill("SUHAS KASHYAP")
               .map((text, i) => (
