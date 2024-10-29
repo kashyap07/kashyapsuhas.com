@@ -20,7 +20,7 @@ const TopSP = () => {
               fill={true}
               sizes=""
               priority
-              className="imageMask_SP top-0 z-10 origin-bottom-left transform object-cover"
+              className="imageMask_SP top-0 z-10 origin-bottom-left transform object-cover pointer-events-none"
             />
           </div>
 
@@ -32,7 +32,7 @@ const TopSP = () => {
               sizes=""
               // priority
               quality={100}
-              className="imageMask_SP top-0 z-30 origin-bottom-left transform object-cover"
+              className="imageMask_SP top-0 z-30 origin-bottom-left transform object-cover pointer-events-none"
             />
           </div>
 
@@ -42,7 +42,7 @@ const TopSP = () => {
 
         <Wrapper
           maxWidth={MaxWidth.Narrow}
-          className="relative flex flex-col justify-end py-32"
+          className="relative flex flex-col justify-end py-40"
         >
           <div className="relative z-40 flex flex-col justify-center gap-2">
             <span className="text-3xl">Hi, I&apos;m</span>

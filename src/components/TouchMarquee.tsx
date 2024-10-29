@@ -21,7 +21,7 @@ export const TouchMarquee = () => {
   }, []);
 
   return (
-    <div className="">
+    <div className="pointer-events-none">
       <div className={`absolute inset-0 z-20 transition-opacity duration-300 ${isTouching ? 'opacity-95' : 'opacity-0'}`}>
         <div className="absolute inset-0">
           <div className="animate-marquee_SP absolute -inset-10 mt-[150px] whitespace-nowrap text-nowrap text-9xl text-[#fecb47] drop-shadow-[0_10px_30px_rgba(0,0,0,0.4)]">

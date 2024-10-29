@@ -22,7 +22,7 @@
   }
 
   .imageMask_SP {
-    mask-image: linear-gradient(180deg, #fff 0 50%, transparent 99%);
+    mask-image: linear-gradient(180deg, #fff 0 52%, transparent 95%);
   }
 
   .imageMask_PC {
