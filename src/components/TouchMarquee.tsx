@@ -2,6 +2,10 @@
 
 import React from "react";
 
+import { VT323 } from "next/font/google";
+
+const vt323 = VT323({ weight: "400", subsets: ["latin"] });
+
 export const TouchMarquee = () => {
   const [isTouching, setIsTouching] = React.useState(false);
 
@@ -21,6 +25,7 @@ export const TouchMarquee = () => {
   }, []);
 
   return (
+    <div className={vt323.className}>
     <div className="pointer-events-none">
       <div className={`absolute inset-0 z-20 transition-opacity duration-300 -rotate-12 ${isTouching ? 'opacity-95' : 'opacity-0'}`}>
         <div className="absolute inset-0">
@@ -63,6 +68,7 @@ export const TouchMarquee = () => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }; 

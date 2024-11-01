@@ -175,7 +175,7 @@ const TopPC = () => (
 
 export default function Home() {
   return (
-    <main className="max-w-screen flex flex-col items-center justify-between overflow-hidden font-semibold">
+    <main className="max-w-screen overflow-hidden font-semibold">
       <TopSP />
       <TopPC />
     </main>
