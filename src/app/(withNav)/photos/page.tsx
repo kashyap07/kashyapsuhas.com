@@ -3,7 +3,6 @@
 import Image from "next/image";
 
 import { Wrapper } from "@/components/Wrapper";
-import { MaxWidth } from "@/variables/sizes";
 import { useState } from "react";
 import galleryImages, { GalleryImage } from "./galleryImages";
 import ImageAutoHeight from "@/components/ImageAutoHeight";
@@ -41,8 +40,8 @@ export default function Photos() {
       {/* this should be a path maybe */}
       {selectedImage && (
         <Wrapper
-          maxWidth={MaxWidth.FullWidth}
-          data-locatorID="photos-selected-image-wrapper"
+          maxWidth="FULL_WIDTH"
+          data-description="photos-selected-image-wrapper"
         >
           <div
             className="fixed left-0 top-0 z-50 flex h-full w-full cursor-pointer flex-col items-center justify-center gap-4 bg-black bg-opacity-50 p-4 pt-24 backdrop-blur-xl md:gap-8 md:p-32"
@@ -56,9 +55,9 @@ export default function Photos() {
 
             <div
               className="mx-auto mb-10 text-center"
-              data-locatorID="photos-selected-title-text"
+              data-description="photos-selected-title-text"
             >
-              <span className="text-3xl">{selectedImage.title}</span>
+              <span className="text-3xl text-white">{selectedImage.title}</span>
             </div>
           </div>
         </Wrapper>

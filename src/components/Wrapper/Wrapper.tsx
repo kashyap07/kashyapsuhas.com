@@ -14,39 +14,32 @@ export interface WrapperProps {
  * Narrow for blogs and such
  * Wide for home page and such (that's the plan for now at least)
  *
- * @component
- * @example
- * // Usage:
- * <Wrapper maxWidth={MaxWidth.Wide}>
- *   // Content to be wrapped
- * </Wrapper>
- *
  * @param {ReactNode} props.children - The content to be wrapped.
  * @param {string} [props.className] - Additional CSS classes to be applied to the wrapper.
- * @param {MaxWidth} props.maxWidth - The maximum width to be applied. Default is MaxWidth.Narrow.
+ * @param {MaxWidth} props.maxWidth - The maximum width to be applied. Default is NARROW.
  * @returns {JSX.Element} The JSX element representing the Wrapper component.
  */
 const Wrapper = ({
   children,
   className,
-  maxWidth = MaxWidth.Narrow,
+  maxWidth = "NARROW",
 }: WrapperProps): JSX.Element => {
   let maxWidthClass;
   switch (maxWidth) {
-    case MaxWidth.Wide:
+    case "WIDE":
       maxWidthClass = "max-w-7xl";
       break;
-    case MaxWidth.Narrow:
+    case "NARROW":
       maxWidthClass = "max-w-5xl";
       break;
-    case MaxWidth.FullWidth:
+    case "FULL_WIDTH":
       maxWidthClass = "max-w-full";
       break;
-    case MaxWidth.Screen:
-      maxWidthClass = "h-lvh w-lvh min-h-lvh";
+    case "FULL_SCREEN_WIDTH":
+      maxWidthClass = "w-screen px-0";
       break;
     default:
-      maxWidthClass = "max-w-[68rem]";
+      maxWidthClass = "max-w-5xl";
       break;
   }
 
