@@ -46,7 +46,7 @@ const TopSP = () => {
         >
           <div className="relative z-40 flex flex-col justify-center gap-2">
             <span className="text-3xl">Hi, I&apos;m</span>
-            <h1 className="mb-2 text-nowrap text-[3.2rem] leading-[0.9]">
+            <h1 className="mb-2 text-[3.2rem] leading-[0.9]">
               Suhas Kashyap
             </h1>
             <span className="text-2xl">
