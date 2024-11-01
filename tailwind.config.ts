@@ -25,7 +25,7 @@ const config: Config = {
       dropShadow: {},
       screens: {
         'xs': '320px',
-      }
+      },
     },
   },
   plugins: [

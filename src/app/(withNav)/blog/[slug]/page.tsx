@@ -5,7 +5,6 @@ import CustomMDX from '@/components/Mdx';
 import { getBlogPosts } from '@/db/blog';
 import { unstable_noStore as noStore } from 'next/cache';
 import { Wrapper } from '@/components/Wrapper';
-import { MaxWidth } from '@/variables/sizes';
 
 export async function generateMetadata({
   params,

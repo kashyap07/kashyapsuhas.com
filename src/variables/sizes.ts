@@ -1,8 +1,3 @@
-enum MaxWidth {
-  Narrow,
-  Wide,
-  FullWidth,
-  Screen,
-}
+type MaxWidth = "NARROW" | "WIDE" | "FULL_WIDTH" | "FULL_SCREEN_WIDTH";
 
-export { MaxWidth };
+export type { MaxWidth };
