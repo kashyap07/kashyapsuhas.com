@@ -15,12 +15,12 @@ const TopSP = () => (
   <Wrapper
     maxWidth="FULL_SCREEN_WIDTH"
     data-description="top-sp-wrapper"
-    className="sm:hidden"
+    className="sm:hidden flex flex-col gap-24"
   >
     {/* START top sp pre-fold */}
     <Wrapper
       maxWidth="FULL_SCREEN_WIDTH"
-      className="group pointer-events-none flex h-screen max-h-[1200px] min-h-[880px]"
+      className="group pointer-events-none flex h-lvh"
     >
       {/* START profile image bg */}
       <div data-description="top-sp-doubleimage-wrapper" className="relative">
@@ -50,7 +50,7 @@ const TopSP = () => (
       {/* END profile image bg */}
 
       {/* START pre-fold text */}
-      <Wrapper className="relative flex flex-col justify-end py-48">
+      <Wrapper className="relative flex flex-col justify-end">
         <h1 className="z-40 m-0 flex flex-col justify-center gap-2">
           <span className="text-3xl">Hi, I&apos;m</span>
           <span className="mb-2 text-5xl leading-[0.9]">Suhas Kashyap</span>
@@ -145,7 +145,7 @@ const TopPC = () => (
 
 export default function Home() {
   return (
-    <main className="max-w-screen pointer-events-none select-none overflow-hidden font-semibold">
+    <main className="max-w-screen select-none overflow-hidden font-semibold">
       <script
         type="application/ld+json"
         suppressHydrationWarning
