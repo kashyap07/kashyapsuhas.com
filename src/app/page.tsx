@@ -51,7 +51,7 @@ const TopSP = () => (
 
       {/* START pre-fold text */}
       <Wrapper className="relative flex flex-col justify-end py-48">
-        <h1 className="z-40 flex flex-col justify-center gap-2 m-0">
+        <h1 className="z-40 m-0 flex flex-col justify-center gap-2">
           <span className="text-3xl">Hi, I&apos;m</span>
           <span className="mb-2 text-5xl leading-[0.9]">Suhas Kashyap</span>
           <span className="text-2xl">
@@ -145,7 +145,7 @@ const TopPC = () => (
 
 export default function Home() {
   return (
-    <main className="max-w-screen overflow-hidden font-semibold pointer-events-none select-none">
+    <main className="max-w-screen pointer-events-none select-none overflow-hidden font-semibold">
       <script
         type="application/ld+json"
         suppressHydrationWarning

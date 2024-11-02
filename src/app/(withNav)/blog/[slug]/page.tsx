@@ -75,7 +75,7 @@ export default function Blog({ params }: { params: { slug: string } }) {
         </Suspense>
         <hr />
 
-        <article className="prose prose-2xl break-words text-pretty">
+        <article className="prose prose-2xl text-pretty break-words">
           <CustomMDX source={post.content} />
         </article>
       </section>
