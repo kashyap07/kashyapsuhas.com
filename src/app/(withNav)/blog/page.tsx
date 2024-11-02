@@ -1,12 +1,10 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Wrapper } from "@/components/Wrapper";
-import { Suspense } from "react";
 import { getBlogPosts } from "@/db/blog";
 
 export const metadata = {
-  title: "Blog",
-  description: "Kashyap's blog",
+  title: "Kashyap's Blog | Suhas Kashyap",
+  description: "Kashyap's Blog.",
 };
 
 export default function Blog() {
@@ -19,17 +17,15 @@ export default function Blog() {
   });
 
   return (
-    <Wrapper className="mb-12 md:mb-20w-full">
+    <Wrapper className="md:mb-20w-full mb-12">
       <ul className="flex flex-col">
         {blogPosts.map((post) => (
-          <Link
-            key={post.slug}
-            className="py-4 px-6 -mx-6"
-            href={`/blog/${post.slug}`}
-          >
-            <li className="flex flex-col md:flex-row md:justify-between md:items-end gap-2">
-              <span className="text-3xl">{post.metadata.title}</span>
-              <span className="text-l min-w-fit">
+          <Link key={post.slug} className="py-4" href={`/blog/${post.slug}`}>
+            <li className="flex flex-col md:flex-row md:items-end md:justify-between">
+              <span className="text-3xl font-medium">
+                {post.metadata.title}
+              </span>
+              <span className="text-l min-w-fit text-gray-600">
                 {formatter
                   .format(new Date(post.metadata.creation_date))
                   .split(",")

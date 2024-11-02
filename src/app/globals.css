@@ -49,7 +49,7 @@
 }
 
 .animate-marquee_SP {
-  animation: marquee 12s linear infinite;
+  animation: marquee 10s linear infinite;
 }
 
 /* TODO: clean these. From leerob */
