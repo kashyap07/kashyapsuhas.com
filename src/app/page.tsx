@@ -145,7 +145,7 @@ const TopPC = () => (
 
 export default function Home() {
   return (
-    <main className="max-w-screen pointer-events-none select-none overflow-hidden font-semibold">
+    <main className="max-w-screen select-none overflow-hidden font-semibold">
       <script
         type="application/ld+json"
         suppressHydrationWarning
