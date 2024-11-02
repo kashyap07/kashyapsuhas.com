@@ -3,6 +3,13 @@ import Link from "next/link";
 
 import { TouchMarquee } from "@/components/TouchMarquee";
 import { Wrapper } from "@/components/Wrapper";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Suhas Kashyap",
+  description:
+    "Suhas Kashyap's personal website. See blogs, photos, contact details.",
+};
 
 const TopSP = () => (
   <Wrapper
@@ -43,14 +50,14 @@ const TopSP = () => (
       {/* END profile image bg */}
 
       {/* START pre-fold text */}
-      <Wrapper className="relative flex flex-col justify-end py-40">
-        <div className="relative z-40 flex flex-col justify-center gap-2">
+      <Wrapper className="relative flex flex-col justify-end py-48">
+        <h1 className="z-40 flex flex-col justify-center gap-2 m-0">
           <span className="text-3xl">Hi, I&apos;m</span>
-          <h1 className="mb-2 text-5xl leading-[0.9]">Suhas Kashyap</h1>
+          <span className="mb-2 text-5xl leading-[0.9]">Suhas Kashyap</span>
           <span className="text-2xl">
             Welcome to my slice of the Interwebs.
           </span>
-        </div>
+        </h1>
       </Wrapper>
       {/* END pre-fold text */}
     </Wrapper>
@@ -138,7 +145,21 @@ const TopPC = () => (
 
 export default function Home() {
   return (
-    <main className="max-w-screen overflow-hidden font-semibold">
+    <main className="max-w-screen overflow-hidden font-semibold pointer-events-none select-none">
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            url: "https://kashyapsuhas.com",
+            description:
+              "Suhas Kashyap's personal website. See blogs, photos, contact details.",
+            name: "Suhas Kashyap",
+          }),
+        }}
+      />
       <TopSP />
       <TopPC />
     </main>
