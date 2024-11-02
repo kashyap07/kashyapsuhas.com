@@ -34,7 +34,6 @@
   }
 }
 
-
 @keyframes marquee {
   0% {
     transform: translateX(0);
@@ -79,7 +78,7 @@
   content: "#";
 }
 
-.prose *:hover>.anchor {
+.prose *:hover > .anchor {
   @apply visible;
 }
 
@@ -112,13 +111,14 @@ h4 {
   @apply text-5xl font-medium;
 }
 
-.prose pre code {}
+.prose pre code {
+}
 
 .prose strong {
   @apply font-medium;
 }
 
-.prose> :first-child {
+.prose > :first-child {
   /* Override removing top margin, causing layout shift */
   margin-top: 1.25em !important;
   margin-bottom: 1.25em !important;
@@ -155,7 +155,7 @@ table {
   white-space: nowrap;
 }
 
-.prose .callout>p {
+.prose .callout > p {
   margin: 0 !important;
 }
 
