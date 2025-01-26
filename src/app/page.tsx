@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   title: "Suhas Kashyap",
   description:
     "Suhas Kashyap's personal website. See blogs, photos, contact details.",
+  openGraph: {
+    images: ['/suhas_nobg.png']
+  }
 };
 
 const TopSP = () => (
