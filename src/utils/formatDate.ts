@@ -1,31 +1,44 @@
 import { unstable_noStore as noStore } from "next/cache";
 
+// TODO: add some UTs
 export default function formatDate(date: string) {
   noStore();
   if (!date.includes("T")) {
     date = `${date}T00:00:00`;
   }
 
-  let currentDate = new Date();
-  let targetDate = new Date(date);
+  const currentDate = new Date();
+  const targetDate = new Date(date);
 
-  let yearsAgo = currentDate.getFullYear() - targetDate.getFullYear();
-  let monthsAgo = currentDate.getMonth() - targetDate.getMonth();
-  let daysAgo = currentDate.getDate() - targetDate.getDate();
+  const yearsAgo = currentDate.getFullYear() - targetDate.getFullYear();
+  const monthsAgo = currentDate.getMonth() - targetDate.getMonth();
+  const daysAgo = currentDate.getDate() - targetDate.getDate();
+  const isLessthanAYear = yearsAgo === 1 && monthsAgo < 0;
+  const monthsAgoAbs = Math.abs(monthsAgo);
 
   let formattedDate = "";
 
-  if (yearsAgo > 0) {
-    formattedDate = `${yearsAgo}y ago`;
-  } else if (monthsAgo > 0) {
-    formattedDate = `${monthsAgo}mo ago`;
-  } else if (daysAgo > 0) {
-    formattedDate = `${daysAgo}d ago`;
+  if (isLessthanAYear) {
+    if (monthsAgoAbs > 0) {
+      formattedDate = `${monthsAgoAbs - 1}mo ago`;
+    } else if (daysAgo > 0) {
+      formattedDate = `${daysAgo}d ago`;
+    } else {
+      formattedDate = "Today";
+    }
   } else {
-    formattedDate = "Today";
+    if (yearsAgo > 0) {
+      formattedDate = `${yearsAgo}y ago`;
+    } else if (monthsAgoAbs > 0) {
+      formattedDate = `${monthsAgoAbs}mo ago`;
+    } else if (daysAgo > 0) {
+      formattedDate = `${daysAgo}d ago`;
+    } else {
+      formattedDate = "Today";
+    }
   }
 
-  let fullDate = targetDate.toLocaleString("en-us", {
+  const fullDate = targetDate.toLocaleString("en-US", {
     month: "long",
     day: "numeric",
     year: "numeric",

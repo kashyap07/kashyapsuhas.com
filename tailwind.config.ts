@@ -21,10 +21,11 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        columbiaYellow: "var(--columbiaYellow)",
       },
       dropShadow: {},
       screens: {
-        'xs': '320px',
+        xs: "320px",
       },
     },
   },
@@ -44,7 +45,7 @@ const config: Config = {
             textShadow: value,
           }),
         },
-        { values: theme("textShadow") }
+        { values: theme("textShadow") },
       );
     }),
   ],

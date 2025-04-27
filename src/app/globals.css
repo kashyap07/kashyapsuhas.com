@@ -6,6 +6,7 @@
   :root {
     --background: #fff;
     --foreground: #000;
+    --columbiaYellow: #fecb47;
   }
 
   body {
@@ -13,6 +14,10 @@
     font-feature-settings:
       "rlig" 1,
       "calt" 1;
+  }
+
+  a {
+    @apply underline-offset-4 hover:text-yellow-500 hover:underline;
   }
 }
 

@@ -65,9 +65,11 @@ export default function Blog({ params }: { params: { slug: string } }) {
             }),
           }}
         />
+
         <h1 className="title w-full text-6xl font-medium md:text-8xl">
           {post.metadata.title}
         </h1>
+
         <Suspense fallback={<p className="h-5" />}>
           <p className="my-4 text-2xl">
             {formatDate(post.metadata.creation_date)}
