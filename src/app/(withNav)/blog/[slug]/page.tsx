@@ -45,6 +45,7 @@ export default function Blog({ params }: { params: { slug: string } }) {
   return (
     <Wrapper className="mb-12 w-full md:mb-20">
       <section>
+        {/* structured data */}
         <script
           type="application/ld+json"
           suppressHydrationWarning
@@ -66,10 +67,12 @@ export default function Blog({ params }: { params: { slug: string } }) {
           }}
         />
 
+        {/* title */}
         <h1 className="title w-full text-6xl font-medium md:text-8xl">
           {post.metadata.title}
         </h1>
 
+        {/* time since creation */}
         <Suspense fallback={<p className="h-5" />}>
           <p className="my-4 text-2xl">
             {formatDate(post.metadata.creation_date)}
@@ -77,6 +80,7 @@ export default function Blog({ params }: { params: { slug: string } }) {
         </Suspense>
         <hr />
 
+        {/* blog content */}
         <article className="prose prose-2xl text-pretty break-words">
           <CustomMDX source={post.content} />
         </article>
