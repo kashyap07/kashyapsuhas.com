@@ -79,9 +79,9 @@ const TopSP = () => (
         <li>
           <Link href={"/photos"}>Photos</Link>
         </li>
-        <li>
+        {/* <li>
           <Link href={"/resume"}>Resume</Link>
-        </li>
+        </li> */}
         <li>
           <Link href={"/contact"}>Contact</Link>
         </li>
@@ -115,9 +115,9 @@ const TopPC = () => (
           <li>
             <Link href={"/photos"}>Photos</Link>
           </li>
-          <li>
+          {/* <li>
             <Link href={"/resume"}>Resume</Link>
-          </li>
+          </li> */}
           <li>
             <Link href={"/contact"}>Contact</Link>
           </li>

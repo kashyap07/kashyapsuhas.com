@@ -1,99 +1,75 @@
-// @ts-nocheck
-
+import type { MDXComponents } from 'mdx/types';
+import { MDXRemote, MDXRemoteProps } from "next-mdx-remote/rsc";
 import Link from "next/link";
-import { MDXRemote } from "next-mdx-remote/rsc";
-import { highlight } from "sugar-high";
+import type { AnchorHTMLAttributes, HTMLAttributes, ReactNode } from "react";
 import React from "react";
+import { highlight } from "sugar-high";
 import ImageAutoHeight from "../ImageAutoHeight";
 
-// FIXME: add types
-// FIXME: images where
+function CustomLink(props: AnchorHTMLAttributes<HTMLAnchorElement>) {
+  const { href, children, ...rest } = props;
 
-function Table({ data }) {
-  let headers = data.headers.map((header, index) => (
-    <th key={index}>{header}</th>
-  ));
-  let rows = data.rows.map((row, index) => (
-    <tr key={index}>
-      {row.map((cell, cellIndex) => (
-        <td key={cellIndex}>{cell}</td>
-      ))}
-    </tr>
-  ));
-
-  return (
-    <table>
-      <thead>
-        <tr>{headers}</tr>
-      </thead>
-      <tbody>{rows}</tbody>
-    </table>
-  );
-}
-
-function CustomLink(props) {
-  let href = props.href;
+  if (!href) {
+    return <a {...rest}>{children}</a>;
+  }
 
   if (href.startsWith("/")) {
     return (
-      <Link href={href} {...props}>
-        {props.children}
+      <Link href={href} {...rest}>
+        {children}
       </Link>
     );
   }
 
   if (href.startsWith("#")) {
-    return <a {...props} />;
+    return <a href={href} {...rest}>{children}</a>;
   }
 
-  return <a target="_blank" rel="noopener noreferrer" {...props} />;
-}
-
-function Callout(props) {
   return (
-    <div className="mb-8 flex items-center rounded border border-neutral-200 bg-neutral-50 p-1 px-4 py-3 text-sm text-neutral-900 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-100">
-      <div className="mr-4 flex w-4 items-center">{props.emoji}</div>
-      <div className="callout w-full">{props.children}</div>
-    </div>
+    <a href={href} target="_blank" rel="noopener noreferrer" {...rest}>
+      {children}
+    </a>
   );
 }
 
-function Code({ children, ...props }) {
-  let codeHTML = highlight(children);
+interface CodeProps extends HTMLAttributes<HTMLElement> {
+  children?: ReactNode;
+}
+function Code({ children, ...props }: CodeProps) {
+  const codeString = typeof children === "string" ? children : "";
+  const codeHTML = highlight(codeString);
+
   return <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />;
 }
 
-function slugify(str) {
+function slugify(str: string): string {
   return str
     .toString()
     .toLowerCase()
-    .trim() // Remove whitespace from both ends of a string
-    .replace(/\s+/g, "-") // Replace spaces with -
-    .replace(/&/g, "-and-") // Replace & with 'and'
-    .replace(/[^\w\-]+/g, "") // Remove all non-word characters except for -
-    .replace(/\-\-+/g, "-"); // Replace multiple - with single -
+    .trim() // remove whitespace from both ends of a string
+    .replace(/\s+/g, "-") // replace spaces with -
+    .replace(/&/g, "-and-") // replace & with 'and'
+    .replace(/[^\w\-]+/g, "") // remove all non-word characters except for -
+    .replace(/\-\-+/g, "-"); // replace multiple - with single -
 }
 
-function createHeading(level) {
-  return ({ children }) => {
-    let slug = slugify(children);
+function createHeading(level: number) {
+  return ({ children, ...props }: HTMLAttributes<HTMLHeadingElement>) => {
+    const text = typeof children === "string" ? children : '';
+    const slug = slugify(text);
 
-    return React.createElement(
-      `h${level}`,
-      { id: slug },
-      [
-        React.createElement("a", {
-          href: `#${slug}`,
-          key: `link-${slug}`,
-          className: "anchor",
-        }),
-      ],
-      children,
+    const Heading = `h${level}` as 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+    
+    return (
+      <Heading id={slug} {...props}>
+        <a href={`#${slug}`} className="anchor" />
+        {children}
+      </Heading>
     );
   };
 }
 
-let components = {
+const defaultComponentMapping: MDXComponents = {
   h1: createHeading(1),
   h2: createHeading(2),
   h3: createHeading(3),
@@ -102,16 +78,14 @@ let components = {
   h6: createHeading(6),
   Image: ImageAutoHeight,
   a: CustomLink,
-  Callout,
   code: Code,
-  Table,
 };
 
-export default function CustomMDX(props) {
+export default function CustomMDX(props: JSX.IntrinsicAttributes & MDXRemoteProps) {
   return (
     <MDXRemote
       {...props}
-      components={{ ...components, ...(props.components || {}) }}
+      components={{ ...defaultComponentMapping, ...(props.components || {}) }}
     />
   );
 }
