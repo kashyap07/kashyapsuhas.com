@@ -2,15 +2,11 @@ import fs from "fs";
 import path from "path";
 
 type Metadata = {
-  category: string;
-  creation_date: string;
-  tags: string;
-  draft: string;
-  author: string;
+  categories: string;
+  publishedDateTime: string;
   title: string;
   description: string;
-  hero_image: string;
-  _template: string;
+  heroImage: string;
 };
 
 // Yoinked from: https://github.com/leerob/leerob.io/blob/main/app/blog/page.tsx
@@ -64,7 +60,8 @@ function getMDXData(dir: string) {
     })
     .sort((a, b) => {
       if (
-        new Date(a.metadata.creation_date) > new Date(b.metadata.creation_date)
+        new Date(a.metadata.publishedDateTime) >
+        new Date(b.metadata.publishedDateTime)
       ) {
         return -1;
       }
@@ -73,5 +70,5 @@ function getMDXData(dir: string) {
 }
 
 export function getBlogPosts() {
-  return getMDXData(path.join(process.cwd(), "Blog"));
+  return getMDXData(path.join(process.cwd(), "content/blog"));
 }

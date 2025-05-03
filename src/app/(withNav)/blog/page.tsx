@@ -27,7 +27,7 @@ export default function Blog() {
               </span>
 
               <span className="text-l min-w-fit text-gray-600">
-                {formatter.format(new Date(post.metadata.creation_date))}
+                {formatter.format(new Date(post.metadata.publishedDateTime))}
               </span>
             </li>
           </Link>

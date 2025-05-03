@@ -4,7 +4,7 @@ import Image, { ImageProps } from "next/image";
 type ImageAutoHeightProps = ImageProps & {
   src: string;
   alt: string;
-  width?: string;
+  mdHalfWidth?: boolean; // poor design lol. but this is for blog post half width
   className?: string;
 };
 
@@ -19,29 +19,22 @@ type ImageAutoHeightProps = ImageProps & {
  * This component is a workaround for that.
  *
  * @see https://github.com/vercel/next.js/discussions/18739#discussioncomment-344932 reference
- *
- * @param src - imge source
- * @param alt - image alt
- * @param width - image width
- * @param className - extra classes to be added
- * @returns next/image Component with auto height
  */
 const ImageAutoHeight = ({
   src,
   alt,
-  width: parentWidth,
+  mdHalfWidth,
   className,
   ...rest
 }: ImageAutoHeightProps) => {
   return (
     <div
       className={cn(
-        "children:!position-unset grid self-center justify-self-center",
+        "css-ImageAutoHeight children:!position-unset grid self-center justify-self-center",
+        mdHalfWidth && "md:w-1/2",
         className,
       )}
-      style={{
-        width: parentWidth ? parentWidth : "100%",
-      }}
+      data-component="ImageAutoHeight"
     >
       <Image
         src={src}
