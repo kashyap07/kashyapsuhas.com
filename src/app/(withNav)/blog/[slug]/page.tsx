@@ -15,8 +15,7 @@ export async function generateMetadata({
 
   if (!post) return;
 
-  const { creation_date, author, title, description, hero_image } =
-    post.metadata;
+  const { publishedDateTime, title, description, heroImage } = post.metadata;
 
   return {
     title,
@@ -25,12 +24,12 @@ export async function generateMetadata({
       title: `${title} | Suhas Kashyap`,
       description,
       type: "article",
-      publishedTime: creation_date,
-      authors: author,
+      publishedTime: publishedDateTime,
+      authors: "Suhas Kashyap",
       url: `https://kashyapsuhas.com/blog/${post.slug}`,
       images: [
         {
-          url: hero_image,
+          url: heroImage,
         },
       ],
     },
@@ -54,14 +53,15 @@ export default function Blog({ params }: { params: { slug: string } }) {
               "@context": "https://schema.org",
               "@type": "BlogPosting",
               headline: post.metadata.title,
-              datePublished: post.metadata.creation_date,
-              dateModified: post.metadata.creation_date,
+              datePublished: post.metadata.publishedDateTime,
+              dateModified: post.metadata.publishedDateTime,
               description: post.metadata.description,
-              image: post.metadata.hero_image,
+              image: post.metadata.heroImage,
               url: `https://kashyapsuhas.com/blog/${post.slug}`,
               author: {
                 "@type": "Person",
-                name: post.metadata.author,
+                name: "Suhas Kashyap",
+                url: "https://www.kashyapsuhas.com",
               },
             }),
           }}
@@ -75,7 +75,7 @@ export default function Blog({ params }: { params: { slug: string } }) {
         {/* time since creation */}
         <Suspense fallback={<p className="h-5" />}>
           <p className="mb-2 mt-4 text-2xl">
-            {formatDate(post.metadata.creation_date)}
+            {formatDate(post.metadata.publishedDateTime)}
           </p>
         </Suspense>
         <hr />
