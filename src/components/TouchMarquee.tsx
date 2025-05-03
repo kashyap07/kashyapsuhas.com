@@ -45,7 +45,7 @@ export const TouchMarquee = ({ type }: { type: "PC" | "SP" }) => {
               isTouching ? "opacity-95" : "opacity-0",
             )}
           >
-            <div className="animate-marquee_SP text-columbiaYellow absolute -inset-10 mt-[200px] whitespace-nowrap text-nowrap drop-shadow-[0_10px_30px_rgba(0,0,0,0.4)]">
+            <div className="animate-marquee_SP absolute -inset-10 mt-[200px] whitespace-nowrap text-nowrap text-columbiaYellow drop-shadow-[0_10px_30px_rgba(0,0,0,0.4)]">
               <MarqueeText />
             </div>
           </div>
@@ -74,7 +74,7 @@ export const TouchMarquee = ({ type }: { type: "PC" | "SP" }) => {
         </div>
       ) : (
         <div className="-z-10 -rotate-12 text-nowrap text-[14rem]">
-          <div className="animate-marquee absolute -inset-10 -mt-10 whitespace-nowrap text-[#fecb47] opacity-0 drop-shadow-[0_10px_30px_rgba(0,0,0,0.4)] transition-opacity duration-300 group-hover:opacity-100">
+          <div className="animate-marquee absolute -inset-10 -mt-10 whitespace-nowrap text-columbiaYellow opacity-0 drop-shadow-[0_10px_30px_rgba(0,0,0,0.4)] transition-opacity duration-300 group-hover:opacity-100">
             <MarqueeText />
           </div>
 

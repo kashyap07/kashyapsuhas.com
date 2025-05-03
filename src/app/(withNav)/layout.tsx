@@ -8,7 +8,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <>
       <header>
         <Wrapper className="w-full pt-12">
-          <Link className="text-5xl font-semibold" href={"/"}>
+          <Link
+            className="text-5xl font-semibold text-columbiaYellow"
+            href={"/"}
+          >
             Suhas Kashyap
           </Link>
         </Wrapper>
