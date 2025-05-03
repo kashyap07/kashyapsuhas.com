@@ -25,9 +25,6 @@ export default defineConfig({
       publicFolder: "public",
     },
   },
-  client: {
-    skip: true,
-  },
   schema: {
     collections: [
       {
