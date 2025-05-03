@@ -6,27 +6,18 @@
   :root {
     --background: #fff;
     --foreground: #000;
-    --columbiaYellow: #fecb47;
+    /* --columbiaYellow: #fecb47; */
+    --columbiaYellow: #fec534;
 
-    /* code syntax highlight - Modern GitHub-like theme */
     --sh-class: #6f42c1;
-    /* Purple for classes */
     --sh-identifier: #034e43;
-    /* Dark gray for identifiers */
     --sh-sign: #0f1924;
-    /* Dark gray for operators */
     --sh-property: #2c8cc0;
-    /* Blue for properties */
     --sh-entity: #0a9f2d;
-    /* Green for entities */
     --sh-jsxliterals: #0262cf;
-    /* Dark blue for JSX literals */
     --sh-string: #d14829;
-    /* Dark blue for strings */
     --sh-keyword: #ff0019;
-    /* Red for keywords */
     --sh-comment: #6a737d;
-    /* Gray for comments */
   }
 
   body {
@@ -37,12 +28,19 @@
   }
 
   a {
-    @apply underline-offset-4 hover:text-yellow-500 hover:underline;
+    @apply underline-offset-4 hover:text-columbiaYellow hover:underline;
   }
 
   pre,
   code {
-    font-family: 'Monaco', 'Menlo', 'Courier New', Courier, monospace;
+    font-family: "Monaco", "Menlo", "Courier New", Courier, monospace;
+  }
+
+  ::-moz-selection {
+    background: var(--columbiaYellow);
+  }
+  ::selection {
+    background: var(--columbiaYellow);
   }
 }
 
@@ -67,7 +65,6 @@
     text-wrap: balance;
   }
 
-
   @keyframes marquee {
     0% {
       transform: translateX(0);
@@ -85,21 +82,30 @@
   .animate-marquee_SP {
     animation: marquee 10s linear infinite;
   }
+
+  .macos-shadow {
+    box-shadow:
+      0px 10px 30px rgba(0, 0, 0, 0.2),
+      0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
 }
 
-
 .prose {
+  img {
+    @apply macos-shadow rounded-sm;
+  }
+
   pre {
     background-color: #f4f4f4;
     @apply text-lg;
   }
 
   pre code {
-    @apply p-0 block leading-6;
+    @apply block p-0 leading-4 md:leading-6;
     border: initial;
 
     .sh__line {
-      @apply inline-block leading-6;
+      @apply inline-block leading-4 md:leading-6;
     }
 
     span {

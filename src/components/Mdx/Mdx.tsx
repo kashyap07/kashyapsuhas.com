@@ -1,4 +1,4 @@
-import type { MDXComponents } from 'mdx/types';
+import type { MDXComponents } from "mdx/types";
 import { MDXRemote, MDXRemoteProps } from "next-mdx-remote/rsc";
 import Link from "next/link";
 import type { AnchorHTMLAttributes, HTMLAttributes, ReactNode } from "react";
@@ -22,7 +22,11 @@ function CustomLink(props: AnchorHTMLAttributes<HTMLAnchorElement>) {
   }
 
   if (href.startsWith("#")) {
-    return <a href={href} {...rest}>{children}</a>;
+    return (
+      <a href={href} {...rest}>
+        {children}
+      </a>
+    );
   }
 
   return (
@@ -55,11 +59,11 @@ function slugify(str: string): string {
 
 function createHeading(level: number) {
   return ({ children, ...props }: HTMLAttributes<HTMLHeadingElement>) => {
-    const text = typeof children === "string" ? children : '';
+    const text = typeof children === "string" ? children : "";
     const slug = slugify(text);
 
-    const Heading = `h${level}` as 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
-    
+    const Heading = `h${level}` as "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+
     return (
       <Heading id={slug} {...props}>
         <a href={`#${slug}`} className="anchor" />
@@ -81,11 +85,13 @@ const defaultComponentMapping: MDXComponents = {
   code: Code,
 };
 
-export default function CustomMDX(props: JSX.IntrinsicAttributes & MDXRemoteProps) {
+export default function CustomMDX(
+  props: JSX.IntrinsicAttributes & MDXRemoteProps,
+) {
   return (
     <MDXRemote
       {...props}
-      components={{ ...defaultComponentMapping, ...(props.components || {}) }}
+      components={{ ...defaultComponentMapping, ...props.components }}
     />
   );
 }
