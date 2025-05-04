@@ -15,7 +15,8 @@ export async function compressImage(
     maxSizeMB: (blob.size / 1024 / 1024) * (compressionPercentage / 100),
     useWebWorker: true,
   };
-  const compressedBlob = await imageCompression(blob, options);
+  const file = new File([blob], "image.jpg", { type: blob.type });
+  const compressedBlob = await imageCompression(file, options);
   const compressedDataUrl =
     await imageCompression.getDataUrlFromFile(compressedBlob);
   const size = compressedBlob.size;
