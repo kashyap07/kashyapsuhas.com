@@ -100,11 +100,11 @@
   }
 
   pre code {
-    @apply block p-0 leading-4 md:leading-6;
+    @apply block p-0 leading-5 md:leading-6;
     border: initial;
 
     .sh__line {
-      @apply inline-block leading-4 md:leading-6;
+      @apply inline-block !text-base leading-5 md:leading-6;
     }
 
     span {

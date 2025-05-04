@@ -14,6 +14,26 @@ export const metadata: Metadata = {
   },
 };
 
+const NavLinks = () => (
+  <ul className="flex flex-col gap-2 text-4xl">
+    <li>
+      <Link href={"/blog"}>Blog</Link>
+    </li>
+    <li>
+      <Link href={"/photos"}>Photos</Link>
+    </li>
+    {/* <li>
+      <Link href={"/resume"}>Resume</Link>
+    </li> */}
+    <li>
+      <Link href={"/tools"}>Tools</Link>
+    </li>
+    <li>
+      <Link href={"/contact"}>Contact</Link>
+    </li>
+  </ul>
+);
+
 const TopSP = () => (
   <Wrapper
     maxWidth="FULL_SCREEN_WIDTH"
@@ -72,20 +92,7 @@ const TopSP = () => (
       maxWidth="NARROW"
       className="flex flex-col justify-center pb-32"
     >
-      <ul className="flex flex-col gap-2 text-4xl">
-        <li>
-          <Link href={"/blog"}>Blog</Link>
-        </li>
-        <li>
-          <Link href={"/photos"}>Photos</Link>
-        </li>
-        {/* <li>
-          <Link href={"/resume"}>Resume</Link>
-        </li> */}
-        <li>
-          <Link href={"/contact"}>Contact</Link>
-        </li>
-      </ul>
+      <NavLinks />
     </Wrapper>
     {/* END navlinks */}
   </Wrapper>
@@ -108,20 +115,7 @@ const TopPC = () => (
       </div>
 
       <div className="flex flex-col justify-center">
-        <ul className="flex flex-col gap-2 text-4xl">
-          <li>
-            <Link href={"/blog"}>Blog</Link>
-          </li>
-          <li>
-            <Link href={"/photos"}>Photos</Link>
-          </li>
-          {/* <li>
-            <Link href={"/resume"}>Resume</Link>
-          </li> */}
-          <li>
-            <Link href={"/contact"}>Contact</Link>
-          </li>
-        </ul>
+        <NavLinks />
       </div>
     </div>
     {/* END top pc left side */}
