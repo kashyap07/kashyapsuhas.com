@@ -125,7 +125,17 @@
   h2,
   h3,
   h4 {
-    @apply text-5xl font-medium;
+    @apply font-medium;
+  }
+
+  h2 {
+    @apply text-5xl;
+  }
+  h3 {
+    @apply text-4xl;
+  }
+  h4 {
+    @apply text-3xl;
   }
 
   strong {
