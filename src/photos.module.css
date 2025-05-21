@@ -1,0 +1,5 @@
+.skeleton_placeholder {
+  background-color: #e0e0e0; /* Light gray */
+  /* mb-4 in Tailwind is margin-bottom: 1rem; */
+  margin-bottom: 1rem; 
+}
