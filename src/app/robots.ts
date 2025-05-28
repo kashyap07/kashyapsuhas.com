@@ -4,7 +4,7 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: "*",
-      disallow: ["/suhas-resume.pdf", "/_next/*", "/contact"],
+      disallow: ["/suhas-resume.pdf", "/_next/*", "/contact", "/work"],
     },
   };
 }
