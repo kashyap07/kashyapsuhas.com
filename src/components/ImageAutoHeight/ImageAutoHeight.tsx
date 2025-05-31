@@ -6,6 +6,7 @@ type ImageAutoHeightProps = ImageProps & {
   alt: string;
   mdHalfWidth?: boolean; // poor design lol. but this is for blog post half width
   className?: string;
+  imageClassName?: string;
 };
 
 /**
@@ -25,6 +26,7 @@ const ImageAutoHeight = ({
   alt,
   mdHalfWidth,
   className,
+  imageClassName,
   ...rest
 }: ImageAutoHeightProps) => {
   return (
@@ -41,7 +43,10 @@ const ImageAutoHeight = ({
         alt={alt}
         layout="fill"
         {...rest}
-        className="!h-unset !relative !w-full !object-contain"
+        className={cn(
+          "!h-unset !relative !w-full !object-contain",
+          imageClassName,
+        )}
       />
     </div>
   );

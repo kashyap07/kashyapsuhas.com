@@ -44,13 +44,14 @@ export default function Photos() {
           data-description="photos-selected-image-wrapper"
         >
           <div
-            className="fixed left-0 top-0 z-50 flex h-full w-full cursor-pointer flex-col items-center justify-center gap-4 bg-black bg-opacity-50 p-4 pt-24 backdrop-blur-xl md:gap-8 md:p-32"
+            className="fixed left-0 top-0 z-50 flex h-full w-full cursor-pointer flex-col items-center justify-center gap-4 bg-black bg-opacity-50 px-4 py-32 pt-24 backdrop-blur-xl md:gap-8"
             onClick={closeImage}
           >
             <ImageAutoHeight
               src={selectedImage.src}
               alt={selectedImage.title || "selected image"}
-              className="max-h-full max-w-full"
+              className="h-full max-h-full w-full max-w-full contain-strict"
+              imageClassName="!absolute"
             />
 
             <div
