@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { Wrapper } from "@/components/Wrapper";
 import { compressImage } from "@/app/(withNav)/tools/image-compressor/compressImage";
 import ImageAutoHeight from "@/components/ImageAutoHeight";
@@ -12,6 +12,9 @@ export default function ImageCompressor() {
   const [originalSize, setOriginalSize] = useState<number | null>(null);
   const [compressedSize, setCompressedSize] = useState<number | null>(null);
   const [comparisonSliderPosition, setComparisonSliderPosition] = useState(50);
+  const [isCompressing, setIsCompressing] = useState(false);
+  // Debounce timer ref
+  const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
   // Update the logic to display the original image without compression upon upload.
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,11 +22,13 @@ export default function ImageCompressor() {
     if (file) {
       setImage(file);
       setOriginalSize(file.size);
+      setCompressionPercentage(100);
+      setComparisonSliderPosition(50);
+      setCompressedSize(file.size);
       const reader = new FileReader();
       reader.onload = () => {
         if (reader.result && typeof reader.result === "string") {
           setCompressedImage(reader.result); // Display the original image as-is
-          setCompressedSize(file.size); // Set the compressed size to the original size initially
         }
       };
       reader.readAsDataURL(file);
@@ -31,25 +36,50 @@ export default function ImageCompressor() {
   };
 
   // Update the compression logic to only apply when the slider is adjusted below 100%.
-  const handleCompressionSliderChange = async (value: number) => {
+  const handleCompressionSliderChange = (value: number) => {
     setCompressionPercentage(value);
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
+    debounceTimer.current = setTimeout(() => {
+      compressImageDebounced(value);
+    }, 350); // 350ms debounce
+  };
+
+  const MIN_TIME = 600;
+
+  // Debounced compression logic
+  const compressImageDebounced = async (value: number) => {
     if (image && value < 100) {
+      setIsCompressing(true);
+      const start = Date.now();
       const reader = new FileReader();
       reader.onload = async () => {
         if (reader.result && typeof reader.result === "string") {
           const compressed = await compressImage(reader.result, value);
           setCompressedImage(compressed.dataUrl);
           setCompressedSize(compressed.size);
+          const elapsed = Date.now() - start;
+          if (elapsed < MIN_TIME) {
+            setTimeout(() => setIsCompressing(false), MIN_TIME - elapsed);
+          } else {
+            setIsCompressing(false);
+          }
         }
       };
       reader.readAsDataURL(image);
     } else if (image && value === 100) {
-      // Reset to original image when slider is at 100%
+      setIsCompressing(true);
+      const start = Date.now();
       const reader = new FileReader();
       reader.onload = () => {
         if (reader.result && typeof reader.result === "string") {
           setCompressedImage(reader.result);
           setCompressedSize(originalSize);
+          const elapsed = Date.now() - start;
+          if (elapsed < MIN_TIME) {
+            setTimeout(() => setIsCompressing(false), MIN_TIME - elapsed);
+          } else {
+            setIsCompressing(false);
+          }
         }
       };
       reader.readAsDataURL(image);
@@ -70,6 +100,7 @@ export default function ImageCompressor() {
           accept="image/*"
           onChange={handleImageUpload}
           className="file:mr-4 file:rounded file:border-0 file:px-4 file:py-2 file:text-black hover:file:bg-columbiaYellow"
+          disabled={isCompressing}
         />
         {compressedImage && (
           <div className="mt-8 flex flex-col gap-8 md:flex-row md:justify-between">
@@ -84,9 +115,7 @@ export default function ImageCompressor() {
                 />
                 <div
                   className="absolute left-0 top-0 h-full w-full overflow-hidden"
-                  style={{
-                    clipPath: `inset(0 ${100 - comparisonSliderPosition}% 0 0)`,
-                  }}
+                  style={{ clipPath: `inset(0 ${100 - comparisonSliderPosition}% 0 0)` }}
                 >
                   <ImageAutoHeight
                     src={originalImageSrc}
@@ -94,10 +123,28 @@ export default function ImageCompressor() {
                     className="h-full w-full object-contain"
                   />
                 </div>
-                <div
-                  className="absolute left-0 top-0 z-10 h-full w-1 bg-gray-800"
-                  style={{ left: `${comparisonSliderPosition}%` }}
-                ></div>
+                {/* Comparison slider handle and labels (reverted labels and line, keep improved handle) */}
+                <div className="absolute left-0 top-0 z-20 flex h-full w-full pointer-events-none">
+                  <span className="absolute left-2 top-2 bg-black bg-opacity-60 text-white text-xs px-2 py-1 rounded">BEFORE</span>
+                  <span className="absolute right-2 top-2 bg-black bg-opacity-60 text-white text-xs px-2 py-1 rounded">AFTER</span>
+                  {/* Simple gray dividing line */}
+                  <div
+                    className="absolute left-0 top-0 z-10 h-full w-1 bg-gray-800 cursor-grab"
+                    style={{ left: `${comparisonSliderPosition}%` }}
+                  ></div>
+                  {/* Improved custom slider handle */}
+                  <div
+                    className="absolute z-30 flex flex-col items-center justify-center"
+                    style={{ left: `${comparisonSliderPosition}%`, top: '50%', transform: 'translate(-50%, -50%)' }}
+                  >
+                    <div className="bg-columbiaYellow border-4 border-white rounded-full w-8 h-8 flex items-center justify-center shadow-lg transition-all duration-200">
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 5L3 10L7 15" stroke="#333" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="M13 5L17 10L13 15" stroke="#333" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
                 <input
                   type="range"
                   value={comparisonSliderPosition}
@@ -106,8 +153,9 @@ export default function ImageCompressor() {
                   }
                   min="0"
                   max="100"
-                  className="absolute left-0 top-0 z-20 h-full w-full cursor-pointer opacity-0"
+                  className="absolute left-0 top-0 z-40 h-full w-full cursor-pointer opacity-0"
                   style={{ appearance: "none" }}
+                  disabled={isCompressing}
                 />
               </div>
             </div>
@@ -123,9 +171,11 @@ export default function ImageCompressor() {
                   onChange={(e) =>
                     handleCompressionSliderChange(Number(e.target.value))
                   }
-                  min="1"
+                  min="0.1"
                   max="100"
+                  step="0.1"
                   className="mt-2 h-2 w-full cursor-pointer appearance-none rounded-full bg-[#F2F2F2]"
+                  disabled={isCompressing}
                 />
                 <span className="mt-1 block text-center text-xl font-semibold text-black">
                   {compressionPercentage}%
@@ -153,6 +203,9 @@ export default function ImageCompressor() {
                 href={compressedImage}
                 download="compressed-image.jpg"
                 className="mt-4 flex items-center justify-center rounded bg-columbiaYellow py-2 font-medium text-black transition-all duration-100 ease-in-out hover:text-black hover:no-underline hover:shadow-md"
+                style={{ pointerEvents: isCompressing ? 'none' : 'auto', opacity: isCompressing ? 0.5 : 1 }}
+                tabIndex={isCompressing ? -1 : 0}
+                aria-disabled={isCompressing}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -174,6 +227,18 @@ export default function ImageCompressor() {
           </div>
         )}
       </div>
+      {/* Loader overlay */}
+      {isCompressing && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
+          <div className="flex flex-col items-center gap-4 p-8 bg-white rounded shadow-lg">
+            <svg className="animate-spin h-10 w-10 text-columbiaYellow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+            </svg>
+            <span className="text-lg font-semibold text-gray-800">Compressing...</span>
+          </div>
+        </div>
+      )}
     </Wrapper>
   );
 }

@@ -11,8 +11,10 @@ export async function compressImage(
   compressionPercentage: number,
 ) {
   const blob = await fetch(imageDataUrl).then((res) => res.blob());
+  const minSizeMB = 0.01; // allow very small compressed sizes
+  const calculatedSizeMB = (blob.size / 1024 / 1024) * (compressionPercentage / 100);
   const options = {
-    maxSizeMB: (blob.size / 1024 / 1024) * (compressionPercentage / 100),
+    maxSizeMB: Math.max(calculatedSizeMB, minSizeMB),
     useWebWorker: true,
   };
   const file = new File([blob], "image.jpg", { type: blob.type });

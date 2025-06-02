@@ -31,7 +31,7 @@ export default function Tools() {
             </Link>
           </span>
           <span className="text-2xl text-gray-500">
-            Convert images between formats (HEIC, JPEG, PNG, etc.) locally in your browser
+            Convert images between formats (heic, jpeg, png, webp) locally in your browser
           </span>
         </li>
       </ul>
