@@ -34,6 +34,16 @@ export default function Tools() {
             Convert images between formats (heic, jpeg, png, webp) locally in your browser
           </span>
         </li>
+        <li className="flex flex-col md:justify-between mt-8">
+          <span className="text-5xl font-medium md:text-8xl">
+            <Link className="flex flex-col" href={"tools/text-diff"}>
+              Text Diff Tool
+            </Link>
+          </span>
+          <span className="text-2xl text-gray-500">
+            Compare two blocks of text and see the differences highlighted instantly
+          </span>
+        </li>
       </ul>
     </Wrapper>
   );
