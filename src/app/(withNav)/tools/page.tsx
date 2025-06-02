@@ -24,6 +24,16 @@ export default function Tools() {
             Reduce image size locally without uploading to a server
           </span>
         </li>
+        <li className="flex flex-col md:justify-between mt-8">
+          <span className="text-5xl font-medium md:text-8xl">
+            <Link className="flex flex-col" href={"tools/image-converter"}>
+              Image Converter
+            </Link>
+          </span>
+          <span className="text-2xl text-gray-500">
+            Convert images between formats (HEIC, JPEG, PNG, etc.) locally in your browser
+          </span>
+        </li>
       </ul>
     </Wrapper>
   );

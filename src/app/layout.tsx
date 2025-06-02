@@ -17,6 +17,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
+      <head>
+        <script src="https://cdn.jsdelivr.net/npm/heic2any/dist/heic2any.min.js"></script>
+      </head>
       <body className={eczar.className}>{children}</body>
     </html>
   );
