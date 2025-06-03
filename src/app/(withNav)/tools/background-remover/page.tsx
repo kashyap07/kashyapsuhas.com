@@ -3,6 +3,9 @@ import React, { useRef, useState } from "react";
 import * as ort from "onnxruntime-web";
 import { Wrapper } from "@/components/Wrapper";
 
+// Set WASM path for onnxruntime-web
+ort.env.wasm.wasmPaths = "/";
+
 const MODEL_PATH = "/models/u2netp.onnx";
 const INPUT_SIZE = 320;
 
