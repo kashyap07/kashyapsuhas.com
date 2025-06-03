@@ -14,6 +14,7 @@ export default function Tools() {
   return (
     <Wrapper className="md:mb-20w-full mb-12">
       <ul className="flex flex-col">
+
         <li className="flex flex-col md:justify-between">
           <span className="text-5xl font-medium md:text-8xl">
             <Link className="flex flex-col" href={"tools/image-compressor"}>
@@ -42,6 +43,16 @@ export default function Tools() {
           </span>
           <span className="text-2xl text-gray-500">
             Compare two blocks of text and see the differences highlighted instantly
+          </span>
+        </li>
+        <li className="flex flex-col md:justify-between mb-8">
+          <span className="text-5xl font-medium md:text-8xl">
+            <Link className="flex flex-col" href={"tools/background-remover"}>
+              EXPERIMENTAL WIP Background Remover
+            </Link>
+          </span>
+          <span className="text-2xl text-gray-500">
+            Remove image backgrounds instantly in your browser using AI (U^2-Netp, fully client-side)
           </span>
         </li>
       </ul>
