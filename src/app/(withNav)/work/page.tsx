@@ -2,6 +2,20 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Wrapper } from "@/components/Wrapper";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Work",
+  description:
+    "Suhas Kashyap's personal website. See blogs, photos, contact details.",
+  openGraph: {
+    images: ["/suhas_og.jpg"],
+  },
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export default function Work() {
   return (

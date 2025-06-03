@@ -154,6 +154,7 @@ export default function Home() {
             description:
               "Suhas Kashyap's personal website. See blogs, photos, contact details.",
             name: "Suhas Kashyap",
+            image: "/suhas_og.jpg",
           }),
         }}
       />

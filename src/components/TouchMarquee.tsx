@@ -5,7 +5,7 @@ import { VT323, Silkscreen, Dela_Gothic_One } from "next/font/google";
 import { useEffect, useState } from "react";
 
 const marqueeFont = Dela_Gothic_One({ weight: "400", subsets: ["latin"] });
-const marqueeText = "Suhas Kashyap スハス カシャプ";
+const marqueeText = "スハス カシャプ Suhas Kashyap";
 
 const MarqueeText = () => {
   return Array(10)
