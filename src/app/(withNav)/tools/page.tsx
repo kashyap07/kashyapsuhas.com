@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function Tools() {
   return (
-    <Wrapper className="md:mb-20w-full mb-12">
+    <Wrapper className="md:mb-20 w-full mb-12">
       <ul className="flex flex-col">
 
         <li className="flex flex-col md:justify-between">
