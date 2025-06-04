@@ -17,7 +17,7 @@ export default function Blog() {
   });
 
   return (
-    <Wrapper className="md:mb-20w-full mb-12">
+    <Wrapper className="md:mb-20 w-full mb-12">
       <ul className="flex flex-col">
         {blogPosts.map((post) => (
           <Link key={post.slug} className="my-4" href={`/blog/${post.slug}`}>

@@ -61,7 +61,7 @@ export default function TextDiffPage() {
   const lines = diffLinesInline(textA, textB);
 
   return (
-    <Wrapper maxWidth='NARROW' className="md:mb-20w-full mb-12">
+    <Wrapper maxWidth='NARROW' className="md:mb-20 w-full mb-12">
       <h1 className="text-5xl font-medium md:text-8xl">Text Diff Tool</h1>
       <div className="flex flex-col md:flex-row gap-4">
         <label className="block w-full md:w-1/2">
