@@ -20,6 +20,7 @@ export async function generateMetadata({
   return {
     title,
     description,
+    keywords: ["Suhas Kashyap", title],
     openGraph: {
       title: `${title} | Suhas Kashyap`,
       description,
@@ -32,6 +33,9 @@ export async function generateMetadata({
           url: heroImage,
         },
       ],
+    },
+    alternates: {
+      canonical: `https://kashyapsuhas.com/blog/${post.slug}`,
     },
   };
 }

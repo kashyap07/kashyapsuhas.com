@@ -5,6 +5,10 @@ import { getBlogPosts } from "@/db/blog";
 export const metadata = {
   title: "Kashyap's Blog | Suhas Kashyap",
   description: "Kashyap's Blog.",
+  alternates: {
+    canonical: "https://kashyapsuhas.com/blog",
+  },
+  keywords: ["Suhas Kashyap", "blog"],
 };
 
 export default function Blog() {
