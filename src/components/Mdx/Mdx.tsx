@@ -56,9 +56,8 @@ function slugify(str: string): string {
     .replace(/[^\w\-]+/g, "") // remove all non-word characters except for -
     .replace(/\-\-+/g, "-"); // replace multiple - with single -
 }
-
 function createHeading(level: number) {
-  return ({ children, ...props }: HTMLAttributes<HTMLHeadingElement>) => {
+  const HeadingComponent = ({ children, ...props }: HTMLAttributes<HTMLHeadingElement>) => {
     const text = typeof children === "string" ? children : "";
     const slug = slugify(text);
 
@@ -71,6 +70,8 @@ function createHeading(level: number) {
       </Heading>
     );
   };
+  HeadingComponent.displayName = `Heading${level}`;
+  return HeadingComponent;
 }
 
 const defaultComponentMapping: MDXComponents = {
