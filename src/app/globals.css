@@ -90,7 +90,7 @@
   /* Show the Japanese portion of the marquee via CSS so it isn't
      included in the page's HTML text. */
   .jp-marquee::before {
-    content: "\30B9\30CF\30B9 \30AB\30B7\30E3\30D7 ";
+    content: "\30B9\30CF\30B9 \30AB\30B7\30E3\30D7   ";
   }
 
   .macos-shadow {
