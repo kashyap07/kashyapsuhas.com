@@ -94,6 +94,80 @@ export default defineConfig({
         ],
         // TODO: add preview feature some dat
       },
+      {
+        name: "reviews",
+        label: "Reviews",
+        path: "content/reviews",
+        format: "json",
+        fields: [
+          {
+            type: "string",
+            name: "name",
+            label: "Name",
+            required: true,
+          },
+          {
+            type: "string",
+            name: "category",
+            label: "Category",
+            required: true,
+            options: [
+              { value: "movies", label: "Movies" },
+              { value: "products", label: "Products" },
+              { value: "restaurants", label: "Restaurants" },
+              { value: "books", label: "Books" },
+              { value: "games", label: "Games" },
+            ],
+          },
+          {
+            type: "number",
+            name: "rating",
+            label: "Rating",
+            required: true,
+          },
+          {
+            type: "boolean",
+            name: "wouldRecommend",
+            label: "Would Recommend?",
+            required: true,
+          },
+          {
+            type: "string",
+            name: "summary",
+            label: "Summary",
+            required: true,
+            ui: {
+              component: "textarea",
+            },
+          },
+          {
+            type: "string",
+            name: "pros",
+            label: "Pros",
+            list: true,
+            required: true,
+          },
+          {
+            type: "string",
+            name: "cons",
+            label: "Cons",
+            list: true,
+            required: true,
+          },
+          {
+            type: "string",
+            name: "link",
+            label: "Link",
+            required: false,
+          },
+          {
+            type: "datetime",
+            name: "reviewDate",
+            label: "Review Date",
+            required: true,
+          },
+        ],
+      },
     ],
   },
 });

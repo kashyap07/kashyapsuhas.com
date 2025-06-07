@@ -30,11 +30,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <Script
-        src="https://cdn.jsdelivr.net/npm/heic2any/dist/heic2any.min.js"
-        strategy="beforeInteractive"
-      />
-      <body className={eczar.className}>{children}</body>
+      <body className={eczar.className}>
+        <Script
+          src="https://cdn.jsdelivr.net/npm/heic2any/dist/heic2any.min.js"
+          strategy="beforeInteractive"
+        />
+        {children}
+      </body>
     </html>
   );
 }

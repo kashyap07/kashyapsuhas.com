@@ -1,0 +1,20 @@
+{
+  "name": "Sample Product with a long name Truncation test. Truncation test. Truncation test. Truncation test. Truncation test.",
+  "category": "Technology",
+  "rating": 8,
+  "wouldRecommend": true,
+  "summary": "A solid product with great features but some room for improvement. Truncation test. Truncation test. Truncation test. Truncation test. Truncation test.",
+  "pros": [
+    "Excellent build quality",
+    "Fast performance",
+    "User-friendly interface",
+    "Good battery life"
+  ],
+  "cons": [
+    "Slightly expensive",
+    "Limited customization options",
+    "Could use more storage"
+  ],
+  "link": "https://example.com/review",
+  "reviewDate": "2024-03-20"
+}

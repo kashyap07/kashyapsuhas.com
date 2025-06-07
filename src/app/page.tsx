@@ -22,6 +22,9 @@ const NavLinks = () => (
     <li>
       <Link href={"/photos"}>Photos</Link>
     </li>
+    <li>
+      <Link href={"/reviews"}>Reviews</Link>
+    </li>
     {/* <li>
       <Link href={"/resume"}>Resume</Link>
     </li> */}

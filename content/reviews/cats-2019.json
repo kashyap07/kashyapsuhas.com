@@ -1,0 +1,19 @@
+{
+  "name": "Cats 2019",
+  "category": "Movies",
+  "rating": 4.6,
+  "wouldRecommend": true,
+  "summary": "I wanted to KMS, I love it",
+  "pros": [
+    "Great animation",
+    "Great music",
+    "Great voice acting",
+    "Great story"
+  ],
+  "cons": [
+    "Not enough cats",
+    "Not enough cats",
+    "Not enough cats"
+  ],
+  "link": "https://www.imdb.com/title/tt6966692/"
+}
