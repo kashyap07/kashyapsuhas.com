@@ -1,6 +1,6 @@
 {
   "name": "Cats 2019",
-  "category": "Movies",
+  "category": "Media",
   "rating": 4.6,
   "wouldRecommend": true,
   "summary": "I wanted to KMS, I love it",
@@ -15,5 +15,6 @@
     "Not enough cats",
     "Not enough cats"
   ],
-  "link": "https://www.imdb.com/title/tt6966692/"
+  "link": "https://www.imdb.com/title/tt6966692/",
+  "reviewDate": "2019-12-20T18:30:00.000Z"
 }
