@@ -10,6 +10,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date().toISOString(),
     },
     {
+      url: "https://kashyapsuhas.com/photos",
+      lastModified: new Date().toISOString(),
+    },
+    {
       url: "https://kashyapsuhas.com/blog",
       lastModified: new Date().toISOString(),
     },
