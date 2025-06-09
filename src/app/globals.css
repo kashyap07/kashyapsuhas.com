@@ -87,12 +87,6 @@
     animation: marquee 10s linear infinite;
   }
 
-  /* Show the Japanese portion of the marquee via CSS so it isn't
-     included in the page's HTML text. */
-  .jp-marquee::before {
-    content: "\30B9\30CF\30B9 \30AB\30B7\30E3\30D7   ";
-  }
-
   .macos-shadow {
     box-shadow:
       0px 10px 30px rgba(0, 0, 0, 0.2),

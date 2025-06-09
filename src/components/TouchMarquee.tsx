@@ -5,15 +5,13 @@ import { VT323, Silkscreen, Dela_Gothic_One } from "next/font/google";
 import { useEffect, useState } from "react";
 
 const marqueeFont = Dela_Gothic_One({ weight: "400", subsets: ["latin"] });
-// Show the Japanese transliteration visually using CSS so it isn't
-// included in the document text that search engines index.
-const marqueeText = "Suhas Kashyap";
+const marqueeText = "スハス カシャプ Suhas Kashyap";
 
 const MarqueeText = () => {
   return Array(10)
     .fill(marqueeText)
     .map((text: string, i: number) => (
-      <span key={i} className="mr-10 jp-marquee">
+      <span key={i} className="mr-10">
         {text}
       </span>
     ));
