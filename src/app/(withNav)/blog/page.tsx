@@ -24,7 +24,7 @@ export default function Blog() {
     <Wrapper className="md:mb-20 w-full mb-12">
       <ul className="flex flex-col">
         {blogPosts.map((post) => (
-          <Link key={post.slug} className="my-4" href={`/blog/${post.slug}`}>
+          <Link key={post.slug} className="my-3" href={`/blog/${post.slug}`}>
             <li className="flex flex-col md:flex-row md:items-end md:justify-between">
               <span className="text-3xl font-medium">
                 {post.metadata.title}

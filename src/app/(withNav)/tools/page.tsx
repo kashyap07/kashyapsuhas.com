@@ -45,7 +45,7 @@ export default function Tools() {
             Compare two blocks of text and see the differences highlighted instantly
           </span>
         </li>
-        <li className="flex flex-col md:justify-between mb-8">
+        <li className="flex flex-col md:justify-between mt-8">
           <span className="text-5xl font-medium md:text-8xl">
             <Link className="flex flex-col" href={"tools/background-remover"}>
               EXPERIMENTAL WIP Background Remover

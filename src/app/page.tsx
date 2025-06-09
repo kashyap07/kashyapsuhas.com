@@ -125,9 +125,9 @@ const TopPC = () => (
 
     {/* START top pc right side */}
     <div className="group relative">
-      <TouchMarquee type="PC" />
+      {/* <TouchMarquee type="PC" /> */}
 
-      <div className="relative z-10">
+      <div className="relative z-10 translate-x-6">
         <Image
           src="/suhas_nobg.png"
           alt="suhas kashyap hiking"
