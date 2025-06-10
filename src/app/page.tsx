@@ -71,7 +71,7 @@ const TopSP = () => (
           />
         </div>
 
-        <TouchMarquee type="SP" />
+        <TouchMarquee />
       </div>
       {/* END profile image bg */}
 
@@ -125,8 +125,6 @@ const TopPC = () => (
 
     {/* START top pc right side */}
     <div className="group relative">
-      {/* <TouchMarquee type="PC" /> */}
-
       <div className="relative z-10 translate-x-6">
         <Image
           src="/suhas_nobg.png"
