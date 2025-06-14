@@ -1,7 +1,7 @@
 import type { MDXComponents } from "mdx/types";
 import { MDXRemote, MDXRemoteProps } from "next-mdx-remote/rsc";
 import Link from "next/link";
-import type { AnchorHTMLAttributes, HTMLAttributes, ReactNode } from "react";
+import type { AnchorHTMLAttributes, HTMLAttributes, ReactNode, JSX } from "react";
 import React from "react";
 import { highlight } from "sugar-high";
 import ImageAutoHeight from "../ImageAutoHeight";

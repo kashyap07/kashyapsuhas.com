@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, type JSX } from "react";
 import cn from "@/utils/cn";
 
 import { MaxWidth } from "@/variables/sizes";

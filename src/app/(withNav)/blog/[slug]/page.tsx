@@ -6,11 +6,12 @@ import { getBlogPosts } from "@/db/blog";
 import { Wrapper } from "@/components/Wrapper";
 import formatDate from "@/utils/formatDate";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: any;
-}): Promise<Metadata | undefined> {
+export async function generateMetadata(
+  props: {
+    params: Promise<any>;
+  }
+): Promise<Metadata | undefined> {
+  const params = await props.params;
   const post = getBlogPosts().find((post) => post.slug === params.slug);
 
   if (!post) return;
@@ -40,7 +41,8 @@ export async function generateMetadata({
   };
 }
 
-export default function Blog({ params }: { params: { slug: string } }) {
+export default async function Blog(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   let post = getBlogPosts().find((post) => post.slug === params.slug);
 
   if (!post) notFound();
