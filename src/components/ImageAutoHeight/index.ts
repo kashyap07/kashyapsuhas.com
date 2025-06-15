@@ -1,3 +1,3 @@
-import ImageAutoHeight from './ImageAutoHeight';
+import ImageAutoHeight from "./ImageAutoHeight";
 
 export default ImageAutoHeight;

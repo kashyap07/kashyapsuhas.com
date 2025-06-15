@@ -1,6 +1,8 @@
 "use client";
 import React, { useRef, useState } from "react";
+
 import * as ort from "onnxruntime-web";
+
 import { Wrapper } from "@/components/Wrapper";
 
 // Set WASM path for onnxruntime-web
@@ -9,7 +11,10 @@ ort.env.wasm.wasmPaths = "/";
 const MODEL_PATH = "/models/u2netp.onnx";
 const INPUT_SIZE = 320;
 
-function resizeImageToCanvas(image: HTMLImageElement, size: number): HTMLCanvasElement {
+function resizeImageToCanvas(
+  image: HTMLImageElement,
+  size: number,
+): HTMLCanvasElement {
   const canvas = document.createElement("canvas");
   canvas.width = size;
   canvas.height = size;
@@ -33,7 +38,11 @@ function imageToTensor(canvas: HTMLCanvasElement): Float32Array {
   return floatArr;
 }
 
-function maskToImageData(mask: Float32Array | number[], width: number, height: number): ImageData {
+function maskToImageData(
+  mask: Float32Array | number[],
+  width: number,
+  height: number,
+): ImageData {
   // mask: Float32Array, values in [0,1]
   const imgData = new ImageData(width, height);
   for (let i = 0; i < width * height; i++) {
@@ -45,7 +54,10 @@ function maskToImageData(mask: Float32Array | number[], width: number, height: n
   return imgData;
 }
 
-function applyMaskToImage(origImg: HTMLImageElement, maskCanvas: HTMLCanvasElement): HTMLCanvasElement {
+function applyMaskToImage(
+  origImg: HTMLImageElement,
+  maskCanvas: HTMLCanvasElement,
+): HTMLCanvasElement {
   // origImg: HTMLImageElement, maskCanvas: canvas with alpha mask
   const canvas = document.createElement("canvas");
   canvas.width = origImg.naturalWidth;
@@ -84,9 +96,16 @@ const BackgroundRemover: React.FC = () => {
       // Preprocess
       const resized = resizeImageToCanvas(img, INPUT_SIZE);
       const inputTensor = imageToTensor(resized);
-      const tensor = new ort.Tensor("float32", inputTensor, [1, 3, INPUT_SIZE, INPUT_SIZE]);
+      const tensor = new ort.Tensor("float32", inputTensor, [
+        1,
+        3,
+        INPUT_SIZE,
+        INPUT_SIZE,
+      ]);
       // Load model
-      const session = await ort.InferenceSession.create(MODEL_PATH, { executionProviders: ["wasm"] });
+      const session = await ort.InferenceSession.create(MODEL_PATH, {
+        executionProviders: ["wasm"],
+      });
       const feeds: Record<string, ort.Tensor> = { "input.1": tensor };
       const results = await session.run(feeds);
       // U^2-Netp output is usually 'output' or 'd1'
@@ -94,7 +113,8 @@ const BackgroundRemover: React.FC = () => {
       // Postprocess mask
       const maskArr = output.data as Float32Array;
       // Normalize mask to [0,1] (find min/max manually for compatibility)
-      let min = maskArr[0], max = maskArr[0];
+      let min = maskArr[0],
+        max = maskArr[0];
       for (let i = 1; i < maskArr.length; i++) {
         if (maskArr[i] < min) min = maskArr[i];
         if (maskArr[i] > max) max = maskArr[i];
@@ -115,7 +135,10 @@ const BackgroundRemover: React.FC = () => {
       const finalCanvas = applyMaskToImage(img, maskCanvas);
       setResultUrl(finalCanvas.toDataURL("image/png"));
     } catch (e) {
-      setError("Failed to process image. " + (e instanceof Error ? e.message : String(e)));
+      setError(
+        "Failed to process image. " +
+          (e instanceof Error ? e.message : String(e)),
+      );
     } finally {
       setLoading(false);
     }
@@ -123,42 +146,49 @@ const BackgroundRemover: React.FC = () => {
 
   return (
     <Wrapper className="mb-12 w-full md:mb-20">
-      <h1 className="text-5xl font-medium md:text-8xl">AI Background Remover</h1>
+      <h1 className="text-5xl font-medium md:text-8xl">
+        AI Background Remover
+      </h1>
       <div className="mt-2 flex flex-col gap-6">
         <input
           type="file"
           accept="image/*"
-          onChange={e => {
-            if (e.target.files && e.target.files[0]) handleFile(e.target.files[0]);
+          onChange={(e) => {
+            if (e.target.files && e.target.files[0])
+              handleFile(e.target.files[0]);
           }}
           className="file:mr-4 file:rounded file:border-0 file:px-4 file:py-2 file:text-black hover:file:bg-columbiaYellow"
           disabled={loading}
         />
         {(origUrl || resultUrl) && (
-          <div className="mt-8 flex flex-col md:flex-row gap-8 w-full">
+          <div className="mt-8 flex w-full flex-col gap-8 md:flex-row">
             {/* Original image */}
-            <div className="flex-1 flex flex-col items-center">
+            <div className="flex flex-1 flex-col items-center">
               {origUrl && (
                 <div className="w-full">
-                  <div className="mb-2 text-sm text-gray-500 text-center">Original</div>
+                  <div className="mb-2 text-center text-sm text-gray-500">
+                    Original
+                  </div>
                   <img
                     ref={imgRef}
                     src={origUrl}
                     alt="Original"
-                    className="w-full max-h-96 rounded shadow object-contain bg-white"
+                    className="max-h-96 w-full rounded bg-white object-contain shadow"
                   />
                 </div>
               )}
             </div>
             {/* Background removed image */}
-            <div className="flex-1 flex flex-col items-center">
+            <div className="flex flex-1 flex-col items-center">
               {resultUrl && (
                 <div className="w-full">
-                  <div className="mb-2 text-sm text-gray-500 text-center">Background Removed</div>
+                  <div className="mb-2 text-center text-sm text-gray-500">
+                    Background Removed
+                  </div>
                   <img
                     src={resultUrl}
                     alt="Result"
-                    className="w-full max-h-96 rounded shadow object-contain bg-white"
+                    className="max-h-96 w-full rounded bg-white object-contain shadow"
                   />
                   <a
                     href={resultUrl}
@@ -191,12 +221,30 @@ const BackgroundRemover: React.FC = () => {
       {/* Loader overlay */}
       {loading && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
-          <div className="flex flex-col items-center gap-4 p-8 bg-white rounded shadow-lg">
-            <svg className="animate-spin h-10 w-10 text-columbiaYellow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+          <div className="flex flex-col items-center gap-4 rounded bg-white p-8 shadow-lg">
+            <svg
+              className="h-10 w-10 animate-spin text-columbiaYellow"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+              ></path>
             </svg>
-            <span className="text-lg font-semibold text-gray-800">Processing...</span>
+            <span className="text-lg font-semibold text-gray-800">
+              Processing...
+            </span>
           </div>
         </div>
       )}
@@ -204,4 +252,4 @@ const BackgroundRemover: React.FC = () => {
   );
 };
 
-export default BackgroundRemover; 
+export default BackgroundRemover;

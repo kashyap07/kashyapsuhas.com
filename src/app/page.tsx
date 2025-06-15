@@ -1,14 +1,19 @@
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
 import { TouchMarquee } from "@/components/TouchMarquee";
 import { Wrapper } from "@/components/Wrapper";
-import { Metadata } from "next";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://kashyapsuhas.com"),
   title: "Suhas Kashyap",
   description:
-    "Suhas Kashyap's personal website. See blogs, photos, contact details.",
+    "Suhas Kashyap's personal website. See blogs, photos, reviews, tools, contact details.",
+  keywords: ["Suhas", "Kashyap", "Suhas Kashyap", "blog", "photos", "tools"],
+  alternates: {
+    canonical: "https://kashyapsuhas.com/",
+  },
   openGraph: {
     images: ["/suhas_og.jpg"],
   },
@@ -25,9 +30,6 @@ const NavLinks = () => (
     <li>
       <Link href={"/reviews"}>Reviews</Link>
     </li>
-    {/* <li>
-      <Link href={"/resume"}>Resume</Link>
-    </li> */}
     <li>
       <Link href={"/tools"}>Tools</Link>
     </li>
@@ -40,7 +42,7 @@ const NavLinks = () => (
 const TopSP = () => (
   <Wrapper
     maxWidth="FULL_SCREEN_WIDTH"
-    data-description="top-sp-wrapper"
+    data-locator-id="top-sp-wrapper"
     className="relative flex flex-col gap-24 sm:hidden"
   >
     {/* START top sp pre-fold */}
@@ -49,7 +51,7 @@ const TopSP = () => (
       className="group pointer-events-none relative flex h-svh"
     >
       {/* START profile image bg */}
-      <div data-description="top-sp-doubleimage-wrapper" className="relative">
+      <div data-locator-id="top-sp-doubleimage-wrapper" className="relative">
         <div className="absolute aspect-[1/2] w-screen overflow-hidden">
           <Image
             src="/suhas_hike.jpg"
@@ -57,7 +59,7 @@ const TopSP = () => (
             fill={true}
             priority
             className="imageMask_SP z-10 object-cover"
-            data-description="top-sp-doubleimage-profile-base"
+            data-locator-id="top-sp-doubleimage-profile-base"
           />
 
           <Image
@@ -67,7 +69,7 @@ const TopSP = () => (
             fill={true}
             quality={100}
             className="imageMask_SP z-30 object-cover"
-            data-description="top-sp-doubleimage-profile-nobg"
+            data-locator-id="top-sp-doubleimage-profile-nobg"
           />
         </div>
 
@@ -91,7 +93,7 @@ const TopSP = () => (
 
     {/* START navlinks */}
     <Wrapper
-      data-description="top-sp-navlinks"
+      data-locator-id="top-sp-navlinks"
       maxWidth="NARROW"
       className="flex flex-col justify-center pb-32"
     >
@@ -104,7 +106,7 @@ const TopSP = () => (
 const TopPC = () => (
   <Wrapper
     maxWidth="NARROW"
-    data-description="top-pc-wrapper"
+    data-locator-id="top-pc-wrapper"
     className="hidden min-h-screen w-full grid-cols-2 items-center justify-between gap-10 py-20 sm:grid sm:px-4 lg:px-0"
   >
     {/* START top pc left side */}
@@ -153,7 +155,7 @@ export default function Home() {
             "@type": "WebSite",
             url: "https://kashyapsuhas.com",
             description:
-              "Suhas Kashyap's personal website. See blogs, photos, contact details.",
+              "Suhas Kashyap's personal website. See blogs, photos, reviews, tools, contact details.",
             name: "Suhas Kashyap",
             image: "/suhas_og.jpg",
           }),

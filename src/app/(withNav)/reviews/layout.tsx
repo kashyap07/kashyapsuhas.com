@@ -2,16 +2,19 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Reviews | Suhas Kashyap",
-  description: "My reviews of movies, products, restaurants, and more.",
+  description:
+    "Suhas Kashyap's reviews of movies, products, restaurants, and such",
   openGraph: {
     images: ["/suhas_og.jpg"],
   },
 };
 
-export default function ReviewsLayout({
-  children,
-}: {
+interface Props {
   children: React.ReactNode;
-}) {
+}
+
+function ReviewsLayout({ children }: Props) {
   return <>{children}</>;
-} 
+}
+
+export default ReviewsLayout;

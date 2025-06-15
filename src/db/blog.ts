@@ -9,7 +9,7 @@ type Metadata = {
   heroImage: string;
 };
 
-// Yoinked from: https://github.com/leerob/leerob.io/blob/main/app/blog/page.tsx
+// yoinked from: https://github.com/leerob/leerob.io/blob/main/app/blog/page.tsx
 
 function parseFrontmatter(fileContent: string) {
   const frontmatterRegex = /---\s*([\s\S]*?)\s*---/;

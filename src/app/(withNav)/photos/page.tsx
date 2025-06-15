@@ -1,15 +1,17 @@
 "use client";
 
+import { useState } from "react";
+
 import Image from "next/image";
 
-import { Wrapper } from "@/components/Wrapper";
-import { useState } from "react";
-import galleryImages, { GalleryImage } from "./galleryImages";
 import ImageAutoHeight from "@/components/ImageAutoHeight";
+import { Wrapper } from "@/components/Wrapper";
 
-// Maybe in the future: https://vercel.com/blog/building-a-fast-animated-image-gallery-with-next-js
+import galleryImages, { GalleryImage } from "./galleryImages";
 
-export default function Photos() {
+// maybe in the future: https://vercel.com/blog/building-a-fast-animated-image-gallery-with-next-js
+
+function Photos() {
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
 
   const openImage = (src: GalleryImage) => setSelectedImage(src);
@@ -41,7 +43,7 @@ export default function Photos() {
       {selectedImage && (
         <Wrapper
           maxWidth="FULL_WIDTH"
-          data-description="photos-selected-image-wrapper"
+          data-locator-id="photos-selected-image-wrapper"
         >
           <div
             className="fixed left-0 top-0 z-50 flex h-full w-full cursor-pointer flex-col items-center justify-center gap-4 bg-black bg-opacity-50 px-4 py-32 pt-24 backdrop-blur-xl md:gap-8"
@@ -55,8 +57,8 @@ export default function Photos() {
             />
 
             <div
-              className="mx-auto mb-10 text-center"
-              data-description="photos-selected-title-text"
+              className="mx-auto mb-0 text-center"
+              data-locator-id="photos-selected-title-text"
             >
               <span className="text-3xl text-white">{selectedImage.title}</span>
             </div>
@@ -66,3 +68,5 @@ export default function Photos() {
     </>
   );
 }
+
+export default Photos;

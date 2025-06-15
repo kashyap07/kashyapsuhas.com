@@ -9,7 +9,7 @@ export default function Contact() {
         <h2 className="text-3xl">WORK</h2>
         <ul className="flex flex-col gap-4 md:gap-8">
           <li className="flex items-center justify-between text-5xl md:text-8xl">
-            <Link href={"mailto:kashyapsuhas07@gmail.com"}>MAIL</Link>
+            <Link href={"mailto:mantles_arbours_00@icloud.com"}>MAIL</Link>
           </li>
           <li className="flex items-center justify-between text-5xl md:text-8xl">
             <Link href={"https://www.linkedin.com/in/suhas-kashyap/"}>

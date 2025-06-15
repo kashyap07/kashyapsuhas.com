@@ -1,21 +1,26 @@
 "use client";
 
+// TODO: this shouldn't be client side render lmao
+
 import { useState } from "react";
-import { Dialog } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+
 import { Wrapper } from "@/components/Wrapper";
 import { Review } from "@/db/reviews";
+import { Dialog } from "@headlessui/react";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 
-interface ReviewsClientProps {
+interface Props {
   reviews: Review[];
 }
 
-export default function ReviewsClient({ reviews }: ReviewsClientProps) {
+function ReviewsClient({ reviews }: Props) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedReview, setSelectedReview] = useState<Review | null>(null);
 
-  const categories = Array.from(new Set(reviews.map((review) => review.category)));
+  const categories = Array.from(
+    new Set(reviews.map((review) => review.category)),
+  );
 
   const filteredReviews = reviews.filter((review) => {
     if (selectedCategory && review.category !== selectedCategory) return false;
@@ -31,6 +36,7 @@ export default function ReviewsClient({ reviews }: ReviewsClientProps) {
   });
 
   // Map category to color
+  // TODO: make this more elegant
   const getCategoryColor = (category: string) => {
     switch (category) {
       case "Media":
@@ -58,13 +64,13 @@ export default function ReviewsClient({ reviews }: ReviewsClientProps) {
 
   return (
     <Wrapper className="mb-12 w-full md:mb-20">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+      <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between">
         <h1 className="text-5xl font-medium md:text-8xl">Reviews</h1>
         <div className="mt-4 md:mt-0 md:w-64">
           <input
             type="text"
             placeholder="Search reviews..."
-            className="w-full p-2 border rounded"
+            className="w-full rounded border p-2"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -77,10 +83,14 @@ export default function ReviewsClient({ reviews }: ReviewsClientProps) {
           {categories.map((category) => (
             <button
               key={category}
-              onClick={() => setSelectedCategory(selectedCategory === category ? null : category)}
-              className={`px-4 py-2 rounded text-md font-medium transition-colors border border-transparent ${
+              onClick={() =>
+                setSelectedCategory(
+                  selectedCategory === category ? null : category,
+                )
+              }
+              className={`text-md rounded border border-transparent px-4 py-2 font-medium transition-colors ${
                 selectedCategory === category
-                  ? `${getCategoryColor(category)} ring-2 ring-offset-2 ring-blue-300`
+                  ? `${getCategoryColor(category)} ring-2 ring-blue-300 ring-offset-2`
                   : `bg-gray-100 text-gray-700 hover:bg-gray-200`
               }`}
             >
@@ -93,7 +103,7 @@ export default function ReviewsClient({ reviews }: ReviewsClientProps) {
       {/* Reviews Grid Table */}
       <div className="w-full min-w-[850px]">
         {/* Header */}
-        <div className="grid grid-cols-9 bg-gray-50 font-semibold text-gray-500 uppercase text-xs tracking-wider px-2 py-3 border-b">
+        <div className="grid grid-cols-9 border-b bg-gray-50 px-2 py-3 text-xs font-semibold uppercase tracking-wider text-gray-500">
           <div className="col-span-3 px-2">Name</div>
           <div className="col-span-1 px-2">Category</div>
           <div className="col-span-1 px-2">Recommend</div>
@@ -104,20 +114,34 @@ export default function ReviewsClient({ reviews }: ReviewsClientProps) {
         {filteredReviews.map((review) => (
           <div
             key={review.name}
-            className="grid grid-cols-9 items-center border-b hover:bg-gray-50 cursor-pointer px-2 py-4"
+            className="grid cursor-pointer grid-cols-9 items-center border-b px-2 py-4 hover:bg-gray-50"
             onClick={() => setSelectedReview(review)}
           >
-            <div className="col-span-3 font-medium text-lg text-gray-900 px-2" title={review.name}>{review.name}</div>
+            <div
+              className="col-span-3 px-2 text-lg font-medium text-gray-900"
+              title={review.name}
+            >
+              {review.name}
+            </div>
             <div className="col-span-1 px-2">
-              <span className={`px-2 py-2 inline-flex text-xs leading-5 font-semibold rounded ${getCategoryColor(review.category)}`}>
+              <span
+                className={`inline-flex rounded px-2 py-2 text-xs font-semibold leading-5 ${getCategoryColor(review.category)}`}
+              >
                 {review.category}
               </span>
             </div>
-            <div className="col-span-1 text-md px-2 {review.wouldRecommend ? 'text-green-600' : 'text-red-600'}">
-              {review.wouldRecommend ? '✅' : '❎'}
+            <div className="text-md {review.wouldRecommend ? 'text-green-600' : 'text-red-600'} col-span-1 px-2">
+              {review.wouldRecommend ? "✅" : "❎"}
             </div>
-            <div className="col-span-1 text-md text-gray-900 px-2">{review.rating}</div>
-            <div className="px-2 col-span-3 text-md text-gray-900 truncate" title={review.summary}>{review.summary}</div>
+            <div className="text-md col-span-1 px-2 text-gray-900">
+              {review.rating}
+            </div>
+            <div
+              className="text-md col-span-3 truncate px-2 text-gray-900"
+              title={review.summary}
+            >
+              {review.summary}
+            </div>
           </div>
         ))}
       </div>
@@ -134,22 +158,28 @@ export default function ReviewsClient({ reviews }: ReviewsClientProps) {
           <Dialog.Panel className="mx-auto max-w-3xl rounded bg-white p-6">
             {selectedReview && (
               <div className="space-y-4">
-                <div className="flex justify-between items-start">
+                <div className="flex items-start justify-between">
                   <div>
                     <Dialog.Title className="text-2xl font-bold text-gray-900">
                       {selectedReview.name}
                     </Dialog.Title>
                     <div className="mt-1 flex items-center gap-2">
-                      <span className="px-2 py-1 text-md font-medium rounded bg-blue-100 text-blue-800">
+                      <span className="text-md rounded bg-blue-100 px-2 py-1 font-medium text-blue-800">
                         {selectedReview.category}
                       </span>
                       {selectedReview.reviewDate && (
                         <span className="text-md text-gray-500">
-                          {new Date(selectedReview.reviewDate).toLocaleDateString()}
+                          {new Date(
+                            selectedReview.reviewDate,
+                          ).toLocaleDateString()}
                         </span>
                       )}
-                      <span className={`text-md ${selectedReview.wouldRecommend ? 'text-green-600' : 'text-red-600'}`}>
-                        {selectedReview.wouldRecommend ? '✓ Would Recommend' : '✗ Would Not Recommend'}
+                      <span
+                        className={`text-md ${selectedReview.wouldRecommend ? "text-green-600" : "text-red-600"}`}
+                      >
+                        {selectedReview.wouldRecommend
+                          ? "✓ Would Recommend"
+                          : "✗ Would Not Recommend"}
                       </span>
                     </div>
                   </div>
@@ -166,13 +196,13 @@ export default function ReviewsClient({ reviews }: ReviewsClientProps) {
                   <p className="mt-2 text-gray-600">{selectedReview.summary}</p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                   <div>
                     <h3 className="text-lg font-medium text-gray-900">Pros</h3>
                     <ul className="mt-2 space-y-2">
                       {selectedReview.pros.map((pro, index) => (
                         <li key={index} className="flex items-start">
-                          <span className="text-green-500 mr-2">•</span>
+                          <span className="mr-2 text-green-500">•</span>
                           <span className="text-gray-600">{pro}</span>
                         </li>
                       ))}
@@ -183,7 +213,7 @@ export default function ReviewsClient({ reviews }: ReviewsClientProps) {
                     <ul className="mt-2 space-y-2">
                       {selectedReview.cons.map((con, index) => (
                         <li key={index} className="flex items-start">
-                          <span className="text-red-500 mr-2">•</span>
+                          <span className="mr-2 text-red-500">•</span>
                           <span className="text-gray-600">{con}</span>
                         </li>
                       ))}
@@ -210,4 +240,6 @@ export default function ReviewsClient({ reviews }: ReviewsClientProps) {
       </Dialog>
     </Wrapper>
   );
-} 
+}
+
+export default ReviewsClient;

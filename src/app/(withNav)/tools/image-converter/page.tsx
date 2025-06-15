@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Wrapper } from "@/components/Wrapper";
+import { useEffect, useState } from "react";
+
 import ImageAutoHeight from "@/components/ImageAutoHeight";
+import { Wrapper } from "@/components/Wrapper";
 
 const outputFormats = [
   { label: "JPEG", value: "image/jpeg", ext: "jpg" },
@@ -33,7 +34,7 @@ export default function ImageConverter() {
   };
 
   const handleFormatChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const format = outputFormats.find(f => f.value === event.target.value);
+    const format = outputFormats.find((f) => f.value === event.target.value);
     if (format) setOutputFormat(format);
   };
 
@@ -41,7 +42,10 @@ export default function ImageConverter() {
     if (!image) return;
     setError(null);
     try {
-      if (image.type === "image/heic" || image.name.toLowerCase().endsWith(".heic")) {
+      if (
+        image.type === "image/heic" ||
+        image.name.toLowerCase().endsWith(".heic")
+      ) {
         // Use window.heic2any from CDN
         // @ts-ignore
         const heic2any = window.heic2any;
@@ -58,7 +62,9 @@ export default function ImageConverter() {
           const blob = Array.isArray(result) ? result[0] : result;
           setConvertedUrl(URL.createObjectURL(blob));
         } catch (e: any) {
-          setError("This HEIC file could not be converted. Try a different photo, preferably a standard iPhone photo (not a Live Photo or edited image)." );
+          setError(
+            "This HEIC file could not be converted. Try a different photo, preferably a standard iPhone photo (not a Live Photo or edited image).",
+          );
         }
       } else {
         const reader = new FileReader();
@@ -79,7 +85,7 @@ export default function ImageConverter() {
                 }
               },
               outputFormat.value,
-              0.92
+              0.92,
             );
           };
           img.onerror = () => setError("Failed to load image for conversion.");
@@ -107,7 +113,7 @@ export default function ImageConverter() {
           onChange={handleImageUpload}
           className="file:mr-4 file:rounded file:border-0 file:px-4 file:py-2 file:text-black hover:file:bg-columbiaYellow"
         />
-        <div className="flex flex-col md:flex-row gap-4 items-center">
+        <div className="flex flex-col items-center gap-4 md:flex-row">
           <label className="text-lg font-medium text-gray-500">
             Output Format:
             <select
@@ -142,11 +148,11 @@ export default function ImageConverter() {
                 />
               </div>
             </div>
-            <div className="w-full md:w-2/5 flex flex-col items-center justify-center">
+            <div className="flex w-full flex-col items-center justify-center md:w-2/5">
               <a
                 href={convertedUrl}
                 download={`${fileName || "converted-image"}.${outputFormat.ext}`}
-                className="w-full mt-4 flex items-center justify-center rounded bg-columbiaYellow py-2 font-medium text-black transition-all duration-100 ease-in-out hover:text-black hover:no-underline hover:shadow-md"
+                className="mt-4 flex w-full items-center justify-center rounded bg-columbiaYellow py-2 font-medium text-black transition-all duration-100 ease-in-out hover:text-black hover:no-underline hover:shadow-md"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -170,4 +176,4 @@ export default function ImageConverter() {
       </div>
     </Wrapper>
   );
-} 
+}

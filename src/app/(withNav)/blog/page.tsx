@@ -1,4 +1,5 @@
 import Link from "next/link";
+
 import { Wrapper } from "@/components/Wrapper";
 import { getBlogPosts } from "@/db/blog";
 
@@ -11,7 +12,7 @@ export const metadata = {
   keywords: ["Suhas Kashyap", "blog"],
 };
 
-export default function Blog() {
+function Blog() {
   const blogPosts = getBlogPosts();
 
   const formatter = new Intl.DateTimeFormat("en-IN", {
@@ -21,7 +22,7 @@ export default function Blog() {
   });
 
   return (
-    <Wrapper className="md:mb-20 w-full mb-12">
+    <Wrapper className="mb-12 w-full md:mb-20">
       <ul className="flex flex-col">
         {blogPosts.map((post) => (
           <Link key={post.slug} className="my-4" href={`/blog/${post.slug}`}>
@@ -40,3 +41,5 @@ export default function Blog() {
     </Wrapper>
   );
 }
+
+export default Blog;

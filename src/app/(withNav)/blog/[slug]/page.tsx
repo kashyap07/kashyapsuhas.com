@@ -1,16 +1,16 @@
+import { Suspense } from "react";
+
 import type { Metadata } from "next";
-import { Suspense, cache } from "react";
 import { notFound } from "next/navigation";
+
 import CustomMDX from "@/components/Mdx";
-import { getBlogPosts } from "@/db/blog";
 import { Wrapper } from "@/components/Wrapper";
+import { getBlogPosts } from "@/db/blog";
 import formatDate from "@/utils/formatDate";
 
-export async function generateMetadata(
-  props: {
-    params: Promise<any>;
-  }
-): Promise<Metadata | undefined> {
+export async function generateMetadata(props: {
+  params: Promise<any>;
+}): Promise<Metadata | undefined> {
   const params = await props.params;
   const post = getBlogPosts().find((post) => post.slug === params.slug);
 
@@ -41,11 +41,16 @@ export async function generateMetadata(
   };
 }
 
-export default async function Blog(props: { params: Promise<{ slug: string }> }) {
-  const params = await props.params;
-  let post = getBlogPosts().find((post) => post.slug === params.slug);
+interface Props {
+  params: Promise<{ slug: string }>;
+}
 
+async function Blog(props: Props) {
+  const params = await props.params;
+  const post = getBlogPosts().find((post) => post.slug === params.slug);
   if (!post) notFound();
+
+  const { publishedDateTime, title, description, heroImage } = post.metadata;
 
   return (
     <Wrapper className="mb-12 w-full md:mb-20">
@@ -58,11 +63,11 @@ export default async function Blog(props: { params: Promise<{ slug: string }> })
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "BlogPosting",
-              headline: post.metadata.title,
-              datePublished: post.metadata.publishedDateTime,
-              dateModified: post.metadata.publishedDateTime,
-              description: post.metadata.description,
-              image: post.metadata.heroImage,
+              headline: title,
+              datePublished: publishedDateTime,
+              dateModified: publishedDateTime,
+              description: description,
+              image: heroImage,
               url: `https://kashyapsuhas.com/blog/${post.slug}`,
               author: {
                 "@type": "Person",
@@ -94,3 +99,5 @@ export default async function Blog(props: { params: Promise<{ slug: string }> })
     </Wrapper>
   );
 }
+
+export default Blog;

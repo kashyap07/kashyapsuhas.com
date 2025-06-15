@@ -13,11 +13,11 @@ type ImageAutoHeightProps = ImageProps & {
  * next/image component but with pre built parent wrapper that
  * makes it take max width and auto set height
  *
- * This is normally not possible, as you need to know the image size
+ * this is normally not possible, as you need to know the image size
  * before you can render it (or set layout fill and ruin image proportions)
  * or set object fit to cover and get empty space above and below the image
  *
- * This component is a workaround for that.
+ * this component is a workaround for that.
  *
  * @see https://github.com/vercel/next.js/discussions/18739#discussioncomment-344932 reference
  */

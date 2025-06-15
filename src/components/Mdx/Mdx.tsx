@@ -1,12 +1,19 @@
+import type {
+  AnchorHTMLAttributes,
+  HTMLAttributes,
+  JSX,
+  ReactNode,
+} from "react";
+import React from "react";
+
 import type { MDXComponents } from "mdx/types";
 import { MDXRemote, MDXRemoteProps } from "next-mdx-remote/rsc";
 import Link from "next/link";
-import type { AnchorHTMLAttributes, HTMLAttributes, ReactNode, JSX } from "react";
-import React from "react";
 import { highlight } from "sugar-high";
-import ImageAutoHeight from "../ImageAutoHeight";
 
-function CustomLink(props: AnchorHTMLAttributes<HTMLAnchorElement>) {
+import ImageAutoHeight from "@/components/ImageAutoHeight";
+
+const CustomLink = (props: AnchorHTMLAttributes<HTMLAnchorElement>) => {
   const { href, children, ...rest } = props;
 
   if (!href) {
@@ -34,19 +41,20 @@ function CustomLink(props: AnchorHTMLAttributes<HTMLAnchorElement>) {
       {children}
     </a>
   );
-}
+};
 
 interface CodeProps extends HTMLAttributes<HTMLElement> {
   children?: ReactNode;
 }
-function Code({ children, ...props }: CodeProps) {
+
+const Code = ({ children, ...props }: CodeProps) => {
   const codeString = typeof children === "string" ? children : "";
   const codeHTML = highlight(codeString);
 
   return <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />;
-}
+};
 
-function slugify(str: string): string {
+const slugify = (str: string): string => {
   return str
     .toString()
     .toLowerCase()
@@ -55,9 +63,13 @@ function slugify(str: string): string {
     .replace(/&/g, "-and-") // replace & with 'and'
     .replace(/[^\w\-]+/g, "") // remove all non-word characters except for -
     .replace(/\-\-+/g, "-"); // replace multiple - with single -
-}
-function createHeading(level: number) {
-  const HeadingComponent = ({ children, ...props }: HTMLAttributes<HTMLHeadingElement>) => {
+};
+
+const createHeading = (level: number) => {
+  const HeadingComponent = ({
+    children,
+    ...props
+  }: HTMLAttributes<HTMLHeadingElement>) => {
     const text = typeof children === "string" ? children : "";
     const slug = slugify(text);
 
@@ -72,7 +84,7 @@ function createHeading(level: number) {
   };
   HeadingComponent.displayName = `Heading${level}`;
   return HeadingComponent;
-}
+};
 
 const defaultComponentMapping: MDXComponents = {
   h1: createHeading(1),
@@ -86,9 +98,7 @@ const defaultComponentMapping: MDXComponents = {
   code: Code,
 };
 
-export default function CustomMDX(
-  props: JSX.IntrinsicAttributes & MDXRemoteProps,
-) {
+function CustomMDX(props: JSX.IntrinsicAttributes & MDXRemoteProps) {
   return (
     <MDXRemote
       {...props}
@@ -96,3 +106,5 @@ export default function CustomMDX(
     />
   );
 }
+
+export default CustomMDX;

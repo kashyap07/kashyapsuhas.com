@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+
 import { getBlogPosts } from "@/db/blog";
 
 export default function sitemap(): MetadataRoute.Sitemap {
