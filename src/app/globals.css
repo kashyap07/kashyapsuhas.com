@@ -91,6 +91,8 @@
 }
 
 .prose {
+  max-width: none;
+
   img {
     @apply macos-shadow rounded-sm;
   }

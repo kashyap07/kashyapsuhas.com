@@ -46,7 +46,7 @@ function Photos() {
           data-locator-id="photos-selected-image-wrapper"
         >
           <div
-            className="fixed left-0 top-0 z-50 flex h-full w-full cursor-pointer flex-col items-center justify-center gap-4 bg-black bg-opacity-50 px-4 py-32 pt-24 backdrop-blur-xl md:gap-8"
+            className="fixed left-0 top-0 z-50 flex h-full w-full cursor-pointer flex-col items-center justify-center gap-4 bg-black bg-opacity-50 px-4 py-24 backdrop-blur-xl md:gap-8"
             onClick={closeImage}
           >
             <ImageAutoHeight

@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 };
 
 const NavLinks = () => (
-  <ul className="flex flex-col gap-2 text-4xl">
+  <ul className="flex flex-col gap-3 text-4xl">
     <li>
       <Link href={"/blog"}>Blog</Link>
     </li>
@@ -58,7 +58,7 @@ const TopSP = () => (
             alt="suhas kashyap hiking"
             fill={true}
             priority
-            className="imageMask_SP z-10 object-cover"
+            className="imageMask_SP pointer-events-none z-10 object-cover"
             data-locator-id="top-sp-doubleimage-profile-base"
           />
 
@@ -68,7 +68,7 @@ const TopSP = () => (
             aria-hidden="true"
             fill={true}
             quality={100}
-            className="imageMask_SP z-30 object-cover"
+            className="imageMask_SP pointer-events-none z-30 object-cover"
             data-locator-id="top-sp-doubleimage-profile-nobg"
           />
         </div>
@@ -135,7 +135,7 @@ const TopPC = () => (
           width={500}
           priority
           quality={100}
-          className="imageMask_PC relative top-0 z-10 origin-bottom-left transform object-cover drop-shadow-xl"
+          className="imageMask_PC pointer-events-none relative top-0 z-10 origin-bottom-left transform object-cover drop-shadow-xl"
         />
       </div>
     </div>
