@@ -1,7 +1,7 @@
-import { Metadata } from 'next';
-import Link from 'next/link';
+import { Metadata } from "next";
+import Link from "next/link";
 
-import { Wrapper } from '@/components/ui';
+import { Wrapper } from "@/components/ui";
 
 export const metadata: Metadata = {
   title: "Tools | Suhas Kashyap",
@@ -23,7 +23,7 @@ export default function Tools() {
             </Link>
           </span>
           <span className="text-2xl text-gray-500">
-            Reduce image size locally without uploading to a server
+            reduce image size locally— without uploading to a server
           </span>
         </li>
         <li className="mt-8 flex flex-col md:justify-between">
@@ -33,8 +33,21 @@ export default function Tools() {
             </Link>
           </span>
           <span className="text-2xl text-gray-500">
-            Convert images between formats (heic, jpeg, png, webp) locally in
-            your browser
+            convert formats locally— without uploading to a server
+          </span>
+        </li>
+        <li className="mt-8 flex flex-col md:justify-between">
+          <span className="text-5xl font-medium md:text-8xl">
+            <Link className="flex flex-col" href={"tools/background-remover"}>
+              Background Remover
+            </Link>
+          </span>
+          <span className="text-2xl text-gray-500">
+            remove image background instantly and locally— without uploading to
+            a server
+            <br />
+            experimental, uses U^2-Net— shipped as on onnx model, runs through
+            wasm
           </span>
         </li>
         <li className="mt-8 flex flex-col md:justify-between">
@@ -43,21 +56,7 @@ export default function Tools() {
               Text Diff Tool
             </Link>
           </span>
-          <span className="text-2xl text-gray-500">
-            Compare two blocks of text and see the differences highlighted
-            instantly
-          </span>
-        </li>
-        <li className="mt-8 flex flex-col md:justify-between">
-          <span className="text-5xl font-medium md:text-8xl">
-            <Link className="flex flex-col" href={"tools/background-remover"}>
-              EXPERIMENTAL WIP Background Remover
-            </Link>
-          </span>
-          <span className="text-2xl text-gray-500">
-            Remove image backgrounds instantly in your browser using AI
-            (U^2-Netp, fully client-side)
-          </span>
+          <span className="text-2xl text-gray-500">instant text diff tool</span>
         </li>
       </ul>
     </Wrapper>
