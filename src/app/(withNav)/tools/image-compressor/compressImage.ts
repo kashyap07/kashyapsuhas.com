@@ -1,4 +1,4 @@
-import imageCompression from "browser-image-compression";
+import imageCompression from 'browser-image-compression';
 
 /**
  * Compresses an image using browser-image-compression.

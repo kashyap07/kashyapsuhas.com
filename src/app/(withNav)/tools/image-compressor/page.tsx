@@ -1,10 +1,9 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from 'react';
 
-import { compressImage } from "@/app/(withNav)/tools/image-compressor/compressImage";
-import ImageAutoHeight from "@/components/ImageAutoHeight";
-import { Wrapper } from "@/components/Wrapper";
+import { compressImage } from '@/app/(withNav)/tools/image-compressor/compressImage';
+import { ImageAutoHeight, Wrapper } from '@/components/ui';
 
 export default function ImageCompressor() {
   const [image, setImage] = useState<File | null>(null);

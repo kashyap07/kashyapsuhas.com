@@ -1,9 +1,8 @@
 "use client";
-import React, { useRef, useState } from "react";
+import * as ort from 'onnxruntime-web';
+import React, { useRef, useState } from 'react';
 
-import * as ort from "onnxruntime-web";
-
-import { Wrapper } from "@/components/Wrapper";
+import { Wrapper } from '@/components/ui';
 
 // Set WASM path for onnxruntime-web
 ort.env.wasm.wasmPaths = "/";

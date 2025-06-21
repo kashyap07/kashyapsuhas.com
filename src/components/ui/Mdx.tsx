@@ -4,15 +4,14 @@ import type {
   JSX,
   ReactNode,
 } from "react";
-import React from "react";
+import { MDXRemote, MDXRemoteProps } from 'next-mdx-remote/rsc';
+import Link from 'next/link';
+import React from 'react';
+import { highlight } from 'sugar-high';
+
+import { ImageAutoHeight } from '@/components/ui';
 
 import type { MDXComponents } from "mdx/types";
-import { MDXRemote, MDXRemoteProps } from "next-mdx-remote/rsc";
-import Link from "next/link";
-import { highlight } from "sugar-high";
-
-import ImageAutoHeight from "@/components/ImageAutoHeight";
-
 const CustomLink = (props: AnchorHTMLAttributes<HTMLAnchorElement>) => {
   const { href, children, ...rest } = props;
 

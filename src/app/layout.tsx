@@ -1,7 +1,7 @@
-import "./globals.css";
+import './globals.css';
 
-import { Eczar } from "next/font/google";
-import Script from "next/script";
+import { Eczar } from 'next/font/google';
+import Script from 'next/script';
 
 const eczar = Eczar({ subsets: ["latin"] });
 

@@ -1,13 +1,11 @@
-import { Suspense } from "react";
+import { notFound } from 'next/navigation';
+import { Suspense } from 'react';
+
+import { CustomMDX, Wrapper } from '@/components/ui';
+import { getBlogPosts } from '@/db/blog';
+import formatDate from '@/utils/formatDate';
 
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-
-import CustomMDX from "@/components/Mdx";
-import { Wrapper } from "@/components/Wrapper";
-import { getBlogPosts } from "@/db/blog";
-import formatDate from "@/utils/formatDate";
-
 export async function generateMetadata(props: {
   params: Promise<any>;
 }): Promise<Metadata | undefined> {

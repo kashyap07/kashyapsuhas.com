@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import ImageAutoHeight from "@/components/ImageAutoHeight";
-import { Wrapper } from "@/components/Wrapper";
+import { ImageAutoHeight, Wrapper } from '@/components/ui';
 
 const outputFormats = [
   { label: "JPEG", value: "image/jpeg", ext: "jpg" },

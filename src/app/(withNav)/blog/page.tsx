@@ -1,7 +1,7 @@
-import Link from "next/link";
+import Link from 'next/link';
 
-import { Wrapper } from "@/components/Wrapper";
-import { getBlogPosts } from "@/db/blog";
+import { Wrapper } from '@/components/ui';
+import { getBlogPosts } from '@/db/blog';
 
 export const metadata = {
   title: "Kashyap's Blog | Suhas Kashyap",

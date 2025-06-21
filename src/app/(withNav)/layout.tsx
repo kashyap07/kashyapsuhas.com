@@ -1,8 +1,7 @@
-import { ReactNode } from "react";
+import Link from 'next/link';
+import { ReactNode } from 'react';
 
-import Link from "next/link";
-
-import { Wrapper } from "@/components/Wrapper";
+import { Wrapper } from '@/components/ui';
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (

@@ -1,6 +1,6 @@
-import Link from "next/link";
+import Link from 'next/link';
 
-import { Wrapper } from "@/components/Wrapper";
+import { Wrapper } from '@/components/ui';
 
 export default function Contact() {
   return (

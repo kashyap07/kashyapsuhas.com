@@ -1,9 +1,8 @@
-import { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
+import { Metadata } from 'next';
+import Image from 'next/image';
+import Link from 'next/link';
 
-import { TouchMarquee } from "@/components/TouchMarquee";
-import { Wrapper } from "@/components/Wrapper";
+import { TouchMarquee, Wrapper } from '@/components/ui';
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://kashyapsuhas.com"),
