@@ -7,7 +7,6 @@ import { useState } from "react";
 import { Wrapper } from "@/components/Wrapper";
 import { Review } from "@/db/reviews";
 import { Dialog } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
 
 interface Props {
   reviews: Review[];
@@ -187,7 +186,7 @@ function ReviewsClient({ reviews }: Props) {
                     onClick={() => setSelectedReview(null)}
                     className="text-gray-400 hover:text-gray-500"
                   >
-                    <XMarkIcon className="h-6 w-6" />
+                    x{/* close button */}
                   </button>
                 </div>
 
