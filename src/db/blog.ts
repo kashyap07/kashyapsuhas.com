@@ -1,5 +1,5 @@
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
 
 type Metadata = {
   categories: string;
@@ -49,7 +49,7 @@ function getMDXData(dir: string) {
   return mdxFiles
     .map((file) => {
       const { metadata, content } = readMDXFile(path.join(dir, file));
-      const slug = path.basename(file, path.extname(file));
+      const slug = path.basename(file, path.extname(file)).toLowerCase();
       const tweetIds = extractTweetIds(content);
       return {
         metadata,

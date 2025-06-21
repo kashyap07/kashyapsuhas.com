@@ -1,8 +1,8 @@
-import { getReviews } from '@/db/reviews';
+import { getReviews } from "@/db/reviews";
 
-import ReviewsClient from './ReviewsClient';
+import Reviews from "./Reviews";
 
 export default function ReviewsPage() {
   const reviews = getReviews();
-  return <ReviewsClient reviews={reviews} />;
+  return <Reviews reviews={reviews} />;
 }

@@ -1,7 +1,5 @@
 "use client";
 
-// TODO: this shouldn't be client side render lmao
-
 import { useState } from "react";
 
 import { CheckMini, XMarkMini } from "@/components/icons";
@@ -9,11 +7,30 @@ import { Dialog, Wrapper } from "@/components/ui";
 import { Review } from "@/db/reviews";
 import cn from "@/utils/cn";
 
+const CATEGORY_COLOR_MAP = {
+  Media: "blue",
+  Technology: "cyan",
+  Vehicles: "yellow",
+  Games: "indigo",
+  Restaurants: "green",
+  Services: "purple",
+  Travel: "orange",
+  Photography: "pink",
+  Others: "gray",
+};
+
+type Category = keyof typeof CATEGORY_COLOR_MAP;
+
+function getCategoryColor(category: string): string {
+  const color = CATEGORY_COLOR_MAP[category as Category] || "gray";
+  return `bg-${color}-100 text-${color}-800`;
+}
+
 interface Props {
   reviews: Review[];
 }
 
-function ReviewsClient({ reviews }: Props) {
+function ReviewsC({ reviews }: Props) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
@@ -34,33 +51,6 @@ function ReviewsClient({ reviews }: Props) {
     return true;
   });
 
-  // map category to color
-  // TODO: make this more elegant
-  const getCategoryColor = (category: string) => {
-    switch (category) {
-      case "Media":
-        return "bg-purple-100 text-purple-800";
-      case "Technology":
-        return "bg-blue-100 text-blue-800";
-      case "Vehicles":
-        return "bg-yellow-100 text-yellow-800";
-      case "Games":
-        return "bg-pink-100 text-pink-800";
-      case "Restaurants":
-        return "bg-green-100 text-green-800";
-      case "Services":
-        return "bg-orange-100 text-orange-800";
-      case "Travel":
-        return "bg-cyan-100 text-cyan-800";
-      case "Photography":
-        return "bg-indigo-100 text-indigo-800";
-      case "Others":
-        return "bg-gray-200 text-gray-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
-
   return (
     <Wrapper className="mb-12 w-full md:mb-20">
       <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between">
@@ -69,7 +59,7 @@ function ReviewsClient({ reviews }: Props) {
           <input
             type="text"
             placeholder={"search reviews"}
-            className="w-full rounded border p-2"
+            className="w-full rounded border p-2 focus:outline-columbiaYellow"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -90,7 +80,7 @@ function ReviewsClient({ reviews }: Props) {
               className={cn(
                 "text-md rounded border border-transparent px-4 py-2 font-medium transition-colors",
                 selectedCategory === category
-                  ? `${getCategoryColor(category)} ring-2 ring-blue-300 ring-offset-2`
+                  ? `${getCategoryColor(category)} ring-2 ring-columbiaYellow ring-offset-2`
                   : `bg-gray-100 text-gray-700 hover:bg-gray-200`,
               )}
             >
@@ -118,7 +108,6 @@ function ReviewsClient({ reviews }: Props) {
               <div className="grid cursor-pointer grid-cols-4 items-center border-b px-2 py-4 hover:bg-gray-50 md:grid-cols-9">
                 <div
                   role="button"
-                  tabIndex={0}
                   className="col-span-3 px-2 text-lg font-medium text-gray-900"
                   title={review.name}
                 >
@@ -193,7 +182,7 @@ function ReviewsClient({ reviews }: Props) {
                   <ul className="mt-2 space-y-2">
                     {review.pros.map((pro, index) => (
                       <li key={index} className="flex items-start">
-                        <span className="mr-2">•</span>
+                        <span className="mr-2">-</span>
                         <span className="text-gray-600">{pro}</span>
                       </li>
                     ))}
@@ -204,7 +193,7 @@ function ReviewsClient({ reviews }: Props) {
                   <ul className="mt-2 space-y-2">
                     {review.cons.map((con, index) => (
                       <li key={index} className="flex items-start">
-                        <span className="mr-2">•</span>
+                        <span className="mr-2">-</span>
                         <span className="text-gray-600">{con}</span>
                       </li>
                     ))}
@@ -231,4 +220,4 @@ function ReviewsClient({ reviews }: Props) {
   );
 }
 
-export default ReviewsClient;
+export default ReviewsC;
