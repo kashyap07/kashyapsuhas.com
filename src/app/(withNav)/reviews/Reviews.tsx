@@ -41,28 +41,23 @@ function Reviews({ reviews }: Props) {
   // }
 
   const getCategoryColor = (category: string) => {
-    switch (category) {
-      case "Media":
-        return "bg-blue-100 text-blue-800";
-      case "Technology":
-        return "bg-cyan-100 text-cyan-800";
-      case "Vehicles":
-        return "bg-yellow-100 text-yellow-800";
-      case "Games":
-        return "bg-indigo-100 text-indigo-800";
-      case "Restaurants":
-        return "bg-green-100 text-green-800";
-      case "Services":
-        return "bg-purple-100 text-purple-800";
-      case "Travel":
-        return "bg-orange-100 text-orange-800";
-      case "Photography":
-        return "bg-pink-100 text-pink-800";
-      case "Others":
-        return "bg-gray-200 text-gray-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
+    const CATEGORY_COLOR_MAP = {
+      Media: "bg-blue-100 text-blue-800",
+      Technology: "bg-cyan-100 text-cyan-800",
+      Vehicles: "bg-yellow-100 text-yellow-800",
+      Games: "bg-indigo-100 text-indigo-800",
+      Restaurants: "bg-green-100 text-green-800",
+      Services: "bg-purple-100 text-purple-800",
+      Travel: "bg-orange-100 text-orange-800",
+      Photography: "bg-pink-100 text-pink-800",
+      Others: "bg-gray-200 text-gray-800",
+      default: "bg-gray-100 text-gray-800",
+    };
+
+    return (
+      CATEGORY_COLOR_MAP[category as keyof typeof CATEGORY_COLOR_MAP] ||
+      CATEGORY_COLOR_MAP.default
+    );
   };
 
   const filteredReviews = reviews.filter((review) => {
@@ -121,10 +116,10 @@ function Reviews({ reviews }: Props) {
       <div className="w-full lg:min-w-[850px]">
         {/* header */}
         <div className="grid grid-cols-4 border-b bg-gray-50 px-2 py-3 text-xs font-semibold uppercase tracking-wider text-gray-500 md:grid-cols-9">
-          <div className="col-span-3 px-2">Name</div>
-          <div className="col-span-1 hidden md:block px-2">Category</div>
-          <div className="col-span-1 hidden px-2 sm:block">Recommend</div>
+          <div className="col-span-2 px-2">Name</div>
           <div className="col-span-1 px-2">Rating</div>
+          <div className="col-span-1 hidden px-2 sm:block">Recommend</div>
+          <div className="col-span-1 px-2">Category</div>
           <div className="col-span-3 hidden px-2 md:block">Summary</div>
         </div>
 
@@ -135,13 +130,21 @@ function Reviews({ reviews }: Props) {
               <div className="grid cursor-pointer grid-cols-4 items-center border-b px-2 py-4 hover:bg-gray-50 md:grid-cols-9">
                 <div
                   role="button"
-                  className="col-span-3 px-2 text-lg font-medium text-gray-900"
+                  className="col-span-2 px-2 text-lg font-medium text-gray-900"
                   title={review.name}
                 >
                   {review.name}
                 </div>
 
-                <div className="hidden md:block col-span-1 px-2">
+                <div className="text-md col-span-1 px-2 text-gray-900">
+                  {review.rating}
+                </div>
+
+                <div className="text-md {review.wouldRecommend ? 'text-green-600' : 'text-red-600'} col-span-1 hidden px-2 md:block">
+                  {review.wouldRecommend ? <CheckMini /> : <XMarkMini />}
+                </div>
+
+                <div className="col-span-1 px-2">
                   <span
                     className={cn(
                       "inline-flex rounded px-2 py-2 text-xs font-semibold leading-5",
@@ -150,14 +153,6 @@ function Reviews({ reviews }: Props) {
                   >
                     {review.category}
                   </span>
-                </div>
-
-                <div className="hidden md:block text-md {review.wouldRecommend ? 'text-green-600' : 'text-red-600'} col-span-1 px-2">
-                  {review.wouldRecommend ? <CheckMini /> : <XMarkMini />}
-                </div>
-
-                <div className="text-md col-span-1 px-2 text-gray-900">
-                  {review.rating}
                 </div>
 
                 <div
