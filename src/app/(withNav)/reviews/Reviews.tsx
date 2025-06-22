@@ -7,36 +7,63 @@ import { Dialog, Wrapper } from "@/components/ui";
 import { Review } from "@/db/reviews";
 import cn from "@/utils/cn";
 
-const CATEGORY_COLOR_MAP = {
-  Media: "blue",
-  Technology: "cyan",
-  Vehicles: "yellow",
-  Games: "indigo",
-  Restaurants: "green",
-  Services: "purple",
-  Travel: "orange",
-  Photography: "pink",
-  Others: "gray",
-};
-
-type Category = keyof typeof CATEGORY_COLOR_MAP;
-
-function getCategoryColor(category: string): string {
-  const color = CATEGORY_COLOR_MAP[category as Category] || "gray";
-  return `bg-${color}-100 text-${color}-800`;
-}
-
 interface Props {
   reviews: Review[];
 }
 
-function ReviewsC({ reviews }: Props) {
+function Reviews({ reviews }: Props) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const categories = Array.from(
     new Set(reviews.map((review) => review.category)),
   );
+
+  // FIXME
+  // const CATEGORY_COLOR_MAP = {
+  //   Media: "blue",
+  //   Technology: "cyan",
+  //   Vehicles: "yellow",
+  //   Games: "indigo",
+  //   Restaurants: "green",
+  //   Services: "purple",
+  //   Travel: "orange",
+  //   Photography: "pink",
+  //   Others: "gray",
+  // };
+
+  // type Category = keyof typeof CATEGORY_COLOR_MAP;
+
+  // function getCategoryColor(category: string): string {
+  //   const color = CATEGORY_COLOR_MAP[category as Category] || "gray";
+  //   const twClass = `bg-${color}-100 text-${color}-800`;
+  //   return twClass;
+  // }
+
+  const getCategoryColor = (category: string) => {
+    switch (category) {
+      case "Media":
+        return "bg-blue-100 text-blue-800";
+      case "Technology":
+        return "bg-cyan-100 text-cyan-800";
+      case "Vehicles":
+        return "bg-yellow-100 text-yellow-800";
+      case "Games":
+        return "bg-indigo-100 text-indigo-800";
+      case "Restaurants":
+        return "bg-green-100 text-green-800";
+      case "Services":
+        return "bg-purple-100 text-purple-800";
+      case "Travel":
+        return "bg-orange-100 text-orange-800";
+      case "Photography":
+        return "bg-pink-100 text-pink-800";
+      case "Others":
+        return "bg-gray-200 text-gray-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
 
   const filteredReviews = reviews.filter((review) => {
     if (selectedCategory && review.category !== selectedCategory) return false;
@@ -220,4 +247,4 @@ function ReviewsC({ reviews }: Props) {
   );
 }
 
-export default ReviewsC;
+export default Reviews;
