@@ -1,6 +1,5 @@
 import { unstable_noStore as noStore } from "next/cache";
 
-// TODO: add some UTs
 export default function formatDate(date: string) {
   noStore();
   if (!date.includes("T")) {
@@ -20,7 +19,7 @@ export default function formatDate(date: string) {
 
   if (isLessthanAYear) {
     if (monthsAgoAbs > 0) {
-      formattedDate = `${monthsAgoAbs - 1}mo ago`;
+      formattedDate = `${12 - monthsAgoAbs}mo ago`;
     } else if (daysAgo > 0) {
       formattedDate = `${daysAgo}d ago`;
     } else {
