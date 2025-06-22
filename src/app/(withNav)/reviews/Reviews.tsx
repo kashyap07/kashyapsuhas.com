@@ -141,10 +141,10 @@ function Reviews({ reviews }: Props) {
                   {review.name}
                 </div>
 
-                <div className="col-span-1 px-2">
+                <div className="hidden md:block col-span-1 px-2">
                   <span
                     className={cn(
-                      "hidden inline-flex rounded px-2 py-2 text-xs font-semibold leading-5 md:block",
+                      "inline-flex rounded px-2 py-2 text-xs font-semibold leading-5",
                       getCategoryColor(review.category),
                     )}
                   >
@@ -152,7 +152,7 @@ function Reviews({ reviews }: Props) {
                   </span>
                 </div>
 
-                <div className="text-md {review.wouldRecommend ? 'text-green-600' : 'text-red-600'} col-span-1 hidden px-2 md:block">
+                <div className="hidden md:block text-md {review.wouldRecommend ? 'text-green-600' : 'text-red-600'} col-span-1 px-2">
                   {review.wouldRecommend ? <CheckMini /> : <XMarkMini />}
                 </div>
 
