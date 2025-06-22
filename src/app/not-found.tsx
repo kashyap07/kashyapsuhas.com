@@ -1,7 +1,7 @@
-import Link from 'next/link';
+import Link from "next/link";
 
-import { Wrapper } from '@/components/ui';
-import cn from '@/utils/cn';
+import { Wrapper } from "@/components/ui";
+import cn from "@/utils/cn";
 
 export default function NotFound() {
   return (
@@ -10,7 +10,7 @@ export default function NotFound() {
         <span>404</span>
       </h1>
       <Link href="/" className={cn("text-5xl font-bold text-columbiaYellow")}>
-        YOU'RE LOST. GO HOME.
+        YOU&apos;RE LOST. GO HOME.
       </Link>
     </Wrapper>
   );

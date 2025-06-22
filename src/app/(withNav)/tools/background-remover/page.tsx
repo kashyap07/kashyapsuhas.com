@@ -1,10 +1,11 @@
 "use client";
-import * as ort from 'onnxruntime-web';
-import React, { useRef, useState } from 'react';
 
-import { Wrapper } from '@/components/ui';
+import * as ort from "onnxruntime-web";
+import React, { useRef, useState } from "react";
 
-// Set WASM path for onnxruntime-web
+import { Wrapper } from "@/components/ui";
+
+// set WASM path for onnxruntime-web
 ort.env.wasm.wasmPaths = "/";
 
 const MODEL_PATH = "/models/u2netp.onnx";
@@ -85,14 +86,14 @@ const BackgroundRemover: React.FC = () => {
     setOrigUrl(url);
     setLoading(true);
     try {
-      // Wait for image to load
+      // wait for image to load
       const img = new window.Image();
       img.src = url;
       await new Promise((res, rej) => {
         img.onload = res;
         img.onerror = rej;
       });
-      // Preprocess
+      // preprocess
       const resized = resizeImageToCanvas(img, INPUT_SIZE);
       const inputTensor = imageToTensor(resized);
       const tensor = new ort.Tensor("float32", inputTensor, [
@@ -101,7 +102,7 @@ const BackgroundRemover: React.FC = () => {
         INPUT_SIZE,
         INPUT_SIZE,
       ]);
-      // Load model
+      // load model
       const session = await ort.InferenceSession.create(MODEL_PATH, {
         executionProviders: ["wasm"],
       });
@@ -109,9 +110,9 @@ const BackgroundRemover: React.FC = () => {
       const results = await session.run(feeds);
       // U^2-Netp output is usually 'output' or 'd1'
       const output = results[Object.keys(results)[0]];
-      // Postprocess mask
+      // postprocess mask
       const maskArr = output.data as Float32Array;
-      // Normalize mask to [0,1] (find min/max manually for compatibility)
+      // normalize mask to [0,1] (find min/max manually for compatibility)
       let min = maskArr[0],
         max = maskArr[0];
       for (let i = 1; i < maskArr.length; i++) {
@@ -122,7 +123,7 @@ const BackgroundRemover: React.FC = () => {
       for (let i = 0; i < maskArr.length; i++) {
         normMask[i] = (maskArr[i] - min) / (max - min);
       }
-      // Convert to ImageData
+      // convert to ImageData
       const maskCanvas = document.createElement("canvas");
       maskCanvas.width = INPUT_SIZE;
       maskCanvas.height = INPUT_SIZE;
@@ -130,7 +131,7 @@ const BackgroundRemover: React.FC = () => {
       if (!maskCtx) throw new Error("Could not get canvas context");
       const maskImgData = maskToImageData(normMask, INPUT_SIZE, INPUT_SIZE);
       maskCtx.putImageData(maskImgData, 0, 0);
-      // Apply mask to original image
+      // apply mask to original image
       const finalCanvas = applyMaskToImage(img, maskCanvas);
       setResultUrl(finalCanvas.toDataURL("image/png"));
     } catch (e) {
@@ -161,13 +162,14 @@ const BackgroundRemover: React.FC = () => {
         />
         {(origUrl || resultUrl) && (
           <div className="mt-8 flex w-full flex-col gap-8 md:flex-row">
-            {/* Original image */}
+            {/* original image */}
             <div className="flex flex-1 flex-col items-center">
               {origUrl && (
                 <div className="w-full">
                   <div className="mb-2 text-center text-sm text-gray-500">
                     Original
                   </div>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     ref={imgRef}
                     src={origUrl}
@@ -177,13 +179,16 @@ const BackgroundRemover: React.FC = () => {
                 </div>
               )}
             </div>
-            {/* Background removed image */}
+
+            {/* background removed image */}
             <div className="flex flex-1 flex-col items-center">
               {resultUrl && (
                 <div className="w-full">
                   <div className="mb-2 text-center text-sm text-gray-500">
                     Background Removed
                   </div>
+                  {/* TODO: use Image instead? */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={resultUrl}
                     alt="Result"
@@ -217,7 +222,8 @@ const BackgroundRemover: React.FC = () => {
         )}
         {error && <div className="mb-4 text-red-600">{error}</div>}
       </div>
-      {/* Loader overlay */}
+
+      {/* loader overlay */}
       {loading && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
           <div className="flex flex-col items-center gap-4 rounded bg-white p-8 shadow-lg">

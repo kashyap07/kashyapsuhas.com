@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-import { ImageAutoHeight, Wrapper } from '@/components/ui';
+import { ImageAutoHeight, Wrapper } from "@/components/ui";
 
 const outputFormats = [
   { label: "JPEG", value: "image/jpeg", ext: "jpg" },
@@ -46,7 +46,7 @@ export default function ImageConverter() {
         image.name.toLowerCase().endsWith(".heic")
       ) {
         // Use window.heic2any from CDN
-        // @ts-ignore
+        // @ts-expect-error: Property 'heic2any' does not exist on type 'Window & typeof globalThis'.
         const heic2any = window.heic2any;
         if (!heic2any) {
           setError("heic2any not loaded");
@@ -60,7 +60,7 @@ export default function ImageConverter() {
           });
           const blob = Array.isArray(result) ? result[0] : result;
           setConvertedUrl(URL.createObjectURL(blob));
-        } catch (e: any) {
+        } catch {
           setError(
             "This HEIC file could not be converted. Try a different photo, preferably a standard iPhone photo (not a Live Photo or edited image).",
           );
@@ -95,8 +95,12 @@ export default function ImageConverter() {
         reader.onerror = () => setError("Failed to read image file.");
         reader.readAsDataURL(image);
       }
-    } catch (e: any) {
-      setError("Conversion failed: " + (e?.message || e));
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        setError("Conversion failed: " + e.message);
+      } else {
+        setError("Conversion failed: " + String(e));
+      }
     }
   };
 

@@ -1,12 +1,13 @@
 "use client";
-import React, { useState } from 'react';
 
-import { Wrapper } from '@/components/ui';
+import React, { useState } from "react";
+
+import { Wrapper } from "@/components/ui";
 
 function diffWordsInline(a: string, b: string) {
   const aWords = a.split(/(\s+)/);
   const bWords = b.split(/(\s+)/);
-  let result: React.ReactNode[] = [];
+  const result: React.ReactNode[] = [];
   let i = 0,
     j = 0;
   while (i < aWords.length && j < bWords.length) {
