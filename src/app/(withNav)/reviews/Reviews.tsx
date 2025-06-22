@@ -122,9 +122,9 @@ function Reviews({ reviews }: Props) {
         {/* header */}
         <div className="grid grid-cols-4 border-b bg-gray-50 px-2 py-3 text-xs font-semibold uppercase tracking-wider text-gray-500 md:grid-cols-9">
           <div className="col-span-3 px-2">Name</div>
-          <div className="col-span-1 px-2">Category</div>
+          <div className="col-span-1 hidden md:block px-2">Category</div>
           <div className="col-span-1 hidden px-2 sm:block">Recommend</div>
-          <div className="col-span-1 hidden px-2 md:block">Rating</div>
+          <div className="col-span-1 px-2">Rating</div>
           <div className="col-span-3 hidden px-2 md:block">Summary</div>
         </div>
 
