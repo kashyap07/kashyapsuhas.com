@@ -130,15 +130,13 @@ function Reviews({ reviews }: Props) {
               <div className="grid cursor-pointer grid-cols-4 items-center border-b px-2 py-4 hover:bg-gray-50 md:grid-cols-9">
                 <div
                   role="button"
-                  className="col-span-2 px-2 text-lg font-medium text-gray-900"
+                  className="col-span-2 px-2 text-lg font-medium"
                   title={review.name}
                 >
                   {review.name}
                 </div>
 
-                <div className="text-md col-span-1 px-2 text-gray-900">
-                  {review.rating}
-                </div>
+                <div className="text-md col-span-1 px-2">{review.rating}</div>
 
                 <div className="text-md {review.wouldRecommend ? 'text-green-600' : 'text-red-600'} col-span-1 hidden px-2 md:block">
                   {review.wouldRecommend ? <CheckMini /> : <XMarkMini />}
@@ -156,7 +154,7 @@ function Reviews({ reviews }: Props) {
                 </div>
 
                 <div
-                  className="text-md col-span-3 hidden px-2 text-gray-900 md:block"
+                  className="col-span-4 hidden px-2 text-base md:block"
                   title={review.summary}
                 >
                   {review.summary}
@@ -166,7 +164,7 @@ function Reviews({ reviews }: Props) {
 
             <Dialog.Content className="md:max-w-[50rem]">
               <Dialog.Header>
-                <Dialog.Title className="text-2xl font-bold text-gray-900">
+                <Dialog.Title className="text-2xl font-bold">
                   {review.name}
                 </Dialog.Title>
                 <Dialog.Description className="flex items-center gap-6">
@@ -194,29 +192,29 @@ function Reviews({ reviews }: Props) {
               </Dialog.Header>
 
               <div className="mt-2">
-                <h3 className="text-lg font-medium text-gray-900">Summary</h3>
-                <p className="mt-2 text-gray-600">{review.summary}</p>
+                <h3 className="text-lg font-medium">Summary</h3>
+                <p className="mt-2">{review.summary}</p>
               </div>
 
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div>
-                  <h3 className="text-lg font-medium text-gray-900">Pros</h3>
+                  <h3 className="text-lg font-medium">Pros</h3>
                   <ul className="mt-2 space-y-2">
                     {review.pros.map((pro, index) => (
                       <li key={index} className="flex items-start">
                         <span className="mr-2">-</span>
-                        <span className="text-gray-600">{pro}</span>
+                        <span className="">{pro}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
                 <div>
-                  <h3 className="text-lg font-medium text-gray-900">Cons</h3>
+                  <h3 className="text-lg font-medium">Cons</h3>
                   <ul className="mt-2 space-y-2">
                     {review.cons.map((con, index) => (
                       <li key={index} className="flex items-start">
                         <span className="mr-2">-</span>
-                        <span className="text-gray-600">{con}</span>
+                        <span className="">{con}</span>
                       </li>
                     ))}
                   </ul>
