@@ -45,12 +45,12 @@ function Reviews({ reviews }: Props) {
       Media: "bg-blue-100 text-blue-800",
       Technology: "bg-cyan-100 text-cyan-800",
       Vehicles: "bg-yellow-100 text-yellow-800",
-      Games: "bg-indigo-100 text-indigo-800",
+      Games: "bg-rose-100 text-rose-800",
       Restaurants: "bg-green-100 text-green-800",
       Services: "bg-purple-100 text-purple-800",
       Travel: "bg-orange-100 text-orange-800",
-      Photography: "bg-pink-100 text-pink-800",
-      Others: "bg-gray-200 text-gray-800",
+      Photography: "bg-teal-100 text-teal-800",
+      Others: "bg-stone-200 text-stone-800",
       default: "bg-gray-100 text-gray-800",
     };
 
