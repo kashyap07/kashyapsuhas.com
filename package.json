@@ -16,6 +16,7 @@
     "@radix-ui/react-dialog": "^1.1.14",
     "browser-image-compression": "^2.0.2",
     "heic2any": "^0.0.4",
+    "idb-keyval": "^6.2.2",
     "next": "15.3.3",
     "next-mdx-remote": "^5.0.0",
     "onnxruntime-web": "^1.16.0",

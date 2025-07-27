@@ -3,6 +3,29 @@
 import Image from 'next/image';
 import { useState } from 'react';
 
+import useIndexedImage from '@/hooks/useIndexedImage';
+
+type GalleryItemProps = GalleryImage & { onOpen: (img: GalleryImage) => void };
+
+function GalleryItem({ src, title, onOpen }: GalleryItemProps) {
+  const cachedSrc = useIndexedImage(src);
+
+  return (
+    <Image
+      alt={title}
+      src={cachedSrc}
+      width={720}
+      height={480}
+      sizes="(max-width: 640px) 100vw,
+                  (max-width: 1280px) 50vw,
+                  (max-width: 1536px) 33vw,
+                  25vw"
+      className="mb-4 cursor-pointer"
+      onClick={() => onOpen({ src: cachedSrc, title })}
+    />
+  );
+}
+
 import { ImageAutoHeight, Wrapper } from '@/components/ui';
 
 import galleryImages, { GalleryImage } from './galleryImages';
@@ -20,18 +43,11 @@ function Photos() {
       <Wrapper className="mb-12 flex w-full flex-col items-center justify-center gap-4 md:mb-20">
         <div className="columns-1 gap-4 sm:columns-2 xl:columns-3">
           {galleryImages.map(({ src, title }, idx) => (
-            <Image
+            <GalleryItem
               key={idx}
-              alt={title}
               src={src}
-              width={720}
-              height={480}
-              sizes="(max-width: 640px) 100vw,
-                  (max-width: 1280px) 50vw,
-                  (max-width: 1536px) 33vw,
-                  25vw"
-              className="mb-4 cursor-pointer"
-              onClick={() => openImage({ src, title })}
+              title={title}
+              onOpen={openImage}
             />
           ))}
         </div>
