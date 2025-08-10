@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { CheckMini, XMarkMini } from "@/components/icons";
 import { Dialog, Wrapper } from "@/components/ui";
@@ -14,6 +14,9 @@ interface Props {
 function Reviews({ reviews }: Props) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [ratingSortOrder, setRatingSortOrder] = useState<"asc" | "desc" | null>(
+    null,
+  );
 
   const categories = Array.from(
     new Set(reviews.map((review) => review.category)),
@@ -73,6 +76,24 @@ function Reviews({ reviews }: Props) {
     return true;
   });
 
+  const sortedReviews = useMemo(() => {
+    if (!ratingSortOrder) return filteredReviews;
+    const sorted = [...filteredReviews].sort((a, b) => {
+      return ratingSortOrder === "asc"
+        ? a.rating - b.rating
+        : b.rating - a.rating;
+    });
+    return sorted;
+  }, [filteredReviews, ratingSortOrder]);
+
+  function toggleRatingSort() {
+    setRatingSortOrder((prev) => {
+      if (prev === "desc") return "asc";
+      if (prev === "asc") return null; // third click removes sorting
+      return "desc"; // start with highest rating first
+    });
+  }
+
   return (
     <Wrapper className="mb-12 w-full md:mb-20">
       <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between">
@@ -117,14 +138,34 @@ function Reviews({ reviews }: Props) {
         {/* header */}
         <div className="grid grid-cols-4 border-b bg-gray-50 px-2 py-3 text-xs font-semibold uppercase tracking-wider text-gray-500 md:grid-cols-9">
           <div className="col-span-2 px-2">Name</div>
-          <div className="col-span-1 px-2">Rating</div>
+          <button
+            type="button"
+            onClick={toggleRatingSort}
+            className="col-span-1 px-2 text-left hover:text-gray-700"
+            title={
+              ratingSortOrder === "asc"
+                ? "Sorted by rating (low to high). Click to clear sort"
+                : ratingSortOrder === "desc"
+                  ? "Sorted by rating (high to low). Click to sort low to high"
+                  : "Click to sort by rating (high to low)"
+            }
+          >
+            Rating
+            <span className="ml-1 inline-block">
+              {ratingSortOrder === "asc"
+                ? "▲"
+                : ratingSortOrder === "desc"
+                  ? "▼"
+                  : ""}
+            </span>
+          </button>
           <div className="col-span-1 hidden px-2 sm:block">Recommend</div>
           <div className="col-span-1 px-2">Category</div>
           <div className="col-span-3 hidden px-2 md:block">Summary</div>
         </div>
 
         {/* rows */}
-        {filteredReviews.map((review) => (
+        {sortedReviews.map((review) => (
           <Dialog key={review.name}>
             <Dialog.Trigger asChild>
               <div className="grid cursor-pointer grid-cols-4 items-center border-b px-2 py-4 hover:bg-gray-50 md:grid-cols-9">
