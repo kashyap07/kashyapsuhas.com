@@ -116,7 +116,7 @@ export default defineConfig({
               "Services",
               "Travel",
               "Photography",
-              "Others"
+              "Others",
             ],
           },
           {

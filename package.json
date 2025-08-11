@@ -9,7 +9,10 @@
     "lint": "next lint",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,scss,md,mdx,html,yml,yaml}\" --ignore-path .gitignore",
+    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,css,scss,md,mdx,html,yml,yaml}\" --ignore-path .gitignore",
+    "format:staged": "prettier --write $(git diff --cached --name-only --diff-filter=ACMR | grep -E '\\.(js|jsx|ts|tsx|json|css|scss|md|mdx|html|yml|yaml)$' | tr '\\n' ' ')"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.4",
@@ -28,6 +31,7 @@
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.16",
     "@tinacms/cli": "^1.9.5",
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@types/jest": "^30.0.0",
     "@types/node": "^22.15.32",
     "@types/react": "19.1.8",

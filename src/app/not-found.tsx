@@ -1,7 +1,7 @@
 import Link from "next/link";
 
-import { Wrapper } from "@/components/ui";
-import cn from "@/utils/cn";
+import { Wrapper } from "@components/ui";
+import cn from "@utils/cn";
 
 export default function NotFound() {
   return (

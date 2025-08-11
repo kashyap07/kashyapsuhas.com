@@ -1,40 +1,30 @@
-// "use client";
+import { type ComponentProps } from "react";
 
-import * as React from "react";
-
-import cn from "@/utils/cn";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 
-import { XMark } from "../icons";
+import { XMark } from "@components/icons";
+import cn from "@utils/cn";
 
-function DialogRoot({
-  ...props
-}: React.ComponentProps<typeof DialogPrimitive.Root>) {
+function DialogRoot({ ...props }: ComponentProps<typeof DialogPrimitive.Root>) {
   return <DialogPrimitive.Root data-slot="dialog" {...props} />;
 }
 
-function Trigger({
-  ...props
-}: React.ComponentProps<typeof DialogPrimitive.Trigger>) {
+function Trigger({ ...props }: ComponentProps<typeof DialogPrimitive.Trigger>) {
   return <DialogPrimitive.Trigger data-slot="dialog-trigger" {...props} />;
 }
 
-function Portal({
-  ...props
-}: React.ComponentProps<typeof DialogPrimitive.Portal>) {
+function Portal({ ...props }: ComponentProps<typeof DialogPrimitive.Portal>) {
   return <DialogPrimitive.Portal data-slot="dialog-portal" {...props} />;
 }
 
-function Close({
-  ...props
-}: React.ComponentProps<typeof DialogPrimitive.Close>) {
+function Close({ ...props }: ComponentProps<typeof DialogPrimitive.Close>) {
   return <DialogPrimitive.Close data-slot="dialog-close" {...props} />;
 }
 
 function Overlay({
   className,
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Overlay>) {
+}: ComponentProps<typeof DialogPrimitive.Overlay>) {
   return (
     <DialogPrimitive.Overlay
       data-slot="dialog-overlay"
@@ -52,7 +42,7 @@ function Content({
   children,
   showCloseButton = true,
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Content> & {
+}: ComponentProps<typeof DialogPrimitive.Content> & {
   showCloseButton?: boolean;
 }) {
   return (
@@ -64,7 +54,7 @@ function Content({
           "data-[state=open]:motion-opacity-in-0",
           "data-[state=open]:motion-translate-y-in-50",
           "data-[state=open]:motion-blur-in-md",
-          "motion-duration-200 fixed left-[50%] top-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded border bg-background p-6 shadow-lg sm:max-w-lg",
+          "fixed left-[50%] top-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded border bg-background p-6 shadow-lg motion-duration-200 sm:max-w-lg",
           className,
         )}
         {...props}
@@ -84,7 +74,7 @@ function Content({
   );
 }
 
-function Header({ className, ...props }: React.ComponentProps<"div">) {
+function Header({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
       data-slot="dialog-header"
@@ -94,7 +84,7 @@ function Header({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
-function Footer({ className, ...props }: React.ComponentProps<"div">) {
+function Footer({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
       data-slot="dialog-footer"
@@ -110,7 +100,7 @@ function Footer({ className, ...props }: React.ComponentProps<"div">) {
 function Title({
   className,
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Title>) {
+}: ComponentProps<typeof DialogPrimitive.Title>) {
   return (
     <DialogPrimitive.Title
       data-slot="dialog-title"
@@ -123,7 +113,7 @@ function Title({
 function Description({
   className,
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Description>) {
+}: ComponentProps<typeof DialogPrimitive.Description>) {
   return (
     <DialogPrimitive.Description
       data-slot="dialog-description"

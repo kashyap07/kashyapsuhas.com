@@ -4,12 +4,8 @@
   "rating": 8.2,
   "wouldRecommend": true,
   "summary": "Very unexpected comedy, great acting. ",
-  "pros": [
-    "Chaotic dark comedy"
-  ],
-  "cons": [
-    "Not for the average person"
-  ],
+  "pros": ["Chaotic dark comedy"],
+  "cons": ["Not for the average person"],
   "link": "https://m.imdb.com/title/tt4686844/",
   "reviewDate": "2024-11-18T18:30:00.000Z"
 }

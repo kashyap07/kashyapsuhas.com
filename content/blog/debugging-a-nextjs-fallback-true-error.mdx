@@ -1,13 +1,13 @@
 ---
 publishedDateTime: 2022-08-01T09:10:55+05:30
-title: 'Debugging a NextJs fallback: true error'
+title: "Debugging a NextJs fallback: true error"
 description: bla bla
-heroImage: ''
+heroImage: ""
 ---
 
 There's currently a bug with my NextJs SSG implementation - `fallback: true` doesn't seem to work.
 
-The way NextJs's fallback should work is that I pass an empty array as paths, and then say fallback is true - ok too much to explain, just read the docs: [nextjs.org/docs/api-reference/data-fetching/get-static-paths](https://nextjs.org/docs/api-reference/data-fetching/get-static-paths 'https://nextjs.org/docs/api-reference/data-fetching/get-static-paths')
+The way NextJs's fallback should work is that I pass an empty array as paths, and then say fallback is true - ok too much to explain, just read the docs: [nextjs.org/docs/api-reference/data-fetching/get-static-paths](https://nextjs.org/docs/api-reference/data-fetching/get-static-paths "https://nextjs.org/docs/api-reference/data-fetching/get-static-paths")
 
 ## Current implementation
 
@@ -25,7 +25,9 @@ I was searching around and game across this issue on Guthub - https://github.com
 Changed the path to be relative to the project root.
 The new line of code is:
 
-<pre>fs.readFileSync(path.join(process.cwd(), 'Blog', `${slug}.mdx`), 'utf8');</pre>
+<pre>
+  fs.readFileSync(path.join(process.cwd(), 'Blog', `${slug}.mdx`), 'utf8');
+</pre>
 
 That&apos;s it, folks!
 Enjoy the day.

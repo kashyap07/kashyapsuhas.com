@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { ImageAutoHeight, Wrapper } from "@/components/ui";
+import { ImageAutoHeight, Wrapper } from "@components/ui";
 
 const outputFormats = [
   { label: "JPEG", value: "image/jpeg", ext: "jpg" },

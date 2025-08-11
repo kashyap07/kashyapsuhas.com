@@ -4,17 +4,8 @@
   "rating": 3.3,
   "wouldRecommend": true,
   "summary": "I wanted to KMS, I love it",
-  "pros": [
-    "Great cgi",
-    "Great voice acting",
-    "Great story",
-    "Great music"
-  ],
-  "cons": [
-    "Not enough cats",
-    "Not enough cats",
-    "Not enough cats"
-  ],
+  "pros": ["Great cgi", "Great voice acting", "Great story", "Great music"],
+  "cons": ["Not enough cats", "Not enough cats", "Not enough cats"],
   "link": "https://www.imdb.com/title/tt5697572",
   "reviewDate": "2019-12-20T18:30:00.000Z"
 }

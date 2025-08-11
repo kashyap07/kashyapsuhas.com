@@ -1,4 +1,4 @@
-import imageCompression from 'browser-image-compression';
+import imageCompression from "browser-image-compression";
 
 /**
  * Compresses an image using browser-image-compression.
@@ -12,7 +12,8 @@ export async function compressImage(
 ) {
   const blob = await fetch(imageDataUrl).then((res) => res.blob());
   const minSizeMB = 0.01; // allow very small compressed sizes
-  const calculatedSizeMB = (blob.size / 1024 / 1024) * (compressionPercentage / 100);
+  const calculatedSizeMB =
+    (blob.size / 1024 / 1024) * (compressionPercentage / 100);
   const options = {
     maxSizeMB: Math.max(calculatedSizeMB, minSizeMB),
     useWebWorker: true,

@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 
-import { Wrapper } from "@/components/ui";
+import { Wrapper } from "@components/ui";
 
 export const metadata: Metadata = {
   title: "Tools | Suhas Kashyap",

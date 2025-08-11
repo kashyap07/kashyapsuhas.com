@@ -1,10 +1,9 @@
 ---
 publishedDateTime: 2022-10-13T00:00:00.000Z
-title: 'Storybook: The what why and how'
+title: "Storybook: The what why and how"
 description: A quick look at why you should be using Storybook.
-heroImage: ''
+heroImage: ""
 ---
-
 
 ## The What
 
@@ -39,24 +38,24 @@ It adds tiny bit of effort to add a storybook each time a component is created, 
 
 ## The How
 
-Follow the documentation from their site: [storybook.js.org/docs/react/get-started/install](https://storybook.js.org/docs/react/get-started/install 'storybook.js.org/docs/react/get-started/install')
+Follow the documentation from their site: [storybook.js.org/docs/react/get-started/install](https://storybook.js.org/docs/react/get-started/install "storybook.js.org/docs/react/get-started/install")
 
 ### Configure TS Paths
 
 Create `main.js` under `.storybook` folder and add the following
 
 ```typescript
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 
 module.exports = {
-  stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
+  stories: ["../src/**/*.stories.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
   addons: [
-    '@storybook/addon-links',
-    '@storybook/addon-essentials',
-    '@storybook/addon-interactions',
+    "@storybook/addon-links",
+    "@storybook/addon-essentials",
+    "@storybook/addon-interactions",
   ],
-  framework: '@storybook/react',
-  webpackFinal: async config => {
+  framework: "@storybook/react",
+  webpackFinal: async (config) => {
     config.resolve.plugins = [
       ...(config.resolve.plugins || []),
       new TsconfigPathsPlugin({

@@ -1,9 +1,9 @@
 "use client";
 
-import { Dela_Gothic_One } from 'next/font/google';
+import { Dela_Gothic_One } from "next/font/google";
 
-import useScreenBeingTouched from '@/hooks/useScreenBeingTouched';
-import cn from '@/utils/cn';
+import useScreenBeingTouched from "@hooks/useScreenBeingTouched";
+import cn from "@utils/cn";
 
 const MARQUEE_FONT = Dela_Gothic_One({ weight: "400", subsets: ["latin"] });
 const MARQUEE_TEXT = "Suhas Kashyap スハス カシャプ";

@@ -1,6 +1,6 @@
-import Image, { ImageProps } from 'next/image';
+import Image, { ImageProps } from "next/image";
 
-import cn from '@/utils/cn';
+import cn from "@utils/cn";
 
 type ImageAutoHeightProps = ImageProps & {
   src: string;

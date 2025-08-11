@@ -1,11 +1,11 @@
 "use client";
 
-import Image from 'next/image';
-import { useState } from 'react';
+import Image from "next/image";
+import { useState } from "react";
 
-import { ImageAutoHeight, Wrapper } from '@/components/ui';
+import { ImageAutoHeight, Wrapper } from "@components/ui";
 
-import galleryImages, { GalleryImage } from './galleryImages';
+import galleryImages, { GalleryImage } from "./galleryImages";
 
 // maybe in the future: https://vercel.com/blog/building-a-fast-animated-image-gallery-with-next-js
 

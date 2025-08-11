@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 
-import { Wrapper } from "@/components/ui";
+import { Wrapper } from "@components/ui";
 
 function diffWordsInline(a: string, b: string) {
   const aWords = a.split(/(\s+)/);

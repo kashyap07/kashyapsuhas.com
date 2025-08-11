@@ -1,4 +1,4 @@
-import { getReviews } from "@/db/reviews";
+import { getReviews } from "@db/reviews";
 
 import Reviews from "./Reviews";
 

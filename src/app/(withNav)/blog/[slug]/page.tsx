@@ -1,13 +1,13 @@
-export const dynamic = "force-static";
-
+import { type Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
-import { CustomMDX, Wrapper } from "@/components/ui";
-import { getBlogPosts } from "@/db/blog";
-import formatDate from "@/utils/formatDate";
+import { CustomMDX, Wrapper } from "@components/ui";
+import { getBlogPosts } from "@db/blog";
+import formatDate from "@utils/formatDate";
 
-import type { Metadata } from "next";
+export const dynamic = "force-static";
+
 export async function generateMetadata(props: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata | undefined> {

@@ -2,10 +2,10 @@
 
 import { useMemo, useState } from "react";
 
-import { CheckMini, XMarkMini } from "@/components/icons";
-import { Dialog, Wrapper } from "@/components/ui";
-import { Review } from "@/db/reviews";
-import cn from "@/utils/cn";
+import { CheckMini, XMarkMini } from "@components/icons";
+import { Dialog, Wrapper } from "@components/ui";
+import { Review } from "@db/reviews";
+import cn from "@utils/cn";
 
 interface Props {
   reviews: Review[];
@@ -195,7 +195,7 @@ function Reviews({ reviews }: Props) {
                 </div>
 
                 <div
-                  className="col-span-4 hidden px-2 text-base md:block"
+                  className="col-span-4 hidden pl-2 text-base md:block"
                   title={review.summary}
                 >
                   {review.summary}
