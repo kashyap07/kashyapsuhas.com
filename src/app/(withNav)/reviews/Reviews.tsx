@@ -72,10 +72,10 @@ const reviewsReducer = (reviewsState: ReviewsState, action: ReducerActions) => {
       return 0;
     });
 
-    // re do this only if there is a category selected
-    const newReviewCategories = selectedCategory
-      ? reviewCategories
-      : getCategoriesList(newReviews);
+    // re calculate list of categories only if there is a search string
+    const newReviewCategories = searchString
+      ? getCategoriesList(newReviews) 
+      : newReviews;
 
     return { reviews: newReviews, reviewCategories: newReviewCategories };
   };
