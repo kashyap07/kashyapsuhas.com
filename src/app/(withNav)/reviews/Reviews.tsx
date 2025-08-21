@@ -181,18 +181,20 @@ function Reviews({ reviews: initialReviews }: Props) {
           {reviewsState.reviews.map((review) => (
             <Dialog key={review._idx}>
               <Dialog.Trigger asChild>
-                <div className="grid cursor-pointer grid-cols-4 items-center border-b px-2 py-4 hover:bg-gray-50 md:grid-cols-9">
+                <div className="grid cursor-pointer grid-cols-4 items-center border-b px-2 py-4 hover:bg-gray-50 md:grid-cols-9 group">
                   <div
                     role="button"
-                    className="col-span-2 px-2 text-lg font-medium"
+                    className="col-span-2 px-2 text-lg font-medium group-hover:text-columbiaYellow"
                     title={review.name}
                   >
                     {review.name}
                   </div>
 
-                  <div className="text-md col-span-1 px-2">{review.rating}</div>
+                  <div className="text-md col-span-1 px-2 group-hover:text-columbiaYellow">
+                    {review.rating}
+                  </div>
 
-                  <div className="text-md col-span-1 hidden px-2 md:block">
+                  <div className="text-md col-span-1 hidden px-2 md:block group-hover:text-columbiaYellow">
                     {review.wouldRecommend ? <CheckMini /> : <XMarkMini />}
                   </div>
 
@@ -208,7 +210,7 @@ function Reviews({ reviews: initialReviews }: Props) {
                   </div>
 
                   <div
-                    className="col-span-4 hidden pl-2 text-base md:block"
+                    className="col-span-4 hidden pl-2 text-base md:block group-hover:text-columbiaYellow"
                     title={review.summary}
                   >
                     {review.summary}
