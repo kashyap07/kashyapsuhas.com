@@ -37,23 +37,15 @@ const getCategoriesList = (reviews: Array<ReviewWithIndex>) => {
 
 const reviewsReducer = (reviewsState: ReviewsState, action: ReducerActions) => {
   const deriveReviewsState = (reviewsState: ReviewsState) => {
-    const {
-      sourceReviews,
-      searchString,
-      selectedCategory,
-      sortOrder,
-      reviewCategories,
-    } = reviewsState;
+    const { sourceReviews, searchString, selectedCategory, sortOrder } =
+      reviewsState;
 
     let newReviews = [...sourceReviews];
+
+    // order matters
+
+    // 1. search
     const normalizedSearchString = searchString.toLowerCase().trim();
-
-    // filter by category
-    newReviews = selectedCategory
-      ? newReviews.filter((review) => review.category === selectedCategory)
-      : newReviews;
-
-    // search
     newReviews = newReviews.filter(
       (review) =>
         review.name.toLowerCase().includes(normalizedSearchString) ||
@@ -61,7 +53,15 @@ const reviewsReducer = (reviewsState: ReviewsState, action: ReducerActions) => {
         review.summary.toLowerCase().includes(normalizedSearchString),
     );
 
-    // sort
+    // 2. re calculate list of categories only if there is a search string
+    const newReviewCategories = getCategoriesList(newReviews);
+
+    // 3. filter by category
+    newReviews = selectedCategory
+      ? newReviews.filter((review) => review.category === selectedCategory)
+      : newReviews;
+
+    // 4. sort
     newReviews = newReviews.sort((a, b) => {
       if (action.payload === "rating") {
         if (sortOrder.rating === null) return a._idx - b._idx; // third click resets to original order
@@ -71,11 +71,6 @@ const reviewsReducer = (reviewsState: ReviewsState, action: ReducerActions) => {
       }
       return 0;
     });
-
-    // re calculate list of categories only if there is a search string
-    const newReviewCategories = searchString
-      ? getCategoriesList(newReviews) 
-      : reviewCategories;
 
     return { reviews: newReviews, reviewCategories: newReviewCategories };
   };
