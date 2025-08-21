@@ -75,7 +75,7 @@ const reviewsReducer = (reviewsState: ReviewsState, action: ReducerActions) => {
     // re calculate list of categories only if there is a search string
     const newReviewCategories = searchString
       ? getCategoriesList(newReviews) 
-      : newReviews;
+      : reviewCategories;
 
     return { reviews: newReviews, reviewCategories: newReviewCategories };
   };
