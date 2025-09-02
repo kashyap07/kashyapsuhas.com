@@ -50,10 +50,10 @@ function Blog() {
 
   return (
     <Wrapper className="mb-12 w-full md:mb-20">
-      <ul className="flex flex-col gap-14">
+      <ul className="flex flex-col gap-8 md:gap-14">
         {blogPostsSplitByYear.map((postGroupByYear, idx) => (
           <li key={idx}>
-            <ul className="flex flex-col gap-6">
+            <ul className="flex flex-col gap-2 md:gap-6">
               {postGroupByYear.map((post) => (
                 <Link
                   key={post.slug}
@@ -61,7 +61,7 @@ function Blog() {
                   href={`/blog/${post.slug}`}
                 >
                   <li className="flex flex-col md:flex-row md:items-end md:justify-between">
-                    <span className="text-3xl font-medium">
+                    <span className="text-2xl md:text-3xl font-medium">
                       {post.metadata.title}
                     </span>
 
