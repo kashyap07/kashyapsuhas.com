@@ -79,20 +79,20 @@ async function Blog(props: Props) {
         />
 
         {/* title */}
-        <h1 className="title w-full text-6xl font-medium md:text-8xl">
+        <h1 className="title w-full text-4xl font-medium md:text-8xl">
           {post.metadata.title}
         </h1>
 
         {/* time since creation */}
         <Suspense fallback={<p className="h-5" />}>
-          <p className="mb-2 mt-4 text-2xl">
+          <p className="mb-2 mt-4 text-xl md:text-2xl">
             {formatDate(post.metadata.publishedDateTime)}
           </p>
         </Suspense>
         <hr />
 
         {/* blog content */}
-        <article className="prose prose-2xl mt-8 text-pretty break-words">
+        <article className="prose prose-xl md:prose-2xl mt-8 text-pretty break-words">
           <CustomMDX source={post.content} />
         </article>
       </section>

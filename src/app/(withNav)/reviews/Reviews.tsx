@@ -313,7 +313,7 @@ function Reviews({ reviews: initialReviews }: Props) {
       </div>
 
       {/* filters */}
-      <div className="mb-8 min-h-10 h-10">
+      <div className="mb-4 min-h-10">
         <div className="flex flex-wrap gap-2">
           {reviewsState.reviewCategories.map((category) => (
             <button
@@ -322,7 +322,7 @@ function Reviews({ reviews: initialReviews }: Props) {
                 dispatch({ type: "FILTER_CATEGORY", payload: category })
               }
               className={cn(
-                "text-md rounded border border-transparent px-4 py-2 font-medium transition-colors",
+                "text-xs rounded border border-transparent px-2 py-2 font-medium transition-colors",
                 reviewsState.selectedCategory === category
                   ? `${getCategoryColor(category)} ring-2 ring-columbiaYellow ring-offset-2`
                   : `bg-gray-100 text-gray-700 hover:bg-gray-200`,

@@ -45,7 +45,7 @@ function Blog() {
   const formatter = new Intl.DateTimeFormat("en-IN", {
     year: "numeric",
     month: "short",
-    day: "2-digit",
+    // day: "2-digit",
   });
 
   return (
@@ -60,12 +60,12 @@ function Blog() {
                   className="group"
                   href={`/blog/${post.slug}`}
                 >
-                  <li className="flex flex-col md:flex-row md:items-end md:justify-between">
-                    <span className="text-2xl md:text-3xl font-medium">
+                  <li className="flex flex-row-reverse md:flex-row items-baseline md:items-end gap-2 md:justify-between">
+                    <span className="text-[1.3rem] md:text-3xl font-medium flex-grow">
                       {post.metadata.title}
                     </span>
 
-                    <span className="text-l min-w-fit text-gray-600 group-hover:font-medium group-hover:text-columbiaYellow">
+                    <span className="text-base md:text-lg min-w-20 md:min-w-fit text-gray-600 group-hover:font-medium group-hover:text-columbiaYellow">
                       {formatter.format(
                         new Date(post.metadata.publishedDateTime),
                       )}
