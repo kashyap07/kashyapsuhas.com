@@ -1,0 +1,15 @@
+{
+  "name": "Grand Theft Auto V",
+  "category": "Games",
+  "rating": 9.3,
+  "wouldRecommend": true,
+  "summary": "It's GTA lol. Why are you look at my opinion on this? Just go play.",
+  "pros": [
+    "Rockstar"
+  ],
+  "cons": [
+    "Some aspects feel a bit lacking - and not too much freedom in heists"
+  ],
+  "link": "https://www.rockstargames.com/gta-v",
+  "reviewDate": "2019-08-06T18:30:00.000Z"
+}
