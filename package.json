@@ -27,7 +27,7 @@
     "react": "19.1.0",
     "react-compare-image": "^3.5.4",
     "react-dom": "19.1.0",
-    "sugar-high": "^0.7.0",
+    "sugar-high": "^0.9.4",
     "tinacms": "^2.9.0"
   },
   "devDependencies": {
@@ -52,7 +52,7 @@
     "null-loader": "^4.0.1",
     "postcss": "^8",
     "prettier": "^3.3.3",
-    "prettier-plugin-tailwindcss": "^0.6.8",
+    "prettier-plugin-tailwindcss": "^0.7.1",
     "schema-dts": "^1.1.5",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^3.4.7",
