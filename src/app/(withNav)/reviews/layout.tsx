@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { ReactNode } from "react";
 
 export const metadata: Metadata = {
   title: "Reviews | Suhas Kashyap",
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 interface Props {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 function ReviewsLayout({ children }: Props) {

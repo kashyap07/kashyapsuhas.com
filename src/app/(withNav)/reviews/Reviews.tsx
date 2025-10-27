@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useReducer } from "react";
+import { useCallback, useEffect, useReducer, useState } from "react";
 
 import { CheckMini, XMarkMini } from "@components/icons";
 import { Dialog, Wrapper } from "@components/ui";
@@ -147,6 +147,21 @@ function Reviews({ reviews: initialReviews }: Props) {
     },
   );
 
+  // arrow hint state - shows every time until user clicks
+  const [showHint, setShowHint] = useState(true);
+  const [openDialogId, setOpenDialogId] = useState<number | null>(null);
+
+  const dismissHint = useCallback(() => {
+    setShowHint(false);
+  }, []);
+
+  // dismiss hint when any dialog opens
+  useEffect(() => {
+    if (openDialogId !== null) {
+      dismissHint();
+    }
+  }, [openDialogId, dismissHint]);
+
   // FIXME: tailwind run time situation
   const getCategoryColor = useCallback((category: string) => {
     const CATEGORY_COLOR_MAP = {
@@ -171,7 +186,7 @@ function Reviews({ reviews: initialReviews }: Props) {
   const RenderReviewRows = () => {
     if (reviewsState.reviews.length === 0) {
       return (
-        <div className="text-center text-gray-500 py-4">
+        <div className="py-4 text-center text-gray-500">
           No reviews found : (
         </div>
       );
@@ -179,22 +194,34 @@ function Reviews({ reviews: initialReviews }: Props) {
       return (
         <>
           {reviewsState.reviews.map((review) => (
-            <Dialog key={review._idx}>
+            <Dialog
+              key={review._idx}
+              open={openDialogId === review._idx}
+              onOpenChange={(open) =>
+                setOpenDialogId(open ? review._idx : null)
+              }
+            >
               <Dialog.Trigger asChild>
-                <div className="grid cursor-pointer grid-cols-4 items-center border-b px-2 py-4 hover:bg-gray-50 md:grid-cols-9 group">
+                <div
+                  className={cn(
+                    "group relative grid cursor-pointer grid-cols-4 items-center border-b px-2 py-4 md:grid-cols-9",
+                    "transition-all duration-200 ease-in-out",
+                    "hover:bg-gray-50/50 hover:shadow-sm",
+                  )}
+                >
                   <div
                     role="button"
-                    className="col-span-2 px-2 text-lg font-medium group-hover:text-columbiaYellow"
+                    className="col-span-2 px-2 text-lg font-medium transition-colors group-hover:text-columbiaYellow"
                     title={review.name}
                   >
                     {review.name}
                   </div>
 
-                  <div className="text-md col-span-1 px-2 group-hover:text-columbiaYellow">
+                  <div className="text-md col-span-1 px-2 transition-colors group-hover:text-columbiaYellow">
                     {review.rating}
                   </div>
 
-                  <div className="text-md col-span-1 hidden px-2 md:block group-hover:text-columbiaYellow">
+                  <div className="text-md col-span-1 hidden px-2 transition-colors group-hover:text-columbiaYellow md:block">
                     {review.wouldRecommend ? <CheckMini /> : <XMarkMini />}
                   </div>
 
@@ -210,10 +237,28 @@ function Reviews({ reviews: initialReviews }: Props) {
                   </div>
 
                   <div
-                    className="col-span-4 hidden pl-2 text-base md:block group-hover:text-columbiaYellow"
+                    className="col-span-4 hidden pl-2 text-base transition-colors group-hover:text-columbiaYellow md:block"
                     title={review.summary}
                   >
                     {review.summary}
+                  </div>
+
+                  {/* Arrow icon - completely outside table border */}
+                  <div className="absolute -right-8 top-1/2 hidden -translate-y-1/2 opacity-0 transition-opacity duration-200 group-hover:opacity-100 md:block">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="h-5 w-5 text-columbiaYellow"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M8.25 4.5l7.5 7.5-7.5 7.5"
+                      />
+                    </svg>
                   </div>
                 </div>
               </Dialog.Trigger>
@@ -299,6 +344,7 @@ function Reviews({ reviews: initialReviews }: Props) {
     <Wrapper className="mb-12 w-full md:mb-20">
       <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between">
         <h1 className="text-5xl font-medium md:text-8xl">Reviews</h1>
+
         <div className="mt-4 md:mt-0 md:w-64">
           <input
             type="text"
@@ -312,8 +358,8 @@ function Reviews({ reviews: initialReviews }: Props) {
         </div>
       </div>
 
-      {/* filters */}
-      <div className="mb-4 min-h-10">
+      <div className="mb-4 flex min-h-10 items-center justify-between gap-6">
+        {/* filters */}
         <div className="flex flex-wrap gap-2">
           {reviewsState.reviewCategories.map((category) => (
             <button
@@ -322,7 +368,7 @@ function Reviews({ reviews: initialReviews }: Props) {
                 dispatch({ type: "FILTER_CATEGORY", payload: category })
               }
               className={cn(
-                "text-xs rounded border border-transparent px-2 py-2 font-medium transition-colors",
+                "rounded border border-transparent px-2 py-2 text-xs font-medium transition-colors",
                 reviewsState.selectedCategory === category
                   ? `${getCategoryColor(category)} ring-2 ring-columbiaYellow ring-offset-2`
                   : `bg-gray-100 text-gray-700 hover:bg-gray-200`,
@@ -333,10 +379,41 @@ function Reviews({ reviews: initialReviews }: Props) {
             </button>
           ))}
         </div>
+
+        <div className="hidden lg:block">
+          {/* helper text */}
+          <span className="flex items-center gap-2 text-sm text-gray-500">
+            click on an item to read the entire thing
+          </span>
+
+          {/* dotted arrow pointing from helper text to first item */}
+          {showHint && reviewsState.reviews.length > 0 && (
+            <svg
+              viewBox="100 100 100 160"
+              className="pointer-events-none -right-32 top-[6.5rem] z-10 lg:absolute"
+              width="220"
+              height="220"
+            >
+              <path
+                stroke="#E8B004"
+                strokeWidth="2"
+                strokeDasharray="5 5"
+                fill="none"
+                d="M 128.836 133.322 C 138.014 132.065 153.779 137.932 159.707 143.836 C 175.325 159.389 175.771 188.994 195.011 199.747 C 208.625 207.355 228.506 195.226 225.454 179.896 C 223.433 169.743 201.884 166.831 194.879 174.453 C 182.832 187.561 194.728 213.351 182.669 226.449 C 165.97 244.587 109.907 235.715 91.128 234.321"
+              />
+              <path
+                stroke="#E8B004"
+                strokeWidth="2"
+                fill="none"
+                d="M 99.068 230.439 C 95.675 234.373 87.598 232.063 93.631 236.361 C 94.264 236.812 94.902 237.257 95.554 237.682 C 97.307 238.825 98.243 239.341 100.015 240.385 C 102.043 241.581 98.037 239.124 99.997 240.425"
+              />
+            </svg>
+          )}
+        </div>
       </div>
 
       {/* reviews table */}
-      <div className="w-full lg:min-w-[850px]">
+      <div className="relative w-full md:min-w-[850px]">
         {/* header */}
         <div className="grid grid-cols-4 border-b bg-gray-50 px-2 py-3 text-xs font-semibold uppercase tracking-wider text-gray-500 md:grid-cols-9">
           <div className="col-span-2 px-2">Name</div>
@@ -362,7 +439,7 @@ function Reviews({ reviews: initialReviews }: Props) {
           </button>
           <div className="col-span-1 hidden px-2 sm:block">Recommend</div>
           <div className="col-span-1 px-2">Category</div>
-          <div className="col-span-3 hidden px-2 md:block">Summary</div>
+          <div className="col-span-4 hidden px-2 md:block">Summary</div>
         </div>
 
         {/* rows */}
