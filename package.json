@@ -2,9 +2,11 @@
   "name": "kashyapsuhascom",
   "version": "0.3.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "NODE_OPTIONS='--inspect' TINA_PUBLIC_IS_LOCAL=true tinacms dev -c \"next dev --turbopack\"",
     "build": "tinacms build && next build",
+    "build:analyze": "ANALYZE=true npm run build",
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
@@ -12,25 +14,29 @@
     "test:coverage": "jest --coverage",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,scss,md,mdx,html,yml,yaml}\" --ignore-path .gitignore",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,css,scss,md,mdx,html,yml,yaml}\" --ignore-path .gitignore",
-    "format:staged": "prettier --write $(git diff --cached --name-only --diff-filter=ACMR | grep -E '\\.(js|jsx|ts|tsx|json|css|scss|md|mdx|html|yml|yaml)$' | tr '\\n' ' ')"
+    "format:staged": "prettier --write $(git diff --cached --name-only --diff-filter=ACMR | grep -E '\\.(js|jsx|ts|tsx|json|css|scss|md,mdx|html|yml|yaml)$' | tr '\\n' ' ')"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.4",
     "@radix-ui/react-dialog": "^1.1.14",
     "browser-image-compression": "^2.0.2",
     "heic2any": "^0.0.4",
-    "next": "15.3.3",
+    "next": "^16.0.0",
     "next-mdx-remote": "^5.0.0",
     "onnxruntime-web": "^1.16.0",
     "react": "19.1.0",
     "react-compare-image": "^3.5.4",
     "react-dom": "19.1.0",
     "sugar-high": "^0.7.0",
-    "tinacms": "^2.7.5"
+    "tinacms": "^2.9.0"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^16.0.0",
     "@tailwindcss/typography": "^0.5.16",
-    "@tinacms/cli": "^1.9.5",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@tinacms/cli": "^1.11.0",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@types/jest": "^30.0.0",
     "@types/node": "^22.15.32",
@@ -38,14 +44,16 @@
     "@types/react-dom": "19.1.6",
     "autoprefixer": "^10.4.19",
     "clsx": "^2.1.1",
-    "eslint": "^8",
-    "eslint-config-next": "15.3.3",
+    "eslint": "^9.38.0",
+    "eslint-config-next": "^16.0.0",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^30.0.2",
     "jest-environment-jsdom": "^30.0.2",
     "null-loader": "^4.0.1",
     "postcss": "^8",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.8",
+    "schema-dts": "^1.1.5",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^3.4.7",
     "tailwindcss-motion": "^1.1.1",
@@ -55,6 +63,9 @@
   },
   "overrides": {
     "@types/react": "19.1.8",
-    "@types/react-dom": "19.1.6"
+    "@types/react-dom": "19.1.6",
+    "dompurify": "^3.2.4",
+    "mermaid": "^11.5.1",
+    "jsonpath-plus": "^10.3.0"
   }
 }

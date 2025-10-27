@@ -45,14 +45,9 @@ export default function ImageConverter() {
         image.type === "image/heic" ||
         image.name.toLowerCase().endsWith(".heic")
       ) {
-        // Use window.heic2any from CDN
-        // @ts-expect-error: Property 'heic2any' does not exist on type 'Window & typeof globalThis'.
-        const heic2any = window.heic2any;
-        if (!heic2any) {
-          setError("heic2any not loaded");
-          return;
-        }
         try {
+          // Dynamically import heic2any to avoid SSR issues
+          const heic2any = (await import("heic2any")).default;
           const result = await heic2any({
             blob: image,
             toType: outputFormat.value,

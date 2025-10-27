@@ -1,7 +1,9 @@
 import { type Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { type BlogPosting, type WithContext } from "schema-dts";
 
+import { StructuredData } from "@components/StructuredData";
 import { CustomMDX, Wrapper } from "@components/ui";
 import { getBlogPosts } from "@db/blog";
 import formatDate from "@utils/formatDate";
@@ -50,33 +52,55 @@ async function Blog(props: Props) {
   const post = getBlogPosts().find((post) => post.slug === params.slug);
   if (!post) notFound();
 
-  const { publishedDateTime, title, description, heroImage } = post.metadata;
+  const { publishedDateTime, title, description, heroImage, categories } =
+    post.metadata;
+
+  const articleUrl = `https://kashyapsuhas.com/blog/${post.slug}`;
+  const wordCount = post.content.split(/\s+/).length;
+
+  const structuredData: WithContext<BlogPosting> = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: title,
+    description: description,
+    image: {
+      "@type": "ImageObject",
+      url: heroImage,
+    },
+    datePublished: publishedDateTime,
+    dateModified: publishedDateTime,
+    author: {
+      "@type": "Person",
+      name: "Suhas Kashyap",
+      url: "https://kashyapsuhas.com",
+      image: {
+        "@type": "ImageObject",
+        url: "https://kashyapsuhas.com/suhas_og.jpg",
+      },
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Suhas Kashyap",
+      url: "https://kashyapsuhas.com",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://kashyapsuhas.com/suhas_og.jpg",
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": articleUrl,
+    },
+    url: articleUrl,
+    wordCount: wordCount,
+    keywords: categories,
+    inLanguage: "en-US",
+  };
 
   return (
     <Wrapper className="mb-12 w-full md:mb-20">
       <section>
-        {/* structured data */}
-        <script
-          type="application/ld+json"
-          suppressHydrationWarning
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "BlogPosting",
-              headline: title,
-              datePublished: publishedDateTime,
-              dateModified: publishedDateTime,
-              description: description,
-              image: heroImage,
-              url: `https://kashyapsuhas.com/blog/${post.slug}`,
-              author: {
-                "@type": "Person",
-                name: "Suhas Kashyap",
-                url: "https://www.kashyapsuhas.com",
-              },
-            }),
-          }}
-        />
+        <StructuredData data={structuredData} />
 
         {/* title */}
         <h1 className="title w-full text-4xl font-medium md:text-8xl">

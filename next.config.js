@@ -1,4 +1,9 @@
-const webpack = require("webpack");
+import withBundleAnalyzer from "@next/bundle-analyzer";
+
+const bundleAnalyzer = withBundleAnalyzer({
+  enabled: process.env.ANALYZE === "true",
+});
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   async redirects() {
@@ -10,6 +15,10 @@ const nextConfig = {
       },
     ];
   },
+  images: {
+    qualities: [100, 75],
+  },
+  turbopack: {},
   webpack: (config, { isServer }) => {
     config.experiments = { ...config.experiments, asyncWebAssembly: true };
     config.module.rules.push({
@@ -32,4 +41,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+export default bundleAnalyzer(nextConfig);

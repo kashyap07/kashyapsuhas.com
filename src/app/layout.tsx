@@ -1,9 +1,13 @@
 import { Eczar } from "next/font/google";
-import Script from "next/script";
+import type { Metadata } from "next";
 
 import "./globals.css";
 
 const eczar = Eczar({ subsets: ["latin"] });
+
+export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://kashyapsuhas.com"),
+};
 
 export default function RootLayout({
   children,
@@ -12,13 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body className={eczar.className}>
-        <Script
-          src="https://cdn.jsdelivr.net/npm/heic2any/dist/heic2any.min.js"
-          strategy="beforeInteractive"
-        />
-        {children}
-      </body>
+      <body className={eczar.className}>{children}</body>
     </html>
   );
 }
