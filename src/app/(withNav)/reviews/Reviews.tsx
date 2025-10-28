@@ -415,8 +415,8 @@ function Reviews({ reviews: initialReviews }: Props) {
       {/* reviews table */}
       <div className="relative w-full md:min-w-[850px]">
         {/* header */}
-        <div className="grid grid-cols-4 border-b bg-gray-50 px-2 py-3 text-xs font-semibold uppercase tracking-wider text-gray-500 md:grid-cols-9">
-          <div className="col-span-2 px-2">Name</div>
+        <div className="grid grid-cols-4 border-b bg-gray-50 px-2 py-3 text-xs font-semibold tracking-wider text-gray-500 md:grid-cols-9">
+          <div className="col-span-2 px-2">name</div>
           <button
             type="button"
             onClick={() =>
@@ -427,7 +427,7 @@ function Reviews({ reviews: initialReviews }: Props) {
             }
             className="col-span-1 px-2 text-left hover:text-gray-700"
           >
-            Rating
+            rating
             <span className="ml-1 inline-block">
               {(() => {
                 const ratingSort = reviewsState.sortOrder.rating;
@@ -437,9 +437,9 @@ function Reviews({ reviews: initialReviews }: Props) {
               })()}
             </span>
           </button>
-          <div className="col-span-1 hidden px-2 sm:block">Recommend</div>
-          <div className="col-span-1 px-2">Category</div>
-          <div className="col-span-4 hidden px-2 md:block">Summary</div>
+          <div className="col-span-1 hidden px-2 sm:block">recommend</div>
+          <div className="col-span-1 px-2">category</div>
+          <div className="col-span-4 hidden px-2 md:block">summary</div>
         </div>
 
         {/* rows */}
