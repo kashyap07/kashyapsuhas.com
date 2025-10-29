@@ -62,6 +62,16 @@ export default function Tools() {
           </span>
           <span className="text-2xl text-gray-500">instant text diff tool</span>
         </li>
+        <li className="mt-8 flex flex-col md:justify-between">
+          <span className="text-4xl font-medium md:text-6xl">
+            <Link className="flex flex-col" href={"tools/beat-maker"}>
+              Beat Maker
+            </Link>
+          </span>
+          <span className="text-2xl text-gray-500">
+            make beats in your browser with keyboard controls
+          </span>
+        </li>
       </ul>
     </Wrapper>
   );
