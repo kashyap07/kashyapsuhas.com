@@ -71,8 +71,9 @@ async function Blog(props: Props) {
               url: `https://kashyapsuhas.com/blog/${post.slug}`,
               author: {
                 "@type": "Person",
+                "@id": "https://kashyapsuhas.com/#person",
                 name: "Suhas Kashyap",
-                url: "https://www.kashyapsuhas.com",
+                url: "https://kashyapsuhas.com",
               },
             }),
           }}

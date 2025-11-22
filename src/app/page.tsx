@@ -7,13 +7,61 @@ import { TouchMarquee, Wrapper } from "@components/ui";
 export const metadata: Metadata = {
   title: "Suhas Kashyap",
   description:
-    "Suhas Kashyap's personal website. See blogs, photos, reviews, tools, contact details.",
-  keywords: ["Suhas", "Kashyap", "Suhas Kashyap", "blog", "photos", "tools"],
+    "Suhas Kashyap's slice of the interwebs. See blogs, photos, reviews, tools, contact details.",
+  keywords: [
+    "Suhas Kashyap",
+    "Kashyap Suhas",
+    "Suhas",
+    "Kashyap",
+    "Suhas Kashyap blog",
+    "Suhas Kashyap developer",
+    "Suhas Kashyap software engineer",
+    "Suhas Kashyap frontend dev",
+    "kashyapsuhas",
+    "kashyap07",
+    "Suhas Kashyap portfolio",
+    "Suhas Kashyap website",
+    "blog",
+    "photos",
+    "tools",
+    "reviews",
+  ],
+  authors: [{ name: "Suhas Kashyap", url: "https://kashyapsuhas.com" }],
+  creator: "Suhas Kashyap",
+  publisher: "Suhas Kashyap",
   alternates: {
     canonical: "https://kashyapsuhas.com/",
   },
   openGraph: {
-    images: ["/suhas_og.jpg"],
+    type: "profile",
+    title: "Suhas Kashyap",
+    description:
+      "Suhas Kashyap's slice of the interwebs. See blogs, photos, reviews, tools, contact details.",
+    url: "https://kashyapsuhas.com",
+    siteName: "Suhas Kashyap",
+    locale: "en_US",
+    images: [
+      {
+        url: "https://kashyapsuhas.com/suhas_og.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Suhas Kashyap - Software Dev",
+      },
+    ],
+    firstName: "Suhas",
+    lastName: "Kashyap",
+    username: "kashyap07",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 
@@ -53,7 +101,7 @@ const TopSP = () => (
         <div className="absolute aspect-[1/2] w-screen overflow-hidden">
           <Image
             src="/suhas_hike.jpg"
-            alt="suhas kashyap hiking"
+            alt="suhas kashyap"
             fill={true}
             priority
             className="imageMask_SP pointer-events-none z-10 object-cover"
@@ -62,7 +110,7 @@ const TopSP = () => (
 
           <Image
             src="/suhas_hike_nobg.png"
-            alt="suhas kashyap hiking, but without background"
+            alt="suhas kashyap"
             aria-hidden="true"
             fill={true}
             quality={100}
@@ -77,13 +125,15 @@ const TopSP = () => (
 
       {/* START pre-fold text */}
       <Wrapper className="absolute bottom-4 flex flex-col justify-end">
-        <h1 className="z-40 m-0 flex flex-col justify-center gap-2">
+        <div className="z-40 m-0 flex flex-col justify-center gap-2">
           <span className="text-3xl">Hi, I&apos;m</span>
-          <span className="mb-2 text-5xl leading-[0.9]">Suhas Kashyap</span>
+          <h1 className="mb-2 text-nowrap text-5xl leading-[0.9]">
+            Suhas Kashyap
+          </h1>
           <span className="text-2xl">
             Welcome to my slice of the Interwebs.
           </span>
-        </h1>
+        </div>
       </Wrapper>
       {/* END pre-fold text */}
     </Wrapper>
@@ -128,7 +178,7 @@ const TopPC = () => (
       <div className="relative z-10 translate-x-6">
         <Image
           src="/suhas_nobg.png"
-          alt="suhas kashyap hiking"
+          alt="suhas kashyap"
           height={500}
           width={500}
           priority
@@ -148,15 +198,61 @@ export default function Home() {
         type="application/ld+json"
         suppressHydrationWarning
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            url: "https://kashyapsuhas.com",
-            description:
-              "Suhas Kashyap's personal website. See blogs, photos, reviews, tools, contact details.",
-            name: "Suhas Kashyap",
-            image: "/suhas_og.jpg",
-          }),
+          __html: JSON.stringify([
+            {
+              "@context": "https://schema.org",
+              "@type": "Person",
+              "@id": "https://kashyapsuhas.com/#person",
+              name: "Suhas Kashyap",
+              alternateName: ["Kashyap Suhas", "Suhas", "Kashyap"],
+              url: "https://kashyapsuhas.com",
+              image: {
+                "@type": "ImageObject",
+                url: "https://kashyapsuhas.com/suhas_og.jpg",
+                width: 1200,
+                height: 630,
+              },
+              jobTitle: "Software Dev",
+              description:
+                "Suhas Kashyap's slice of the interwebs. See blogs, photos, reviews, tools, contact details.",
+              email: "mantles_arbours_00@icloud.com",
+              sameAs: [
+                "https://github.com/kashyap07",
+                "https://www.linkedin.com/in/suhas-kashyap",
+                "https://www.instagram.com/kashyap_07/",
+              ],
+              knowsAbout: [
+                "Software Engineering",
+                "Web Development",
+                "JavaScript",
+                "TypeScript",
+                "React",
+                "Next.js",
+                "Image Processing",
+                "Frontend Development",
+              ],
+              mainEntityOfPage: {
+                "@type": "WebPage",
+                "@id": "https://kashyapsuhas.com",
+              },
+            },
+            {
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "@id": "https://kashyapsuhas.com/#website",
+              url: "https://kashyapsuhas.com",
+              name: "Suhas Kashyap",
+              description:
+                "Suhas Kashyap's slice of the interwebs. See blogs, photos, reviews, tools, contact details.",
+              author: {
+                "@id": "https://kashyapsuhas.com/#person",
+              },
+              publisher: {
+                "@id": "https://kashyapsuhas.com/#person",
+              },
+              inLanguage: "en-US",
+            },
+          ]),
         }}
       />
       <TopSP />
