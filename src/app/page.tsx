@@ -194,67 +194,75 @@ const TopPC = () => (
 export default function Home() {
   return (
     <main className="max-w-screen select-none overflow-hidden font-semibold">
+      {/* Person Schema */}
       <script
         type="application/ld+json"
         suppressHydrationWarning
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify([
-            {
-              "@context": "https://schema.org",
-              "@type": "Person",
-              "@id": "https://kashyapsuhas.com/#person",
-              name: "Suhas Kashyap",
-              alternateName: ["Kashyap Suhas", "Suhas", "Kashyap"],
-              url: "https://kashyapsuhas.com",
-              image: {
-                "@type": "ImageObject",
-                url: "https://kashyapsuhas.com/suhas_og.jpg",
-                width: 1200,
-                height: 630,
-              },
-              jobTitle: "Software Dev",
-              description:
-                "Suhas Kashyap's slice of the interwebs. See blogs, photos, reviews, tools, contact details.",
-              email: "mantles_arbours_00@icloud.com",
-              sameAs: [
-                "https://github.com/kashyap07",
-                "https://www.linkedin.com/in/suhas-kashyap",
-                "https://www.instagram.com/kashyap_07/",
-              ],
-              knowsAbout: [
-                "Software Engineering",
-                "Web Development",
-                "JavaScript",
-                "TypeScript",
-                "React",
-                "Next.js",
-                "Image Processing",
-                "Frontend Development",
-              ],
-              mainEntityOfPage: {
-                "@type": "WebPage",
-                "@id": "https://kashyapsuhas.com",
-              },
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "@id": "https://kashyapsuhas.com/#person",
+            name: "Suhas Kashyap",
+            alternateName: ["Kashyap Suhas", "Suhas", "Kashyap"],
+            url: "https://kashyapsuhas.com",
+            image: {
+              "@type": "ImageObject",
+              url: "https://kashyapsuhas.com/suhas_og.jpg",
+              width: 1200,
+              height: 630,
             },
-            {
-              "@context": "https://schema.org",
-              "@type": "WebSite",
-              "@id": "https://kashyapsuhas.com/#website",
-              url: "https://kashyapsuhas.com",
-              name: "Suhas Kashyap",
-              description:
-                "Suhas Kashyap's slice of the interwebs. See blogs, photos, reviews, tools, contact details.",
-              author: {
-                "@id": "https://kashyapsuhas.com/#person",
-              },
-              publisher: {
-                "@id": "https://kashyapsuhas.com/#person",
-              },
-              inLanguage: "en-US",
+            jobTitle: "Software Dev",
+            description:
+              "Suhas Kashyap's slice of the interwebs. See blogs, photos, reviews, tools, contact details.",
+            email: "mantles_arbours_00@icloud.com",
+            sameAs: [
+              "https://github.com/kashyap07",
+              "https://www.linkedin.com/in/suhas-kashyap",
+              "https://www.instagram.com/kashyap_07/",
+            ],
+            knowsAbout: [
+              "Software Engineering",
+              "Web Development",
+              "JavaScript",
+              "TypeScript",
+              "React",
+              "Next.js",
+              "Image Processing",
+              "Frontend Development",
+            ],
+            mainEntityOfPage: {
+              "@type": "WebPage",
+              "@id": "https://kashyapsuhas.com",
             },
-          ]),
+          }),
         }}
       />
+
+      {/* WebSite Schema */}
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "@id": "https://kashyapsuhas.com/#website",
+            url: "https://kashyapsuhas.com",
+            name: "Suhas Kashyap",
+            description:
+              "Suhas Kashyap's slice of the interwebs. See blogs, photos, reviews, tools, contact details.",
+            author: {
+              "@id": "https://kashyapsuhas.com/#person",
+            },
+            publisher: {
+              "@id": "https://kashyapsuhas.com/#person",
+            },
+            inLanguage: "en-US",
+          }),
+        }}
+      />
+
       <TopSP />
       <TopPC />
     </main>
