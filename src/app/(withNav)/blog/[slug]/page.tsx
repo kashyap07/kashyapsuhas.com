@@ -28,7 +28,7 @@ export async function generateMetadata(props: {
       type: "article",
       publishedTime: publishedDateTime,
       authors: "Suhas Kashyap",
-      url: `https://kashyapsuhas.com/blog/${post.slug}`,
+      url: `https://www.kashyapsuhas.com/blog/${post.slug}`,
       images: [
         {
           url: heroImage,
@@ -36,7 +36,7 @@ export async function generateMetadata(props: {
       ],
     },
     alternates: {
-      canonical: `https://kashyapsuhas.com/blog/${post.slug}`,
+      canonical: `https://www.kashyapsuhas.com/blog/${post.slug}`,
     },
   };
 }
@@ -68,12 +68,12 @@ async function Blog(props: Props) {
               dateModified: publishedDateTime,
               description: description,
               image: heroImage,
-              url: `https://kashyapsuhas.com/blog/${post.slug}`,
+              url: `https://www.kashyapsuhas.com/blog/${post.slug}`,
               author: {
                 "@type": "Person",
-                "@id": "https://kashyapsuhas.com/#person",
+                "@id": "https://www.kashyapsuhas.com/#person",
                 name: "Suhas Kashyap",
-                url: "https://kashyapsuhas.com",
+                url: "https://www.kashyapsuhas.com",
               },
             }),
           }}
@@ -93,7 +93,7 @@ async function Blog(props: Props) {
         <hr />
 
         {/* blog content */}
-        <article className="prose prose-xl md:prose-2xl mt-8 text-pretty break-words">
+        <article className="prose prose-xl mt-8 text-pretty break-words md:prose-2xl">
           <CustomMDX source={post.content} />
         </article>
       </section>

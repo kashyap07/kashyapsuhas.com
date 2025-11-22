@@ -7,7 +7,7 @@ export const metadata = {
   title: "Kashyap's Blog | Suhas Kashyap",
   description: "Kashyap's Blog.",
   alternates: {
-    canonical: "https://kashyapsuhas.com/blog",
+    canonical: "https://www.kashyapsuhas.com/blog",
   },
   keywords: ["Suhas Kashyap", "blog"],
 };
@@ -60,12 +60,12 @@ function Blog() {
                   className="group"
                   href={`/blog/${post.slug}`}
                 >
-                  <li className="flex flex-row-reverse md:flex-row items-baseline md:items-end gap-2 md:justify-between">
-                    <span className="text-[1.3rem] md:text-3xl font-medium flex-grow">
+                  <li className="flex flex-row-reverse items-baseline gap-2 md:flex-row md:items-end md:justify-between">
+                    <span className="flex-grow text-[1.3rem] font-medium md:text-3xl">
                       {post.metadata.title}
                     </span>
 
-                    <span className="text-base md:text-lg min-w-20 md:min-w-fit text-gray-600 group-hover:font-medium group-hover:text-columbiaYellow">
+                    <span className="min-w-20 text-base text-gray-600 group-hover:font-medium group-hover:text-columbiaYellow md:min-w-fit md:text-lg">
                       {formatter.format(
                         new Date(post.metadata.publishedDateTime),
                       )}

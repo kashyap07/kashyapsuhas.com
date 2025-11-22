@@ -350,7 +350,7 @@ This allows the background-remover tool to use ONNX Runtime in the browser.
 
 - `NEXT_PUBLIC_TINA_CLIENT_ID` - TinaCMS client ID
 - `TINA_TOKEN` - TinaCMS authentication token
-- `NEXT_PUBLIC_SITE_URL` - Site URL for metadata base (defaults to https://kashyapsuhas.com)
+- `NEXT_PUBLIC_SITE_URL` - Site URL for metadata base (defaults to https://www.kashyapsuhas.com)
 
 **Branch detection:**
 

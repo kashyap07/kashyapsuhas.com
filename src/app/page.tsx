@@ -26,23 +26,23 @@ export const metadata: Metadata = {
     "tools",
     "reviews",
   ],
-  authors: [{ name: "Suhas Kashyap", url: "https://kashyapsuhas.com" }],
+  authors: [{ name: "Suhas Kashyap", url: "https://www.kashyapsuhas.com" }],
   creator: "Suhas Kashyap",
   publisher: "Suhas Kashyap",
   alternates: {
-    canonical: "https://kashyapsuhas.com/",
+    canonical: "https://www.kashyapsuhas.com/",
   },
   openGraph: {
     type: "profile",
     title: "Suhas Kashyap",
     description:
       "Suhas Kashyap's slice of the interwebs. See blogs, photos, reviews, tools, contact details.",
-    url: "https://kashyapsuhas.com",
+    url: "https://www.kashyapsuhas.com",
     siteName: "Suhas Kashyap",
     locale: "en_US",
     images: [
       {
-        url: "https://kashyapsuhas.com/suhas_og.jpg",
+        url: "https://www.kashyapsuhas.com/suhas_og.jpg",
         width: 1200,
         height: 630,
         alt: "Suhas Kashyap - Software Dev",
@@ -202,13 +202,13 @@ export default function Home() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Person",
-            "@id": "https://kashyapsuhas.com/#person",
+            "@id": "https://www.kashyapsuhas.com/#person",
             name: "Suhas Kashyap",
             alternateName: ["Kashyap Suhas", "Suhas", "Kashyap"],
-            url: "https://kashyapsuhas.com",
+            url: "https://www.kashyapsuhas.com",
             image: {
               "@type": "ImageObject",
-              url: "https://kashyapsuhas.com/suhas_og.jpg",
+              url: "https://www.kashyapsuhas.com/suhas_og.jpg",
               width: 1200,
               height: 630,
             },
@@ -233,7 +233,7 @@ export default function Home() {
             ],
             mainEntityOfPage: {
               "@type": "WebPage",
-              "@id": "https://kashyapsuhas.com",
+              "@id": "https://www.kashyapsuhas.com",
             },
           }),
         }}
@@ -247,16 +247,16 @@ export default function Home() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "WebSite",
-            "@id": "https://kashyapsuhas.com/#website",
-            url: "https://kashyapsuhas.com",
+            "@id": "https://www.kashyapsuhas.com/#website",
+            url: "https://www.kashyapsuhas.com",
             name: "Suhas Kashyap",
             description:
               "Suhas Kashyap's slice of the interwebs. See blogs, photos, reviews, tools, contact details.",
             author: {
-              "@id": "https://kashyapsuhas.com/#person",
+              "@id": "https://www.kashyapsuhas.com/#person",
             },
             publisher: {
-              "@id": "https://kashyapsuhas.com/#person",
+              "@id": "https://www.kashyapsuhas.com/#person",
             },
             inLanguage: "en-US",
           }),

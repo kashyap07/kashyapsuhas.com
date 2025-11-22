@@ -1,12 +1,14 @@
-import { Eczar } from "next/font/google";
 import type { Metadata } from "next";
+import { Eczar } from "next/font/google";
 
 import "./globals.css";
 
 const eczar = Eczar({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://kashyapsuhas.com"),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "https://www.kashyapsuhas.com",
+  ),
 };
 
 export default function RootLayout({
