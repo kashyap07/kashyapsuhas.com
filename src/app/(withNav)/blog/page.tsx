@@ -8,6 +8,9 @@ export const metadata = {
   description: "Kashyap's Blog.",
   alternates: {
     canonical: "https://www.kashyapsuhas.com/blog",
+    types: {
+      "application/rss+xml": "https://www.kashyapsuhas.com/blog/feed.xml",
+    },
   },
   keywords: ["Suhas Kashyap", "blog"],
 };
