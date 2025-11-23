@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useReducer, useState } from "react";
+import { useCallback, useEffect, useReducer, useRef, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { CheckMini, XMarkMini } from "@components/icons";
 import { Dialog, Wrapper } from "@components/ui";
@@ -35,46 +36,94 @@ const getCategoriesList = (reviews: Array<ReviewWithIndex>) => {
   return Array.from(new Set(reviews.map((r) => r.category))).sort();
 };
 
-const reviewsReducer = (reviewsState: ReviewsState, action: ReducerActions) => {
-  const deriveReviewsState = (reviewsState: ReviewsState) => {
-    const { sourceReviews, searchString, selectedCategory, sortOrder } =
-      reviewsState;
+// parse URL params into initial state
+const parseUrlParams = (searchParams: URLSearchParams) => {
+  const searchString = searchParams.get("q") || "";
+  const selectedCategory = searchParams.get("cat") || null;
+  const sortField = searchParams.get("sort");
+  const sortOrderParam = searchParams.get("order");
 
-    let newReviews = [...sourceReviews];
+  let ratingSort: SortOrder = null;
 
-    // order matters
+  if (sortField === "rating" && sortOrderParam) {
+    ratingSort = sortOrderParam.toUpperCase() === "ASC" ? "ASC" : "DESC";
+  }
 
-    // 1. search
-    const normalizedSearchString = searchString.toLowerCase().trim();
-    newReviews = newReviews.filter(
-      (review) =>
-        review.name.toLowerCase().includes(normalizedSearchString) ||
-        review.category.toLowerCase().includes(normalizedSearchString) ||
-        review.summary.toLowerCase().includes(normalizedSearchString),
-    );
-
-    // 2. re calculate list of categories only if there is a search string
-    const newReviewCategories = getCategoriesList(newReviews);
-
-    // 3. filter by category
-    newReviews = selectedCategory
-      ? newReviews.filter((review) => review.category === selectedCategory)
-      : newReviews;
-
-    // 4. sort
-    newReviews = newReviews.sort((a, b) => {
-      if (action.payload === "rating") {
-        if (sortOrder.rating === null) return a._idx - b._idx; // third click resets to original order
-        return sortOrder.rating === "DESC"
-          ? b.rating - a.rating
-          : a.rating - b.rating;
-      }
-      return 0;
-    });
-
-    return { reviews: newReviews, reviewCategories: newReviewCategories };
+  return {
+    searchString,
+    selectedCategory,
+    sortOrder: {
+      rating: ratingSort,
+      name: null,
+    },
   };
+};
 
+// serialize state to URL params
+const serializeState = (reviewsState: ReviewsState): URLSearchParams => {
+  const params = new URLSearchParams();
+
+  if (reviewsState.searchString) {
+    params.set("q", reviewsState.searchString);
+  }
+
+  if (reviewsState.selectedCategory) {
+    params.set("cat", reviewsState.selectedCategory);
+  }
+
+  if (reviewsState.sortOrder.rating) {
+    params.set("sort", "rating");
+    params.set("order", reviewsState.sortOrder.rating.toLowerCase());
+  }
+
+  return params;
+};
+
+// apply filters and sorting to reviews
+const applyFiltersAndSort = (reviewsState: ReviewsState): ReviewsState => {
+  const { sourceReviews, searchString, selectedCategory, sortOrder } =
+    reviewsState;
+
+  let newReviews = [...sourceReviews];
+
+  // order matters
+
+  // 1. search
+  const normalizedSearchString = searchString.toLowerCase().trim();
+  newReviews = newReviews.filter(
+    (review) =>
+      review.name.toLowerCase().includes(normalizedSearchString) ||
+      review.category.toLowerCase().includes(normalizedSearchString) ||
+      review.summary.toLowerCase().includes(normalizedSearchString),
+  );
+
+  // 2. re calculate list of categories only if there is a search string
+  const newReviewCategories = getCategoriesList(newReviews);
+
+  // 3. filter by category
+  newReviews = selectedCategory
+    ? newReviews.filter((review) => review.category === selectedCategory)
+    : newReviews;
+
+  // 4. sort
+  newReviews = newReviews.sort((a, b) => {
+    if (sortOrder.rating !== null) {
+      return sortOrder.rating === "DESC"
+        ? b.rating - a.rating
+        : a.rating - b.rating;
+    }
+    // if no sort applied, maintain original order
+    return a._idx - b._idx;
+  });
+
+  return {
+    ...reviewsState,
+    reviews: newReviews,
+    reviewCategories: newReviewCategories,
+  };
+};
+
+const reviewsReducer = (reviewsState: ReviewsState, action: ReducerActions) => {
   switch (action.type) {
     case "SORT": {
       const currentOrder = reviewsState.sortOrder[action.payload];
@@ -86,19 +135,12 @@ const reviewsReducer = (reviewsState: ReviewsState, action: ReducerActions) => {
         sortOrder: { ...reviewsState.sortOrder, [action.payload]: newOrder },
       };
 
-      return {
-        ...newState,
-        ...deriveReviewsState(newState),
-      };
+      return applyFiltersAndSort(newState);
     }
 
     case "SEARCH": {
       const newState = { ...reviewsState, searchString: action.payload };
-
-      return {
-        ...newState,
-        ...deriveReviewsState(newState),
-      };
+      return applyFiltersAndSort(newState);
     }
 
     case "FILTER_CATEGORY": {
@@ -112,10 +154,7 @@ const reviewsReducer = (reviewsState: ReviewsState, action: ReducerActions) => {
         selectedCategory: newSelectedCategory,
       };
 
-      return {
-        ...newState,
-        ...deriveReviewsState(newState),
-      };
+      return applyFiltersAndSort(newState);
     }
 
     default:
@@ -124,6 +163,10 @@ const reviewsReducer = (reviewsState: ReviewsState, action: ReducerActions) => {
 };
 
 function Reviews({ reviews: initialReviews }: Props) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const [reviewsState, dispatch] = useReducer(
     reviewsReducer,
     initialReviews,
@@ -133,23 +176,29 @@ function Reviews({ reviews: initialReviews }: Props) {
         _idx: idx,
       }));
 
-      return {
+      // parse URL params for initial state
+      const urlState = parseUrlParams(searchParams);
+
+      const initialState: ReviewsState = {
         sourceReviews: initialReviewsWithIndex,
         reviews: initialReviewsWithIndex,
         reviewCategories: getCategoriesList(initialReviewsWithIndex),
-        searchString: "",
-        selectedCategory: null,
-        sortOrder: {
-          name: null,
-          rating: null,
-        },
+        searchString: urlState.searchString,
+        selectedCategory: urlState.selectedCategory,
+        sortOrder: urlState.sortOrder,
       };
+
+      // apply filters/sort from URL on initial load
+      return applyFiltersAndSort(initialState);
     },
   );
 
   // arrow hint state - shows every time until user clicks
   const [showHint, setShowHint] = useState(true);
   const [openDialogId, setOpenDialogId] = useState<number | null>(null);
+
+  // track if this is the initial mount to avoid syncing URL on first render
+  const isInitialMount = useRef(true);
 
   const dismissHint = useCallback(() => {
     setShowHint(false);
@@ -161,6 +210,32 @@ function Reviews({ reviews: initialReviews }: Props) {
       dismissHint();
     }
   }, [openDialogId, dismissHint]);
+
+  // sync URL with state changes (debounced for search)
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
+    const params = serializeState(reviewsState);
+    const newUrl = params.toString()
+      ? `${pathname}?${params.toString()}`
+      : pathname;
+
+    // use setTimeout to debounce search input
+    const timeoutId = setTimeout(() => {
+      router.push(newUrl, { scroll: false });
+    }, 300);
+
+    return () => clearTimeout(timeoutId);
+  }, [
+    reviewsState.searchString,
+    reviewsState.selectedCategory,
+    reviewsState.sortOrder,
+    router,
+    pathname,
+  ]);
 
   // FIXME: tailwind run time situation
   const getCategoryColor = useCallback((category: string) => {
