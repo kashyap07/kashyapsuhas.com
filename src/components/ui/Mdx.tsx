@@ -11,6 +11,7 @@ import type { MDXComponents } from "mdx/types";
 import { MDXRemote, MDXRemoteProps } from "next-mdx-remote/rsc";
 import { highlight } from "sugar-high";
 
+import * as MdxComponents from "@components/mdx";
 import { ImageAutoHeight } from "@components/ui";
 
 const CustomLink = (props: AnchorHTMLAttributes<HTMLAnchorElement>) => {
@@ -96,6 +97,8 @@ const defaultComponentMapping: MDXComponents = {
   Image: ImageAutoHeight,
   a: CustomLink,
   code: Code,
+  // custom mdx components available in all blog posts
+  ...MdxComponents,
 };
 
 function CustomMDX(props: JSX.IntrinsicAttributes & MDXRemoteProps) {

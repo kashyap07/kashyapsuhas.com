@@ -1,0 +1,83 @@
+---
+publishedDateTime: 2025-12-17T12:00:00.000Z
+title: MDX Components Demo
+description: Testing custom components in MDX
+heroImage: ""
+---
+
+# MDX Components Demo
+
+This post demonstrates the new custom components available in MDX blog posts!
+
+## Callout Component
+
+<Callout type="info" title="Information">
+  This is an info callout. Use it to highlight important information.
+</Callout>
+
+<Callout type="warning" title="Warning">
+  This is a warning callout. Use it to warn users about potential issues.
+</Callout>
+
+<Callout type="success" title="Success">
+  This is a success callout. Use it to show successful operations or tips.
+</Callout>
+
+<Callout type="danger" title="Danger">
+  This is a danger callout. Use it for critical warnings or errors.
+</Callout>
+
+## YouTube Component
+
+Embed YouTube videos easily:
+
+<YouTube id="dQw4w9WgXcQ" title="Never Gonna Give You Up" />
+
+## CodeBlock Component
+
+<CodeBlock title="example.js">
+```javascript
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+
+console.log(greet('World'));
+
+````
+</CodeBlock>
+
+## Grid Component
+
+<Grid cols={2}>
+  <div>
+    ### Grid Item 1
+    Content for the first grid item.
+  </div>
+  <div>
+    ### Grid Item 2
+    Content for the second grid item.
+  </div>
+  <div>
+    ### Grid Item 3
+    Content for the third grid item.
+  </div>
+  <div>
+    ### Grid Item 4
+    Content for the fourth grid item.
+  </div>
+</Grid>
+
+## Combining Components
+
+<Callout type="info" title="Pro Tip">
+You can combine these components with regular markdown and other MDX features!
+
+<CodeBlock title="nested-example.tsx">
+```typescript
+const example = "nested code block";
+````
+
+</CodeBlock>
+</Callout>
+
+That's it! These components are now available in all your blog posts.
