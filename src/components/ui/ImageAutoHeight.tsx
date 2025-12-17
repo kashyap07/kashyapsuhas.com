@@ -31,9 +31,9 @@ const ImageAutoHeight = ({
   ...rest
 }: ImageAutoHeightProps) => {
   return (
-    <div
+    <span
       className={cn(
-        "css-ImageAutoHeight children:!position-unset grid self-center justify-self-center",
+        "css-ImageAutoHeight children:!position-unset grid w-full self-center justify-self-center",
         mdHalfWidth && "md:w-1/2",
         className,
       )}
@@ -49,7 +49,7 @@ const ImageAutoHeight = ({
           imageClassName,
         )}
       />
-    </div>
+    </span>
   );
 };
 
