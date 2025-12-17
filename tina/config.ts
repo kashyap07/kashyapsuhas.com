@@ -86,6 +86,38 @@ export default defineConfig({
             name: "post",
             label: "Post",
             isBody: true,
+            templates: [
+              {
+                name: "Image",
+                label: "Image",
+                fields: [
+                  {
+                    name: "src",
+                    label: "Image Source",
+                    type: "image",
+                    required: true,
+                  },
+                  {
+                    name: "alt",
+                    label: "Alt Text",
+                    type: "string",
+                    required: true,
+                  },
+                  {
+                    name: "mdHalfWidth",
+                    label: "Half Width (for MD layout)",
+                    type: "boolean",
+                    required: false,
+                  },
+                ],
+                ui: {
+                  defaultItem: {
+                    alt: "Image description",
+                    mdHalfWidth: false,
+                  },
+                },
+              },
+            ],
           },
         ],
         // TODO: add preview feature some dat
