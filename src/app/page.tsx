@@ -155,7 +155,7 @@ const TopPC = () => (
   <Wrapper
     maxWidth="NARROW"
     data-locator-id="top-pc-wrapper"
-    className="hidden min-h-screen w-full grid-cols-2 items-center justify-between gap-10 py-20 sm:grid sm:px-4 lg:px-0"
+    className="hidden min-h-screen w-full grid-cols-[1fr_1.3fr] items-center justify-between gap-10 py-20 sm:grid sm:px-4 lg:px-0"
   >
     {/* START top pc left side */}
     <div className="z-10 grid grid-cols-1 gap-32">
@@ -175,15 +175,15 @@ const TopPC = () => (
 
     {/* START top pc right side */}
     <div className="group relative">
-      <div className="relative z-10 translate-x-6">
+      <div className="relative -z-10 w-full">
         <Image
-          src="/suhas_nobg.png"
+          src="/kedar-bw-3.png"
           alt="suhas kashyap"
           height={500}
           width={500}
           priority
           quality={100}
-          className="imageMask_PC pointer-events-none relative top-0 z-10 origin-bottom-left transform object-cover drop-shadow-xl"
+          className="pointer-events-none relative top-24 -z-10 w-full origin-bottom-left transform object-cover"
         />
       </div>
     </div>
