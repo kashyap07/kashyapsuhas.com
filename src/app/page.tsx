@@ -155,7 +155,7 @@ const TopPC = () => (
   <Wrapper
     maxWidth="NARROW"
     data-locator-id="top-pc-wrapper"
-    className="hidden min-h-screen w-full grid-cols-[1fr_1.3fr] items-center justify-between gap-10 py-20 sm:grid sm:px-4 lg:px-0"
+    className="hidden min-h-screen w-full grid-cols-[1fr_2.2fr] items-center justify-between gap-10 py-20 sm:grid sm:px-4 lg:px-0"
   >
     {/* START top pc left side */}
     <div className="z-10 grid grid-cols-1 gap-32">
@@ -183,7 +183,7 @@ const TopPC = () => (
           width={500}
           priority
           quality={100}
-          className="pointer-events-none relative top-24 -z-10 w-full origin-bottom-left transform object-cover"
+          className="pointer-events-none relative left-12 top-24 -z-10 w-full origin-bottom-left transform object-cover"
         />
       </div>
     </div>
