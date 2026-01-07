@@ -155,7 +155,7 @@ const TopPC = () => (
   <Wrapper
     maxWidth="NARROW"
     data-locator-id="top-pc-wrapper"
-    className="hidden min-h-screen w-full grid-cols-[1fr_2.2fr] items-center justify-between gap-10 py-20 sm:grid sm:px-4 lg:px-0"
+    className="hidden min-h-screen w-full grid-cols-[1fr_2fr] items-center justify-between gap-10 py-20 sm:grid sm:px-4 lg:px-0"
   >
     {/* START top pc left side */}
     <div className="z-10 grid grid-cols-1 gap-32">
@@ -177,7 +177,7 @@ const TopPC = () => (
     <div className="group relative">
       <div className="relative -z-10 w-full">
         <Image
-          src="/kedar-bw-3.png"
+          src="/kedar-bw.png"
           alt="suhas kashyap"
           height={500}
           width={500}
