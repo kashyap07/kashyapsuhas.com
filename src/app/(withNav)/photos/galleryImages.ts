@@ -5,16 +5,81 @@ export type GalleryImage = {
 
 const galleryImages: Array<GalleryImage> = [
   {
+    src: "/gallery/yakshagaana_2.jpg",
+    title: "Banna",
+  },
+  {
+    src: "/gallery/shrungeri_1.jpg",
+    title: "Shrungeri",
+  },
+  {
+    src: "/gallery/cat_eye.jpg",
+    title: "Cat Eye",
+  },
+
+  {
     src: "/gallery/bees.jpg",
     title: "Bees",
+  },
+  {
+    src: "/gallery/shrungeri_3.jpg",
+    title: "Hariharapura",
+  },
+  {
+    src: "/gallery/sirimane.jpg",
+    title: "Sirimane",
+  },
+  {
+    src: "/gallery/agumbe.jpg",
+    title: "Agumbe",
+  },
+  {
+    src: "/gallery/seltos_2.jpg",
+    title: "Seltos, again",
+  },
+  {
+    src: "/gallery/pink_2.jpg",
+    title: "Ping Color",
   },
   {
     src: "/gallery/ambari.jpg",
     title: "Ambari",
   },
   {
+    src: "/gallery/jayanagara_1.jpg",
+    title: "Jayanagara",
+  },
+  {
     src: "/gallery/desert_fire.jpg",
     title: "Desert Fire",
+  },
+  {
+    src: "/gallery/me_1.jpg",
+    title: "Peak",
+  },
+  {
+    src: "/gallery/iruve.jpg",
+    title: "Iruve",
+  },
+  {
+    src: "/gallery/Idli.jpg",
+    title: "Idli",
+  },
+  {
+    src: "/gallery/desert_fire.jpg",
+    title: "Desert Fire",
+  },
+  {
+    src: "/gallery/stars.jpg",
+    title: "Nakshatra",
+  },
+  {
+    src: "/gallery/yakshagaana_4.jpg",
+    title: "Bayalaata",
+  },
+  {
+    src: "/gallery/daari.jpg",
+    title: "Daari",
   },
   {
     src: "/gallery/thai_coconut.jpg",
@@ -33,6 +98,10 @@ const galleryImages: Array<GalleryImage> = [
     title: "Vade Vibes",
   },
   {
+    src: "/gallery/yakshagaana_1.jpg",
+    title: "Yakshagaana",
+  },
+  {
     src: "/gallery/reddy_anna.jpg",
     title: "Reddy ಅಣ್ಣ",
   },
@@ -49,10 +118,6 @@ const galleryImages: Array<GalleryImage> = [
     title: "Alloys",
   },
   {
-    src: "/gallery/cat_eye.jpg",
-    title: "Cat Eye",
-  },
-  {
     src: "/gallery/monke.jpg",
     title: "Monke",
   },
@@ -61,8 +126,12 @@ const galleryImages: Array<GalleryImage> = [
     title: "Bees and Stuff",
   },
   {
-    src: "/gallery/chandni.jpg",
-    title: "Chandni Chowk",
+    src: "/gallery/shrungeri_2.jpg",
+    title: "Gopura",
+  },
+  {
+    src: "/gallery/hoova.jpg",
+    title: "Hoova",
   },
   {
     src: "/gallery/buddy.jpg",
@@ -81,6 +150,10 @@ const galleryImages: Array<GalleryImage> = [
     title: "Moon",
   },
   {
+    src: "/gallery/yakshagaana_3.jpg",
+    title: "Tent",
+  },
+  {
     src: "/gallery/juice.jpg",
     title: "Juice",
   },
@@ -93,10 +166,6 @@ const galleryImages: Array<GalleryImage> = [
     title: "Feet",
   },
   {
-    src: "/gallery/Idli.jpg",
-    title: "Idli",
-  },
-  {
     src: "/gallery/FRI.jpg",
     title: "FRI",
   },
@@ -107,6 +176,10 @@ const galleryImages: Array<GalleryImage> = [
   {
     src: "/gallery/goa_1.jpg",
     title: "Goa",
+  },
+  {
+    src: "/gallery/chandni.jpg",
+    title: "Chandni Chowk",
   },
   {
     src: "/gallery/india.jpg",
