@@ -1,70 +1,43 @@
-"use client";
-
 import Image from "next/image";
-import { useState } from "react";
 
-import { ImageAutoHeight, Wrapper } from "@components/ui";
+import { Wrapper } from "@components/ui";
 
-import galleryImages, { GalleryImage } from "./galleryImages";
+import galleryImages from "./galleryImages";
+import { GalleryImageWrapper, GalleryProvider } from "./PhotoGallery";
 
 // maybe in the future: https://vercel.com/blog/building-a-fast-animated-image-gallery-with-next-js
 
-function Photos() {
-  const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
+export const metadata = {
+  title: "Kashyap's Photos | Suhas Kashyap",
+  description: "Kashyap's Photos.",
+  alternates: {
+    canonical: "https://www.kashyapsuhas.com/photos",
+  },
+  keywords: ["Suhas Kashyap photography", "photos", "gallery", "kashyap's photos", "photography"],
+};
 
-  const openImage = (src: GalleryImage) => setSelectedImage(src);
-  const closeImage = () => setSelectedImage(null);
-
+export default function Photos() {
   return (
-    <>
+    <GalleryProvider>
       <Wrapper className="mb-12 flex w-full flex-col items-center justify-center gap-4 md:mb-20">
         <div className="columns-1 gap-4 sm:columns-2 xl:columns-3">
           {galleryImages.map(({ src, title }, idx) => (
-            <Image
-              key={idx}
-              alt={title}
-              src={src}
-              width={720}
-              height={480}
-              sizes="(max-width: 640px) 100vw,
-                  (max-width: 1280px) 50vw,
-                  (max-width: 1536px) 33vw,
-                  25vw"
-              className="mb-4 cursor-pointer"
-              onClick={() => openImage({ src, title })}
-            />
+            <GalleryImageWrapper key={idx} src={src} title={title}>
+              <Image
+                alt={title}
+                src={src}
+                width={720}
+                height={480}
+                sizes="(max-width: 640px) 100vw,
+                    (max-width: 1280px) 50vw,
+                    (max-width: 1536px) 33vw,
+                    25vw"
+                className="mb-4 cursor-pointer"
+              />
+            </GalleryImageWrapper>
           ))}
         </div>
       </Wrapper>
-
-      {/* this should be a path maybe */}
-      {selectedImage && (
-        <Wrapper
-          maxWidth="FULL_WIDTH"
-          data-locator-id="photos-selected-image-wrapper"
-        >
-          <div
-            className="fixed left-0 top-0 z-50 flex h-full w-full cursor-pointer flex-col items-center justify-center gap-4 bg-black bg-opacity-50 px-4 py-24 backdrop-blur-xl md:gap-8"
-            onClick={closeImage}
-          >
-            <ImageAutoHeight
-              src={selectedImage.src}
-              alt={selectedImage.title || "selected image"}
-              className="h-full max-h-full w-full max-w-full contain-strict"
-              imageClassName="!absolute"
-            />
-
-            <div
-              className="mx-auto mb-0 text-center"
-              data-locator-id="photos-selected-title-text"
-            >
-              <span className="text-3xl text-white">{selectedImage.title}</span>
-            </div>
-          </div>
-        </Wrapper>
-      )}
-    </>
+    </GalleryProvider>
   );
 }
-
-export default Photos;
