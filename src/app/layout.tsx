@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Eczar } from "next/font/google";
 import Script from "next/script";
 
+import { SpeedInsights } from "@vercel/speed-insights/next";
+
 import "./globals.css";
 
 const eczar = Eczar({ subsets: ["latin"] });
@@ -19,7 +21,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body className={eczar.className}>{children}</body>
+      <body className={eczar.className}>
+        {children}
+        <SpeedInsights />
+      </body>
       <Script
         defer
         src="https://cloud.umami.is/script.js"
