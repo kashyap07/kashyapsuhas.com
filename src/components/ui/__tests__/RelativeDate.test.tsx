@@ -1,17 +1,13 @@
-import formatDate from "../formatDate";
+import { render, screen } from "@testing-library/react";
 
-jest.mock("next/cache", () => ({
-  unstable_noStore: jest.fn(),
-}));
+import RelativeDate from "../RelativeDate";
 
-describe("formatDate", () => {
+describe("RelativeDate", () => {
   beforeAll(() => {
     jest.useFakeTimers();
-    // fake today for deterministic values
     jest.setSystemTime(new Date("2025-06-23T12:00:00.000Z"));
   });
   afterAll(() => jest.useRealTimers());
-  afterEach(() => jest.clearAllMocks());
 
   const cases: Record<string, string> = {
     "2025-06-23": "June 23, 2025 (Today)",
@@ -28,8 +24,15 @@ describe("formatDate", () => {
   };
 
   for (const [input, expected] of Object.entries(cases)) {
-    it(`should format "${input}" → "${expected}"`, () => {
-      expect(formatDate(input)).toBe(expected);
+    it(`should render "${input}" → "${expected}"`, () => {
+      render(<RelativeDate date={input} />);
+      expect(screen.getByText(expected)).toBeInTheDocument();
     });
   }
+
+  it("should apply className prop", () => {
+    render(<RelativeDate date="2025-06-23" className="test-class" />);
+    const el = screen.getByText(/June 23, 2025/);
+    expect(el).toHaveClass("test-class");
+  });
 });

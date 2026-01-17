@@ -1,10 +1,8 @@
 import { type Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
 
-import { CustomMDX, Wrapper } from "@components/ui";
+import { CustomMDX, RelativeDate, Wrapper } from "@components/ui";
 import { getBlogPosts } from "@db/blog";
-import formatDate from "@utils/formatDate";
 
 export const dynamic = "force-static";
 
@@ -85,11 +83,10 @@ async function Blog(props: Props) {
         </h1>
 
         {/* time since creation */}
-        <Suspense fallback={<p className="h-5" />}>
-          <p className="mb-2 mt-4 text-xl md:text-2xl">
-            {formatDate(post.metadata.publishedDateTime)}
-          </p>
-        </Suspense>
+        <RelativeDate
+          date={post.metadata.publishedDateTime}
+          className="mb-2 mt-4 text-xl md:text-2xl"
+        />
         <hr />
 
         {/* blog content */}

@@ -1,7 +1,10 @@
-import { unstable_noStore as noStore } from "next/cache";
+"use client";
 
-export default function formatDate(date: string) {
-  noStore();
+import { useEffect, useState } from "react";
+
+// this exists so that the relative date can be calculated on the client side
+// prev util required redeployment everytime
+function getRelativeDate(date: string) {
   if (!date.includes("T")) {
     date = `${date}T00:00:00`;
   }
@@ -37,11 +40,34 @@ export default function formatDate(date: string) {
     }
   }
 
-  const fullDate = targetDate.toLocaleString("en-US", {
+  return formattedDate;
+}
+
+interface Props {
+  date: string;
+  className?: string;
+}
+
+export default function RelativeDate({ date, className }: Props) {
+  const [relative, setRelative] = useState<string | null>(null);
+
+  // full date is stable - can render on server
+  const fullDate = new Date(
+    date.includes("T") ? date : `${date}T00:00:00`,
+  ).toLocaleString("en-US", {
     month: "long",
     day: "numeric",
     year: "numeric",
   });
 
-  return `${fullDate} (${formattedDate})`;
+  useEffect(() => {
+    setRelative(getRelativeDate(date));
+  }, [date]);
+
+  return (
+    <p className={className}>
+      {fullDate}
+      {relative && ` (${relative})`}
+    </p>
+  );
 }
