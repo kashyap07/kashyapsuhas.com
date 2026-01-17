@@ -103,7 +103,6 @@ const TopSP = () => (
             src="/suhas_hike.jpg"
             alt="suhas kashyap"
             fill={true}
-            priority
             className="imageMask_SP pointer-events-none z-10 object-cover"
             data-locator-id="top-sp-doubleimage-profile-base"
           />
@@ -181,7 +180,6 @@ const TopPC = () => (
           alt="suhas kashyap"
           height={500}
           width={500}
-          priority
           quality={100}
           className="pointer-events-none relative left-12 top-24 -z-10 w-full origin-bottom-left transform object-cover"
         />
