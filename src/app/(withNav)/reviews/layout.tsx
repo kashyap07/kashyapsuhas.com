@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Suhas Kashyap's reviews of movies, products, restaurants, and such",
   openGraph: {
-    images: ["/suhas_og.jpg"],
+    images: ["/kashyapcom-og.png"],
   },
 };
 

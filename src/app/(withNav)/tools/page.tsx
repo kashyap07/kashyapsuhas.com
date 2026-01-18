@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description:
     "Bunch of tools that work directly in the browser without having to upload to any server. Enjoy!",
   openGraph: {
-    images: ["/suhas_og.jpg"],
+    images: ["/kashyapcom-og.png"],
   },
 };
 

@@ -35,7 +35,7 @@ export async function GET() {
     <webMaster>mantles_arbours_00@icloud.com (Suhas Kashyap)</webMaster>
     <managingEditor>mantles_arbours_00@icloud.com (Suhas Kashyap)</managingEditor>
     <image>
-      <url>https://www.kashyapsuhas.com/suhas_og.jpg</url>
+      <url>https://www.kashyapsuhas.com/kashyapcom-og.png</url>
       <title>Suhas Kashyap's Blog</title>
       <link>https://www.kashyapsuhas.com</link>
     </image>${rssItems}

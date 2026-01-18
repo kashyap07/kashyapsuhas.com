@@ -42,15 +42,14 @@ export const metadata: Metadata = {
     locale: "en_US",
     images: [
       {
-        url: "https://www.kashyapsuhas.com/suhas_og.jpg",
+        url: "https://www.kashyapsuhas.com/kashyapcom-og.png",
         width: 1200,
         height: 630,
-        alt: "Suhas Kashyap - Software Dev",
+        alt: "Suhas Kashyap",
       },
     ],
     firstName: "Suhas",
     lastName: "Kashyap",
-    username: "kashyap07",
   },
 };
 
@@ -203,7 +202,7 @@ export default function Home() {
             url: "https://www.kashyapsuhas.com",
             image: {
               "@type": "ImageObject",
-              url: "https://www.kashyapsuhas.com/suhas_og.jpg",
+              url: "https://www.kashyapsuhas.com/kashyapcom-og.png",
               width: 1200,
               height: 630,
             },
