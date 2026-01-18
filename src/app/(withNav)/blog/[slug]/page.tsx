@@ -29,7 +29,7 @@ export async function generateMetadata(props: {
       url: `https://www.kashyapsuhas.com/blog/${post.slug}`,
       images: [
         {
-          url: heroImage,
+          url: heroImage || "/kashyapcom-og.png",
         },
       ],
     },
@@ -65,7 +65,7 @@ async function Blog(props: Props) {
               datePublished: publishedDateTime,
               dateModified: publishedDateTime,
               description: description,
-              image: heroImage,
+              image: heroImage || "/kashyapcom-og.png",
               url: `https://www.kashyapsuhas.com/blog/${post.slug}`,
               author: {
                 "@type": "Person",

@@ -11,6 +11,19 @@ type Metadata = {
 
 // yoinked from: https://github.com/leerob/leerob.io/blob/main/app/blog/page.tsx
 
+// extract first image from mdx content (markdown or jsx syntax)
+function extractFirstImage(content: string): string | null {
+  // markdown: ![alt](url)
+  const mdMatch = /!\[.*?\]\((.*?)\)/.exec(content);
+  if (mdMatch?.[1]) return mdMatch[1];
+
+  // jsx: <img src="url" /> or src={...}
+  const jsxMatch = /<img[^>]+src=["']([^"']+)["']/.exec(content);
+  if (jsxMatch?.[1]) return jsxMatch[1];
+
+  return null;
+}
+
 function parseFrontmatter(fileContent: string) {
   const frontmatterRegex = /---\s*([\s\S]*?)\s*---/;
   const match = frontmatterRegex.exec(fileContent);
@@ -31,6 +44,11 @@ function parseFrontmatter(fileContent: string) {
     metadata[key.trim() as keyof Metadata] = value;
   });
 
+  // auto-fill heroImage from first image in content if not set
+  if (!metadata.heroImage) {
+    metadata.heroImage = extractFirstImage(content) || "";
+  }
+
   return { metadata: metadata as Metadata, content };
 }
 
@@ -43,11 +61,6 @@ function readMDXFile(filePath: string) {
   return parseFrontmatter(rawContent);
 }
 
-function extractTweetIds(content: string) {
-  const tweetMatches = content.match(/<StaticTweet\sid="[0-9]+"\s\/>/g);
-  return tweetMatches?.map((tweet) => tweet.match(/[0-9]+/g)?.[0]) || [];
-}
-
 function getMDXData(dir: string) {
   const mdxFiles = getMDXFiles(dir);
 
@@ -55,11 +68,9 @@ function getMDXData(dir: string) {
     .map((file) => {
       const { metadata, content } = readMDXFile(path.join(dir, file));
       const slug = path.basename(file, path.extname(file)).toLowerCase();
-      const tweetIds = extractTweetIds(content);
       return {
         metadata,
         slug,
-        tweetIds,
         content,
       };
     })
