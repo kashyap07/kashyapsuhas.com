@@ -14,6 +14,9 @@ export const metadata: Metadata = {
   ),
 };
 
+// favicon is added automatically by nextjs
+// @see: https://nextjs.org/docs/app/api-reference/file-conventions/metadata/app-icons#image-files-ico-jpg-png
+
 export default function RootLayout({
   children,
 }: {
