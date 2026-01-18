@@ -7,7 +7,7 @@
     --background: #fff;
     --foreground: #000;
     /* --columbiaYellow: #fecb47; */
-    --columbiaYellow: #fec534;
+    --columbiaYellow: #f0a044;
 
     --sh-class: #6f42c1;
     --sh-identifier: #034e43;
@@ -20,6 +20,7 @@
     --sh-comment: #6a737d;
   }
 
+  html,
   body {
     @apply bg-background text-foreground;
     font-feature-settings:
@@ -54,8 +55,18 @@
     text-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
   }
 
+  .textShadow-light {
+    text-shadow:
+      0px 0px 60px rgba(256, 256, 256, 0.6),
+      0px 0px 20px rgba(256, 256, 256, 0.4);
+  }
+
   .imageMask_SP {
-    mask-image: linear-gradient(180deg, #fff 0 52%, transparent 95%);
+    mask-image: linear-gradient(180deg, #fff 0 75%, transparent 97%);
+  }
+
+  .imageMask_SP-2 {
+    mask-image: linear-gradient(180deg, #fff 0 75%, transparent 90%);
   }
 
   .imageMask_PC {
@@ -75,12 +86,16 @@
       transform: translateX(0);
     }
     100% {
-      transform: translateX(-5000%);
+      transform: translateX(-50%);
     }
   }
 
+  .vert-rl {
+    writing-mode: vertical-rl;
+  }
+
   .animate-marquee {
-    animation: marquee 10s linear infinite;
+    animation: marquee 15s linear infinite;
   }
 
   .macos-shadow {

@@ -78,31 +78,36 @@ const TopSP = () => (
   <Wrapper
     maxWidth="FULL_SCREEN_WIDTH"
     data-locator-id="top-sp-wrapper"
-    className="relative flex flex-col gap-24 sm:hidden"
+    className="relative mb-0 flex h-screen flex-col gap-24 sm:hidden"
   >
     {/* START top sp pre-fold */}
+    {/* all this nonsense because ios 26 safari has dvh at half the navbar wtf */}
     <Wrapper
       maxWidth="FULL_SCREEN_WIDTH"
-      className="group pointer-events-none relative flex h-svh"
+      className="group pointer-events-none relative mb-0 flex h-screen flex-col"
     >
       {/* START profile image bg */}
-      <div data-locator-id="top-sp-doubleimage-wrapper" className="relative">
-        <div className="absolute aspect-[1/2] w-screen overflow-hidden">
+      <div
+        data-locator-id="top-sp-doubleimage-wrapper"
+        className="relative h-[95%]"
+      >
+        <div className="absolute -top-8 aspect-[1/2] w-screen overflow-hidden bg-white">
           <Image
-            src="/suhas_hike.jpg"
+            src="/kedar-sp-2.jpg"
             alt="suhas kashyap"
             fill={true}
-            className="imageMask_SP pointer-events-none z-10 object-cover"
+            quality={50}
+            className="imageMask_SP pointer-events-none object-cover"
             data-locator-id="top-sp-doubleimage-profile-base"
           />
 
           <Image
-            src="/suhas_hike_nobg.png"
+            src="/kedar-sp-2-no-bg.png"
             alt="suhas kashyap"
             aria-hidden="true"
             fill={true}
             quality={100}
-            className="imageMask_SP pointer-events-none z-30 object-cover"
+            className="imageMask_SP-2 pointer-events-none z-50 object-cover"
             data-locator-id="top-sp-doubleimage-profile-nobg"
           />
         </div>
@@ -111,31 +116,34 @@ const TopSP = () => (
       </div>
       {/* END profile image bg */}
 
-      {/* START pre-fold text */}
-      <Wrapper className="absolute bottom-4 flex flex-col justify-end">
-        <div className="z-40 m-0 flex flex-col justify-center gap-2">
-          <span className="text-3xl">Hi, I&apos;m</span>
-          <h1 className="mb-2 text-nowrap text-5xl leading-[0.9]">
-            Suhas Kashyap
-          </h1>
-          <span className="text-2xl">
-            Welcome to my slice of the Interwebs.
-          </span>
-        </div>
-      </Wrapper>
-      {/* END pre-fold text */}
+      <section
+        data-locator-id="top-sp-bottom-bar"
+        className="h-[5%] w-screen bg-none"
+      ></section>
     </Wrapper>
-    {/* END top sp pre-fold */}
-
-    {/* START navlinks */}
     <Wrapper
-      data-locator-id="top-sp-navlinks"
       maxWidth="NARROW"
-      className="flex flex-col justify-center pb-32"
+      className="absolute top-[4.5rem] flex flex-col text-right"
     >
-      <NavLinks />
+      <div className="z-40 m-0 flex flex-col justify-center">
+        <span className="text-3xl">Hi, I&apos;m</span>
+        <h1 className="-mt-2 mb-2 text-nowrap text-5xl leading-tight">
+          Suhas Kashyap
+        </h1>
+        <span className="text-2xl leading-tight">
+          Welcome to my <br />
+          slice of the Interwebs.
+        </span>
+      </div>
     </Wrapper>
-    {/* END navlinks */}
+    <Wrapper
+      maxWidth="NARROW"
+      className="absolute bottom-[36%] z-40 flex w-full translate-y-1/2 flex-col text-right"
+    >
+      <div className="grid w-full self-end rounded bg-white/35 p-4">
+        <NavLinks />
+      </div>
+    </Wrapper>
   </Wrapper>
 );
 
@@ -163,7 +171,7 @@ const TopPC = () => (
 
     {/* START top pc right side */}
     <div className="group relative">
-      <div className="relative -z-10 w-full">
+      <div className="relative z-10 w-full">
         <Image
           src="/kedar-bw.png"
           alt="suhas kashyap"
@@ -181,7 +189,7 @@ const TopPC = () => (
 export default function Home() {
   return (
     <main className="max-w-screen select-none overflow-hidden font-semibold">
-      {/* Person Schema */}
+      {/* person schema */}
       <script
         type="application/ld+json"
         suppressHydrationWarning
@@ -226,7 +234,7 @@ export default function Home() {
         }}
       />
 
-      {/* WebSite Schema */}
+      {/* website schema */}
       <script
         type="application/ld+json"
         suppressHydrationWarning
