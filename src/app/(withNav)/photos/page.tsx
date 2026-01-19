@@ -2,8 +2,8 @@ import Image from "next/image";
 
 import { Wrapper } from "@components/ui";
 
-import galleryImages from "./galleryImages";
 import { GalleryImageWrapper, GalleryProvider } from "./PhotoGallery";
+import galleryImages from "./galleryImages";
 
 // maybe in the future: https://vercel.com/blog/building-a-fast-animated-image-gallery-with-next-js
 
@@ -13,7 +13,13 @@ export const metadata = {
   alternates: {
     canonical: "https://www.kashyapsuhas.com/photos",
   },
-  keywords: ["Suhas Kashyap photography", "photos", "gallery", "kashyap's photos", "photography"],
+  keywords: [
+    "Suhas Kashyap photography",
+    "photos",
+    "gallery",
+    "kashyap's photos",
+    "photography",
+  ],
 };
 
 export default function Photos() {

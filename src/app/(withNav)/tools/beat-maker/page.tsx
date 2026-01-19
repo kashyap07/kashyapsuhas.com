@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { Wrapper } from "@components/ui";
+
 import { Display } from "./components/Display";
 import { Grid } from "./components/Grid";
 import { SoundList } from "./components/SoundList";
@@ -52,7 +53,9 @@ export default function BeatMaker() {
   const [drive, setDriveState] = useState(0);
 
   // recording state
-  const [customRecordings, setCustomRecordings] = useState<Record<string, boolean>>({});
+  const [customRecordings, setCustomRecordings] = useState<
+    Record<string, boolean>
+  >({});
   const [recordingsLoaded, setRecordingsLoaded] = useState(false);
 
   // pattern text - automatically updates
@@ -64,24 +67,27 @@ export default function BeatMaker() {
 
     const loadRecordings = async () => {
       try {
-        const saved = localStorage.getItem('beatmaker-recordings');
+        const saved = localStorage.getItem("beatmaker-recordings");
         if (!saved) {
           setRecordingsLoaded(true);
           return;
         }
 
-        const recordings = JSON.parse(saved) as Record<string, {
-          channels: number;
-          sampleRate: number;
-          length: number;
-          data: number[][];
-        }>;
+        const recordings = JSON.parse(saved) as Record<
+          string,
+          {
+            channels: number;
+            sampleRate: number;
+            length: number;
+            data: number[][];
+          }
+        >;
 
         for (const [soundId, bufferData] of Object.entries(recordings)) {
           const buffer = audioContext.createBuffer(
             bufferData.channels,
             bufferData.length,
-            bufferData.sampleRate
+            bufferData.sampleRate,
           );
 
           for (let channel = 0; channel < bufferData.channels; channel++) {
@@ -97,7 +103,7 @@ export default function BeatMaker() {
 
         setRecordingsLoaded(true);
       } catch (error) {
-        console.error('Failed to load recordings:', error);
+        console.error("Failed to load recordings:", error);
         setRecordingsLoaded(true);
       }
     };
@@ -133,34 +139,40 @@ export default function BeatMaker() {
   };
 
   // save recordings to localStorage
-  const saveRecordingsToStorage = useCallback((soundId: string, buffer: AudioBuffer | null) => {
-    try {
-      const saved = localStorage.getItem('beatmaker-recordings');
-      const recordings = saved ? JSON.parse(saved) : {};
+  const saveRecordingsToStorage = useCallback(
+    (soundId: string, buffer: AudioBuffer | null) => {
+      try {
+        const saved = localStorage.getItem("beatmaker-recordings");
+        const recordings = saved ? JSON.parse(saved) : {};
 
-      if (buffer) {
-        // serialize buffer
-        const data: number[][] = [];
-        for (let channel = 0; channel < buffer.numberOfChannels; channel++) {
-          data.push(Array.from(buffer.getChannelData(channel)));
+        if (buffer) {
+          // serialize buffer
+          const data: number[][] = [];
+          for (let channel = 0; channel < buffer.numberOfChannels; channel++) {
+            data.push(Array.from(buffer.getChannelData(channel)));
+          }
+
+          recordings[soundId] = {
+            channels: buffer.numberOfChannels,
+            sampleRate: buffer.sampleRate,
+            length: buffer.length,
+            data,
+          };
+        } else {
+          // remove recording
+          delete recordings[soundId];
         }
 
-        recordings[soundId] = {
-          channels: buffer.numberOfChannels,
-          sampleRate: buffer.sampleRate,
-          length: buffer.length,
-          data,
-        };
-      } else {
-        // remove recording
-        delete recordings[soundId];
+        localStorage.setItem(
+          "beatmaker-recordings",
+          JSON.stringify(recordings),
+        );
+      } catch (error) {
+        console.error("Failed to save recordings:", error);
       }
-
-      localStorage.setItem('beatmaker-recordings', JSON.stringify(recordings));
-    } catch (error) {
-      console.error('Failed to save recordings:', error);
-    }
-  }, []);
+    },
+    [],
+  );
 
   // recording handlers
   const handleRecord = async (soundId: string) => {
@@ -212,9 +224,10 @@ export default function BeatMaker() {
       <div className="mb-6 flex flex-wrap items-center gap-4">
         <button
           onClick={sequencer.togglePlayback}
-          className={sequencer.isPlaying
-            ? "flex items-center gap-2 rounded-lg border-2 border-orange-500 bg-orange-500 px-6 py-3 font-medium text-white transition-all hover:bg-orange-600"
-            : "flex items-center gap-2 rounded-lg border-2 border-green-500 bg-green-500 px-6 py-3 font-medium text-white transition-all hover:bg-green-600"
+          className={
+            sequencer.isPlaying
+              ? "flex items-center gap-2 rounded-lg border-2 border-orange-500 bg-orange-500 px-6 py-3 font-medium text-white transition-all hover:bg-orange-600"
+              : "flex items-center gap-2 rounded-lg border-2 border-green-500 bg-green-500 px-6 py-3 font-medium text-white transition-all hover:bg-green-600"
           }
         >
           {sequencer.isPlaying ? (
@@ -301,7 +314,8 @@ export default function BeatMaker() {
             </button>
           </div>
           <p className="text-xs text-gray-500">
-            pattern updates automatically - copy to save, edit and import to load
+            pattern updates automatically - copy to save, edit and import to
+            load
           </p>
         </div>
       </div>

@@ -1,7 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useReducer, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useReducer, useRef, useState } from "react";
 
 import { CheckMini, XMarkMini } from "@components/icons";
 import { Dialog, Wrapper } from "@components/ui";

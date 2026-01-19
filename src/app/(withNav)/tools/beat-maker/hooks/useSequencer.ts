@@ -13,7 +13,7 @@ export interface SequencerControls {
 
 export function useSequencer(
   numBeats: number,
-  onPlaySound: (soundId: string) => void
+  onPlaySound: (soundId: string) => void,
 ): SequencerControls {
   const [pattern, setPattern] = useState<Record<string, Set<number>>>({});
   const [isPlaying, setIsPlaying] = useState(false);
@@ -58,28 +58,34 @@ export function useSequencer(
     Object.entries(pattern).forEach(([soundId, beats]) => {
       if (beats.size > 0) {
         const beatNumbers = Array.from(beats).sort((a, b) => a - b);
-        lines.push(`${soundId}:${beatNumbers.join(',')}`);
+        lines.push(`${soundId}:${beatNumbers.join(",")}`);
       }
     });
-    return lines.join('\n');
+    return lines.join("\n");
   }, [pattern]);
 
-  const importPattern = useCallback((patternStr: string) => {
-    const newPattern: Record<string, Set<number>> = {};
-    const lines = patternStr.trim().split('\n');
+  const importPattern = useCallback(
+    (patternStr: string) => {
+      const newPattern: Record<string, Set<number>> = {};
+      const lines = patternStr.trim().split("\n");
 
-    lines.forEach((line) => {
-      const [soundId, beatsStr] = line.split(':');
-      if (soundId && beatsStr) {
-        const beats = beatsStr.split(',').map(Number).filter((n) => !isNaN(n) && n >= 0 && n < numBeats);
-        if (beats.length > 0) {
-          newPattern[soundId] = new Set(beats);
+      lines.forEach((line) => {
+        const [soundId, beatsStr] = line.split(":");
+        if (soundId && beatsStr) {
+          const beats = beatsStr
+            .split(",")
+            .map(Number)
+            .filter((n) => !isNaN(n) && n >= 0 && n < numBeats);
+          if (beats.length > 0) {
+            newPattern[soundId] = new Set(beats);
+          }
         }
-      }
-    });
+      });
 
-    setPattern(newPattern);
-  }, [numBeats]);
+      setPattern(newPattern);
+    },
+    [numBeats],
+  );
 
   // playback loop
   useEffect(() => {

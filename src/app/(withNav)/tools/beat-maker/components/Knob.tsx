@@ -1,4 +1,5 @@
 import { useRef } from "react";
+
 import cn from "@utils/cn";
 
 interface KnobProps {
@@ -23,7 +24,7 @@ export function Knob({
   const startValueRef = useRef(0);
 
   // convert value to rotation angle (-135 to 135 degrees)
-  const rotation = -135 + (value - min) / (max - min) * 270;
+  const rotation = -135 + ((value - min) / (max - min)) * 270;
 
   const handleMouseDown = (e: React.MouseEvent) => {
     isDraggingRef.current = true;
@@ -38,7 +39,10 @@ export function Knob({
       const sensitivity = 0.005;
       const newValue = Math.max(
         min,
-        Math.min(max, startValueRef.current + deltaY * sensitivity * (max - min))
+        Math.min(
+          max,
+          startValueRef.current + deltaY * sensitivity * (max - min),
+        ),
       );
 
       onChange(newValue);
@@ -75,7 +79,7 @@ export function Knob({
 
       <span className="text-xs font-medium text-gray-600">{label}</span>
       <span className="text-xs text-gray-500">
-        {((value - min) / (max - min) * 100).toFixed(0)}%
+        {(((value - min) / (max - min)) * 100).toFixed(0)}%
       </span>
     </div>
   );

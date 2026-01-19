@@ -33,10 +33,12 @@ export function SoundList({
               key={sound.id}
               className="flex items-center justify-between rounded-md border border-gray-200 p-2"
             >
-              <span className={cn(
-                "text-xs font-medium",
-                hasCustom ? "text-columbiaYellow" : "text-gray-700"
-              )}>
+              <span
+                className={cn(
+                  "text-xs font-medium",
+                  hasCustom ? "text-columbiaYellow" : "text-gray-700",
+                )}
+              >
                 {sound.label}
                 {hasCustom && " 🎤"}
               </span>
@@ -47,9 +49,13 @@ export function SoundList({
                     "rounded px-2 py-1 text-xs font-medium transition-colors",
                     recording
                       ? "bg-red-500 text-white hover:bg-red-600"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200",
                   )}
-                  title={recording ? "Click to stop recording" : "Record voice (1 bar at 200 BPM, auto-trims silence)"}
+                  title={
+                    recording
+                      ? "Click to stop recording"
+                      : "Record voice (1 bar at 200 BPM, auto-trims silence)"
+                  }
                 >
                   {recording ? "⏹ Stop" : "⏺"}
                 </button>

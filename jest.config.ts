@@ -28,10 +28,7 @@ const config: Config = {
   },
 
   // Test match patterns
-  testMatch: [
-    "**/__tests__/**/*.[jt]s?(x)",
-    "**/?(*.)+(spec|test).[jt]s?(x)",
-  ],
+  testMatch: ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
 
   // Coverage configuration
   collectCoverageFrom: [
@@ -55,9 +52,7 @@ const config: Config = {
   coverageReporters: ["text", "lcov", "html"],
 
   // Transform ignore patterns
-  transformIgnorePatterns: [
-    "node_modules/(?!(heic2any)/)",
-  ],
+  transformIgnorePatterns: ["node_modules/(?!(heic2any)/)"],
 };
 
 export default config;

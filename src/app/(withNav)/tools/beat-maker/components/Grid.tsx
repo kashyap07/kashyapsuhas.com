@@ -30,10 +30,12 @@ export function Grid({
               key={i}
               className={cn(
                 "flex h-8 w-12 min-w-[3rem] max-w-[3rem] flex-shrink-0 items-center justify-center text-xs font-medium",
-                i % 4 === 0 ? "border-l-2 border-gray-300" : "border-l border-gray-200",
+                i % 4 === 0
+                  ? "border-l-2 border-gray-300"
+                  : "border-l border-gray-200",
                 i === currentBeat && isPlaying
                   ? "bg-columbiaYellow text-gray-900"
-                  : "text-gray-600"
+                  : "text-gray-600",
               )}
             >
               {i + 1}
@@ -62,11 +64,13 @@ export function Grid({
                   onClick={() => onToggleCell(sound.id, i)}
                   className={cn(
                     "flex h-10 w-12 min-w-[3rem] max-w-[3rem] flex-shrink-0 items-center justify-center transition-all",
-                    i % 4 === 0 ? "border-l-2 border-gray-300" : "border-l border-gray-200",
+                    i % 4 === 0
+                      ? "border-l-2 border-gray-300"
+                      : "border-l border-gray-200",
                     i === currentBeat && isPlaying && "bg-columbiaYellow/20",
                     isActive
                       ? "bg-orange-400 hover:bg-orange-500"
-                      : "hover:bg-gray-200"
+                      : "hover:bg-gray-200",
                   )}
                 >
                   {isActive && (

@@ -15,17 +15,15 @@ export interface AudioEngineControls {
 }
 
 // improved drum sound synthesis
-function createDrumBuffer(
-  ctx: AudioContext,
-  type: string
-): AudioBuffer {
+function createDrumBuffer(ctx: AudioContext, type: string): AudioBuffer {
   const sampleRate = ctx.sampleRate;
   let duration = 0.5;
 
   // adjust duration per sound type
   if (type === "kick") duration = 0.5;
   else if (type === "snare") duration = 0.3;
-  else if (type === "hihat" || type === "ride" || type === "crash") duration = 0.15;
+  else if (type === "hihat" || type === "ride" || type === "crash")
+    duration = 0.15;
   else if (type === "clap") duration = 0.2;
   else if (type === "tom1" || type === "tom2") duration = 0.4;
   else if (type === "cowbell") duration = 0.3;
@@ -58,7 +56,7 @@ function createDrumBuffer(
 
       case "hihat": {
         // bright noise with fast decay
-        const noise = (Math.random() * 2 - 1);
+        const noise = Math.random() * 2 - 1;
         const env = Math.exp(-t * 40);
         // high-pass characteristics
         sample = noise * env * 0.4;
@@ -92,7 +90,7 @@ function createDrumBuffer(
 
       case "ride": {
         // metallic noise with slow decay
-        const noise = (Math.random() * 2 - 1);
+        const noise = Math.random() * 2 - 1;
         const env = Math.exp(-t * 15);
         // add some tonal content
         const tone = Math.sin(2 * Math.PI * 3000 * t) * 0.2;
@@ -102,7 +100,7 @@ function createDrumBuffer(
 
       case "crash": {
         // bright metallic noise with medium decay
-        const noise = (Math.random() * 2 - 1);
+        const noise = Math.random() * 2 - 1;
         const env = Math.exp(-t * 10);
         sample = noise * env * 0.3;
         break;
@@ -113,14 +111,17 @@ function createDrumBuffer(
         const freq1 = 540;
         const freq2 = 800;
         const env = Math.exp(-t * 8);
-        sample = (Math.sin(2 * Math.PI * freq1 * t) +
-                 Math.sin(2 * Math.PI * freq2 * t)) * env * 0.5;
+        sample =
+          (Math.sin(2 * Math.PI * freq1 * t) +
+            Math.sin(2 * Math.PI * freq2 * t)) *
+          env *
+          0.5;
         break;
       }
 
       case "closedhat": {
         // tighter hi-hat
-        const noise = (Math.random() * 2 - 1);
+        const noise = Math.random() * 2 - 1;
         const env = Math.exp(-t * 60);
         sample = noise * env * 0.35;
         break;
@@ -128,7 +129,7 @@ function createDrumBuffer(
 
       case "openhat": {
         // sustained hi-hat
-        const noise = (Math.random() * 2 - 1);
+        const noise = Math.random() * 2 - 1;
         const env = Math.exp(-t * 8);
         sample = noise * env * 0.3;
         break;
@@ -144,7 +145,7 @@ function createDrumBuffer(
 
       case "shaker": {
         // rattling noise
-        const noise = (Math.random() * 2 - 1);
+        const noise = Math.random() * 2 - 1;
         const env = Math.exp(-t * 25);
         const rattle = Math.sin(2 * Math.PI * 200 * t) * 0.3;
         sample = (noise * 0.7 + rattle * 0.3) * env * 0.3;
@@ -153,8 +154,9 @@ function createDrumBuffer(
 
       case "tambourine": {
         // jingly percussion
-        const noise = (Math.random() * 2 - 1);
-        const jingle = Math.sin(2 * Math.PI * 2000 * t) + Math.sin(2 * Math.PI * 2500 * t);
+        const noise = Math.random() * 2 - 1;
+        const jingle =
+          Math.sin(2 * Math.PI * 2000 * t) + Math.sin(2 * Math.PI * 2500 * t);
         const env = Math.exp(-t * 15);
         sample = (noise * 0.4 + jingle * 0.6) * env * 0.25;
         break;
@@ -180,8 +182,9 @@ function createDrumBuffer(
         // deep bass note - C2 (130.81 Hz) in C minor
         const freq = 130.81;
         const env = Math.exp(-t * 3);
-        const harmonic = Math.sin(2 * Math.PI * freq * t) +
-                        Math.sin(2 * Math.PI * freq * 2 * t) * 0.3;
+        const harmonic =
+          Math.sin(2 * Math.PI * freq * t) +
+          Math.sin(2 * Math.PI * freq * 2 * t) * 0.3;
         sample = harmonic * env * 0.7;
         break;
       }
@@ -206,9 +209,10 @@ function createDrumBuffer(
         // plucked string sound - G3 (392 Hz) in C minor
         const freq = 392;
         const env = Math.exp(-t * 10);
-        const harmonics = Math.sin(2 * Math.PI * freq * t) +
-                         Math.sin(2 * Math.PI * freq * 2 * t) * 0.5 +
-                         Math.sin(2 * Math.PI * freq * 3 * t) * 0.25;
+        const harmonics =
+          Math.sin(2 * Math.PI * freq * t) +
+          Math.sin(2 * Math.PI * freq * 2 * t) * 0.5 +
+          Math.sin(2 * Math.PI * freq * 3 * t) * 0.25;
         sample = harmonics * env * 0.5;
         break;
       }
@@ -217,8 +221,9 @@ function createDrumBuffer(
         // short synth stab
         const freq = 440;
         const env = Math.exp(-t * 20);
-        const stab = Math.sin(2 * Math.PI * freq * t) +
-                    Math.sin(2 * Math.PI * (freq * 1.5) * t) * 0.5;
+        const stab =
+          Math.sin(2 * Math.PI * freq * t) +
+          Math.sin(2 * Math.PI * (freq * 1.5) * t) * 0.5;
         sample = stab * env * 0.5;
         break;
       }
@@ -229,9 +234,12 @@ function createDrumBuffer(
         const third = 329.63; // E4
         const fifth = 392; // G4
         const env = Math.exp(-t * 3);
-        sample = (Math.sin(2 * Math.PI * root * t) +
-                 Math.sin(2 * Math.PI * third * t) +
-                 Math.sin(2 * Math.PI * fifth * t)) * env * 0.3;
+        sample =
+          (Math.sin(2 * Math.PI * root * t) +
+            Math.sin(2 * Math.PI * third * t) +
+            Math.sin(2 * Math.PI * fifth * t)) *
+          env *
+          0.3;
         break;
       }
 
@@ -241,9 +249,12 @@ function createDrumBuffer(
         const formant1 = freq * 1.3;
         const formant2 = freq * 2.6;
         const env = Math.exp(-t * 5);
-        sample = (Math.sin(2 * Math.PI * freq * t) * 0.5 +
-                 Math.sin(2 * Math.PI * formant1 * t) * 0.3 +
-                 Math.sin(2 * Math.PI * formant2 * t) * 0.2) * env * 0.4;
+        sample =
+          (Math.sin(2 * Math.PI * freq * t) * 0.5 +
+            Math.sin(2 * Math.PI * formant1 * t) * 0.3 +
+            Math.sin(2 * Math.PI * formant2 * t) * 0.2) *
+          env *
+          0.4;
         break;
       }
 
@@ -252,8 +263,11 @@ function createDrumBuffer(
         const freq1 = 700;
         const freq2 = 1200;
         const env = Math.exp(-t * 6);
-        sample = (Math.sin(2 * Math.PI * freq1 * t) * 0.6 +
-                 Math.sin(2 * Math.PI * freq2 * t) * 0.4) * env * 0.4;
+        sample =
+          (Math.sin(2 * Math.PI * freq1 * t) * 0.6 +
+            Math.sin(2 * Math.PI * freq2 * t) * 0.4) *
+          env *
+          0.4;
         break;
       }
 
@@ -262,8 +276,11 @@ function createDrumBuffer(
         const freq1 = 270;
         const freq2 = 2300;
         const env = Math.exp(-t * 6);
-        sample = (Math.sin(2 * Math.PI * freq1 * t) * 0.6 +
-                 Math.sin(2 * Math.PI * freq2 * t) * 0.4) * env * 0.4;
+        sample =
+          (Math.sin(2 * Math.PI * freq1 * t) * 0.6 +
+            Math.sin(2 * Math.PI * freq2 * t) * 0.4) *
+          env *
+          0.4;
         break;
       }
 
@@ -344,7 +361,8 @@ export function useAudioEngine(): AudioEngineControls {
         for (let channel = 0; channel < 2; channel++) {
           const data = reverbBuffer.getChannelData(channel);
           for (let i = 0; i < reverbLength; i++) {
-            data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.5));
+            data[i] =
+              (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.5));
           }
         }
         convolver.buffer = reverbBuffer;
@@ -370,10 +388,34 @@ export function useAudioEngine(): AudioEngineControls {
 
         // generate all sounds
         const soundTypes = [
-          "kick", "snare", "hihat", "clap", "tom1", "tom2", "ride", "crash", "cowbell",
-          "closedhat", "openhat", "rimshot", "shaker", "tambourine", "conga", "bongo",
-          "bass1", "bass2", "bass3", "pluck", "stab", "chord",
-          "vocal1", "vocal2", "vocal3", "fx1", "fx2", "sweep"
+          "kick",
+          "snare",
+          "hihat",
+          "clap",
+          "tom1",
+          "tom2",
+          "ride",
+          "crash",
+          "cowbell",
+          "closedhat",
+          "openhat",
+          "rimshot",
+          "shaker",
+          "tambourine",
+          "conga",
+          "bongo",
+          "bass1",
+          "bass2",
+          "bass3",
+          "pluck",
+          "stab",
+          "chord",
+          "vocal1",
+          "vocal2",
+          "vocal3",
+          "fx1",
+          "fx2",
+          "sweep",
         ];
 
         for (const type of soundTypes) {
@@ -399,7 +441,8 @@ export function useAudioEngine(): AudioEngineControls {
   const playSound = useCallback((soundId: string, time?: number) => {
     const ctx = audioContextRef.current;
     // use custom buffer if available, otherwise use default
-    const buffer = customBuffersRef.current[soundId] || audioBuffersRef.current[soundId];
+    const buffer =
+      customBuffersRef.current[soundId] || audioBuffersRef.current[soundId];
     const filter = filterRef.current;
 
     if (!ctx || !buffer || !filter) return;
@@ -425,11 +468,12 @@ export function useAudioEngine(): AudioEngineControls {
 
       for (let i = 0; i < samples; i++) {
         const x = (i * 2) / samples - 1;
-        curve[i] = ((3 + amount) * x * 20 * deg) / (Math.PI + amount * Math.abs(x));
+        curve[i] =
+          ((3 + amount) * x * 20 * deg) / (Math.PI + amount * Math.abs(x));
       }
 
       waveshaper.curve = curve;
-      waveshaper.oversample = '4x';
+      waveshaper.oversample = "4x";
 
       source.connect(waveshaper);
       waveshaper.connect(filter);
@@ -445,7 +489,7 @@ export function useAudioEngine(): AudioEngineControls {
     if (masterGainRef.current) {
       masterGainRef.current.gain.setValueAtTime(
         value,
-        audioContextRef.current?.currentTime || 0
+        audioContextRef.current?.currentTime || 0,
       );
     }
   }, []);
@@ -461,13 +505,17 @@ export function useAudioEngine(): AudioEngineControls {
       const freq = minFreq * Math.pow(maxFreq / minFreq, value);
       filterRef.current.frequency.setValueAtTime(
         freq,
-        audioContextRef.current.currentTime
+        audioContextRef.current.currentTime,
       );
     }
   }, []);
 
   const setReverbMix = useCallback((value: number) => {
-    if (reverbGainRef.current && dryGainRef.current && audioContextRef.current) {
+    if (
+      reverbGainRef.current &&
+      dryGainRef.current &&
+      audioContextRef.current
+    ) {
       const time = audioContextRef.current.currentTime;
       reverbGainRef.current.gain.setValueAtTime(value * 0.5, time);
       dryGainRef.current.gain.setValueAtTime(1 - value * 0.3, time);
@@ -482,9 +530,12 @@ export function useAudioEngine(): AudioEngineControls {
     driveRef.current = value;
   }, []);
 
-  const setCustomBuffer = useCallback((soundId: string, buffer: AudioBuffer) => {
-    customBuffersRef.current[soundId] = buffer;
-  }, []);
+  const setCustomBuffer = useCallback(
+    (soundId: string, buffer: AudioBuffer) => {
+      customBuffersRef.current[soundId] = buffer;
+    },
+    [],
+  );
 
   const clearCustomBuffer = useCallback((soundId: string) => {
     delete customBuffersRef.current[soundId];

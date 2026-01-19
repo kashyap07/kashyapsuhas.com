@@ -26,7 +26,7 @@ export interface KeyboardControls {
 }
 
 export function useKeyboard(
-  onSoundTrigger: (soundId: string) => void
+  onSoundTrigger: (soundId: string) => void,
 ): KeyboardControls {
   const [activeKeys, setActiveKeys] = useState<Set<string>>(new Set());
 
@@ -34,7 +34,7 @@ export function useKeyboard(
     (soundId: string) => {
       onSoundTrigger(soundId);
     },
-    [onSoundTrigger]
+    [onSoundTrigger],
   );
 
   useEffect(() => {

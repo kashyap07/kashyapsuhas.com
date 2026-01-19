@@ -7,7 +7,9 @@ export interface RecorderControls {
   hasPermission: boolean;
 }
 
-export function useRecorder(audioContext: AudioContext | null): RecorderControls {
+export function useRecorder(
+  audioContext: AudioContext | null,
+): RecorderControls {
   const [recordingId, setRecordingId] = useState<string | null>(null);
   const [hasPermission, setHasPermission] = useState(false);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -22,7 +24,7 @@ export function useRecorder(audioContext: AudioContext | null): RecorderControls
           echoCancellation: true,
           noiseSuppression: true,
           autoGainControl: true,
-        }
+        },
       });
 
       streamRef.current = stream;
@@ -30,7 +32,7 @@ export function useRecorder(audioContext: AudioContext | null): RecorderControls
 
       // create media recorder with timeslice for better data capture
       const mediaRecorder = new MediaRecorder(stream, {
-        mimeType: 'audio/webm;codecs=opus',
+        mimeType: "audio/webm;codecs=opus",
       });
 
       audioChunksRef.current = [];
@@ -51,84 +53,100 @@ export function useRecorder(audioContext: AudioContext | null): RecorderControls
     }
   }, []);
 
-  const stopRecording = useCallback(async (soundId: string): Promise<AudioBuffer | null> => {
-    return new Promise((resolve) => {
-      const mediaRecorder = mediaRecorderRef.current;
+  const stopRecording = useCallback(
+    async (soundId: string): Promise<AudioBuffer | null> => {
+      return new Promise((resolve) => {
+        const mediaRecorder = mediaRecorderRef.current;
 
-      if (!mediaRecorder || !audioContext || recordingId !== soundId) {
-        resolve(null);
-        return;
-      }
-
-      mediaRecorder.onstop = async () => {
-        setRecordingId(null);
-
-        // stop all tracks
-        if (streamRef.current) {
-          streamRef.current.getTracks().forEach(track => track.stop());
-          streamRef.current = null;
+        if (!mediaRecorder || !audioContext || recordingId !== soundId) {
+          resolve(null);
+          return;
         }
 
-        // convert recorded chunks to audio buffer
-        try {
-          const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm;codecs=opus' });
-          const arrayBuffer = await audioBlob.arrayBuffer();
-          const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+        mediaRecorder.onstop = async () => {
+          setRecordingId(null);
 
-          // detect start of actual sound (trim silence from beginning)
-          const threshold = 0.02; // noise threshold
-          let startSample = 0;
+          // stop all tracks
+          if (streamRef.current) {
+            streamRef.current.getTracks().forEach((track) => track.stop());
+            streamRef.current = null;
+          }
 
-          // check all channels to find first significant sound
-          for (let channel = 0; channel < audioBuffer.numberOfChannels; channel++) {
-            const channelData = audioBuffer.getChannelData(channel);
-            for (let i = 0; i < channelData.length; i++) {
-              if (Math.abs(channelData[i]) > threshold) {
-                startSample = i;
-                break;
+          // convert recorded chunks to audio buffer
+          try {
+            const audioBlob = new Blob(audioChunksRef.current, {
+              type: "audio/webm;codecs=opus",
+            });
+            const arrayBuffer = await audioBlob.arrayBuffer();
+            const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+
+            // detect start of actual sound (trim silence from beginning)
+            const threshold = 0.02; // noise threshold
+            let startSample = 0;
+
+            // check all channels to find first significant sound
+            for (
+              let channel = 0;
+              channel < audioBuffer.numberOfChannels;
+              channel++
+            ) {
+              const channelData = audioBuffer.getChannelData(channel);
+              for (let i = 0; i < channelData.length; i++) {
+                if (Math.abs(channelData[i]) > threshold) {
+                  startSample = i;
+                  break;
+                }
+              }
+              if (startSample > 0) break;
+            }
+
+            // at 200 BPM: 1 bar (4 beats) = 1.2 seconds
+            // this matches the beat timing and gives enough time for a sound
+            const barDuration = 1.2;
+            const maxSamples = Math.floor(barDuration * audioBuffer.sampleRate);
+
+            // calculate trimmed buffer length
+            const availableSamples = audioBuffer.length - startSample;
+            const trimmedLength = Math.min(availableSamples, maxSamples);
+
+            const trimmedBuffer = audioContext.createBuffer(
+              audioBuffer.numberOfChannels,
+              trimmedLength,
+              audioBuffer.sampleRate,
+            );
+
+            // copy audio data starting from detected start point
+            for (
+              let channel = 0;
+              channel < audioBuffer.numberOfChannels;
+              channel++
+            ) {
+              const sourceData = audioBuffer.getChannelData(channel);
+              const targetData = trimmedBuffer.getChannelData(channel);
+              for (let i = 0; i < trimmedLength; i++) {
+                targetData[i] = sourceData[startSample + i];
               }
             }
-            if (startSample > 0) break;
+
+            resolve(trimmedBuffer);
+          } catch (error) {
+            console.error("Failed to process recording:", error);
+            resolve(null);
           }
+        };
 
-          // at 200 BPM: 1 bar (4 beats) = 1.2 seconds
-          // this matches the beat timing and gives enough time for a sound
-          const barDuration = 1.2;
-          const maxSamples = Math.floor(barDuration * audioBuffer.sampleRate);
+        mediaRecorder.stop();
+      });
+    },
+    [audioContext, recordingId],
+  );
 
-          // calculate trimmed buffer length
-          const availableSamples = audioBuffer.length - startSample;
-          const trimmedLength = Math.min(availableSamples, maxSamples);
-
-          const trimmedBuffer = audioContext.createBuffer(
-            audioBuffer.numberOfChannels,
-            trimmedLength,
-            audioBuffer.sampleRate
-          );
-
-          // copy audio data starting from detected start point
-          for (let channel = 0; channel < audioBuffer.numberOfChannels; channel++) {
-            const sourceData = audioBuffer.getChannelData(channel);
-            const targetData = trimmedBuffer.getChannelData(channel);
-            for (let i = 0; i < trimmedLength; i++) {
-              targetData[i] = sourceData[startSample + i];
-            }
-          }
-
-          resolve(trimmedBuffer);
-        } catch (error) {
-          console.error("Failed to process recording:", error);
-          resolve(null);
-        }
-      };
-
-      mediaRecorder.stop();
-    });
-  }, [audioContext, recordingId]);
-
-  const isRecording = useCallback((soundId: string) => {
-    return recordingId === soundId;
-  }, [recordingId]);
+  const isRecording = useCallback(
+    (soundId: string) => {
+      return recordingId === soundId;
+    },
+    [recordingId],
+  );
 
   return {
     isRecording,

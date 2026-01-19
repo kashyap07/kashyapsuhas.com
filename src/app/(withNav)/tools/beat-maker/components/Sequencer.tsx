@@ -27,9 +27,7 @@ export function Sequencer({
     <div className="flex flex-col gap-4">
       {/* bpm control */}
       <div className="flex flex-col gap-2">
-        <label className="text-sm font-medium text-gray-600">
-          Tempo (BPM)
-        </label>
+        <label className="text-sm font-medium text-gray-600">Tempo (BPM)</label>
         <input
           type="range"
           min="60"
@@ -50,7 +48,7 @@ export function Sequencer({
             className={cn(
               "flex items-center justify-center gap-2 rounded-lg px-4 py-3 font-medium transition-all",
               "border-2 border-red-500 bg-red-50 text-red-600",
-              "hover:bg-red-500 hover:text-white"
+              "hover:bg-red-500 hover:text-white",
             )}
           >
             <div className="h-3 w-3 rounded-full bg-current" />
@@ -62,7 +60,7 @@ export function Sequencer({
             className={cn(
               "flex items-center justify-center gap-2 rounded-lg px-4 py-3 font-medium transition-all",
               "animate-pulse border-2 border-red-600 bg-red-500 text-white",
-              "hover:bg-red-600"
+              "hover:bg-red-600",
             )}
           >
             <div className="h-3 w-3 bg-current" />
@@ -79,7 +77,7 @@ export function Sequencer({
             "border-2",
             hasRecording
               ? "border-green-500 bg-green-50 text-green-600 hover:bg-green-500 hover:text-white"
-              : "cursor-not-allowed border-gray-300 bg-gray-100 text-gray-400"
+              : "cursor-not-allowed border-gray-300 bg-gray-100 text-gray-400",
           )}
         >
           {isPlaying ? (
@@ -107,7 +105,7 @@ export function Sequencer({
             "border-2",
             hasRecording || isRecording
               ? "border-orange-500 bg-orange-50 text-orange-600 hover:bg-orange-500 hover:text-white"
-              : "cursor-not-allowed border-gray-300 bg-gray-100 text-gray-400"
+              : "cursor-not-allowed border-gray-300 bg-gray-100 text-gray-400",
           )}
         >
           Clear

@@ -18,7 +18,7 @@ export function Pad({ label, keyLabel, isActive, onClick }: PadProps) {
         "hover:scale-[1.02] active:scale-95",
         isActive
           ? "scale-95 border-orange-500 bg-columbiaYellow shadow-lg shadow-orange-300"
-          : "border-gray-300 bg-gray-100 hover:border-gray-400 hover:bg-gray-200"
+          : "border-gray-300 bg-gray-100 hover:border-gray-400 hover:bg-gray-200",
       )}
     >
       <span className="text-xs font-bold uppercase tracking-wide text-gray-600">
@@ -27,7 +27,7 @@ export function Pad({ label, keyLabel, isActive, onClick }: PadProps) {
       <span
         className={cn(
           "text-sm font-semibold",
-          isActive ? "text-gray-900" : "text-gray-700"
+          isActive ? "text-gray-900" : "text-gray-700",
         )}
       >
         {label}

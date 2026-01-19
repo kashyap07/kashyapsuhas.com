@@ -1,4 +1,5 @@
 import cn from "@utils/cn";
+
 import { Knob } from "./Knob";
 
 interface DisplayProps {
@@ -47,7 +48,7 @@ export function Display({
             <div
               className={cn(
                 "h-2 w-2 rounded-full",
-                isRecording ? "animate-pulse bg-red-500" : "bg-gray-700"
+                isRecording ? "animate-pulse bg-red-500" : "bg-gray-700",
               )}
             />
             <span className="text-xs uppercase text-gray-400">
@@ -60,7 +61,7 @@ export function Display({
             <div
               className={cn(
                 "h-2 w-2 rounded-full",
-                isPlaying ? "bg-green-500" : "bg-gray-700"
+                isPlaying ? "bg-green-500" : "bg-gray-700",
               )}
             />
             <span className="text-xs uppercase text-gray-400">
@@ -80,12 +81,14 @@ export function Display({
             key={i}
             className={cn(
               "h-2 w-12 min-w-[3rem] max-w-[3rem] flex-shrink-0 transition-all",
-              i % 4 === 0 ? "border-l-2 border-transparent" : "border-l border-transparent",
+              i % 4 === 0
+                ? "border-l-2 border-transparent"
+                : "border-l border-transparent",
               i === currentBeat && isPlaying
                 ? "bg-columbiaYellow"
                 : i % 4 === 0
                   ? "bg-gray-600"
-                  : "bg-gray-700"
+                  : "bg-gray-700",
             )}
           />
         ))}

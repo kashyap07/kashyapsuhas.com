@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -17,13 +13,8 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
-    "typeRoots": [
-      "./node_modules/@types"
-    ],
-    "types": [
-      "jest",
-      "node"
-    ],
+    "typeRoots": ["./node_modules/@types"],
+    "types": ["jest", "node"],
     "plugins": [
       {
         "name": "next"
@@ -31,18 +22,10 @@
     ],
     "paths": {
       // "@*": ["./src/*"],
-      "@utils/*": [
-        "./src/utils/*"
-      ],
-      "@components/*": [
-        "./src/components/*"
-      ],
-      "@hooks/*": [
-        "./src/hooks/*"
-      ],
-      "@db/*": [
-        "./src/db/*"
-      ]
+      "@utils/*": ["./src/utils/*"],
+      "@components/*": ["./src/components/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@db/*": ["./src/db/*"]
     }
   },
   "include": [
@@ -54,7 +37,5 @@
     "jest.config.js",
     ".next/dev/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

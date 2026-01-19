@@ -9,10 +9,7 @@
     "Music was nice",
     "I like the chill-ness of this movie overall"
   ],
-  "cons": [
-    "Movie is too short?",
-    "There's barely any fighting?"
-  ],
+  "cons": ["Movie is too short?", "There's barely any fighting?"],
   "link": "https://www.imdb.com/title/tt10676052/",
   "reviewDate": "2025-12-30T00:00:00.000Z"
 }
