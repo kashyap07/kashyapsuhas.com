@@ -130,8 +130,9 @@ const TopSP = () => (
           Suhas Kashyap
         </h1>
         <span className="text-2xl leading-tight">
-          Welcome to my <br />
-          slice of the Interwebs.
+          Welcome to my slice
+          <br />
+          of the Interwebs
         </span>
       </div>
     </Wrapper>
