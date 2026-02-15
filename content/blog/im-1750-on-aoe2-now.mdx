@@ -1,0 +1,106 @@
+---
+publishedDateTime: 2026-02-16T00:00:00.000Z
+title: I'm 1750 Elo on Age of Empires 2 now
+description: An explanation of the Elo system.
+heroImage: ""
+categories:
+  - gaming
+---
+
+That is roughly top 500-1000 in the world.  
+This post goes over mechanics of Elo-rating system rather than the story of how I got here.  
+If you're familiar with the Elo system from chess, this is very similar to that.
+
+Quick definition:
+
+- "I'm" - Me, Suhas, who hit this rating about a year ago. My gaming PC has been dead since then.
+- "1750" - Big number. It is very likely that I will beat you in a 1v1 match.
+- "Elo" - Rating system used to rank / rate players in competitive games.
+- "on" - On the AOE2 ranked ladder - a competitive matchmaking system in which players are given a rating based on their 1v1 performance.
+- "Age of Empires 2" - AOE2 a real-time-strategy video game - where you play as different civilizations and defeat your opponent's army and base. Released in 1999!
+- "now" - My rating hasn't reduced but I might be a bit rusty.
+
+Age of Empires 2 is my one true love. An embarassing amount time has been spent playing this, but zero regrets. It's the greatest of all time 🐐 because it's been here and thriving since 1999!
+The game has found new love with Microsoft's funding, and the competetive scene has become more and more active.
+
+On AOE2 you start at **1000 Elo**.  
+I am top 500-1000 out of ~50,000 players in the world. Quite the achievement I would say!
+
+<RatingDistribution />
+
+Disclaimer: I'm not a mathematican, a lot of this info is lifted off of Wikipedia and Youtube.
+
+## What exactly is Elo?
+
+"Elo" was invented by [Arpad Elo](https://en.wikipedia.org/wiki/Arpad_Elo), chess master and physics professor to calculate relative skill levels of chess players. A lot of zero-sum competetive games have adopted it now (physical and digital). Is not an acronym btw!
+
+Simple idea:  
+Given two players, Elo system can predict the probability of a player winning over the other.  
+And, after a match, it can update the players' rating based on the outcome.
+
+The number goes up when you win, and goes down when you lose. The amount depends on the difference between you and your opponent's ratings.
+
+If you are 100 Elo over your opponent, you are expected to win ~64% of the time.  
+If you are 400 Elo over your opponent, you are expected to win ~91% of the time OR go 11 - 1 in a 12 game series.
+
+#### Math
+
+Two parts - the **expected score** and the **rating update**.
+
+Expected score is the predicted probability of winning based on the rating difference.
+
+<Formula tex="E_A = \frac{1}{1 + 10^{\frac{R_B - R_A}{400}}}" />
+
+<Formula tex="R_A" inline /> is your rating, <Formula tex="R_B" inline /> is
+your opponent's. This gives a number between 0 and 1: win probability.
+
+After the match, your updated rating will be:
+
+<Formula tex="R'_A = R_A + K \times (S_A - E_A)" />
+
+<Formula tex="S_A" inline /> is the result (1 = win, 0 = loss), K is the
+"K-factor" which controls how much ratings change per game. AOE2 uses K=32.
+
+<Formula tex="S_A - E_A" inline /> is where the magic happens. If you were
+expected to win (high <Formula tex="E_A" inline />) and you do win,
+<Formula tex="S_A - E_A" inline /> is small so you barely gain anything. But if
+you were expected to lose (low <Formula tex="E_A" inline />) and you pull off
+the "upset", <Formula tex="S_A - E_A" inline /> is large and you gain a lot of
+Elo.
+
+### Elo Calculator
+
+Adjust ratings to see how much Elo changes:
+
+<EloCalculator />
+
+### Skill distribution bell curve
+
+The idea with this normal distribution is that you might not always perform your exact rating; You might have off days or great days.
+
+Drag sliders to see how expected score changes with the rating gap.  
+Overlap is where "upsets" happen:
+
+<EloVisualizer />
+
+## Self correction
+
+The biggest draw of this system is that it is self-correcting. You could keep winning against the same oppoent (their rating unchanged) and your rating would keep inflating but the rate would get slower and slower - until you lose a match to get the inflated rating back down.
+
+Winning again and again versus weaker opponents is heavily penalized, while going up against a stronger opponent is rewarded even if you lose.
+
+Me at 1750, clapping a 1200, only gives me +1 Elo for the Win. It'd take me forever to climb the ladder!
+But if I were to lose, I'd drop down by 31 Elo. 31 games worth of hard work gone!  
+Likewise, if I improved and were to beat a 1900, I'd gain 23 Elo. But a loss here would only cost me 9 Elo.
+
+Try simulating this by clicking on wins and losses against opponents of different ratings. You start at 1000 Elo:
+
+<EloMatchSimulator />
+
+Notice how a loss against a noob makes you lose all those puntos that you worked so hard for. Hurts.
+
+---
+
+That's about it.  
+Let me know if you think I could help explain this better or create better visualizers.  
+I'll write about how one could get to this level in a future post. Perhaps when I hit 2k!
