@@ -42,7 +42,7 @@ const ImageAutoHeight = ({
       <Image
         src={src}
         alt={alt}
-        layout="fill"
+        fill
         {...rest}
         className={cn(
           "!h-unset !relative !w-full !object-contain",

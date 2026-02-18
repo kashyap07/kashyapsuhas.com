@@ -32,3 +32,6 @@ yarn-error.log*
 /public/admin/index.html
 /public/tina/assets/
 /public/tina/index.html
+
+# mcp
+.playwright-mcp/*
