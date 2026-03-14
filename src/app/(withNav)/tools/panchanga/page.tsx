@@ -19,14 +19,30 @@ const AYANA_LOCATIVE: Record<string, { sa: string; en: string }> = {
   Dakshinayana: { sa: "दक्षिणायने", en: "Dakshinayane" },
 };
 
-// the 3 dynamic sankalpa lines in devanagari
-function buildSankalpaDevanagari(p: PanchangaResult): string {
+// sankalpa mantra as inline segments, dynamic values highlighted
+type SankalpaSegment = { text: string; highlight?: boolean };
+
+function buildSankalpaSegments(p: PanchangaResult): SankalpaSegment[] {
   const ayana = AYANA_LOCATIVE[p.ayana]?.sa ?? sa(p.ayana);
   return [
-    `${sa(p.samvatsara)} नाम सम्वत्सरे, ${ayana}, ${sa(p.ritu)} ऋतौ,`,
-    `${sa(p.maasa)} मासे, ${sa(p.paksha)} पक्षे, ${sa(p.tithi)} तिथौ,`,
-    `${sa(p.vaasara)}वासरे, ${sa(p.nakshatra, true)} नक्षत्रे,`,
-  ].join("\n");
+    { text: "... " },
+    { text: sa(p.samvatsara), highlight: true },
+    { text: " नाम सम्वत्सरे, " },
+    { text: ayana, highlight: true },
+    { text: ", " },
+    { text: sa(p.ritu), highlight: true },
+    { text: " ऋतौ, " },
+    { text: sa(p.maasa), highlight: true },
+    { text: " मासे, " },
+    { text: sa(p.paksha), highlight: true },
+    { text: " पक्षे, " },
+    { text: sa(p.tithi), highlight: true },
+    { text: " तिथौ, " },
+    { text: sa(p.vaasara), highlight: true },
+    { text: "वासर युक्तायाम्, " },
+    { text: sa(p.nakshatra, true), highlight: true },
+    { text: " नक्षत्र ..." },
+  ];
 }
 
 const CARDS: {
@@ -146,14 +162,15 @@ export default function PanchangaPage() {
 
           {/* sankalpa mantra */}
           <div className="rounded-lg bg-gray-50/60 px-6 py-5">
-            <p className="text-xl leading-loose text-gray-800">
-              {buildSankalpaDevanagari(panchanga)
-                .split("\n")
-                .map((line, i) => (
-                  <span key={i} className="block">
-                    {line}
-                  </span>
-                ))}
+            <p className="text-xl leading-relaxed text-gray-800">
+              {buildSankalpaSegments(panchanga).map((seg, i) => (
+                <span
+                  key={i}
+                  className={seg.highlight ? "font-semibold text-columbiaYellow" : ""}
+                >
+                  {seg.text}
+                </span>
+              ))}
             </p>
           </div>
         </>
