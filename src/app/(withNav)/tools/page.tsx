@@ -72,6 +72,16 @@ export default function Tools() {
             make beats in your browser with keyboard controls
           </span>
         </li>
+        <li className="mt-8 flex flex-col md:justify-between">
+          <span className="text-4xl font-medium md:text-6xl">
+            <Link className="flex flex-col" href={"tools/panchanga"}>
+              Panchanga
+            </Link>
+          </span>
+          <span className="text-2xl text-gray-500">
+            sankalpa mantra elements for hindu rituals
+          </span>
+        </li>
       </ul>
     </Wrapper>
   );

@@ -6,7 +6,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import "./globals.css";
 
-const eczar = Eczar({ subsets: ["latin"] });
+const eczar = Eczar({ subsets: ["latin", "devanagari"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL(
