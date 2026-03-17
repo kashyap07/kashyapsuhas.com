@@ -54,7 +54,7 @@ function Content({
           "data-[state=open]:motion-opacity-in-0",
           "data-[state=open]:motion-translate-y-in-50",
           "data-[state=open]:motion-blur-in-md",
-          "fixed left-[50%] top-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded border bg-background p-6 shadow-lg motion-duration-200 sm:max-w-lg",
+          "fixed left-[50%] top-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] max-h-[85dvh] translate-x-[-50%] translate-y-[-50%] gap-4 overflow-y-auto rounded border bg-background p-6 shadow-lg motion-duration-200 sm:max-w-lg",
           className,
         )}
         {...props}

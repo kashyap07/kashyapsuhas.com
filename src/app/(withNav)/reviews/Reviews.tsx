@@ -343,7 +343,7 @@ function Reviews({ reviews: initialReviews }: Props) {
                   <Dialog.Title className="text-2xl font-bold">
                     {review.name}
                   </Dialog.Title>
-                  <Dialog.Description className="flex items-center gap-6">
+                  <Dialog.Description className="flex flex-wrap items-center gap-3">
                     <span
                       className={cn(
                         "inline-flex rounded px-2 py-2 text-xs font-semibold leading-5",
@@ -403,6 +403,7 @@ function Reviews({ reviews: initialReviews }: Props) {
                       href={review.link}
                       target="_blank"
                       rel="noopener noreferrer"
+                      className="break-all"
                     >
                       See More: {review.link}
                     </a>
