@@ -56,8 +56,12 @@ describe("computePanchanga", () => {
   });
 
   describe("samvatsara transition at ugadi 2026", () => {
-    it("before ugadi (march 19) → Vishvavasu", () => {
-      expect(computePanchanga(istNoon("2026-03-19")).samvatsara).toBe("Vishvavasu");
+    it("before ugadi (march 18) → Vishvavasu", () => {
+      expect(computePanchanga(istNoon("2026-03-18")).samvatsara).toBe("Vishvavasu");
+    });
+
+    it("ugadi day (march 19, pratipada) → Parabhava", () => {
+      expect(computePanchanga(istNoon("2026-03-19")).samvatsara).toBe("Parabhava");
     });
 
     it("after ugadi (march 20+) → Parabhava", () => {

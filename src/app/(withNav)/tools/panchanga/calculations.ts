@@ -97,9 +97,9 @@ function findUgadi(year: number): Date {
   const astroTime = Astronomy.MakeTime(searchStart);
   const newMoon = Astronomy.SearchMoonPhase(0, astroTime, 45);
   if (!newMoon) return new Date(year, 2, 22);
-  // ugadi = day after new moon (shukla pratipada begins at new moon)
+  // ugadi = calendar day of chaitra new moon (pratipada starts at new moon moment)
+  // aligns with getMaasaIndex which also transitions at the new moon
   const ugadi = new Date(newMoon.date);
-  ugadi.setDate(ugadi.getDate() + 1);
   ugadi.setHours(0, 0, 0, 0);
   return ugadi;
 }
