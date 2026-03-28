@@ -57,8 +57,8 @@
 
   .textShadow-light {
     text-shadow:
-      0px 0px 60px rgba(256, 256, 256, 0.6),
-      0px 0px 20px rgba(256, 256, 256, 0.4);
+      0px 0px 60px rgba(255, 255, 255, 0.6),
+      0px 0px 20px rgba(255, 255, 255, 0.4);
   }
 
   .imageMask_SP {
