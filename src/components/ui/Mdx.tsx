@@ -106,7 +106,7 @@ function CustomMDX(props: JSX.IntrinsicAttributes & MDXRemoteProps) {
   return (
     <MDXRemote
       {...props}
-      options={{ ...props.options, blockJS: false }}
+      options={{ ...props.options, blockJS: true }}
       components={{ ...defaultComponentMapping, ...props.components }}
     />
   );
