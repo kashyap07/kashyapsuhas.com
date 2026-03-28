@@ -1,15 +1,17 @@
 import fs from "fs";
 import path from "path";
 
-type Metadata = {
-  categories: string;
-  publishedDateTime: string;
-  title: string;
-  description: string;
-  heroImage: string;
-};
+import { z } from "zod";
 
-// yoinked from: https://github.com/leerob/leerob.io/blob/main/app/blog/page.tsx
+const metadataSchema = z.object({
+  categories: z.string().default(""),
+  publishedDateTime: z.string().min(1, "publishedDateTime is required"),
+  title: z.string().min(1, "title is required"),
+  description: z.string().default(""),
+  heroImage: z.string().default(""),
+});
+
+export type Metadata = z.infer<typeof metadataSchema>;
 
 // extract first image from mdx content (markdown or jsx syntax)
 function extractFirstImage(content: string): string | null {
@@ -24,32 +26,39 @@ function extractFirstImage(content: string): string | null {
   return null;
 }
 
-function parseFrontmatter(fileContent: string) {
+function parseFrontmatter(fileContent: string, filePath: string) {
   const frontmatterRegex = /---\s*([\s\S]*?)\s*---/;
   const match = frontmatterRegex.exec(fileContent);
 
   if (!match || !match[1]) {
-    throw new Error("Invalid frontmatter format: frontmatter block not found");
+    throw new Error(`invalid frontmatter in ${filePath}`);
   }
 
   const frontMatterBlock = match[1];
   const content = fileContent.replace(frontmatterRegex, "").trim();
   const frontMatterLines = frontMatterBlock.trim().split("\n");
-  const metadata: Partial<Metadata> = {};
+  const raw: Record<string, string> = {};
 
   frontMatterLines.forEach((line) => {
     const [key, ...valueArr] = line.split(": ");
     let value = valueArr.join(": ").trim();
     value = value.replace(/^['"](.*)['"]$/, "$1");
-    metadata[key.trim() as keyof Metadata] = value;
+    raw[key.trim()] = value;
   });
 
   // auto-fill heroImage from first image in content if not set
-  if (!metadata.heroImage) {
-    metadata.heroImage = extractFirstImage(content) || "";
+  if (!raw.heroImage) {
+    raw.heroImage = extractFirstImage(content) || "";
   }
 
-  return { metadata: metadata as Metadata, content };
+  const result = metadataSchema.safeParse(raw);
+  if (!result.success) {
+    throw new Error(
+      `invalid metadata in ${filePath}: ${result.error.issues.map((i) => i.message).join(", ")}`,
+    );
+  }
+
+  return { metadata: result.data, content };
 }
 
 function getMDXFiles(dir: string) {
@@ -58,7 +67,7 @@ function getMDXFiles(dir: string) {
 
 function readMDXFile(filePath: string) {
   const rawContent = fs.readFileSync(filePath, "utf-8");
-  return parseFrontmatter(rawContent);
+  return parseFrontmatter(rawContent, filePath);
 }
 
 function getMDXData(dir: string) {
