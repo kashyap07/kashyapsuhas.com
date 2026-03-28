@@ -12,6 +12,24 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL || "https://www.kashyapsuhas.com",
   ),
+  title: {
+    default: "Suhas Kashyap",
+    template: "%s | Suhas Kashyap",
+  },
+  description:
+    "Suhas Kashyap's slice of the interwebs. See blogs, photos, reviews, tools, contact details.",
+  openGraph: {
+    siteName: "Suhas Kashyap",
+    locale: "en_US",
+    images: [
+      {
+        url: "https://www.kashyapsuhas.com/kashyapcom-og.png",
+        width: 1200,
+        height: 630,
+        alt: "Suhas Kashyap",
+      },
+    ],
+  },
 };
 
 // favicon is added automatically by nextjs
