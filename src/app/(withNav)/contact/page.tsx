@@ -1,6 +1,13 @@
+import { Metadata } from "next";
 import Link from "next/link";
 
 import { Wrapper } from "@components/ui";
+
+export const metadata: Metadata = {
+  title: "Contact",
+  description:
+    "Get in touch with Suhas Kashyap. Find links to email, LinkedIn, GitHub, and social media.",
+};
 
 export default function Contact() {
   return (
