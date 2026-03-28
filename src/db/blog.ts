@@ -1,11 +1,16 @@
 import fs from "fs";
 import path from "path";
 
+import matter from "gray-matter";
 import { z } from "zod";
 
+// gray-matter parses dates as Date objects and categories as arrays
 const metadataSchema = z.object({
-  categories: z.string().default(""),
-  publishedDateTime: z.string().min(1, "publishedDateTime is required"),
+  categories: z
+    .union([z.string(), z.array(z.string())])
+    .transform((v) => (Array.isArray(v) ? v.join(", ") : v))
+    .default(""),
+  publishedDateTime: z.coerce.string().min(1, "publishedDateTime is required"),
   title: z.string().min(1, "title is required"),
   description: z.string().default(""),
   heroImage: z.string().default(""),
@@ -26,32 +31,20 @@ function extractFirstImage(content: string): string | null {
   return null;
 }
 
-function parseFrontmatter(fileContent: string, filePath: string) {
-  const frontmatterRegex = /---\s*([\s\S]*?)\s*---/;
-  const match = frontmatterRegex.exec(fileContent);
+function getMDXFiles(dir: string) {
+  return fs.readdirSync(dir).filter((file) => path.extname(file) === ".mdx");
+}
 
-  if (!match || !match[1]) {
-    throw new Error(`invalid frontmatter in ${filePath}`);
-  }
-
-  const frontMatterBlock = match[1];
-  const content = fileContent.replace(frontmatterRegex, "").trim();
-  const frontMatterLines = frontMatterBlock.trim().split("\n");
-  const raw: Record<string, string> = {};
-
-  frontMatterLines.forEach((line) => {
-    const [key, ...valueArr] = line.split(": ");
-    let value = valueArr.join(": ").trim();
-    value = value.replace(/^['"](.*)['"]$/, "$1");
-    raw[key.trim()] = value;
-  });
+function readMDXFile(filePath: string) {
+  const rawContent = fs.readFileSync(filePath, "utf-8");
+  const { data, content } = matter(rawContent);
 
   // auto-fill heroImage from first image in content if not set
-  if (!raw.heroImage) {
-    raw.heroImage = extractFirstImage(content) || "";
+  if (!data.heroImage) {
+    data.heroImage = extractFirstImage(content) || "";
   }
 
-  const result = metadataSchema.safeParse(raw);
+  const result = metadataSchema.safeParse(data);
   if (!result.success) {
     throw new Error(
       `invalid metadata in ${filePath}: ${result.error.issues.map((i) => i.message).join(", ")}`,
@@ -59,15 +52,6 @@ function parseFrontmatter(fileContent: string, filePath: string) {
   }
 
   return { metadata: result.data, content };
-}
-
-function getMDXFiles(dir: string) {
-  return fs.readdirSync(dir).filter((file) => path.extname(file) === ".mdx");
-}
-
-function readMDXFile(filePath: string) {
-  const rawContent = fs.readFileSync(filePath, "utf-8");
-  return parseFrontmatter(rawContent, filePath);
 }
 
 function getMDXData(dir: string) {
