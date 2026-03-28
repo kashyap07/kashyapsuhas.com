@@ -27,12 +27,12 @@ export default function RootLayout({
       <body className={eczar.className}>
         {children}
         <SpeedInsights />
+        <Script
+          defer
+          src="https://cloud.umami.is/script.js"
+          data-website-id="5f57cfa4-f6f0-4820-81ac-6bf61facd981"
+        />
       </body>
-      <Script
-        defer
-        src="https://cloud.umami.is/script.js"
-        data-website-id="5f57cfa4-f6f0-4820-81ac-6bf61facd981"
-      />
     </html>
   );
 }
