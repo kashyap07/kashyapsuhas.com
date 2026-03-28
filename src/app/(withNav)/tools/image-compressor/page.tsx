@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { ImageAutoHeight, Wrapper } from "@components/ui";
 
@@ -87,10 +87,16 @@ export default function ImageCompressor() {
     }
   };
 
-  // Memoize the original image to prevent unnecessary re-renders.
+  // create object url for original image and revoke previous one on change
   const originalImageSrc = useMemo(() => {
     return image ? URL.createObjectURL(image) : "";
   }, [image]);
+
+  useEffect(() => {
+    return () => {
+      if (originalImageSrc) URL.revokeObjectURL(originalImageSrc);
+    };
+  }, [originalImageSrc]);
 
   return (
     <Wrapper className="mb-12 w-full md:mb-20">

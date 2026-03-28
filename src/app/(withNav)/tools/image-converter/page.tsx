@@ -25,6 +25,8 @@ export default function ImageConverter() {
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      // revoke previous url to prevent memory leak
+      if (convertedUrl) URL.revokeObjectURL(convertedUrl);
       setImage(file);
       setFileName(file.name.replace(/\.[^.]+$/, ""));
       setConvertedUrl(null);

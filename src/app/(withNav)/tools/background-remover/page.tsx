@@ -78,6 +78,8 @@ const BackgroundRemover: React.FC = () => {
   const handleFile = async (file: File) => {
     setError(null);
     setResultUrl(null);
+    // revoke previous object url to prevent memory leak
+    if (origUrl) URL.revokeObjectURL(origUrl);
     const url = URL.createObjectURL(file);
     setOrigUrl(url);
     setLoading(true);
