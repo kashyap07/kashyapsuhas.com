@@ -65,7 +65,7 @@ export default function RelativeDate({ date, className }: Props) {
   }, [date]);
 
   return (
-    <p className={className}>
+    <p className={className} suppressHydrationWarning>
       {fullDate}
       {relative && ` (${relative})`}
     </p>
