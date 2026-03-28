@@ -2,12 +2,7 @@
 
 import React, { useRef, useState } from "react";
 
-import * as ort from "onnxruntime-web";
-
 import { Wrapper } from "@components/ui";
-
-// set WASM path for onnxruntime-web
-ort.env.wasm.wasmPaths = "/";
 
 const MODEL_PATH = "/models/u2netp.onnx";
 const INPUT_SIZE = 320;
@@ -87,6 +82,10 @@ const BackgroundRemover: React.FC = () => {
     setOrigUrl(url);
     setLoading(true);
     try {
+      // lazy load onnxruntime-web only when user uploads a file
+      const ort = await import("onnxruntime-web");
+      ort.env.wasm.wasmPaths = "/";
+
       // wait for image to load
       const img = new window.Image();
       img.src = url;
@@ -107,7 +106,7 @@ const BackgroundRemover: React.FC = () => {
       const session = await ort.InferenceSession.create(MODEL_PATH, {
         executionProviders: ["wasm"],
       });
-      const feeds: Record<string, ort.Tensor> = { "input.1": tensor };
+      const feeds = { "input.1": tensor };
       const results = await session.run(feeds);
       // U^2-Netp output is usually 'output' or 'd1'
       const output = results[Object.keys(results)[0]];

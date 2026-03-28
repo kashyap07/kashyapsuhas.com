@@ -1,15 +1,10 @@
-import imageCompression from "browser-image-compression";
-
-/**
- * Compresses an image using browser-image-compression.
- * @param {string} imageDataUrl - The image data URL.
- * @param {number} compressionPercentage - The compression percentage (1-100).
- * @returns {Promise<{ dataUrl: string, size: number }>} - The compressed image data URL and size.
- */
+// lazy load browser-image-compression to avoid bundling it at page level
 export async function compressImage(
   imageDataUrl: string,
   compressionPercentage: number,
 ) {
+  const imageCompression = (await import("browser-image-compression")).default;
+
   const blob = await fetch(imageDataUrl).then((res) => res.blob());
   const minSizeMB = 0.01; // allow very small compressed sizes
   const calculatedSizeMB =
