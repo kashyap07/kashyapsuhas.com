@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { ImageAutoHeight, Wrapper } from "@components/ui";
 
@@ -17,6 +17,8 @@ export default function ImageConverter() {
   const [fileName, setFileName] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [isClient, setIsClient] = useState(false);
+  // track conversion version to discard stale results
+  const conversionVersion = useRef(0);
 
   useEffect(() => {
     setIsClient(true);
@@ -42,6 +44,7 @@ export default function ImageConverter() {
   const handleConvert = async () => {
     if (!image) return;
     setError(null);
+    const thisVersion = ++conversionVersion.current;
     try {
       if (
         image.type === "image/heic" ||
@@ -56,7 +59,9 @@ export default function ImageConverter() {
             quality: 0.92,
           });
           const blob = Array.isArray(result) ? result[0] : result;
-          setConvertedUrl(URL.createObjectURL(blob));
+          if (thisVersion === conversionVersion.current) {
+            setConvertedUrl(URL.createObjectURL(blob));
+          }
         } catch {
           setError(
             "This HEIC file could not be converted. Try a different photo, preferably a standard iPhone photo (not a Live Photo or edited image).",
@@ -74,6 +79,7 @@ export default function ImageConverter() {
             ctx?.drawImage(img, 0, 0);
             canvas.toBlob(
               (blob) => {
+                if (thisVersion !== conversionVersion.current) return;
                 if (blob) {
                   setConvertedUrl(URL.createObjectURL(blob));
                 } else {

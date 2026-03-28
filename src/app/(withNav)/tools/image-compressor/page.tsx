@@ -14,14 +14,16 @@ export default function ImageCompressor() {
   const [compressedSize, setCompressedSize] = useState<number | null>(null);
   const [comparisonSliderPosition, setComparisonSliderPosition] = useState(50);
   const [isCompressing, setIsCompressing] = useState(false);
-  // Debounce timer ref
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
+  // ref to current image so debounced callbacks always use latest
+  const imageRef = useRef<File | null>(null);
 
   // Update the logic to display the original image without compression upon upload.
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       setImage(file);
+      imageRef.current = file;
       setOriginalSize(file.size);
       setCompressionPercentage(100);
       setComparisonSliderPosition(50);
@@ -47,9 +49,10 @@ export default function ImageCompressor() {
 
   const MIN_TIME = 600;
 
-  // Debounced compression logic
+  // Debounced compression logic - uses imageRef to avoid stale closure
   const compressImageDebounced = async (value: number) => {
-    if (image && value < 100) {
+    const currentImage = imageRef.current;
+    if (currentImage && value < 100) {
       setIsCompressing(true);
       const start = Date.now();
       const reader = new FileReader();
@@ -66,8 +69,8 @@ export default function ImageCompressor() {
           }
         }
       };
-      reader.readAsDataURL(image);
-    } else if (image && value === 100) {
+      reader.readAsDataURL(currentImage);
+    } else if (currentImage && value === 100) {
       setIsCompressing(true);
       const start = Date.now();
       const reader = new FileReader();
@@ -83,7 +86,7 @@ export default function ImageCompressor() {
           }
         }
       };
-      reader.readAsDataURL(image);
+      reader.readAsDataURL(currentImage);
     }
   };
 
