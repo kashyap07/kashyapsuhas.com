@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { ReactNode } from "react";
 
 import { Wrapper } from "@components/ui";
@@ -8,9 +7,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <>
       <header>
         <Wrapper className="w-full pt-12">
-          <Link className="text-accent text-5xl font-semibold" href={"/"}>
+          <a
+            className="text-accent text-5xl font-semibold"
+            href="/"
+            style={{ viewTransitionName: "site-title" }}
+          >
             Suhas Kashyap
-          </Link>
+          </a>
         </Wrapper>
       </header>
 

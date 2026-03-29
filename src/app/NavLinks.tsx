@@ -1,22 +1,20 @@
-import Link from "next/link";
-
 export default function NavLinks() {
   return (
     <ul className="flex flex-col gap-3 text-4xl">
       <li>
-        <Link href={"/blog"}>Blog</Link>
+        <a href="/blog">Blog</a>
       </li>
       <li>
-        <Link href={"/photos"}>Photos</Link>
+        <a href="/photos">Photos</a>
       </li>
       <li>
-        <Link href={"/reviews"}>Reviews</Link>
+        <a href="/reviews">Reviews</a>
       </li>
       <li>
-        <Link href={"/tools"}>Tools</Link>
+        <a href="/tools">Tools</a>
       </li>
       <li>
-        <Link href={"/contact"}>Contact</Link>
+        <a href="/contact">Contact</a>
       </li>
     </ul>
   );
