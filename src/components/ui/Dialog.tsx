@@ -54,7 +54,7 @@ function Content({
           "data-[state=open]:motion-opacity-in-0",
           "data-[state=open]:motion-translate-y-in-50",
           "data-[state=open]:motion-blur-in-md",
-          "fixed left-[50%] top-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] max-h-[85dvh] translate-x-[-50%] translate-y-[-50%] gap-4 overflow-y-auto rounded border bg-background p-6 shadow-lg motion-duration-200 sm:max-w-lg",
+          "fixed left-[50%] top-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] max-h-[85dvh] translate-x-[-50%] translate-y-[-50%] gap-4 overflow-y-auto rounded-lg border bg-background p-6 shadow-lg motion-duration-200 sm:max-w-lg",
           className,
         )}
         {...props}
@@ -63,7 +63,7 @@ function Content({
         {showCloseButton && (
           <DialogPrimitive.Close
             data-slot="dialog-close"
-            className="absolute right-4 top-4 rounded opacity-70 ring-offset-background transition-opacity hover:opacity-100 disabled:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+            className="absolute right-4 top-4 rounded opacity-75 ring-offset-background transition-opacity hover:opacity-100 disabled:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0"
           >
             <XMark />
             <span className="sr-only">Close</span>
@@ -117,7 +117,7 @@ function Description({
   return (
     <DialogPrimitive.Description
       data-slot="dialog-description"
-      className={cn("text-muted-foreground text-sm", className)}
+      className={cn("text-muted text-sm", className)}
       {...props}
     />
   );

@@ -10,10 +10,10 @@ export function RatingGapTable() {
   });
 
   return (
-    <div className="not-prose my-8 overflow-hidden rounded-lg border border-gray-200">
+    <div className="not-prose my-8 overflow-hidden rounded-lg border border-line">
       <table className="w-full text-sm md:text-base">
         <thead>
-          <tr className="border-b border-gray-200 bg-gray-50 text-left">
+          <tr className="border-b border-line bg-surface-subtle text-left">
             <th className="px-3 py-2 font-medium md:px-4">Rating gap</th>
             <th className="px-3 py-2 font-medium md:px-4">Higher-rated win%</th>
             <th className="px-3 py-2 font-medium md:px-4">Lower-rated win%</th>
@@ -21,13 +21,13 @@ export function RatingGapTable() {
         </thead>
         <tbody>
           {rows.map(({ gap, higher, lower }) => (
-            <tr key={gap} className="border-b border-gray-100 last:border-0">
+            <tr key={gap} className="border-b border-line-subtle last:border-0">
               <td className="px-3 py-2 font-mono md:px-4">+{gap}</td>
               <td className="px-3 py-2 md:px-4">
                 <div className="flex items-center gap-2">
-                  <div className="h-2 w-24 overflow-hidden rounded-full bg-gray-200 md:w-32">
+                  <div className="h-2 w-24 overflow-hidden rounded-full bg-line md:w-32">
                     <div
-                      className="h-full rounded-full bg-columbiaYellow"
+                      className="h-full rounded-full bg-accent"
                       style={{ width: `${higher}%` }}
                     />
                   </div>
@@ -38,9 +38,9 @@ export function RatingGapTable() {
               </td>
               <td className="px-3 py-2 md:px-4">
                 <div className="flex items-center gap-2">
-                  <div className="h-2 w-24 overflow-hidden rounded-full bg-gray-200 md:w-32">
+                  <div className="h-2 w-24 overflow-hidden rounded-full bg-line md:w-32">
                     <div
-                      className="h-full rounded-full bg-gray-400"
+                      className="h-full rounded-full bg-subtle"
                       style={{ width: `${lower}%` }}
                     />
                   </div>

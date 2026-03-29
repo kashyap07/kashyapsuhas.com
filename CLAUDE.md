@@ -19,6 +19,7 @@
 - I really like it when comments are in small case unless really required
 - code comments must not be verbose - it is ok to have bad grammar
 - code doesn't need to be "priduction ready". iterative approach is better
+- **design system:** all visual decisions (colors, spacing, radius, typography) are documented in `DESIGN_SYSTEM.md`. read it before writing any UI code. never use raw gray-{n}, text-columbiaYellow, or text-red/green-600 — use the tokens.
 
 ## Build and Development Commands
 

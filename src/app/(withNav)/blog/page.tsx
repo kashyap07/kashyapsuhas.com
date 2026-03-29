@@ -52,7 +52,7 @@ function Blog() {
   });
 
   return (
-    <Wrapper className="mb-12 w-full md:mb-20">
+    <Wrapper className="mb-section-sm w-full md:mb-section-md">
       <ul className="flex flex-col gap-8 md:gap-14">
         {blogPostsSplitByYear.map((postGroupByYear, idx) => (
           <li key={idx}>
@@ -64,11 +64,11 @@ function Blog() {
                   href={`/blog/${post.slug}`}
                 >
                   <li className="flex flex-row-reverse items-baseline gap-2 md:flex-row md:items-end md:justify-between">
-                    <span className="flex-grow text-[1.3rem] font-medium md:text-3xl">
+                    <span className="flex-grow text-body-lg font-medium md:text-heading-sm">
                       {post.metadata.title}
                     </span>
 
-                    <span className="min-w-20 text-base text-gray-600 group-hover:font-medium group-hover:text-columbiaYellow md:min-w-fit md:text-lg">
+                    <span className="min-w-20 text-base text-secondary group-hover:font-medium group-hover:text-accent md:min-w-fit md:text-lg">
                       {formatter.format(
                         new Date(post.metadata.publishedDateTime),
                       )}

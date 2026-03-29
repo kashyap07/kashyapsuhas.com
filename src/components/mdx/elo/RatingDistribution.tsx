@@ -83,11 +83,11 @@ const strokePath = strokeParts.join(" ");
 
 export function RatingDistribution() {
   return (
-    <div className="not-prose my-8 overflow-x-auto rounded-lg border border-gray-200">
+    <div className="not-prose my-8 overflow-x-auto rounded-lg border border-line">
       <div className="min-w-[500px]">
-        <div className="flex items-baseline justify-between border-b border-gray-100 bg-gray-50 px-4 py-2">
+        <div className="flex items-baseline justify-between border-b border-line-subtle bg-surface-subtle px-4 py-2">
           <span className="text-sm font-medium">1v1 Random Map</span>
-          <span className="font-mono text-xs text-gray-500">
+          <span className="font-mono text-xs text-muted">
             N = {N.toLocaleString()}
           </span>
         </div>

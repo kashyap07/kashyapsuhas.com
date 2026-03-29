@@ -79,7 +79,7 @@ export function EloVisualizer() {
   });
 
   return (
-    <div className="not-prose my-8 rounded-lg border border-gray-200 p-4 md:p-6">
+    <div className="not-prose my-8 rounded-lg border border-line p-4 md:p-6">
       {/* sliders */}
       <div className="grid gap-4 md:grid-cols-2">
         <div>
@@ -101,7 +101,7 @@ export function EloVisualizer() {
             max={2400}
             value={ratingA}
             onChange={(e) => setRatingA(Number(e.target.value))}
-            className="mt-2 w-full rounded border border-gray-300 px-3 py-2 text-center font-mono"
+            className="mt-2 w-full rounded border border-line px-3 py-2 text-center font-mono"
           />
         </div>
         <div>
@@ -123,18 +123,18 @@ export function EloVisualizer() {
             max={2400}
             value={ratingB}
             onChange={(e) => setRatingB(Number(e.target.value))}
-            className="mt-2 w-full rounded border border-gray-300 px-3 py-2 text-center font-mono"
+            className="mt-2 w-full rounded border border-line px-3 py-2 text-center font-mono"
           />
         </div>
       </div>
 
       {/* summary */}
-      <div className="mt-3 text-center text-sm text-gray-500">
+      <div className="mt-3 text-center text-sm text-muted">
         {Math.abs(diff)} point difference
       </div>
 
       {/* svg chart */}
-      <div className="mt-4 overflow-hidden rounded border border-gray-100 bg-white">
+      <div className="mt-4 overflow-hidden rounded border border-line-subtle bg-white">
         <svg viewBox={`0 0 ${width} ${height}`} className="w-full">
           {/* player B curve (behind) */}
           <path
@@ -204,9 +204,9 @@ export function EloVisualizer() {
       />
 
       {/* result */}
-      <div className="mt-2 rounded-lg bg-gray-50 px-4 py-3 text-center">
+      <div className="mt-2 rounded-lg bg-surface-subtle px-4 py-3 text-center">
         <span dangerouslySetInnerHTML={{ __html: resultHTML }} />
-        <div className="mt-1 text-lg text-gray-600">
+        <div className="mt-1 text-lg text-secondary">
           Player A wins ~{(expected * 100).toFixed(1)}% of the time /{" "}
           {expected >= 0.5
             ? `(~${Math.round(expected * 10)} wins in every 10 games)`

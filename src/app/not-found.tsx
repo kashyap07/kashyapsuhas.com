@@ -9,7 +9,7 @@ export default function NotFound() {
       <h1 className="flex flex-col gap-0 text-[10rem] font-medium">
         <span>404</span>
       </h1>
-      <Link href="/" className={cn("text-5xl font-bold text-columbiaYellow")}>
+      <Link href="/" className={cn("text-5xl font-bold text-accent")}>
         YOU&apos;RE LOST. GO HOME.
       </Link>
     </Wrapper>

@@ -5,7 +5,7 @@
 @layer base {
   :root {
     --background: #fff;
-    --foreground: #000;
+    --foreground: #1e293b;
     /* --columbiaYellow: #fecb47; */
     --columbiaYellow: #f0a044;
 
@@ -29,7 +29,7 @@
   }
 
   a {
-    @apply underline-offset-4 hover:text-columbiaYellow hover:underline;
+    @apply hover:text-accent underline-offset-4 hover:underline;
   }
 
   pre,
@@ -46,7 +46,7 @@
 
   input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
-    @apply macos-shadow h-4 w-4 appearance-none rounded-full bg-columbiaYellow;
+    @apply macos-shadow bg-accent h-4 w-4 appearance-none rounded-full;
   }
 }
 
@@ -78,7 +78,7 @@
   }
 
   .title {
-    text-wrap: balance;
+    /* text-wrap: balance; */
   }
 
   @keyframes marquee {
@@ -106,6 +106,9 @@
 }
 
 .prose {
+  --tw-prose-body: var(--foreground);
+  --tw-prose-headings: var(--foreground);
+  --tw-prose-bold: var(--foreground);
   max-width: none;
 
   img {

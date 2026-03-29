@@ -18,14 +18,14 @@ export default function Error({
         <button
           onClick={reset}
           className={cn(
-            "text-2xl font-bold text-columbiaYellow underline underline-offset-4",
+            "text-2xl font-bold text-accent underline underline-offset-4",
           )}
         >
           try again
         </button>
         <Link
           href="/"
-          className={cn("text-2xl font-bold text-columbiaYellow")}
+          className={cn("text-2xl font-bold text-accent")}
         >
           go home
         </Link>

@@ -147,8 +147,8 @@ const BackgroundRemover: React.FC = () => {
   };
 
   return (
-    <Wrapper className="mb-12 w-full md:mb-20">
-      <h1 className="text-5xl font-medium md:text-8xl">
+    <Wrapper className="mb-section-sm w-full md:mb-section-md">
+      <h1 className="text-heading-lg font-medium md:text-display">
         AI Background Remover
       </h1>
       <div className="mt-2 flex flex-col gap-6">
@@ -159,7 +159,7 @@ const BackgroundRemover: React.FC = () => {
             if (e.target.files && e.target.files[0])
               handleFile(e.target.files[0]);
           }}
-          className="file:mr-4 file:rounded file:border-0 file:px-4 file:py-2 file:text-black hover:file:bg-columbiaYellow"
+          className="file:mr-4 file:rounded file:border-0 file:px-4 file:py-2 file:text-black hover:file:bg-accent"
           disabled={loading}
         />
         {(origUrl || resultUrl) && (
@@ -168,7 +168,7 @@ const BackgroundRemover: React.FC = () => {
             <div className="flex flex-1 flex-col items-center">
               {origUrl && (
                 <div className="w-full">
-                  <div className="mb-2 text-center text-sm text-gray-500">
+                  <div className="mb-2 text-center text-sm text-muted">
                     Original
                   </div>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -176,7 +176,7 @@ const BackgroundRemover: React.FC = () => {
                     ref={imgRef}
                     src={origUrl}
                     alt="Original"
-                    className="max-h-96 w-full rounded bg-white object-contain shadow"
+                    className="max-h-96 w-full rounded-lg bg-white object-contain shadow"
                   />
                 </div>
               )}
@@ -186,7 +186,7 @@ const BackgroundRemover: React.FC = () => {
             <div className="flex flex-1 flex-col items-center">
               {resultUrl && (
                 <div className="w-full">
-                  <div className="mb-2 text-center text-sm text-gray-500">
+                  <div className="mb-2 text-center text-sm text-muted">
                     Background Removed
                   </div>
                   {/* TODO: use Image instead? */}
@@ -194,12 +194,12 @@ const BackgroundRemover: React.FC = () => {
                   <img
                     src={resultUrl}
                     alt="Result"
-                    className="max-h-96 w-full rounded bg-white object-contain shadow"
+                    className="max-h-96 w-full rounded-lg bg-white object-contain shadow"
                   />
                   <a
                     href={resultUrl}
                     download="background-removed.png"
-                    className="mt-4 flex items-center justify-center rounded bg-columbiaYellow py-2 font-medium text-black transition-all duration-100 ease-in-out hover:text-black hover:no-underline hover:shadow-md"
+                    className="mt-4 flex items-center justify-center rounded bg-accent py-2 font-medium text-black transition-all duration-100 ease-in-out hover:text-black hover:no-underline hover:shadow-md"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -222,15 +222,15 @@ const BackgroundRemover: React.FC = () => {
             </div>
           </div>
         )}
-        {error && <div className="mb-4 text-red-600">{error}</div>}
+        {error && <div className="mb-4 text-danger">{error}</div>}
       </div>
 
       {/* loader overlay */}
       {loading && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
-          <div className="flex flex-col items-center gap-4 rounded bg-white p-8 shadow-lg">
+          <div className="flex flex-col items-center gap-4 rounded-lg bg-surface p-8 shadow-lg">
             <svg
-              className="h-10 w-10 animate-spin text-columbiaYellow"
+              className="h-10 w-10 animate-spin text-accent"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -249,7 +249,7 @@ const BackgroundRemover: React.FC = () => {
                 d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
               ></path>
             </svg>
-            <span className="text-lg font-semibold text-gray-800">
+            <span className="text-lg font-semibold text-secondary">
               Processing...
             </span>
           </div>

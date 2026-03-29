@@ -51,7 +51,7 @@ async function Blog(props: Props) {
   const { publishedDateTime, title, description, heroImage } = post.metadata;
 
   return (
-    <Wrapper className="mb-12 w-full md:mb-20">
+    <Wrapper className="mb-section-sm w-full md:mb-section-md">
       <section>
         {/* structured data */}
         <script
@@ -78,7 +78,7 @@ async function Blog(props: Props) {
         />
 
         {/* title */}
-        <h1 className="title w-full text-4xl font-medium md:text-8xl">
+        <h1 className="title w-full text-heading-md font-medium md:text-display">
           {post.metadata.title}
         </h1>
 

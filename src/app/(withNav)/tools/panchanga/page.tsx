@@ -109,8 +109,8 @@ export default function PanchangaPage() {
   }
 
   return (
-    <Wrapper className="mb-12 w-full bg-white md:mb-20">
-      <h1 className="mb-6 text-5xl font-medium text-gray-900 md:text-8xl">
+    <Wrapper className="mb-section-sm w-full bg-surface md:mb-section-md">
+      <h1 className="mb-6 text-heading-lg font-medium md:text-display">
         Panchanga
       </h1>
 
@@ -118,23 +118,23 @@ export default function PanchangaPage() {
       <div className="mb-8 flex flex-wrap items-center gap-3">
         <input
           type="datetime-local"
-          className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-1 focus:ring-gray-400"
+          className="rounded border border-line bg-surface px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-line"
           value={inputVal}
           onChange={handleDateChange}
         />
         <button
           onClick={() => setIsLive(true)}
-          className={`rounded-lg border px-3 py-2 text-sm transition-colors ${
+          className={`rounded border px-3 py-2 text-sm transition-colors ${
             isLive
-              ? "border-[--columbiaYellow] bg-[--columbiaYellow] text-black"
-              : "border-gray-200 text-gray-400 hover:border-gray-400"
+              ? "border-accent bg-accent text-black"
+              : "border-line text-subtle hover:border-muted"
           }`}
         >
           {isLive ? "● live" : "use current time"}
         </button>
       </div>
 
-      {error && <p className="mb-6 text-sm text-red-500">{error}</p>}
+      {error && <p className="mb-6 text-sm text-danger">{error}</p>}
 
       {panchanga && (
         <>
@@ -146,13 +146,13 @@ export default function PanchangaPage() {
               return (
                 <div
                   key={key}
-                  className="flex flex-col gap-0.5 rounded-lg border border-gray-100 bg-gray-50/60 px-4 py-3"
+                  className="flex flex-col gap-0.5 rounded-lg border border-line-subtle bg-surface-subtle/60 px-4 py-3"
                 >
-                  <span className="text-3xl font-semibold leading-tight text-columbiaYellow">
+                  <span className="text-3xl font-semibold leading-tight text-accent">
                     {devaVal}
                   </span>
-                  <span className="text-base text-gray-700">{val}</span>
-                  <span className="text-sm text-gray-400">
+                  <span className="text-base text-secondary">{val}</span>
+                  <span className="text-sm text-subtle">
                     {saLabel} · {en}
                   </span>
                 </div>
@@ -161,12 +161,12 @@ export default function PanchangaPage() {
           </div>
 
           {/* sankalpa mantra */}
-          <div className="rounded-lg bg-gray-50/60 px-6 py-5">
-            <p className="text-xl leading-relaxed text-gray-800">
+          <div className="rounded-lg bg-surface-subtle/60 px-6 py-5">
+            <p className="text-xl leading-relaxed text-foreground">
               {buildSankalpaSegments(panchanga).map((seg, i) => (
                 <span
                   key={i}
-                  className={seg.highlight ? "font-semibold text-columbiaYellow" : ""}
+                  className={seg.highlight ? "font-semibold text-accent" : ""}
                 >
                   {seg.text}
                 </span>

@@ -102,14 +102,14 @@ export default function ImageCompressor() {
   }, [originalImageSrc]);
 
   return (
-    <Wrapper className="mb-12 w-full md:mb-20">
-      <h1 className="text-5xl font-medium md:text-8xl">Image Compressor</h1>
+    <Wrapper className="mb-section-sm w-full md:mb-section-md">
+      <h1 className="text-heading-lg font-medium md:text-display">Image Compressor</h1>
       <div className="mt-2 flex flex-col gap-6">
         <input
           type="file"
           accept="image/*"
           onChange={handleImageUpload}
-          className="file:mr-4 file:rounded file:border-0 file:px-4 file:py-2 file:text-black hover:file:bg-columbiaYellow"
+          className="file:mr-4 file:rounded file:border-0 file:px-4 file:py-2 file:text-black hover:file:bg-accent"
           disabled={isCompressing}
         />
         {compressedImage && (
@@ -117,7 +117,7 @@ export default function ImageCompressor() {
             {/* left section */}
             {/* image + comparison slider */}
             <div className="relative w-full max-w-lg">
-              <div className="macos-shadow relative h-full w-full overflow-hidden rounded-sm">
+              <div className="macos-shadow relative h-full w-full overflow-hidden rounded-lg">
                 <ImageAutoHeight
                   src={compressedImage}
                   alt="Compressed"
@@ -157,7 +157,7 @@ export default function ImageCompressor() {
                       transform: "translate(-50%, -50%)",
                     }}
                   >
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full border-4 border-white bg-columbiaYellow shadow-lg transition-all duration-200">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full border-4 border-white bg-accent shadow-lg transition-all duration-200">
                       <svg
                         width="20"
                         height="20"
@@ -201,7 +201,7 @@ export default function ImageCompressor() {
             {/* right section */}
             {/* file info, slider, download */}
             <div className="w-full md:w-2/5">
-              <label className="block text-lg font-medium text-gray-500">
+              <label className="block text-lg font-medium text-muted">
                 Compression
                 <input
                   type="range"
@@ -220,13 +220,13 @@ export default function ImageCompressor() {
                 </span>
               </label>
               <div className="mt-4 flex flex-col gap-0 text-center">
-                <span className="flex justify-between text-gray-600">
+                <span className="flex justify-between text-secondary">
                   <span>Original:</span>
                   <span>
                     {originalSize ? (originalSize / 1024).toFixed(2) : "-"} KB
                   </span>
                 </span>
-                <span className="flex justify-between text-gray-600">
+                <span className="flex justify-between text-secondary">
                   <span>Compressed:</span>
                   <span>
                     {" "}
@@ -240,7 +240,7 @@ export default function ImageCompressor() {
               <a
                 href={compressedImage}
                 download="compressed-image.jpg"
-                className="mt-4 flex items-center justify-center rounded bg-columbiaYellow py-2 font-medium text-black transition-all duration-100 ease-in-out hover:text-black hover:no-underline hover:shadow-md"
+                className="mt-4 flex items-center justify-center rounded bg-accent py-2 font-medium text-black transition-all duration-100 ease-in-out hover:text-black hover:no-underline hover:shadow-md"
                 style={{
                   pointerEvents: isCompressing ? "none" : "auto",
                   opacity: isCompressing ? 0.5 : 1,
@@ -271,9 +271,9 @@ export default function ImageCompressor() {
       {/* Loader overlay */}
       {isCompressing && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
-          <div className="flex flex-col items-center gap-4 rounded bg-white p-8 shadow-lg">
+          <div className="flex flex-col items-center gap-4 rounded-lg bg-surface p-8 shadow-lg">
             <svg
-              className="h-10 w-10 animate-spin text-columbiaYellow"
+              className="h-10 w-10 animate-spin text-accent"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -292,7 +292,7 @@ export default function ImageCompressor() {
                 d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
               ></path>
             </svg>
-            <span className="text-lg font-semibold text-gray-800">
+            <span className="text-lg font-semibold text-secondary">
               Compressing...
             </span>
           </div>

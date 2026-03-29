@@ -41,7 +41,7 @@ function TouchMarquee() {
             isVisible ? "opacity-65" : "opacity-0",
           )}
         >
-          <div className="animate-marquee absolute -left-10 mt-[300px] flex w-max whitespace-nowrap text-columbiaYellow drop-shadow-[0_10px_30px_rgba(0,0,0,0.4)]">
+          <div className="animate-marquee absolute -left-10 mt-[300px] flex w-max whitespace-nowrap text-accent drop-shadow-[0_10px_30px_rgba(0,0,0,0.4)]">
             <MarqueeContent />
             <MarqueeContent />
           </div>

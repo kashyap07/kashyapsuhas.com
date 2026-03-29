@@ -266,9 +266,7 @@ function Reviews({ reviews: initialReviews }: Props) {
   const RenderReviewRows = () => {
     if (reviewsState.reviews.length === 0) {
       return (
-        <div className="py-4 text-center text-gray-500">
-          No reviews found : (
-        </div>
+        <div className="text-muted py-4 text-center">No reviews found : (</div>
       );
     } else
       return (
@@ -280,22 +278,22 @@ function Reviews({ reviews: initialReviews }: Props) {
               className={cn(
                 "group relative grid cursor-pointer grid-cols-4 items-center border-b px-2 py-4 md:grid-cols-9",
                 "transition-all duration-200 ease-in-out",
-                "hover:bg-gray-50/50 hover:shadow-sm",
+                "hover:bg-surface-hover hover:shadow-sm",
               )}
             >
               <div
                 role="button"
-                className="col-span-2 px-2 text-lg font-medium transition-colors group-hover:text-columbiaYellow"
+                className="group-hover:text-accent col-span-2 px-2 text-lg font-medium transition-colors"
                 title={review.name}
               >
                 {review.name}
               </div>
 
-              <div className="text-md col-span-1 px-2 transition-colors group-hover:text-columbiaYellow">
+              <div className="text-md group-hover:text-accent col-span-1 px-2 transition-colors">
                 {review.rating}
               </div>
 
-              <div className="text-md col-span-1 hidden px-2 transition-colors group-hover:text-columbiaYellow md:block">
+              <div className="text-md group-hover:text-accent col-span-1 hidden px-2 transition-colors md:block">
                 {review.wouldRecommend ? <CheckMini /> : <XMarkMini />}
               </div>
 
@@ -311,7 +309,7 @@ function Reviews({ reviews: initialReviews }: Props) {
               </div>
 
               <div
-                className="col-span-4 hidden pl-2 text-base transition-colors group-hover:text-columbiaYellow md:block"
+                className="group-hover:text-accent col-span-4 hidden pl-2 text-base transition-colors md:block"
                 title={review.summary}
               >
                 {review.summary}
@@ -325,7 +323,7 @@ function Reviews({ reviews: initialReviews }: Props) {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="h-5 w-5 text-columbiaYellow"
+                  className="text-accent h-5 w-5"
                 >
                   <path
                     strokeLinecap="round"
@@ -341,25 +339,18 @@ function Reviews({ reviews: initialReviews }: Props) {
   };
 
   return (
-    <Wrapper className="mb-12 w-full md:mb-20">
-      <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between">
-        <h1 className="text-5xl font-medium md:text-8xl">Reviews</h1>
+    <Wrapper className="mb-section-sm md:mb-section-md w-full">
+      {/* search — own row */}
+      <input
+        type="text"
+        placeholder={"search reviews"}
+        className="focus:outline-accent mb-4 w-full rounded border p-2 md:w-64"
+        defaultValue={reviewsState.searchString}
+        onChange={(e) => dispatch({ type: "SEARCH", payload: e.target.value })}
+      />
 
-        <div className="mt-4 md:mt-0 md:w-64">
-          <input
-            type="text"
-            placeholder={"search reviews"}
-            className="w-full rounded border p-2 focus:outline-columbiaYellow"
-            defaultValue={reviewsState.searchString}
-            onChange={(e) =>
-              dispatch({ type: "SEARCH", payload: e.target.value })
-            }
-          />
-        </div>
-      </div>
-
+      {/* filters + hint */}
       <div className="mb-4 flex min-h-10 items-center justify-between gap-6">
-        {/* filters */}
         <div className="flex flex-wrap gap-2">
           {reviewsState.reviewCategories.map((category) => (
             <button
@@ -370,8 +361,8 @@ function Reviews({ reviews: initialReviews }: Props) {
               className={cn(
                 "rounded border border-transparent px-2 py-2 text-xs font-medium transition-colors",
                 reviewsState.selectedCategory === category
-                  ? `${getCategoryColor(category)} ring-2 ring-columbiaYellow ring-offset-2`
-                  : `bg-gray-100 text-gray-700 hover:bg-gray-200`,
+                  ? `${getCategoryColor(category)} ring-accent ring-2 ring-offset-2`
+                  : `bg-surface-subtle text-secondary hover:bg-line`,
               )}
               aria-pressed={reviewsState.selectedCategory === category}
             >
@@ -382,7 +373,7 @@ function Reviews({ reviews: initialReviews }: Props) {
 
         <div className="hidden lg:block">
           {/* helper text */}
-          <span className="flex items-center gap-2 text-sm text-gray-500">
+          <span className="text-muted flex items-center gap-2 text-sm">
             click on an item to read the entire thing
           </span>
 
@@ -390,7 +381,7 @@ function Reviews({ reviews: initialReviews }: Props) {
           {showHint && reviewsState.reviews.length > 0 && (
             <svg
               viewBox="100 100 100 160"
-              className="pointer-events-none -right-32 top-[6.5rem] z-10 lg:absolute"
+              className="pointer-events-none -right-40 top-[2rem] z-10 lg:absolute"
               width="220"
               height="220"
             >
@@ -413,37 +404,39 @@ function Reviews({ reviews: initialReviews }: Props) {
       </div>
 
       {/* reviews table */}
-      <div className="relative w-full md:min-w-[850px]">
-        {/* header */}
-        <div className="grid grid-cols-4 border-b bg-gray-50 px-2 py-3 text-xs font-semibold tracking-wider text-gray-500 md:grid-cols-9">
-          <div className="col-span-2 px-2">name</div>
-          <button
-            type="button"
-            onClick={() =>
-              dispatch({
-                type: "SORT",
-                payload: "rating",
-              })
-            }
-            className="col-span-1 px-2 text-left hover:text-gray-700"
-          >
-            rating
-            <span className="ml-1 inline-block">
-              {(() => {
-                const ratingSort = reviewsState.sortOrder.rating;
-                if (ratingSort === "ASC") return "▲";
-                if (ratingSort === "DESC") return "▼";
-                return "";
-              })()}
-            </span>
-          </button>
-          <div className="col-span-1 hidden px-2 sm:block">recommend</div>
-          <div className="col-span-1 px-2">category</div>
-          <div className="col-span-4 hidden px-2 md:block">summary</div>
-        </div>
+      <div className="w-full overflow-x-auto">
+        <div className="relative w-full md:min-w-[850px]">
+          {/* header */}
+          <div className="bg-surface-subtle text-muted grid grid-cols-4 border-b px-2 py-3 text-xs font-semibold tracking-wider md:grid-cols-9">
+            <div className="col-span-2 px-2">name</div>
+            <button
+              type="button"
+              onClick={() =>
+                dispatch({
+                  type: "SORT",
+                  payload: "rating",
+                })
+              }
+              className="hover:text-secondary col-span-1 px-2 text-left"
+            >
+              rating
+              <span className="ml-1 inline-block">
+                {(() => {
+                  const ratingSort = reviewsState.sortOrder.rating;
+                  if (ratingSort === "ASC") return "▲";
+                  if (ratingSort === "DESC") return "▼";
+                  return "";
+                })()}
+              </span>
+            </button>
+            <div className="col-span-1 hidden px-2 md:block">recommend</div>
+            <div className="col-span-1 px-2">category</div>
+            <div className="col-span-4 hidden px-2 md:block">summary</div>
+          </div>
 
-        {/* rows */}
-        <RenderReviewRows />
+          {/* rows */}
+          <RenderReviewRows />
+        </div>
       </div>
 
       {/* single shared dialog for all reviews */}
@@ -468,12 +461,12 @@ function Reviews({ reviews: initialReviews }: Props) {
                     {selectedReview.category}
                   </span>
                   {selectedReview.reviewDate && (
-                    <span className="text-md text-gray-500">
+                    <span className="text-md text-muted">
                       {new Date(selectedReview.reviewDate).toLocaleDateString()}
                     </span>
                   )}
                   <span
-                    className={`text-md ${selectedReview.wouldRecommend ? "text-green-600" : "text-red-600"}`}
+                    className={`text-md ${selectedReview.wouldRecommend ? "text-success" : "text-danger"}`}
                   >
                     {selectedReview.wouldRecommend
                       ? "Would Recommend"

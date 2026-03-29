@@ -38,11 +38,11 @@ export function EloCalculator() {
   );
 
   return (
-    <div className="not-prose my-8 rounded-lg border border-gray-200 p-4 md:p-6">
+    <div className="not-prose my-8 rounded-lg border border-line p-4 md:p-6">
       {/* input fields */}
       <div className="grid gap-4 md:grid-cols-2">
         <div>
-          <label className="mb-1 block text-sm text-gray-600">
+          <label className="mb-1 block text-sm text-secondary">
             Your rating
           </label>
           <input
@@ -51,11 +51,11 @@ export function EloCalculator() {
             max={3000}
             value={playerRating}
             onChange={(e) => setPlayerRating(Number(e.target.value))}
-            className="mt-2 w-full rounded border border-gray-300 px-3 py-2 text-center font-mono"
+            className="mt-2 w-full rounded border border-line px-3 py-2 text-center font-mono"
           />
         </div>
         <div>
-          <label className="mb-1 block text-sm text-gray-600">
+          <label className="mb-1 block text-sm text-secondary">
             Opponent rating
           </label>
           <input
@@ -64,14 +64,14 @@ export function EloCalculator() {
             max={3000}
             value={opponentRating}
             onChange={(e) => setOpponentRating(Number(e.target.value))}
-            className="mt-2 w-full rounded border border-gray-300 px-3 py-2 text-center font-mono"
+            className="mt-2 w-full rounded border border-line px-3 py-2 text-center font-mono"
           />
         </div>
       </div>
 
       {/* step 1: expected score */}
       <div className="mt-6">
-        <div className="mb-2 text-sm font-medium text-gray-700">
+        <div className="mb-2 text-sm font-medium text-secondary">
           Step 1: Calculate expected score
         </div>
         <div className="rounded-lg bg-blue-50 px-4 py-3">
@@ -79,7 +79,7 @@ export function EloCalculator() {
             className="text-center"
             dangerouslySetInnerHTML={{ __html: step1HTML }}
           />
-          <div className="mt-2 text-center text-sm text-gray-600">
+          <div className="mt-2 text-center text-sm text-secondary">
             You're expected to win {(expected * 100).toFixed(1)}% of the time
           </div>
         </div>
@@ -87,13 +87,13 @@ export function EloCalculator() {
 
       {/* step 2: outcomes */}
       <div className="mt-6">
-        <div className="mb-2 text-sm font-medium text-gray-700">
+        <div className="mb-2 text-sm font-medium text-secondary">
           Step 2: Update rating based on outcome
         </div>
         <div className="grid gap-3 md:grid-cols-2">
           {/* win */}
           <div className="rounded-lg border-2 border-green-200 bg-green-50 px-4 py-3">
-            <div className="mb-1 text-xs font-medium uppercase tracking-wide text-green-700">
+            <div className="mb-1 text-xs font-medium uppercase tracking-wide text-success">
               If you win (S = 1)
             </div>
             <div
@@ -101,15 +101,15 @@ export function EloCalculator() {
               dangerouslySetInnerHTML={{ __html: step2WinHTML }}
             />
             <div className="flex items-baseline justify-between border-t border-green-200 pt-2">
-              <span className="text-sm text-gray-600">New rating:</span>
-              <span className="font-mono text-lg font-medium text-green-700">
+              <span className="text-sm text-secondary">New rating:</span>
+              <span className="font-mono text-lg font-medium text-success">
                 {newRatingWin}
               </span>
             </div>
             <div className="mt-1 text-right">
               <span
                 className={`font-mono text-sm font-medium ${
-                  deltaWin >= 0 ? "text-green-600" : "text-red-600"
+                  deltaWin >= 0 ? "text-success" : "text-danger"
                 }`}
               >
                 {deltaWin >= 0 ? "+" : ""}
@@ -120,7 +120,7 @@ export function EloCalculator() {
 
           {/* loss */}
           <div className="rounded-lg border-2 border-red-200 bg-red-50 px-4 py-3">
-            <div className="mb-1 text-xs font-medium uppercase tracking-wide text-red-700">
+            <div className="mb-1 text-xs font-medium uppercase tracking-wide text-danger">
               If you lose (S = 0)
             </div>
             <div
@@ -128,15 +128,15 @@ export function EloCalculator() {
               dangerouslySetInnerHTML={{ __html: step2LossHTML }}
             />
             <div className="flex items-baseline justify-between border-t border-red-200 pt-2">
-              <span className="text-sm text-gray-600">New rating:</span>
-              <span className="font-mono text-lg font-medium text-red-700">
+              <span className="text-sm text-secondary">New rating:</span>
+              <span className="font-mono text-lg font-medium text-danger">
                 {newRatingLoss}
               </span>
             </div>
             <div className="mt-1 text-right">
               <span
                 className={`font-mono text-sm font-medium ${
-                  deltaLoss >= 0 ? "text-green-600" : "text-red-600"
+                  deltaLoss >= 0 ? "text-success" : "text-danger"
                 }`}
               >
                 {deltaLoss >= 0 ? "+" : ""}

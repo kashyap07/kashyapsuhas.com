@@ -110,17 +110,17 @@ export default function ImageConverter() {
   if (!isClient) return null;
 
   return (
-    <Wrapper className="mb-12 w-full md:mb-20">
-      <h1 className="text-5xl font-medium md:text-8xl">Image Converter</h1>
+    <Wrapper className="mb-section-sm w-full md:mb-section-md">
+      <h1 className="text-heading-lg font-medium md:text-display">Image Converter</h1>
       <div className="mt-2 flex flex-col gap-6">
         <input
           type="file"
           accept="image/*,.heic"
           onChange={handleImageUpload}
-          className="file:mr-4 file:rounded file:border-0 file:px-4 file:py-2 file:text-black hover:file:bg-columbiaYellow"
+          className="file:mr-4 file:rounded file:border-0 file:px-4 file:py-2 file:text-black hover:file:bg-accent"
         />
         <div className="flex flex-col items-center gap-4 md:flex-row">
-          <label className="text-lg font-medium text-gray-500">
+          <label className="text-lg font-medium text-muted">
             Output Format:
             <select
               className="ml-2 rounded border px-2 py-1"
@@ -135,18 +135,18 @@ export default function ImageConverter() {
             </select>
           </label>
           <button
-            className="rounded bg-columbiaYellow px-4 py-2 font-medium text-black transition-all duration-100 ease-in-out hover:text-black hover:no-underline hover:shadow-md"
+            className="rounded bg-accent px-4 py-2 font-medium text-black transition-all duration-100 ease-in-out hover:text-black hover:no-underline hover:shadow-md"
             onClick={handleConvert}
             disabled={!image}
           >
             Convert
           </button>
         </div>
-        {error && <div className="text-red-600">{error}</div>}
+        {error && <div className="text-danger">{error}</div>}
         {convertedUrl && (
           <div className="mt-8 flex flex-col gap-8 md:flex-row md:justify-between">
             <div className="relative w-full max-w-lg">
-              <div className="macos-shadow relative h-full w-full overflow-hidden rounded-sm">
+              <div className="macos-shadow relative h-full w-full overflow-hidden rounded-lg">
                 <ImageAutoHeight
                   src={convertedUrl}
                   alt="Converted"
@@ -158,7 +158,7 @@ export default function ImageConverter() {
               <a
                 href={convertedUrl}
                 download={`${fileName || "converted-image"}.${outputFormat.ext}`}
-                className="mt-4 flex w-full items-center justify-center rounded bg-columbiaYellow py-2 font-medium text-black transition-all duration-100 ease-in-out hover:text-black hover:no-underline hover:shadow-md"
+                className="mt-4 flex w-full items-center justify-center rounded bg-accent py-2 font-medium text-black transition-all duration-100 ease-in-out hover:text-black hover:no-underline hover:shadow-md"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

@@ -82,12 +82,12 @@ export function EloMatchSimulator() {
   }
 
   return (
-    <div className="not-prose my-8 rounded-lg border border-gray-200 p-4 md:p-6">
+    <div className="not-prose my-8 rounded-lg border border-line p-4 md:p-6">
       <h3 className="mb-4 text-lg font-medium">Match Simulator</h3>
 
       <div className="grid gap-4 md:grid-cols-2">
         <div>
-          <label className="mb-2 block text-sm text-gray-600">
+          <label className="mb-2 block text-sm text-secondary">
             Current rating
           </label>
           <input
@@ -99,11 +99,11 @@ export function EloMatchSimulator() {
               setCurrentRating(Number(e.target.value));
               setHistory([]);
             }}
-            className="mt-2 w-full rounded border border-gray-300 px-3 py-2 text-center font-mono"
+            className="mt-2 w-full rounded border border-line px-3 py-2 text-center font-mono"
           />
         </div>
         <div>
-          <label className="mb-2 block text-sm text-gray-600">
+          <label className="mb-2 block text-sm text-secondary">
             Opponent rating
           </label>
           <input
@@ -112,7 +112,7 @@ export function EloMatchSimulator() {
             max={3000}
             value={opponentRating}
             onChange={(e) => setOpponentRating(Number(e.target.value))}
-            className="mt-2 w-full rounded border border-gray-300 px-3 py-2 text-center font-mono"
+            className="mt-2 w-full rounded border border-line px-3 py-2 text-center font-mono"
           />
         </div>
       </div>
@@ -135,14 +135,14 @@ export function EloMatchSimulator() {
         </button>
         <button
           onClick={reset}
-          className="ml-auto rounded border border-gray-300 px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-100"
+          className="ml-auto rounded border border-line px-4 py-2 text-sm font-medium transition-colors hover:bg-surface-subtle"
         >
           Reset
         </button>
       </div>
 
       {/* svg chart */}
-      <div className="mt-4 w-full overflow-hidden rounded border border-gray-100 bg-gray-50">
+      <div className="mt-4 w-full overflow-hidden rounded border border-line-subtle bg-surface-subtle">
         <svg viewBox={`0 0 ${chartW} ${chartH}`} className="w-full">
           {/* y axis ticks and labels */}
           {yTicks.map((tick) => (
@@ -208,7 +208,7 @@ export function EloMatchSimulator() {
       {/* match log */}
       {history.length > 0 && (
         <div className="mt-3">
-          <div className="mb-1 text-xs text-gray-500">
+          <div className="mb-1 text-xs text-muted">
             Started at {startRating}, now {currentRating} (
             {currentRating >= startRating ? "+" : ""}
             {currentRating - startRating})
@@ -218,7 +218,7 @@ export function EloMatchSimulator() {
               <span
                 key={i}
                 className={
-                  h.outcome === "W" ? "text-green-600" : "text-red-600"
+                  h.outcome === "W" ? "text-success" : "text-danger"
                 }
               >
                 {h.outcome}
