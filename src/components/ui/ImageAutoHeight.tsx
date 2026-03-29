@@ -33,7 +33,7 @@ const ImageAutoHeight = ({
   return (
     <span
       className={cn(
-        "css-ImageAutoHeight children:!position-unset grid w-full self-center justify-self-center",
+        "css-ImageAutoHeight children:!position-unset relative grid w-full self-center justify-self-center",
         mdHalfWidth && "md:w-1/2",
         className,
       )}
@@ -43,6 +43,7 @@ const ImageAutoHeight = ({
         src={src}
         alt={alt}
         fill
+        sizes="(max-width: 768px) 100vw, 768px"
         {...rest}
         className={cn(
           "!h-unset !relative !w-full !object-contain",
