@@ -9,5 +9,8 @@ interface ImageMDXProps {
 // wrapper around ImageAutoHeight for MDX usage
 // convert pure markdown image to use nextjs Image
 export function ImageMDX({ src, alt, mdHalfWidth = false }: ImageMDXProps) {
-  return <ImageAutoHeight mdHalfWidth={mdHalfWidth} src={src} alt={alt} />;
+  if (!src) return null;
+  return (
+    <ImageAutoHeight mdHalfWidth={mdHalfWidth} src={src} alt={alt || ""} />
+  );
 }
