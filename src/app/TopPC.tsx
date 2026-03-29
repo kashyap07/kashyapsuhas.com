@@ -14,10 +14,7 @@ export default function TopPC() {
       <div className="z-10 grid grid-cols-1 gap-32">
         <div className="relative flex flex-col justify-center gap-2">
           <span className="text-3xl">Hi, I&apos;m</span>
-          <h1
-            className="mb-2 text-nowrap sm:text-4xl md:text-[5.5rem] md:leading-[0.9]"
-            style={{ viewTransitionName: "site-title" }}
-          >
+          <h1 className="mb-2 text-nowrap sm:text-4xl md:text-[5.5rem] md:leading-[0.9]">
             Suhas Kashyap
           </h1>
           <span className="text-3xl">Welcome to my slice of the Interwebs.</span>

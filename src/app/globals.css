@@ -2,11 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* enable native cross-document view transitions for same-origin navigations */
-@view-transition {
-  navigation: auto;
-}
-
 @layer base {
   :root {
     --background: #fff;

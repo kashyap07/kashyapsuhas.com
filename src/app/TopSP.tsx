@@ -55,10 +55,7 @@ export default function TopSP() {
       >
         <div className="z-40 m-0 flex flex-col justify-center">
           <span className="text-3xl">Hi, I&apos;m</span>
-          <h1
-            className="-mt-2 mb-2 text-nowrap text-5xl leading-tight"
-            style={{ viewTransitionName: "site-title" }}
-          >
+          <h1 className="-mt-2 mb-2 text-nowrap text-5xl leading-tight">
             Suhas Kashyap
           </h1>
           <span className="text-2xl leading-tight">
