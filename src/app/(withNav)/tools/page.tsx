@@ -3,6 +3,8 @@ import Link from "next/link";
 
 import { Wrapper } from "@components/ui";
 
+export const dynamic = "force-static";
+
 export const metadata: Metadata = {
   title: "Tools | Suhas Kashyap",
   description:

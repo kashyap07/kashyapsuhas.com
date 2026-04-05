@@ -2,6 +2,8 @@ import { Suspense } from "react";
 
 import { getReviews } from "@db/reviews";
 
+export const dynamic = "force-static";
+
 import Reviews from "./Reviews";
 
 export default function ReviewsPage() {

@@ -3,6 +3,8 @@ import Link from "next/link";
 import { Wrapper } from "@components/ui";
 import { getBlogPosts } from "@db/blog";
 
+export const dynamic = "force-static";
+
 export const metadata = {
   title: "Kashyap's Blog | Suhas Kashyap",
   description: "Kashyap's Blog.",

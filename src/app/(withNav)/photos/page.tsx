@@ -7,6 +7,8 @@ import galleryImages from "./galleryImages";
 
 // maybe in the future: https://vercel.com/blog/building-a-fast-animated-image-gallery-with-next-js
 
+export const dynamic = "force-static";
+
 export const metadata = {
   title: "Kashyap's Photos | Suhas Kashyap",
   description: "Kashyap's Photos.",
