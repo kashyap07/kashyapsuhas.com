@@ -13,6 +13,13 @@ const nextConfig = {
         destination: "/suhas-resume.pdf",
         permanent: true,
       },
+      // redirect non-www to www for seo canonicalization
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "kashyapsuhas.com" }],
+        destination: "https://www.kashyapsuhas.com/:path*",
+        permanent: true,
+      },
     ];
   },
   images: {
