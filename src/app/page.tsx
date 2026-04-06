@@ -54,7 +54,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main className="max-w-screen select-none overflow-hidden font-semibold">
+    <main className="max-w-screen overflow-hidden font-semibold">
       {/* person schema */}
       <script
         type="application/ld+json"
@@ -73,14 +73,28 @@ export default function Home() {
               width: 1200,
               height: 630,
             },
-            jobTitle: "Software Dev",
+            jobTitle: "Senior Software Engineer",
+            worksFor: {
+              "@type": "Organization",
+              name: "Rakuten",
+            },
             description:
               "Suhas Kashyap's slice of the interwebs. See blogs, photos, reviews, tools, contact details.",
             email: "mantles_arbours_00@icloud.com",
+            address: {
+              "@type": "PostalAddress",
+              addressLocality: "Bengaluru",
+              addressCountry: "IN",
+            },
+            alumniOf: {
+              "@type": "CollegeOrUniversity",
+              name: "PES University",
+            },
             sameAs: [
               "https://github.com/kashyap07",
               "https://www.linkedin.com/in/suhas-kashyap",
               "https://www.instagram.com/kashyap_07/",
+              "https://twitter.com/kashyapS07",
             ],
             knowsAbout: [
               "Software Engineering",
