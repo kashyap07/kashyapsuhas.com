@@ -10,7 +10,8 @@ const nextConfig = {
     return [
       {
         source: "/resume",
-        destination: "/suhas-resume.pdf",
+        destination:
+          "https://lkwvgafg4cz3fdhy.public.blob.vercel-storage.com/suhas-resume.pdf",
         permanent: true,
       },
       // redirect non-www to www for seo canonicalization

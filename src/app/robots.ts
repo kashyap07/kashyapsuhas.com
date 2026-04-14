@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/suhas-resume.pdf", "/suhas-resume-old", "/_next/*", "/work"],
+      disallow: ["/_next/*", "/work"],
     },
     sitemap: "https://www.kashyapsuhas.com/sitemap.xml",
   };
