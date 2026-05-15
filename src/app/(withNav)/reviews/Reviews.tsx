@@ -266,7 +266,7 @@ function Reviews({ reviews: initialReviews }: Props) {
   const RenderReviewRows = () => {
     if (reviewsState.reviews.length === 0) {
       return (
-        <div className="text-muted py-4 text-center">No reviews found : (</div>
+        <div className="py-4 text-center text-muted">No reviews found : (</div>
       );
     } else
       return (
@@ -283,17 +283,17 @@ function Reviews({ reviews: initialReviews }: Props) {
             >
               <div
                 role="button"
-                className="group-hover:text-accent col-span-2 px-2 text-lg font-medium transition-colors"
+                className="col-span-2 px-2 text-lg font-medium transition-colors group-hover:text-accent"
                 title={review.name}
               >
                 {review.name}
               </div>
 
-              <div className="text-md group-hover:text-accent col-span-1 px-2 transition-colors">
+              <div className="text-md col-span-1 px-2 transition-colors group-hover:text-accent">
                 {review.rating}
               </div>
 
-              <div className="text-md group-hover:text-accent col-span-1 hidden px-2 transition-colors md:block">
+              <div className="text-md col-span-1 hidden px-2 transition-colors group-hover:text-accent md:block">
                 {review.wouldRecommend ? <CheckMini /> : <XMarkMini />}
               </div>
 
@@ -309,7 +309,7 @@ function Reviews({ reviews: initialReviews }: Props) {
               </div>
 
               <div
-                className="group-hover:text-accent col-span-4 hidden pl-2 text-base transition-colors md:block"
+                className="col-span-4 hidden pl-2 text-base transition-colors group-hover:text-accent md:block"
                 title={review.summary}
               >
                 {review.summary}
@@ -323,7 +323,7 @@ function Reviews({ reviews: initialReviews }: Props) {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="text-accent h-5 w-5"
+                  className="h-5 w-5 text-accent"
                 >
                   <path
                     strokeLinecap="round"
@@ -339,12 +339,12 @@ function Reviews({ reviews: initialReviews }: Props) {
   };
 
   return (
-    <Wrapper className="mb-section-sm md:mb-section-md w-full">
-      {/* search — own row */}
+    <Wrapper className="mb-section-sm w-full md:mb-section-md">
+      {/* search - own row */}
       <input
         type="text"
         placeholder={"search reviews"}
-        className="focus:outline-accent mb-4 w-full rounded border p-2 md:w-64"
+        className="mb-4 w-full rounded border p-2 focus:outline-accent md:w-64"
         defaultValue={reviewsState.searchString}
         onChange={(e) => dispatch({ type: "SEARCH", payload: e.target.value })}
       />
@@ -361,7 +361,7 @@ function Reviews({ reviews: initialReviews }: Props) {
               className={cn(
                 "rounded border border-transparent px-2 py-2 text-xs font-medium transition-colors",
                 reviewsState.selectedCategory === category
-                  ? `${getCategoryColor(category)} ring-accent ring-2 ring-offset-2`
+                  ? `${getCategoryColor(category)} ring-2 ring-accent ring-offset-2`
                   : `bg-surface-subtle text-secondary hover:bg-line`,
               )}
               aria-pressed={reviewsState.selectedCategory === category}
@@ -373,7 +373,7 @@ function Reviews({ reviews: initialReviews }: Props) {
 
         <div className="hidden lg:block">
           {/* helper text */}
-          <span className="text-muted flex items-center gap-2 text-sm">
+          <span className="flex items-center gap-2 text-sm text-muted">
             click on an item to read the entire thing
           </span>
 
@@ -407,7 +407,7 @@ function Reviews({ reviews: initialReviews }: Props) {
       <div className="w-full overflow-x-auto">
         <div className="relative w-full md:min-w-[850px]">
           {/* header */}
-          <div className="bg-surface-subtle text-muted grid grid-cols-4 border-b px-2 py-3 text-xs font-semibold tracking-wider md:grid-cols-9">
+          <div className="grid grid-cols-4 border-b bg-surface-subtle px-2 py-3 text-xs font-semibold tracking-wider text-muted md:grid-cols-9">
             <div className="col-span-2 px-2">name</div>
             <button
               type="button"
@@ -417,7 +417,7 @@ function Reviews({ reviews: initialReviews }: Props) {
                   payload: "rating",
                 })
               }
-              className="hover:text-secondary col-span-1 px-2 text-left"
+              className="col-span-1 px-2 text-left hover:text-secondary"
             >
               rating
               <span className="ml-1 inline-block">

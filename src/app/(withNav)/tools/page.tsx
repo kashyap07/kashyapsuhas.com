@@ -27,12 +27,12 @@ const tools = [
   },
   {
     name: "Background Remover",
-    description: "remove image background instantly — runs locally via wasm",
+    description: "remove image background through an LLM on your browser",
     href: "tools/background-remover",
   },
   {
     name: "Panchanga",
-    description: "sankalpa mantra elements for hindu rituals",
+    description: "sankalpa mantra elements",
     href: "tools/panchanga",
   },
 ];
