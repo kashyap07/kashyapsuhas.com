@@ -43,11 +43,11 @@ export default function Tools() {
       <ul className="flex flex-col gap-2 md:gap-6">
         {tools.map((tool) => (
           <Link key={tool.href} href={tool.href} className="group">
-            <li className="flex flex-row-reverse items-baseline gap-2 md:flex-row md:items-end md:justify-between">
+            <li className="flex flex-col md:flex-row md:items-end md:justify-between">
               <span className="flex-grow text-body-lg font-medium md:text-heading-sm">
                 {tool.name}
               </span>
-              <span className="min-w-20 text-base text-secondary group-hover:font-medium group-hover:text-accent md:min-w-fit md:text-lg">
+              <span className="text-sm text-secondary group-hover:font-medium group-hover:text-accent md:min-w-fit md:text-lg">
                 {tool.description}
               </span>
             </li>
