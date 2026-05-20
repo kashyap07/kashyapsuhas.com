@@ -20,6 +20,7 @@ export const metadata: Metadata = {
     "kashyap07",
     "Suhas Kashyap portfolio",
     "Suhas Kashyap website",
+    "Suhas Kashyap Rakuten",
     "blog",
     "photos",
     "tools",
@@ -98,7 +99,7 @@ export default function Home() {
 
       {/* top: name + tagline + nav */}
       <header className="flex flex-col items-center">
-        <h1 className="text-[2.9rem] font-medium md:text-display">
+        <h1 className="text-[2.9rem] font-bold md:text-display md:font-semibold">
           Suhas Kashyap
         </h1>
         <p className="mt-1 text-lg text-secondary md:mt-3 md:text-2xl">

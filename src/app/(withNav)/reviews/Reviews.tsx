@@ -289,7 +289,7 @@ function Reviews({ reviews: initialReviews }: Props) {
       />
 
       {/* filters + sort */}
-      <div className="mb-6 flex min-h-10 items-center justify-between gap-6">
+      <div className="mb-6 flex min-h-10 items-baseline justify-between gap-6 md:items-center">
         <div className="flex flex-wrap gap-2">
           {reviewsState.reviewCategories.map((category) => {
             const Icon = getCategoryIcon(category);

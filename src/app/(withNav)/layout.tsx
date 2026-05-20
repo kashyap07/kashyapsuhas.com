@@ -11,7 +11,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <header>
         <Wrapper className="w-full pt-12">
           <Link
-            className="font-display text-accent text-3xl font-semibold"
+            className="font-display text-3xl font-bold text-accent"
             href={"/"}
           >
             Suhas Kashyap
