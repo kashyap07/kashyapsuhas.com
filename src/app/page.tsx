@@ -1,7 +1,7 @@
 import { Metadata } from "next";
+import Image from "next/image";
 
-import TopPC from "./TopPC";
-import TopSP from "./TopSP";
+import NavLinks from "./NavLinks";
 
 export const metadata: Metadata = {
   title: "Suhas Kashyap",
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main className="max-w-screen overflow-hidden font-semibold">
+    <main className="flex min-h-screen flex-col items-center justify-center px-6 py-12 text-center md:py-16">
       {/* person schema */}
       <script
         type="application/ld+json"
@@ -74,13 +74,9 @@ export default function Home() {
               height: 630,
             },
             jobTitle: "Senior Software Engineer",
-            worksFor: {
-              "@type": "Organization",
-              name: "Rakuten",
-            },
+            worksFor: { "@type": "Organization", name: "Rakuten" },
             description:
               "Suhas Kashyap's slice of the interwebs. See blogs, photos, reviews, tools, contact details.",
-            email: "mantles_arbours_00@icloud.com",
             address: {
               "@type": "PostalAddress",
               addressLocality: "Bengaluru",
@@ -96,50 +92,31 @@ export default function Home() {
               "https://www.instagram.com/kashyap_07/",
               "https://twitter.com/kashyapS07",
             ],
-            knowsAbout: [
-              "Software Engineering",
-              "Web Development",
-              "JavaScript",
-              "TypeScript",
-              "React",
-              "Next.js",
-              "Image Processing",
-              "Frontend Development",
-            ],
-            mainEntityOfPage: {
-              "@type": "WebPage",
-              "@id": "https://www.kashyapsuhas.com",
-            },
           }),
         }}
       />
 
-      {/* website schema */}
-      <script
-        type="application/ld+json"
-        suppressHydrationWarning
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            "@id": "https://www.kashyapsuhas.com/#website",
-            url: "https://www.kashyapsuhas.com",
-            name: "Suhas Kashyap",
-            description:
-              "Suhas Kashyap's slice of the interwebs. See blogs, photos, reviews, tools, contact details.",
-            author: {
-              "@id": "https://www.kashyapsuhas.com/#person",
-            },
-            publisher: {
-              "@id": "https://www.kashyapsuhas.com/#person",
-            },
-            inLanguage: "en-US",
-          }),
-        }}
-      />
+      {/* top: name + tagline + nav */}
+      <header className="flex flex-col items-center">
+        <h1 className="text-heading-lg font-medium md:text-display">
+          Suhas Kashyap
+        </h1>
+        <p className="mt-1 text-lg text-secondary md:mt-3 md:text-2xl">
+          Welcome to my slice of the Interwebs.
+        </p>
+        <NavLinks className="mt-10 justify-center text-base md:text-2xl" />
+      </header>
 
-      <TopSP />
-      <TopPC />
+      {/* bottom: image */}
+      <Image
+        src="/kedar-bw.png"
+        alt="suhas kashyap"
+        width={1000}
+        height={1000}
+        quality={100}
+        priority
+        className="mt-12 w-80 md:mt-12 md:w-96"
+      />
     </main>
   );
 }

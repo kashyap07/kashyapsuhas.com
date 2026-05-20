@@ -6,7 +6,7 @@ import { getBlogPosts } from "@db/blog";
 export const dynamic = "force-static";
 
 export const metadata = {
-  title: "Kashyap's Blog | Suhas Kashyap",
+  title: "Kashyap's Blog ",
   description: "Kashyap's Blog.",
   alternates: {
     canonical: "https://www.kashyapsuhas.com/blog",
@@ -17,70 +17,67 @@ export const metadata = {
   keywords: ["Suhas Kashyap", "blog"],
 };
 
-// split by year of publication
-// is pre-sorted by year
-// [[], [], []]
 const splitPostsByYear = (posts: ReturnType<typeof getBlogPosts>) => {
-  const blogPostsSplitByYear = [[posts[0]]];
-  let arrayIdx = 0;
+  const groups: (typeof posts)[] = [];
+  let currentYear: number | null = null;
 
-  for (const post of posts.slice(1)) {
+  for (const post of posts) {
     const year = new Date(post.metadata.publishedDateTime).getFullYear();
-    const arrayIdxYear =
-      new Date(
-        blogPostsSplitByYear[arrayIdx][0].metadata.publishedDateTime,
-      ).getFullYear() || 0;
-
-    if (year === arrayIdxYear) {
-      blogPostsSplitByYear[arrayIdx].push(post);
-    } else {
-      arrayIdx++;
-      blogPostsSplitByYear.push([]);
-      blogPostsSplitByYear[arrayIdx].push(post);
+    if (year !== currentYear) {
+      groups.push([]);
+      currentYear = year;
     }
+    groups[groups.length - 1].push(post);
   }
 
-  return blogPostsSplitByYear;
+  return groups;
 };
 
 function Blog() {
   const blogPosts = getBlogPosts();
-  const blogPostsSplitByYear = splitPostsByYear(blogPosts);
+  const blogPostsByYear = splitPostsByYear(blogPosts);
 
-  const formatter = new Intl.DateTimeFormat("en-IN", {
-    year: "numeric",
+  const formatter = new Intl.DateTimeFormat("en-US", {
     month: "short",
-    // day: "2-digit",
+    day: "numeric",
   });
 
   return (
     <Wrapper className="mb-section-sm w-full md:mb-section-md">
-      <ul className="flex flex-col gap-8 md:gap-14">
-        {blogPostsSplitByYear.map((postGroupByYear, idx) => (
-          <li key={idx}>
-            <ul className="flex flex-col gap-2 md:gap-6">
-              {postGroupByYear.map((post) => (
-                <Link
-                  key={post.slug}
-                  className="group"
-                  href={`/blog/${post.slug}`}
-                >
-                  <li className="flex flex-row-reverse items-baseline gap-2 md:flex-row md:items-end md:justify-between">
-                    <span className="flex-grow text-body-lg font-medium md:text-heading-sm">
-                      {post.metadata.title}
-                    </span>
+      <ul className="flex flex-col gap-8 md:gap-10">
+        {blogPostsByYear.map((postsForYear, groupIdx) => {
+          const year = new Date(
+            postsForYear[0].metadata.publishedDateTime,
+          ).getFullYear();
+          return (
+            <li key={groupIdx} className="flex flex-col gap-3">
+              <h2 className="font-sans text-xs uppercase tracking-wider text-muted">
+                {year}
+              </h2>
+              <ul className="flex flex-col gap-2 md:gap-3">
+                {postsForYear.map((post) => (
+                  <Link
+                    key={post.slug}
+                    className="group"
+                    href={`/blog/${post.slug}`}
+                  >
+                    <li className="flex items-baseline justify-between gap-4">
+                      <span className="text-lg font-medium group-hover:text-accent md:text-xl">
+                        {post.metadata.title}
+                      </span>
 
-                    <span className="min-w-20 text-base text-secondary group-hover:font-medium group-hover:text-accent md:min-w-fit md:text-lg">
-                      {formatter.format(
-                        new Date(post.metadata.publishedDateTime),
-                      )}
-                    </span>
-                  </li>
-                </Link>
-              ))}
-            </ul>
-          </li>
-        ))}
+                      <span className="shrink-0 font-sans text-sm text-muted group-hover:text-accent md:text-base">
+                        {formatter.format(
+                          new Date(post.metadata.publishedDateTime),
+                        )}
+                      </span>
+                    </li>
+                  </Link>
+                ))}
+              </ul>
+            </li>
+          );
+        })}
       </ul>
     </Wrapper>
   );

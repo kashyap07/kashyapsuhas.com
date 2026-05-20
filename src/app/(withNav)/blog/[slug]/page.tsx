@@ -21,7 +21,7 @@ export async function generateMetadata(props: {
     description,
     keywords: ["Suhas Kashyap", title],
     openGraph: {
-      title: `${title} | Suhas Kashyap`,
+      title: `${title}`,
       description,
       type: "article",
       publishedTime: publishedDateTime,
@@ -78,19 +78,19 @@ async function Blog(props: Props) {
         />
 
         {/* title */}
-        <h1 className="title w-full text-heading-md font-medium md:text-display">
+        <h1 className="title w-full text-heading-sm font-medium md:text-heading-lg">
           {post.metadata.title}
         </h1>
 
         {/* time since creation */}
         <RelativeDate
           date={post.metadata.publishedDateTime}
-          className="mb-2 mt-4 text-xl md:text-2xl"
+          className="mb-2 mt-4 font-sans text-sm text-muted md:text-base"
         />
         <hr />
 
         {/* blog content */}
-        <article className="prose prose-xl mt-8 text-pretty break-words md:prose-2xl">
+        <article className="prose prose-lg mt-8 text-pretty break-words">
           <CustomMDX source={post.content} />
         </article>
       </section>

@@ -28,6 +28,15 @@
       "calt" 1;
   }
 
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display;
+  }
+
   a {
     @apply hover:text-accent underline-offset-4 hover:underline;
   }
@@ -46,7 +55,7 @@
 
   input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
-    @apply macos-shadow bg-accent h-4 w-4 appearance-none rounded-full;
+    @apply shadow-macos bg-accent h-4 w-4 appearance-none rounded-full;
   }
 }
 
@@ -112,7 +121,7 @@
   max-width: none;
 
   img {
-    @apply macos-shadow rounded-sm;
+    @apply shadow-macos rounded-lg;
   }
 
   pre {
@@ -145,13 +154,13 @@
   }
 
   h2 {
-    @apply text-3xl md:text-5xl;
-  }
-  h3 {
     @apply text-2xl md:text-4xl;
   }
-  h4 {
+  h3 {
     @apply text-xl md:text-3xl;
+  }
+  h4 {
+    @apply text-lg md:text-2xl;
   }
 
   strong {

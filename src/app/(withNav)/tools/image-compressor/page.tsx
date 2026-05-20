@@ -18,7 +18,6 @@ export default function ImageCompressor() {
   // ref to current image so debounced callbacks always use latest
   const imageRef = useRef<File | null>(null);
 
-  // Update the logic to display the original image without compression upon upload.
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -31,25 +30,24 @@ export default function ImageCompressor() {
       const reader = new FileReader();
       reader.onload = () => {
         if (reader.result && typeof reader.result === "string") {
-          setCompressedImage(reader.result); // Display the original image as-is
+          setCompressedImage(reader.result);
         }
       };
       reader.readAsDataURL(file);
     }
   };
 
-  // Update the compression logic to only apply when the slider is adjusted below 100%.
   const handleCompressionSliderChange = (value: number) => {
     setCompressionPercentage(value);
     if (debounceTimer.current) clearTimeout(debounceTimer.current);
     debounceTimer.current = setTimeout(() => {
       compressImageDebounced(value);
-    }, 350); // 350ms debounce
+    }, 350);
   };
 
   const MIN_TIME = 600;
 
-  // Debounced compression logic - uses imageRef to avoid stale closure
+  // uses imageRef to avoid stale closure on debounced calls
   const compressImageDebounced = async (value: number) => {
     const currentImage = imageRef.current;
     if (currentImage && value < 100) {
@@ -102,8 +100,10 @@ export default function ImageCompressor() {
   }, [originalImageSrc]);
 
   return (
-    <Wrapper className="mb-section-sm w-full md:mb-section-md">
-      <h1 className="text-heading-lg font-medium md:text-display">Image Compressor</h1>
+    <Wrapper maxWidth="WIDE" className="mb-section-sm w-full md:mb-section-md">
+      <h1 className="text-heading-md font-medium md:text-heading-lg">
+        Image Compressor
+      </h1>
       <div className="mt-2 flex flex-col gap-6">
         <input
           type="file"
@@ -117,7 +117,7 @@ export default function ImageCompressor() {
             {/* left section */}
             {/* image + comparison slider */}
             <div className="relative w-full max-w-lg">
-              <div className="macos-shadow relative h-full w-full overflow-hidden rounded-lg">
+              <div className="shadow-macos relative h-full w-full overflow-hidden rounded-lg">
                 <ImageAutoHeight
                   src={compressedImage}
                   alt="Compressed"
@@ -135,20 +135,20 @@ export default function ImageCompressor() {
                     className="h-full w-full object-contain"
                   />
                 </div>
-                {/* Comparison slider handle and labels (reverted labels and line, keep improved handle) */}
+                {/* comparison slider handle + labels */}
                 <div className="pointer-events-none absolute left-0 top-0 z-20 flex h-full w-full">
-                  <span className="absolute left-2 top-2 rounded bg-black bg-opacity-60 px-2 py-1 text-xs text-white">
+                  <span className="absolute left-2 top-2 rounded bg-black/60 px-2 py-1 text-xs text-white">
                     BEFORE
                   </span>
-                  <span className="absolute right-2 top-2 rounded bg-black bg-opacity-60 px-2 py-1 text-xs text-white">
+                  <span className="absolute right-2 top-2 rounded bg-black/60 px-2 py-1 text-xs text-white">
                     AFTER
                   </span>
-                  {/* Simple gray dividing line */}
+                  {/* dividing line */}
                   <div
-                    className="absolute left-0 top-0 z-10 h-full w-1 cursor-grab bg-gray-800"
+                    className="absolute left-0 top-0 z-10 h-full w-1 cursor-grab bg-foreground"
                     style={{ left: `${comparisonSliderPosition}%` }}
                   ></div>
-                  {/* Improved custom slider handle */}
+                  {/* drag handle */}
                   <div
                     className="absolute z-30 flex flex-col items-center justify-center"
                     style={{
@@ -212,7 +212,7 @@ export default function ImageCompressor() {
                   min="0.1"
                   max="100"
                   step="0.1"
-                  className="mt-2 h-2 w-full cursor-pointer appearance-none rounded-full bg-[#F2F2F2]"
+                  className="mt-2 h-2 w-full cursor-pointer appearance-none rounded-full bg-line-subtle"
                   disabled={isCompressing}
                 />
                 <span className="mt-1 block text-center text-xl font-semibold text-black">
@@ -268,9 +268,9 @@ export default function ImageCompressor() {
           </div>
         )}
       </div>
-      {/* Loader overlay */}
+      {/* loader overlay */}
       {isCompressing && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
           <div className="flex flex-col items-center gap-4 rounded-lg bg-surface p-8 shadow-lg">
             <svg
               className="h-10 w-10 animate-spin text-accent"

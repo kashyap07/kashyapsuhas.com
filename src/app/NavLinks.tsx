@@ -1,23 +1,62 @@
-import Link from "next/link";
+"use client";
 
-export default function NavLinks() {
-  return (
-    <ul className="flex flex-col gap-3 text-4xl">
-      <li>
-        <Link href={"/blog"}>Blog</Link>
-      </li>
-      <li>
-        <Link href={"/photos"}>Photos</Link>
-      </li>
-      <li>
-        <Link href={"/reviews"}>Reviews</Link>
-      </li>
-      <li>
-        <Link href={"/tools"}>Tools</Link>
-      </li>
-      <li>
-        <Link href={"/contact"}>Contact</Link>
-      </li>
-    </ul>
-  );
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+import cn from "@utils/cn";
+
+const links = [
+  { href: "/blog", label: "blog" },
+  { href: "/photos", label: "photos" },
+  { href: "/tools", label: "tools" },
+  { href: "/reviews", label: "reviews" },
+  { href: "/contact", label: "contact" },
+];
+
+interface Props {
+  variant?: "muted" | "accent";
+  className?: string;
 }
+
+const NavLinks = ({ variant = "muted", className }: Props) => {
+  const pathname = usePathname();
+
+  return (
+    <nav
+      className={cn(
+        "flex flex-wrap items-center gap-x-2 gap-y-1 font-display",
+        className,
+      )}
+    >
+      {links.map((link, i) => {
+        const isActive =
+          link.href === "/"
+            ? pathname === "/"
+            : pathname.startsWith(link.href);
+
+        const linkClass =
+          variant === "accent"
+            ? "text-accent hover:opacity-75"
+            : isActive
+              ? "text-foreground hover:text-accent"
+              : "text-muted hover:text-accent";
+
+        return (
+          <span key={link.href} className="flex items-center gap-x-2">
+            <Link
+              href={link.href}
+              className={cn("no-underline transition-colors", linkClass)}
+            >
+              {link.label}
+            </Link>
+            {i < links.length - 1 && (
+              <span className="text-subtle select-none">·</span>
+            )}
+          </span>
+        );
+      })}
+    </nav>
+  );
+};
+
+export default NavLinks;

@@ -1,12 +1,20 @@
 "use client";
 
+import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useReducer, useRef, useState } from "react";
+import { useEffect, useReducer, useRef } from "react";
 
-import { CheckMini, XMarkMini } from "@components/icons";
-import { Dialog, Wrapper } from "@components/ui";
+import { Check, X } from "lucide-react";
+
+import { Wrapper } from "@components/ui";
 import { type Review } from "@db/reviews";
 import cn from "@utils/cn";
+
+import {
+  CATEGORY_BG_COLOR_MAP,
+  CATEGORY_TEXT_COLOR_MAP,
+  getCategoryIcon,
+} from "./categories";
 
 interface Props {
   reviews: Array<Review>;
@@ -20,7 +28,7 @@ type ReviewsState = {
   reviews: Array<ReviewWithIndex>;
   reviewCategories: Array<string>;
   searchString: string;
-  selectedCategory: string | null; // should be type derived
+  selectedCategory: string | null;
   sortOrder: {
     rating: SortOrder;
     name: SortOrder;
@@ -36,7 +44,6 @@ const getCategoriesList = (reviews: Array<ReviewWithIndex>) => {
   return Array.from(new Set(reviews.map((r) => r.category))).sort();
 };
 
-// parse URL params into initial state
 const parseUrlParams = (searchParams: URLSearchParams) => {
   const searchString = searchParams.get("q") || "";
   const selectedCategory = searchParams.get("cat") || null;
@@ -44,7 +51,6 @@ const parseUrlParams = (searchParams: URLSearchParams) => {
   const sortOrderParam = searchParams.get("order");
 
   let ratingSort: SortOrder = null;
-
   if (sortField === "rating" && sortOrderParam) {
     ratingSort = sortOrderParam.toUpperCase() === "ASC" ? "ASC" : "DESC";
   }
@@ -52,41 +58,27 @@ const parseUrlParams = (searchParams: URLSearchParams) => {
   return {
     searchString,
     selectedCategory,
-    sortOrder: {
-      rating: ratingSort,
-      name: null,
-    },
+    sortOrder: { rating: ratingSort, name: null },
   };
 };
 
-// serialize state to URL params
 const serializeState = (reviewsState: ReviewsState): URLSearchParams => {
   const params = new URLSearchParams();
-
-  if (reviewsState.searchString) {
-    params.set("q", reviewsState.searchString);
-  }
-
-  if (reviewsState.selectedCategory) {
+  if (reviewsState.searchString) params.set("q", reviewsState.searchString);
+  if (reviewsState.selectedCategory)
     params.set("cat", reviewsState.selectedCategory);
-  }
-
   if (reviewsState.sortOrder.rating) {
     params.set("sort", "rating");
     params.set("order", reviewsState.sortOrder.rating.toLowerCase());
   }
-
   return params;
 };
 
-// apply filters and sorting to reviews
 const applyFiltersAndSort = (reviewsState: ReviewsState): ReviewsState => {
   const { sourceReviews, searchString, selectedCategory, sortOrder } =
     reviewsState;
 
   let newReviews = [...sourceReviews];
-
-  // order matters
 
   // 1. search
   const normalizedSearchString = searchString.toLowerCase().trim();
@@ -97,7 +89,7 @@ const applyFiltersAndSort = (reviewsState: ReviewsState): ReviewsState => {
       review.summary.toLowerCase().includes(normalizedSearchString),
   );
 
-  // 2. re calculate list of categories only if there is a search string
+  // 2. categories from search-filtered set
   const newReviewCategories = getCategoriesList(newReviews);
 
   // 3. filter by category
@@ -112,7 +104,6 @@ const applyFiltersAndSort = (reviewsState: ReviewsState): ReviewsState => {
         ? b.rating - a.rating
         : a.rating - b.rating;
     }
-    // if no sort applied, maintain original order
     return a._idx - b._idx;
   });
 
@@ -129,34 +120,26 @@ const reviewsReducer = (reviewsState: ReviewsState, action: ReducerActions) => {
       const currentOrder = reviewsState.sortOrder[action.payload];
       const newOrder: SortOrder =
         currentOrder === null ? "DESC" : currentOrder === "DESC" ? "ASC" : null;
-
-      const newState = {
+      return applyFiltersAndSort({
         ...reviewsState,
         sortOrder: { ...reviewsState.sortOrder, [action.payload]: newOrder },
-      };
-
-      return applyFiltersAndSort(newState);
+      });
     }
-
-    case "SEARCH": {
-      const newState = { ...reviewsState, searchString: action.payload };
-      return applyFiltersAndSort(newState);
-    }
-
+    case "SEARCH":
+      return applyFiltersAndSort({
+        ...reviewsState,
+        searchString: action.payload,
+      });
     case "FILTER_CATEGORY": {
       const newSelectedCategory =
         reviewsState.selectedCategory === action.payload
           ? null
           : action.payload;
-
-      const newState = {
+      return applyFiltersAndSort({
         ...reviewsState,
         selectedCategory: newSelectedCategory,
-      };
-
-      return applyFiltersAndSort(newState);
+      });
     }
-
     default:
       return reviewsState;
   }
@@ -175,59 +158,35 @@ function Reviews({ reviews: initialReviews }: Props) {
         ...r,
         _idx: idx,
       }));
-
-      // parse URL params for initial state
       const urlState = parseUrlParams(searchParams);
-
-      const initialState: ReviewsState = {
+      return applyFiltersAndSort({
         sourceReviews: initialReviewsWithIndex,
         reviews: initialReviewsWithIndex,
         reviewCategories: getCategoriesList(initialReviewsWithIndex),
         searchString: urlState.searchString,
         selectedCategory: urlState.selectedCategory,
         sortOrder: urlState.sortOrder,
-      };
-
-      // apply filters/sort from URL on initial load
-      return applyFiltersAndSort(initialState);
+      });
     },
   );
 
-  // arrow hint state - shows every time until user clicks
-  const [showHint, setShowHint] = useState(true);
-  const [openDialogId, setOpenDialogId] = useState<number | null>(null);
-
-  // track if this is the initial mount to avoid syncing URL on first render
+  // skip URL sync on initial mount
   const isInitialMount = useRef(true);
 
-  const dismissHint = useCallback(() => {
-    setShowHint(false);
-  }, []);
-
-  // dismiss hint when any dialog opens
-  useEffect(() => {
-    if (openDialogId !== null) {
-      dismissHint();
-    }
-  }, [openDialogId, dismissHint]);
-
-  // sync URL with state changes (debounced for search)
   useEffect(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
       return;
     }
-
     const params = serializeState(reviewsState);
     const newUrl = params.toString()
       ? `${pathname}?${params.toString()}`
       : pathname;
 
-    // use setTimeout to debounce search input
+    // debounce so search input doesn't flood history
     const timeoutId = setTimeout(() => {
       router.push(newUrl, { scroll: false });
     }, 300);
-
     return () => clearTimeout(timeoutId);
   }, [
     reviewsState.searchString,
@@ -237,313 +196,146 @@ function Reviews({ reviews: initialReviews }: Props) {
     pathname,
   ]);
 
-  // FIXME: tailwind run time situation
-  const getCategoryColor = useCallback((category: string) => {
-    const CATEGORY_COLOR_MAP = {
-      Media: "bg-blue-100 text-blue-800",
-      Technology: "bg-cyan-100 text-cyan-800",
-      Vehicles: "bg-yellow-100 text-yellow-800",
-      Games: "bg-rose-100 text-rose-800",
-      Restaurants: "bg-green-100 text-green-800",
-      Services: "bg-purple-100 text-purple-800",
-      Travel: "bg-orange-100 text-orange-800",
-      Photography: "bg-teal-100 text-teal-800",
-      Others: "bg-stone-200 text-stone-800",
-      default: "bg-gray-100 text-gray-800",
-    };
-
-    return (
-      CATEGORY_COLOR_MAP[category as keyof typeof CATEGORY_COLOR_MAP] ??
-      CATEGORY_COLOR_MAP.default
-    );
-  }, []);
-
-  const selectedReview =
-    openDialogId !== null
-      ? (reviewsState.reviews.find((r) => r._idx === openDialogId) ?? null)
-      : null;
-
-  const RenderReviewRows = () => {
+  const renderRows = () => {
     if (reviewsState.reviews.length === 0) {
       return (
         <div className="py-4 text-center text-muted">No reviews found : (</div>
       );
-    } else
-      return (
-        <>
-          {reviewsState.reviews.map((review) => (
-            <div
-              key={review._idx}
-              onClick={() => setOpenDialogId(review._idx)}
-              className={cn(
-                "group relative grid cursor-pointer grid-cols-4 items-center border-b px-2 py-4 md:grid-cols-9",
-                "transition-all duration-200 ease-in-out",
-                "hover:bg-surface-hover hover:shadow-sm",
-              )}
-            >
-              <div
-                role="button"
-                className="col-span-2 px-2 text-lg font-medium transition-colors group-hover:text-accent"
-                title={review.name}
+    }
+    return (
+      <ul className="flex flex-col gap-6 md:gap-8">
+        {reviewsState.reviews.map((review) => {
+          const Icon = getCategoryIcon(review.category);
+          return (
+            <li key={review._idx}>
+              <Link
+                href={`/reviews/${review.slug}`}
+                className="group block transition-colors"
               >
-                {review.name}
-              </div>
+                <div className="flex flex-col gap-1 md:flex-row md:items-start md:gap-6">
+                  <div className="md:min-w-0 md:flex-1">
+                    <h3
+                      className="text-lg font-medium transition-colors group-hover:text-accent md:text-xl"
+                      title={review.name}
+                    >
+                      {review.name}
+                    </h3>
+                    <p
+                      className="mt-1 hidden text-base text-secondary transition-colors group-hover:text-foreground md:block"
+                      title={review.summary}
+                    >
+                      {review.summary}
+                    </p>
+                  </div>
 
-              <div className="text-md col-span-1 px-2 transition-colors group-hover:text-accent">
-                {review.rating}
-              </div>
+                  <div className="flex shrink-0 items-center gap-3 font-sans text-sm text-muted md:gap-4 md:pt-1">
+                    <span
+                      className={cn(
+                        "inline-flex items-center gap-1.5",
+                        CATEGORY_TEXT_COLOR_MAP[review.category] ??
+                          "text-stone-700",
+                      )}
+                    >
+                      <Icon size={14} className="shrink-0" aria-hidden="true" />
+                      <span className="truncate">{review.category}</span>
+                    </span>
+                    <span className="flex w-4 justify-center">
+                      {review.wouldRecommend ? (
+                        <Check
+                          size={14}
+                          className="text-success"
+                          aria-label="recommend"
+                        />
+                      ) : (
+                        <X
+                          size={14}
+                          className="text-danger"
+                          aria-label="do not recommend"
+                        />
+                      )}
+                    </span>
+                    <span className="w-8 text-right tabular-nums">
+                      {review.rating}
+                    </span>
+                  </div>
+                </div>
 
-              <div className="text-md col-span-1 hidden px-2 transition-colors group-hover:text-accent md:block">
-                {review.wouldRecommend ? <CheckMini /> : <XMarkMini />}
-              </div>
-
-              <div className="col-span-1 px-2">
-                <span
-                  className={cn(
-                    "inline-flex rounded px-2 py-2 text-xs font-semibold leading-5",
-                    getCategoryColor(review.category),
-                  )}
+                <p
+                  className="mt-1 text-base text-secondary transition-colors group-hover:text-foreground md:hidden"
+                  title={review.summary}
                 >
-                  {review.category}
-                </span>
-              </div>
-
-              <div
-                className="col-span-4 hidden pl-2 text-base transition-colors group-hover:text-accent md:block"
-                title={review.summary}
-              >
-                {review.summary}
-              </div>
-
-              {/* arrow icon - outside table border */}
-              <div className="absolute -right-8 top-1/2 hidden -translate-y-1/2 opacity-0 transition-opacity duration-200 group-hover:opacity-100 md:block">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="h-5 w-5 text-accent"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M8.25 4.5l7.5 7.5-7.5 7.5"
-                  />
-                </svg>
-              </div>
-            </div>
-          ))}
-        </>
-      );
+                  {review.summary}
+                </p>
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+    );
   };
 
   return (
-    <Wrapper className="mb-section-sm w-full md:mb-section-md">
-      {/* search - own row */}
+    <Wrapper
+      maxWidth="DEFAULT"
+      className="mb-section-sm w-full md:mb-section-md"
+    >
+      {/* search */}
       <input
         type="text"
-        placeholder={"search reviews"}
-        className="mb-4 w-full rounded border p-2 focus:outline-accent md:w-64"
+        placeholder="search reviews"
+        className="mb-4 w-full rounded border border-line p-2 font-sans text-sm focus:outline-accent md:w-64"
         defaultValue={reviewsState.searchString}
         onChange={(e) => dispatch({ type: "SEARCH", payload: e.target.value })}
       />
 
-      {/* filters + hint */}
-      <div className="mb-4 flex min-h-10 items-center justify-between gap-6">
+      {/* filters + sort */}
+      <div className="mb-6 flex min-h-10 items-center justify-between gap-6">
         <div className="flex flex-wrap gap-2">
-          {reviewsState.reviewCategories.map((category) => (
-            <button
-              key={category}
-              onClick={() =>
-                dispatch({ type: "FILTER_CATEGORY", payload: category })
-              }
-              className={cn(
-                "rounded border border-transparent px-2 py-2 text-xs font-medium transition-colors",
-                reviewsState.selectedCategory === category
-                  ? `${getCategoryColor(category)} ring-2 ring-accent ring-offset-2`
-                  : `bg-surface-subtle text-secondary hover:bg-line`,
-              )}
-              aria-pressed={reviewsState.selectedCategory === category}
-            >
-              {category}
-            </button>
-          ))}
+          {reviewsState.reviewCategories.map((category) => {
+            const Icon = getCategoryIcon(category);
+            const active = reviewsState.selectedCategory === category;
+            return (
+              <button
+                key={category}
+                onClick={() =>
+                  dispatch({ type: "FILTER_CATEGORY", payload: category })
+                }
+                className={cn(
+                  "inline-flex items-center gap-1 rounded px-2 py-2 font-sans text-xs font-medium transition-all",
+                  CATEGORY_BG_COLOR_MAP[category] ?? "bg-stone-50",
+                  active
+                    ? `${CATEGORY_TEXT_COLOR_MAP[category] ?? "text-stone-700"} ring-2 ring-accent ring-offset-2`
+                    : "text-secondary opacity-70 hover:opacity-100",
+                )}
+                aria-pressed={active}
+              >
+                <Icon size={12} aria-hidden="true" />
+                {category}
+              </button>
+            );
+          })}
         </div>
 
-        <div className="hidden lg:block">
-          {/* helper text */}
-          <span className="flex items-center gap-2 text-sm text-muted">
-            click on an item to read the entire thing
+        <button
+          type="button"
+          onClick={() => dispatch({ type: "SORT", payload: "rating" })}
+          className="shrink-0 font-sans text-xs uppercase tracking-wider text-muted transition-colors hover:text-accent"
+        >
+          sort: rating
+          <span className="ml-1 inline-block">
+            {(() => {
+              const ratingSort = reviewsState.sortOrder.rating;
+              if (ratingSort === "ASC") return "▲";
+              if (ratingSort === "DESC") return "▼";
+              return "·";
+            })()}
           </span>
-
-          {/* dotted arrow pointing from helper text to first item */}
-          {showHint && reviewsState.reviews.length > 0 && (
-            <svg
-              viewBox="100 100 100 160"
-              className="pointer-events-none -right-40 top-[2rem] z-10 lg:absolute"
-              width="220"
-              height="220"
-            >
-              <path
-                stroke="#E8B004"
-                strokeWidth="2"
-                strokeDasharray="5 5"
-                fill="none"
-                d="M 128.836 133.322 C 138.014 132.065 153.779 137.932 159.707 143.836 C 175.325 159.389 175.771 188.994 195.011 199.747 C 208.625 207.355 228.506 195.226 225.454 179.896 C 223.433 169.743 201.884 166.831 194.879 174.453 C 182.832 187.561 194.728 213.351 182.669 226.449 C 165.97 244.587 109.907 235.715 91.128 234.321"
-              />
-              <path
-                stroke="#E8B004"
-                strokeWidth="2"
-                fill="none"
-                d="M 99.068 230.439 C 95.675 234.373 87.598 232.063 93.631 236.361 C 94.264 236.812 94.902 237.257 95.554 237.682 C 97.307 238.825 98.243 239.341 100.015 240.385 C 102.043 241.581 98.037 239.124 99.997 240.425"
-              />
-            </svg>
-          )}
-        </div>
+        </button>
       </div>
 
-      {/* reviews table */}
-      <div className="w-full overflow-x-auto">
-        <div className="relative w-full md:min-w-[850px]">
-          {/* header */}
-          <div className="grid grid-cols-4 border-b bg-surface-subtle px-2 py-3 text-xs font-semibold tracking-wider text-muted md:grid-cols-9">
-            <div className="col-span-2 px-2">name</div>
-            <button
-              type="button"
-              onClick={() =>
-                dispatch({
-                  type: "SORT",
-                  payload: "rating",
-                })
-              }
-              className="col-span-1 px-2 text-left hover:text-secondary"
-            >
-              rating
-              <span className="ml-1 inline-block">
-                {(() => {
-                  const ratingSort = reviewsState.sortOrder.rating;
-                  if (ratingSort === "ASC") return "▲";
-                  if (ratingSort === "DESC") return "▼";
-                  return "";
-                })()}
-              </span>
-            </button>
-            <div className="col-span-1 hidden px-2 md:block">recommend</div>
-            <div className="col-span-1 px-2">category</div>
-            <div className="col-span-4 hidden px-2 md:block">summary</div>
-          </div>
-
-          {/* rows */}
-          <RenderReviewRows />
-        </div>
-      </div>
-
-      {/* single shared dialog for all reviews */}
-      <Dialog
-        open={openDialogId !== null}
-        onOpenChange={(open) => !open && setOpenDialogId(null)}
-      >
-        <Dialog.Content className="md:max-w-[50rem]">
-          {selectedReview && (
-            <>
-              <Dialog.Header>
-                <Dialog.Title className="text-2xl font-bold">
-                  {selectedReview.name}
-                </Dialog.Title>
-                <Dialog.Description className="flex flex-wrap items-center gap-3">
-                  <span
-                    className={cn(
-                      "inline-flex rounded px-2 py-2 text-xs font-semibold leading-5",
-                      getCategoryColor(selectedReview.category),
-                    )}
-                  >
-                    {selectedReview.category}
-                  </span>
-                  {selectedReview.reviewDate && (
-                    <span className="text-md text-muted">
-                      {new Date(selectedReview.reviewDate).toLocaleDateString()}
-                    </span>
-                  )}
-                  <span
-                    className={`text-md ${selectedReview.wouldRecommend ? "text-success" : "text-danger"}`}
-                  >
-                    {selectedReview.wouldRecommend
-                      ? "Would Recommend"
-                      : "Would Not Recommend"}
-                  </span>
-                </Dialog.Description>
-              </Dialog.Header>
-
-              <div className="mt-2">
-                <h3 className="text-lg font-medium">Summary</h3>
-                <p className="mt-2">{selectedReview.summary}</p>
-              </div>
-
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                <div>
-                  <h3 className="text-lg font-medium">Pros</h3>
-                  <ul className="mt-2 space-y-2">
-                    {selectedReview.pros.map((pro, index) => (
-                      <li key={index} className="flex items-start">
-                        <span className="mr-2">-</span>
-                        <span>{pro}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div>
-                  <h3 className="text-lg font-medium">Cons</h3>
-                  <ul className="mt-2 space-y-2">
-                    {selectedReview.cons.map((con, index) => (
-                      <li key={index} className="flex items-start">
-                        <span className="mr-2">-</span>
-                        <span>{con}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              {selectedReview.link && (
-                <div className="mt-2">
-                  <a
-                    href={selectedReview.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="break-all"
-                  >
-                    See More: {selectedReview.link}
-                  </a>
-                </div>
-              )}
-            </>
-          )}
-        </Dialog.Content>
-      </Dialog>
+      {renderRows()}
     </Wrapper>
   );
 }
 
 export default Reviews;
-
-// FIXME
-// const CATEGORY_COLOR_MAP = {
-//   Media: "blue",
-//   Technology: "cyan",
-//   Vehicles: "yellow",
-//   Games: "indigo",
-//   Restaurants: "green",
-//   Services: "purple",
-//   Travel: "orange",
-//   Photography: "pink",
-//   Others: "gray",
-// };
-
-// type Category = keyof typeof CATEGORY_COLOR_MAP;
-
-// function getCategoryColor(category: string): string {
-//   const color = CATEGORY_COLOR_MAP[category as Category] || "gray";
-//   const twClass = `bg-${color}-100 text-${color}-800`;
-//   return twClass;
-// }

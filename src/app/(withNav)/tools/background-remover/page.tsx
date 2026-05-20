@@ -61,7 +61,7 @@ function applyMaskToImage(
   const ctx = canvas.getContext("2d");
   if (!ctx) throw new Error("Could not get canvas context");
   ctx.drawImage(origImg, 0, 0, canvas.width, canvas.height);
-  // Resize mask to match original size
+  // resize mask to match original size
   ctx.globalCompositeOperation = "destination-in";
   ctx.drawImage(maskCanvas, 0, 0, canvas.width, canvas.height);
   ctx.globalCompositeOperation = "source-over";
@@ -110,7 +110,7 @@ const BackgroundRemover: React.FC = () => {
       });
       const feeds = { "input.1": tensor };
       const results = await session.run(feeds);
-      // U^2-Netp output is usually 'output' or 'd1'
+      // u^2-netp output is usually 'output' or 'd1'
       const output = results[Object.keys(results)[0]];
       // postprocess mask
       const maskArr = output.data as Float32Array;
@@ -147,8 +147,8 @@ const BackgroundRemover: React.FC = () => {
   };
 
   return (
-    <Wrapper className="mb-section-sm w-full md:mb-section-md">
-      <h1 className="text-heading-lg font-medium md:text-display">
+    <Wrapper maxWidth="WIDE" className="mb-section-sm w-full md:mb-section-md">
+      <h1 className="text-heading-md font-medium md:text-heading-lg">
         AI Background Remover
       </h1>
       <div className="mt-2 flex flex-col gap-6">
@@ -176,7 +176,7 @@ const BackgroundRemover: React.FC = () => {
                     ref={imgRef}
                     src={origUrl}
                     alt="Original"
-                    className="max-h-96 w-full rounded-lg bg-white object-contain shadow"
+                    className="max-h-96 w-full rounded-lg bg-white object-contain shadow-macos"
                   />
                 </div>
               )}
@@ -189,12 +189,11 @@ const BackgroundRemover: React.FC = () => {
                   <div className="mb-2 text-center text-sm text-muted">
                     Background Removed
                   </div>
-                  {/* TODO: use Image instead? */}
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={resultUrl}
                     alt="Result"
-                    className="max-h-96 w-full rounded-lg bg-white object-contain shadow"
+                    className="max-h-96 w-full rounded-lg bg-white object-contain shadow-macos"
                   />
                   <a
                     href={resultUrl}
@@ -227,7 +226,7 @@ const BackgroundRemover: React.FC = () => {
 
       {/* loader overlay */}
       {loading && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
           <div className="flex flex-col items-center gap-4 rounded-lg bg-surface p-8 shadow-lg">
             <svg
               className="h-10 w-10 animate-spin text-accent"

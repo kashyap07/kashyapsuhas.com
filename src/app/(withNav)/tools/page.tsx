@@ -6,7 +6,7 @@ import { Wrapper } from "@components/ui";
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: "Tools | Suhas Kashyap",
+  title: "Tools",
   description:
     "Bunch of tools that work directly in the browser without having to upload to any server. Enjoy!",
   openGraph: {
@@ -27,7 +27,7 @@ const tools = [
   },
   {
     name: "Background Remover",
-    description: "remove image background through an LLM on your browser",
+    description: "remove image background entirely on your browser",
     href: "tools/background-remover",
   },
   {
@@ -40,14 +40,14 @@ const tools = [
 export default function Tools() {
   return (
     <Wrapper className="mb-section-sm w-full md:mb-section-md">
-      <ul className="flex flex-col gap-2 md:gap-6">
+      <ul className="flex flex-col gap-6 md:gap-8">
         {tools.map((tool) => (
           <Link key={tool.href} href={tool.href} className="group">
-            <li className="flex flex-col md:flex-row md:items-end md:justify-between">
-              <span className="flex-grow text-body-lg font-medium md:text-heading-sm">
+            <li className="flex flex-col gap-1">
+              <span className="text-xl font-medium group-hover:text-accent md:text-2xl">
                 {tool.name}
               </span>
-              <span className="text-sm text-secondary group-hover:font-medium group-hover:text-accent md:min-w-fit md:text-lg">
+              <span className="text-base text-secondary md:text-lg">
                 {tool.description}
               </span>
             </li>

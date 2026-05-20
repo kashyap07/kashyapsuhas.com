@@ -1,12 +1,44 @@
 import type { Metadata } from "next";
-import { Eczar } from "next/font/google";
+import {
+  Fraunces,
+  Inter,
+  Literata,
+  Noto_Serif_Devanagari,
+  Noto_Serif_JP,
+  Noto_Serif_Kannada,
+} from "next/font/google";
 import Script from "next/script";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import "./globals.css";
 
-const eczar = Eczar({ subsets: ["latin", "devanagari"] });
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-fraunces",
+});
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+});
+const literata = Literata({
+  subsets: ["latin"],
+  variable: "--font-literata",
+});
+const notoSerifDevanagari = Noto_Serif_Devanagari({
+  subsets: ["devanagari"],
+  variable: "--font-noto-serif-devanagari",
+});
+const notoSerifKannada = Noto_Serif_Kannada({
+  subsets: ["kannada"],
+  variable: "--font-noto-serif-kannada",
+});
+const notoSerifJP = Noto_Serif_JP({
+  weight: ["400", "500", "700"],
+  subsets: ["latin"],
+  variable: "--font-noto-serif-jp",
+  preload: false,
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -41,8 +73,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
-      <body className={eczar.className}>
+    <html
+      lang="en"
+      className={`dark ${fraunces.variable} ${literata.variable} ${inter.variable} ${notoSerifDevanagari.variable} ${notoSerifKannada.variable} ${notoSerifJP.variable}`}
+    >
+      <body className="font-serif">
         {children}
         <SpeedInsights />
         {process.env.NODE_ENV === "production" && (

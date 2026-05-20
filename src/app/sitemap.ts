@@ -1,9 +1,11 @@
 import type { MetadataRoute } from "next";
 
 import { getBlogPosts } from "@db/blog";
+import { getReviews } from "@db/reviews";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const posts = getBlogPosts();
+  const reviews = getReviews();
   const siteUrl = "https://www.kashyapsuhas.com";
 
   // use latest blog post date as proxy for site freshness
@@ -65,6 +67,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${siteUrl}/blog/${post.slug}`,
       lastModified: post.metadata.publishedDateTime,
       priority: 0.9,
+    })),
+    ...reviews.map((review) => ({
+      url: `${siteUrl}/reviews/${review.slug}`,
+      lastModified: review.reviewDate,
+      priority: 0.6,
     })),
   ];
 }

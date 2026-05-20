@@ -1,10 +1,10 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Panchanga | Suhas Kashyap",
+  title: "Panchanga",
   description: "Sankalpa Mantra info",
   openGraph: {
-    title: "Panchanga | Suhas Kashyap",
+    title: "Panchanga",
     description: "Sankalpa Mantra info",
     images: [{ url: "/blog/kashyapananda.jpeg" }],
   },

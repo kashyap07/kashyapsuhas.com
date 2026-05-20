@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { ReactNode } from "react";
 
 export const metadata: Metadata = {
-  title: "Reviews | Suhas Kashyap",
+  title: "Reviews",
   description:
     "Suhas Kashyap's reviews of movies, products, restaurants, and such",
   openGraph: {

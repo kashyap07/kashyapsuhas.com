@@ -10,7 +10,7 @@ import galleryImages from "./galleryImages";
 export const dynamic = "force-static";
 
 export const metadata = {
-  title: "Kashyap's Photos | Suhas Kashyap",
+  title: "Kashyap's Photos",
   description: "Kashyap's Photos.",
   alternates: {
     canonical: "https://www.kashyapsuhas.com/photos",
@@ -27,7 +27,10 @@ export const metadata = {
 export default function Photos() {
   return (
     <GalleryProvider>
-      <Wrapper className="mb-section-sm flex w-full flex-col items-center justify-center gap-4 md:mb-section-md">
+      <Wrapper
+        maxWidth="WIDE"
+        className="mb-section-sm flex w-full flex-col items-center justify-center gap-4 md:mb-section-md"
+      >
         <div className="columns-1 gap-4 sm:columns-2 xl:columns-3">
           {galleryImages.map(({ src, title }, idx) => (
             <GalleryImageWrapper key={idx} src={src} title={title}>

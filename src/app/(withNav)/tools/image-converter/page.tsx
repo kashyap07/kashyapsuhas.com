@@ -51,7 +51,7 @@ export default function ImageConverter() {
         image.name.toLowerCase().endsWith(".heic")
       ) {
         try {
-          // Dynamically import heic2any to avoid SSR issues
+          // dynamic import, heic2any breaks on SSR
           const heic2any = (await import("heic2any")).default;
           const result = await heic2any({
             blob: image,
@@ -110,8 +110,10 @@ export default function ImageConverter() {
   if (!isClient) return null;
 
   return (
-    <Wrapper className="mb-section-sm w-full md:mb-section-md">
-      <h1 className="text-heading-lg font-medium md:text-display">Image Converter</h1>
+    <Wrapper maxWidth="WIDE" className="mb-section-sm w-full md:mb-section-md">
+      <h1 className="text-heading-md font-medium md:text-heading-lg">
+        Image Converter
+      </h1>
       <div className="mt-2 flex flex-col gap-6">
         <input
           type="file"
@@ -146,7 +148,7 @@ export default function ImageConverter() {
         {convertedUrl && (
           <div className="mt-8 flex flex-col gap-8 md:flex-row md:justify-between">
             <div className="relative w-full max-w-lg">
-              <div className="macos-shadow relative h-full w-full overflow-hidden rounded-lg">
+              <div className="shadow-macos relative h-full w-full overflow-hidden rounded-lg">
                 <ImageAutoHeight
                   src={convertedUrl}
                   alt="Converted"
