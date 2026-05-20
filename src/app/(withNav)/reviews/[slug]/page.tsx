@@ -99,7 +99,7 @@ export default async function ReviewPage(props: Props) {
 
       {/* hero card, uses full WIDE width, tinted by category */}
       <section className={cn("rounded-lg p-6 md:p-10", categoryBg)}>
-        <div className="flex items-start justify-between gap-6">
+        <div className="flex flex-col items-start justify-between gap-6 md:flex-row">
           {/* left: title + category/date */}
           <div className="min-w-0 flex-1">
             <h1 className="text-heading-sm font-medium md:text-heading-md">
@@ -126,7 +126,7 @@ export default async function ReviewPage(props: Props) {
           </div>
 
           {/* right: rating + recommend stacked */}
-          <div className="flex shrink-0 flex-col items-end gap-2 font-sans">
+          <div className="flex w-full shrink-0 flex-row items-baseline justify-between gap-2 font-sans md:w-auto md:flex-col md:items-end md:justify-normal">
             <div className="flex items-baseline gap-1 tabular-nums">
               <span className="text-3xl font-medium md:text-heading-md">
                 {review.rating}

@@ -54,7 +54,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center px-6 py-12 text-center md:py-16">
+    <main className="flex min-h-dvh flex-col items-center justify-center px-6 py-12 text-center md:py-16">
       {/* person schema */}
       <script
         type="application/ld+json"
@@ -98,7 +98,7 @@ export default function Home() {
 
       {/* top: name + tagline + nav */}
       <header className="flex flex-col items-center">
-        <h1 className="text-heading-lg font-medium md:text-display">
+        <h1 className="text-[2.9rem] font-medium md:text-display">
           Suhas Kashyap
         </h1>
         <p className="mt-1 text-lg text-secondary md:mt-3 md:text-2xl">
