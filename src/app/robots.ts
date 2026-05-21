@@ -5,8 +5,9 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/_next/*", "/work"],
+      disallow: ["/_next/*", "/admin", "/admin/*"],
     },
     sitemap: "https://www.kashyapsuhas.com/sitemap.xml",
+    host: "https://www.kashyapsuhas.com",
   };
 }

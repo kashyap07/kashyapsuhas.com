@@ -6,6 +6,14 @@ import { getBlogPosts } from "@db/blog";
 
 export const dynamic = "force-static";
 
+const SITE_URL = "https://www.kashyapsuhas.com";
+
+// make a relative path absolute for json-ld / og. external urls pass through.
+const toAbsolute = (path: string) =>
+  path.startsWith("http")
+    ? path
+    : `${SITE_URL}${path.startsWith("/") ? "" : "/"}${path}`;
+
 export async function generateMetadata(props: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata | undefined> {
@@ -14,7 +22,14 @@ export async function generateMetadata(props: {
 
   if (!post) return;
 
-  const { publishedDateTime, title, description, heroImage } = post.metadata;
+  const {
+    publishedDateTime,
+    modifiedDateTime,
+    title,
+    description,
+    heroImage,
+  } = post.metadata;
+  const imageUrl = toAbsolute(heroImage || "/kashyapcom-og.png");
 
   return {
     title,
@@ -25,16 +40,13 @@ export async function generateMetadata(props: {
       description,
       type: "article",
       publishedTime: publishedDateTime,
+      modifiedTime: modifiedDateTime || publishedDateTime,
       authors: "Suhas Kashyap",
-      url: `https://www.kashyapsuhas.com/blog/${post.slug}`,
-      images: [
-        {
-          url: heroImage || "/kashyapcom-og.png",
-        },
-      ],
+      url: `${SITE_URL}/blog/${post.slug}`,
+      images: [{ url: imageUrl }],
     },
     alternates: {
-      canonical: `https://www.kashyapsuhas.com/blog/${post.slug}`,
+      canonical: `${SITE_URL}/blog/${post.slug}`,
     },
   };
 }
@@ -48,7 +60,14 @@ async function Blog(props: Props) {
   const post = getBlogPosts().find((post) => post.slug === params.slug);
   if (!post) notFound();
 
-  const { publishedDateTime, title, description, heroImage } = post.metadata;
+  const {
+    publishedDateTime,
+    modifiedDateTime,
+    title,
+    description,
+    heroImage,
+  } = post.metadata;
+  const imageUrl = toAbsolute(heroImage || "/kashyapcom-og.png");
 
   return (
     <Wrapper className="mb-section-sm w-full md:mb-section-md">
@@ -63,15 +82,27 @@ async function Blog(props: Props) {
               "@type": "BlogPosting",
               headline: title,
               datePublished: publishedDateTime,
-              dateModified: publishedDateTime,
+              dateModified: modifiedDateTime || publishedDateTime,
               description: description,
-              image: heroImage || "/kashyapcom-og.png",
-              url: `https://www.kashyapsuhas.com/blog/${post.slug}`,
+              image: {
+                "@type": "ImageObject",
+                url: imageUrl,
+              },
+              url: `${SITE_URL}/blog/${post.slug}`,
+              mainEntityOfPage: {
+                "@type": "WebPage",
+                "@id": `${SITE_URL}/blog/${post.slug}`,
+              },
               author: {
                 "@type": "Person",
-                "@id": "https://www.kashyapsuhas.com/#person",
+                "@id": `${SITE_URL}/#person`,
                 name: "Suhas Kashyap",
-                url: "https://www.kashyapsuhas.com",
+                url: SITE_URL,
+              },
+              publisher: {
+                "@type": "Person",
+                "@id": `${SITE_URL}/#person`,
+                name: "Suhas Kashyap",
               },
             }),
           }}
@@ -82,11 +113,13 @@ async function Blog(props: Props) {
           {post.metadata.title}
         </h1>
 
-        {/* time since creation */}
-        <RelativeDate
-          date={post.metadata.publishedDateTime}
-          className="mb-2 mt-4 font-sans text-sm text-muted md:text-base"
-        />
+        {/* machine-readable date wrapping the human-friendly relative version */}
+        <time
+          dateTime={publishedDateTime}
+          className="mb-2 mt-4 block font-sans text-sm text-muted md:text-base"
+        >
+          <RelativeDate date={publishedDateTime} />
+        </time>
         <hr />
 
         {/* blog content */}

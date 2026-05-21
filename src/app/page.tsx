@@ -108,14 +108,15 @@ export default function Home() {
         <NavLinks className="mt-10 justify-center text-base md:text-2xl" />
       </header>
 
-      {/* bottom: image */}
+      {/* bottom: image. q=75 + sizes so next picks the right bucket for hero LCP */}
       <Image
         src="/kedar-bw.png"
-        alt="suhas kashyap"
-        width={1000}
-        height={1000}
-        quality={100}
+        alt="Portrait of Suhas Kashyap"
+        width={1500}
+        height={1268}
+        quality={75}
         priority
+        sizes="(max-width: 768px) 320px, 384px"
         className="mt-12 w-80 md:mt-12 md:w-96"
       />
     </main>
