@@ -51,9 +51,6 @@ const tools = [
 export default function Tools() {
   return (
     <Wrapper className="mb-section-sm w-full md:mb-section-md">
-      <h1 className="mb-8 text-heading-md font-medium md:text-heading-lg">
-        Tools
-      </h1>
       <ul className="flex flex-col gap-6 md:gap-8">
         {tools.map((tool) => (
           <Link key={tool.href} href={tool.href} className="group">

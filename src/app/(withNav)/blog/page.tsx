@@ -45,9 +45,6 @@ function Blog() {
 
   return (
     <Wrapper className="mb-section-sm w-full md:mb-section-md">
-      <h1 className="mb-8 text-heading-md font-medium md:text-heading-lg">
-        Blog
-      </h1>
       <ul className="flex flex-col gap-8 md:gap-10">
         {blogPostsByYear.map((postsForYear, groupIdx) => {
           const year = new Date(

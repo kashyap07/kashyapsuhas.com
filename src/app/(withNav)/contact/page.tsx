@@ -55,10 +55,6 @@ const Row = ({ item }: { item: Item }) => (
 export default function Contact() {
   return (
     <Wrapper className="mb-section-sm flex w-full flex-col gap-10 md:mb-section-md md:gap-14">
-      <h1 className="text-heading-md font-medium md:text-heading-lg">
-        Contact
-      </h1>
-
       <section className="flex flex-col gap-3">
         <h2 className="font-sans text-xs uppercase tracking-wider text-muted">WORK</h2>
         <ul className="flex flex-col gap-2 md:gap-3">

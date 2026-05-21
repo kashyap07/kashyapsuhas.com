@@ -30,11 +30,8 @@ export default function Photos() {
     <GalleryProvider>
       <Wrapper
         maxWidth="WIDE"
-        className="mb-section-sm flex w-full flex-col items-start justify-center gap-4 md:mb-section-md"
+        className="mb-section-sm flex w-full flex-col items-center justify-center gap-4 md:mb-section-md"
       >
-        <h1 className="mb-4 text-heading-md font-medium md:text-heading-lg">
-          Photos
-        </h1>
         <div className="columns-1 gap-4 sm:columns-2 xl:columns-3">
           {galleryImages.map(({ src, title }, idx) => (
             <GalleryImageWrapper key={idx} src={src} title={title}>
