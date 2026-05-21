@@ -17,7 +17,7 @@ export async function GET() {
       <guid isPermaLink="true">${url}</guid>
       <pubDate>${new Date(publishedDateTime).toUTCString()}</pubDate>
       ${heroImage ? `<media:content url="${heroImage}" medium="image" />` : ""}
-      <author>kashyapsuhas07@gmail.com (Suhas Kashyap)</author>
+      <author>mail@kashyapsuhas.com (Suhas Kashyap)</author>
     </item>`;
     })
     .join("");
@@ -32,8 +32,8 @@ export async function GET() {
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     <atom:link href="https://www.kashyapsuhas.com/blog/feed.xml" rel="self" type="application/rss+xml" />
     <generator>Next.js</generator>
-    <webMaster>kashyapsuhas07@gmail.com (Suhas Kashyap)</webMaster>
-    <managingEditor>kashyapsuhas07@gmail.com (Suhas Kashyap)</managingEditor>
+    <webMaster>mail@kashyapsuhas.com (Suhas Kashyap)</webMaster>
+    <managingEditor>mail@kashyapsuhas.com (Suhas Kashyap)</managingEditor>
     <image>
       <url>https://www.kashyapsuhas.com/kashyapcom-og.png</url>
       <title>Suhas Kashyap's Blog</title>

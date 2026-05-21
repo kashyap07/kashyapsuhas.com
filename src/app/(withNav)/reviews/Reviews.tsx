@@ -214,12 +214,12 @@ function Reviews({ reviews: initialReviews }: Props) {
               >
                 <div className="flex flex-col gap-1 md:flex-row md:items-start md:gap-6">
                   <div className="md:min-w-0 md:flex-1">
-                    <h3
+                    <h2
                       className="text-lg font-medium transition-colors group-hover:text-accent md:text-xl"
                       title={review.name}
                     >
                       {review.name}
-                    </h3>
+                    </h2>
                     <p
                       className="mt-1 hidden text-base text-secondary transition-colors group-hover:text-foreground md:block"
                       title={review.summary}

@@ -64,10 +64,11 @@ export default function RelativeDate({ date, className }: Props) {
     setRelative(getRelativeDate(date));
   }, [date]);
 
+  // span (phrasing content) so it can be wrapped in <time>
   return (
-    <p className={className} suppressHydrationWarning>
+    <span className={className} suppressHydrationWarning>
       {fullDate}
       {relative && ` (${relative})`}
-    </p>
+    </span>
   );
 }

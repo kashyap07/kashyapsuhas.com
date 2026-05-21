@@ -1,16 +1,26 @@
 import fs from "fs";
-import path from "path";
-
 import matter from "gray-matter";
+import path from "path";
 import { z } from "zod";
 
-// gray-matter parses dates as Date objects and categories as arrays
+// gray-matter parses dates as Date objects and categories as arrays.
+// coerce to Date then emit ISO 8601 so sitemap lastmod and JSON-LD validate.
+const toIso = (v: unknown) => {
+  if (v instanceof Date) return v.toISOString();
+  const d = new Date(v as string);
+  if (isNaN(d.getTime())) throw new Error(`invalid date: ${String(v)}`);
+  return d.toISOString();
+};
+
 const metadataSchema = z.object({
   categories: z
     .union([z.string(), z.array(z.string())])
     .transform((v) => (Array.isArray(v) ? v.join(", ") : v))
     .default(""),
-  publishedDateTime: z.coerce.string().min(1, "publishedDateTime is required"),
+  publishedDateTime: z
+    .union([z.string(), z.date()])
+    .transform(toIso)
+    .refine((v) => v.length > 0, "publishedDateTime is required"),
   title: z.string().min(1, "title is required"),
   description: z.string().default(""),
   heroImage: z.string().default(""),

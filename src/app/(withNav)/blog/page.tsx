@@ -6,7 +6,7 @@ import { getBlogPosts } from "@db/blog";
 export const dynamic = "force-static";
 
 export const metadata = {
-  title: "Kashyap's Blog ",
+  title: "Kashyap's Blog",
   description: "Kashyap's Blog.",
   alternates: {
     canonical: "https://www.kashyapsuhas.com/blog",
@@ -14,7 +14,7 @@ export const metadata = {
       "application/rss+xml": "https://www.kashyapsuhas.com/blog/feed.xml",
     },
   },
-  keywords: ["Suhas Kashyap", "blog"],
+  keywords: ["Suhas Kashyap", "blog", "writing", "essays"],
 };
 
 const splitPostsByYear = (posts: ReturnType<typeof getBlogPosts>) => {

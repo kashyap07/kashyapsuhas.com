@@ -9,6 +9,17 @@ export const metadata: Metadata = {
   title: "Tools",
   description:
     "Bunch of tools that work directly in the browser without having to upload to any server. Enjoy!",
+  alternates: {
+    canonical: "https://www.kashyapsuhas.com/tools",
+  },
+  keywords: [
+    "Suhas Kashyap tools",
+    "browser tools",
+    "image compressor",
+    "image converter",
+    "background remover",
+    "panchanga",
+  ],
   openGraph: {
     images: ["/kashyapcom-og.png"],
   },

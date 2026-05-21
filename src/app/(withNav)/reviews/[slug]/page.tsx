@@ -74,10 +74,7 @@ export default async function ReviewPage(props: Props) {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Review",
-            itemReviewed: {
-              "@type": "Thing",
-              name: review.name,
-            },
+            itemReviewed: { "@type": "Thing", name: review.name },
             reviewRating: {
               "@type": "Rating",
               ratingValue: review.rating,
@@ -85,13 +82,42 @@ export default async function ReviewPage(props: Props) {
               worstRating: 0,
             },
             reviewBody: review.summary,
+            positiveNotes: review.pros?.length
+              ? {
+                  "@type": "ItemList",
+                  itemListElement: review.pros.map((pro, i) => ({
+                    "@type": "ListItem",
+                    position: i + 1,
+                    name: pro,
+                  })),
+                }
+              : undefined,
+            negativeNotes: review.cons?.length
+              ? {
+                  "@type": "ItemList",
+                  itemListElement: review.cons.map((con, i) => ({
+                    "@type": "ListItem",
+                    position: i + 1,
+                    name: con,
+                  })),
+                }
+              : undefined,
             datePublished: review.reviewDate,
             url: `https://www.kashyapsuhas.com/reviews/${review.slug}`,
+            mainEntityOfPage: {
+              "@type": "WebPage",
+              "@id": `https://www.kashyapsuhas.com/reviews/${review.slug}`,
+            },
             author: {
               "@type": "Person",
               "@id": "https://www.kashyapsuhas.com/#person",
               name: "Suhas Kashyap",
               url: "https://www.kashyapsuhas.com",
+            },
+            publisher: {
+              "@type": "Person",
+              "@id": "https://www.kashyapsuhas.com/#person",
+              name: "Suhas Kashyap",
             },
           }),
         }}

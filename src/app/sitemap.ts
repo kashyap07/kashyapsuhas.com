@@ -8,61 +8,44 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const reviews = getReviews();
   const siteUrl = "https://www.kashyapsuhas.com";
 
-  // use latest blog post date as proxy for site freshness
+  // freshness signal: latest post for blog/home, latest review for reviews,
+  // build time for tools (no per-tool changelog yet).
   const latestPostDate =
-    posts[0]?.metadata.publishedDateTime ?? "2025-01-01T00:00:00.000Z";
+    posts[0]?.metadata.publishedDateTime ?? new Date().toISOString();
+  const latestReviewDate = reviews[0]?.reviewDate ?? new Date().toISOString();
+  const buildDate = new Date().toISOString();
 
   return [
-    {
-      url: siteUrl,
-      lastModified: latestPostDate,
-      priority: 1.0,
-    },
-    {
-      url: `${siteUrl}/blog`,
-      lastModified: latestPostDate,
-      priority: 0.9,
-    },
-    {
-      url: `${siteUrl}/tools`,
-      lastModified: "2025-03-01T00:00:00.000Z",
-      priority: 0.8,
-    },
+    { url: siteUrl, lastModified: latestPostDate, priority: 1.0 },
+    { url: `${siteUrl}/blog`, lastModified: latestPostDate, priority: 0.9 },
+    { url: `${siteUrl}/tools`, lastModified: buildDate, priority: 0.8 },
     {
       url: `${siteUrl}/tools/image-compressor`,
-      lastModified: "2025-03-01T00:00:00.000Z",
-      priority: 0.6,
+      lastModified: buildDate,
+      priority: 0.7,
     },
     {
       url: `${siteUrl}/tools/image-converter`,
-      lastModified: "2025-03-01T00:00:00.000Z",
-      priority: 0.6,
+      lastModified: buildDate,
+      priority: 0.7,
     },
     {
       url: `${siteUrl}/tools/background-remover`,
-      lastModified: "2025-03-01T00:00:00.000Z",
-      priority: 0.6,
+      lastModified: buildDate,
+      priority: 0.7,
     },
     {
       url: `${siteUrl}/tools/panchanga`,
-      lastModified: "2025-03-01T00:00:00.000Z",
-      priority: 0.6,
-    },
-    {
-      url: `${siteUrl}/photos`,
-      lastModified: latestPostDate,
+      lastModified: buildDate,
       priority: 0.7,
     },
+    { url: `${siteUrl}/photos`, lastModified: latestPostDate, priority: 0.7 },
     {
       url: `${siteUrl}/reviews`,
-      lastModified: latestPostDate,
+      lastModified: latestReviewDate,
       priority: 0.7,
     },
-    {
-      url: `${siteUrl}/contact`,
-      lastModified: "2025-01-01T00:00:00.000Z",
-      priority: 0.5,
-    },
+    { url: `${siteUrl}/contact`, lastModified: buildDate, priority: 0.5 },
     ...posts.map((post) => ({
       url: `${siteUrl}/blog/${post.slug}`,
       lastModified: post.metadata.publishedDateTime,

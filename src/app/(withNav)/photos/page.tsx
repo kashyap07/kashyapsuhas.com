@@ -39,6 +39,8 @@ export default function Photos() {
                 src={src}
                 width={720}
                 height={480}
+                // first few above-fold get priority for LCP, rest lazy-load
+                priority={idx < 3}
                 sizes="(max-width: 640px) 100vw,
                     (max-width: 1280px) 50vw,
                     (max-width: 1536px) 33vw,
