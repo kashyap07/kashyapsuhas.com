@@ -3,9 +3,9 @@ import {
   Fraunces,
   Inter,
   Literata,
-  Noto_Serif_Devanagari,
-  Noto_Serif_JP,
-  Noto_Serif_Kannada,
+  Shippori_Mincho,
+  Tiro_Devanagari_Sanskrit,
+  Tiro_Kannada,
 } from "next/font/google";
 import Script from "next/script";
 
@@ -26,18 +26,24 @@ const literata = Literata({
   subsets: ["latin"],
   variable: "--font-literata",
 });
-const notoSerifDevanagari = Noto_Serif_Devanagari({
+// non-latin scripts for the wordmark easter egg. preload: false so they don't
+// block first paint, they only load when user clicks to cycle.
+const tiroDevanagari = Tiro_Devanagari_Sanskrit({
+  weight: "400",
   subsets: ["devanagari"],
-  variable: "--font-noto-serif-devanagari",
+  variable: "--font-tiro-devanagari",
+  preload: false,
 });
-const notoSerifKannada = Noto_Serif_Kannada({
+const tiroKannada = Tiro_Kannada({
+  weight: "400",
   subsets: ["kannada"],
-  variable: "--font-noto-serif-kannada",
+  variable: "--font-tiro-kannada",
+  preload: false,
 });
-const notoSerifJP = Noto_Serif_JP({
+const shipporiMincho = Shippori_Mincho({
   weight: ["400", "500", "700"],
   subsets: ["latin"],
-  variable: "--font-noto-serif-jp",
+  variable: "--font-shippori-mincho",
   preload: false,
 });
 
@@ -76,7 +82,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`dark ${fraunces.variable} ${literata.variable} ${inter.variable} ${notoSerifDevanagari.variable} ${notoSerifKannada.variable} ${notoSerifJP.variable}`}
+      className={`dark ${fraunces.variable} ${literata.variable} ${inter.variable} ${tiroDevanagari.variable} ${tiroKannada.variable} ${shipporiMincho.variable}`}
     >
       <body className="font-serif">
         {children}
