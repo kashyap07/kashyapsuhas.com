@@ -10,8 +10,9 @@ import galleryImages from "./galleryImages";
 export const dynamic = "force-static";
 
 export const metadata = {
-  title: "Kashyap's Photos",
-  description: "Kashyap's Photos.",
+  title: "Photos",
+  description:
+    "A gallery of photographs by Suhas Kashyap. Travel, wildlife, street and personal.",
   alternates: {
     canonical: "https://www.kashyapsuhas.com/photos",
   },
@@ -29,8 +30,11 @@ export default function Photos() {
     <GalleryProvider>
       <Wrapper
         maxWidth="WIDE"
-        className="mb-section-sm flex w-full flex-col items-center justify-center gap-4 md:mb-section-md"
+        className="mb-section-sm flex w-full flex-col items-start justify-center gap-4 md:mb-section-md"
       >
+        <h1 className="mb-4 text-heading-md font-medium md:text-heading-lg">
+          Photos
+        </h1>
         <div className="columns-1 gap-4 sm:columns-2 xl:columns-3">
           {galleryImages.map(({ src, title }, idx) => (
             <GalleryImageWrapper key={idx} src={src} title={title}>
@@ -39,6 +43,8 @@ export default function Photos() {
                 src={src}
                 width={720}
                 height={480}
+                // first few above-fold get priority for LCP, rest lazy-load
+                priority={idx < 3}
                 sizes="(max-width: 640px) 100vw,
                     (max-width: 1280px) 50vw,
                     (max-width: 1536px) 33vw,

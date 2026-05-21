@@ -6,15 +6,16 @@ import { getBlogPosts } from "@db/blog";
 export const dynamic = "force-static";
 
 export const metadata = {
-  title: "Kashyap's Blog ",
-  description: "Kashyap's Blog.",
+  title: "Blog",
+  description:
+    "Notes from Suhas Kashyap on software, photography, food, games and life.",
   alternates: {
     canonical: "https://www.kashyapsuhas.com/blog",
     types: {
       "application/rss+xml": "https://www.kashyapsuhas.com/blog/feed.xml",
     },
   },
-  keywords: ["Suhas Kashyap", "blog"],
+  keywords: ["Suhas Kashyap", "blog", "writing", "essays"],
 };
 
 const splitPostsByYear = (posts: ReturnType<typeof getBlogPosts>) => {
@@ -44,6 +45,9 @@ function Blog() {
 
   return (
     <Wrapper className="mb-section-sm w-full md:mb-section-md">
+      <h1 className="mb-8 text-heading-md font-medium md:text-heading-lg">
+        Blog
+      </h1>
       <ul className="flex flex-col gap-8 md:gap-10">
         {blogPostsByYear.map((postsForYear, groupIdx) => {
           const year = new Date(

@@ -8,7 +8,18 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "Tools",
   description:
-    "Bunch of tools that work directly in the browser without having to upload to any server. Enjoy!",
+    "Free browser-based tools by Suhas Kashyap: image compressor, image converter, background remover, panchanga. Everything runs locally, no uploads.",
+  alternates: {
+    canonical: "https://www.kashyapsuhas.com/tools",
+  },
+  keywords: [
+    "Suhas Kashyap tools",
+    "browser tools",
+    "image compressor",
+    "image converter",
+    "background remover",
+    "panchanga",
+  ],
   openGraph: {
     images: ["/kashyapcom-og.png"],
   },
@@ -40,6 +51,9 @@ const tools = [
 export default function Tools() {
   return (
     <Wrapper className="mb-section-sm w-full md:mb-section-md">
+      <h1 className="mb-8 text-heading-md font-medium md:text-heading-lg">
+        Tools
+      </h1>
       <ul className="flex flex-col gap-6 md:gap-8">
         {tools.map((tool) => (
           <Link key={tool.href} href={tool.href} className="group">
