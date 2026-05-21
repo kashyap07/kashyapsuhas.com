@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useReducer, useRef } from "react";
 
-import { Check, X } from "lucide-react";
+import { Check, ChevronRight, X } from "lucide-react";
 
 import { Wrapper } from "@components/ui";
 import { type Review } from "@db/reviews";
@@ -12,6 +12,7 @@ import cn from "@utils/cn";
 
 import {
   CATEGORY_BG_COLOR_MAP,
+  CATEGORY_FILL_BG_COLOR_MAP,
   CATEGORY_TEXT_COLOR_MAP,
   getCategoryIcon,
 } from "./categories";
@@ -203,61 +204,73 @@ function Reviews({ reviews: initialReviews }: Props) {
       );
     }
     return (
-      <ul className="flex flex-col gap-6 md:gap-8">
+      <ul className="flex flex-col gap-2 md:gap-3">
         {reviewsState.reviews.map((review) => {
           const Icon = getCategoryIcon(review.category);
           return (
             <li key={review._idx}>
               <Link
                 href={`/reviews/${review.slug}`}
-                className="group block transition-colors"
+                className="group -mx-3 block rounded-lg px-3 py-3 transition-colors hover:bg-surface-hover active:bg-surface-subtle md:-mx-4 md:px-4 md:py-4"
               >
-                <div className="flex flex-col gap-1 md:flex-row md:items-start md:gap-6">
-                  <div className="md:min-w-0 md:flex-1">
-                    <h2
-                      className="text-lg font-medium transition-colors group-hover:text-accent md:text-xl"
-                      title={review.name}
-                    >
-                      {review.name}
-                    </h2>
-                    <p
-                      className="mt-1 hidden text-base text-secondary transition-colors group-hover:text-foreground md:block"
-                      title={review.summary}
-                    >
-                      {review.summary}
-                    </p>
+                <div className="flex items-start gap-2 md:gap-6">
+                  <div className="flex min-w-0 flex-1 flex-col gap-1 md:flex-row md:items-start md:gap-6">
+                    <div className="md:min-w-0 md:flex-1">
+                      <h2
+                        className="text-lg font-medium transition-colors group-hover:text-accent md:text-xl"
+                        title={review.name}
+                      >
+                        {review.name}
+                      </h2>
+                      <p
+                        className="mt-1 hidden text-base text-secondary transition-colors group-hover:text-foreground md:block"
+                        title={review.summary}
+                      >
+                        {review.summary}
+                      </p>
+                    </div>
+
+                    <div className="flex shrink-0 items-center gap-3 font-sans text-sm text-muted md:gap-4 md:pt-1">
+                      <span
+                        className={cn(
+                          "inline-flex items-center gap-1.5",
+                          CATEGORY_TEXT_COLOR_MAP[review.category] ??
+                            "text-stone-700",
+                        )}
+                      >
+                        <Icon
+                          size={14}
+                          className="shrink-0"
+                          aria-hidden="true"
+                        />
+                        <span className="truncate">{review.category}</span>
+                      </span>
+                      <span className="flex w-4 justify-center">
+                        {review.wouldRecommend ? (
+                          <Check
+                            size={14}
+                            className="text-success"
+                            aria-label="recommend"
+                          />
+                        ) : (
+                          <X
+                            size={14}
+                            className="text-danger"
+                            aria-label="do not recommend"
+                          />
+                        )}
+                      </span>
+                      <span className="w-8 text-right tabular-nums">
+                        {review.rating}
+                      </span>
+                    </div>
                   </div>
 
-                  <div className="flex shrink-0 items-center gap-3 font-sans text-sm text-muted md:gap-4 md:pt-1">
-                    <span
-                      className={cn(
-                        "inline-flex items-center gap-1.5",
-                        CATEGORY_TEXT_COLOR_MAP[review.category] ??
-                          "text-stone-700",
-                      )}
-                    >
-                      <Icon size={14} className="shrink-0" aria-hidden="true" />
-                      <span className="truncate">{review.category}</span>
-                    </span>
-                    <span className="flex w-4 justify-center">
-                      {review.wouldRecommend ? (
-                        <Check
-                          size={14}
-                          className="text-success"
-                          aria-label="recommend"
-                        />
-                      ) : (
-                        <X
-                          size={14}
-                          className="text-danger"
-                          aria-label="do not recommend"
-                        />
-                      )}
-                    </span>
-                    <span className="w-8 text-right tabular-nums">
-                      {review.rating}
-                    </span>
-                  </div>
+                  <ChevronRight
+                    size={20}
+                    className="mt-1 shrink-0 text-subtle md:hidden"
+                    aria-hidden="true"
+                  />
                 </div>
 
                 <p
@@ -301,11 +314,11 @@ function Reviews({ reviews: initialReviews }: Props) {
                   dispatch({ type: "FILTER_CATEGORY", payload: category })
                 }
                 className={cn(
-                  "inline-flex items-center gap-1 rounded px-2 py-2 font-sans text-xs font-medium transition-all",
-                  CATEGORY_BG_COLOR_MAP[category] ?? "bg-stone-50",
+                  "inline-flex items-center gap-1 rounded px-2 py-2 font-sans text-xs font-medium text-white transition-all",
+                  CATEGORY_FILL_BG_COLOR_MAP[category] ?? "bg-stone-700",
                   active
-                    ? `${CATEGORY_TEXT_COLOR_MAP[category] ?? "text-stone-700"} ring-2 ring-accent ring-offset-2`
-                    : "text-secondary opacity-70 hover:opacity-100",
+                    ? "ring-2 ring-accent ring-offset-2"
+                    : "opacity-80 hover:opacity-100",
                 )}
                 aria-pressed={active}
               >
@@ -319,7 +332,7 @@ function Reviews({ reviews: initialReviews }: Props) {
         <button
           type="button"
           onClick={() => dispatch({ type: "SORT", payload: "rating" })}
-          className="shrink-0 font-sans text-xs uppercase tracking-wider text-muted transition-colors hover:text-accent"
+          className="shrink-0 rounded border border-line px-3 py-2 font-sans text-xs uppercase tracking-wider text-muted transition-colors hover:bg-surface-subtle hover:text-accent"
         >
           sort: rating
           <span className="ml-1 inline-block">

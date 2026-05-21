@@ -1,7 +1,6 @@
 import { Metadata } from "next";
-import Image from "next/image";
 
-import NavLinks from "./NavLinks";
+import HomeHero from "./HomeHero";
 
 export const metadata: Metadata = {
   title: "Suhas Kashyap",
@@ -55,7 +54,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main className="flex min-h-dvh flex-col items-center justify-center px-6 py-12 text-center md:py-16">
+    <main className="flex flex-col">
       {/* person schema */}
       <script
         type="application/ld+json"
@@ -97,28 +96,7 @@ export default function Home() {
         }}
       />
 
-      {/* top: name + tagline + nav */}
-      <header className="flex flex-col items-center">
-        <h1 className="text-[2.9rem] font-bold md:text-display md:font-semibold">
-          Suhas Kashyap
-        </h1>
-        <p className="mt-1 text-lg text-secondary md:mt-3 md:text-2xl">
-          Welcome to my slice of the Interwebs.
-        </p>
-        <NavLinks className="mt-10 justify-center text-base md:text-2xl" />
-      </header>
-
-      {/* bottom: image. q=75 + sizes so next picks the right bucket for hero LCP */}
-      <Image
-        src="/kedar-bw.png"
-        alt="Portrait of Suhas Kashyap"
-        width={1500}
-        height={1268}
-        quality={75}
-        priority
-        sizes="(max-width: 768px) 320px, 384px"
-        className="mt-12 w-80 md:mt-12 md:w-96"
-      />
+      <HomeHero />
     </main>
   );
 }

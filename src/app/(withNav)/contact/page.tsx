@@ -79,11 +79,13 @@ const Row = ({ item }: { item: Item }) => (
   <Link
     key={item.href}
     href={item.href}
-    className="group"
+    className="group -mx-3 block rounded-lg px-3 py-2 transition-colors hover:bg-surface-hover active:bg-surface-subtle md:-mx-4 md:px-4 md:py-3"
     {...(item.external ? { target: "_blank", rel: EXTERNAL_REL } : {})}
   >
     <li className="flex items-baseline justify-between gap-4">
-      <span className="text-xl font-medium md:text-2xl">{item.name}</span>
+      <span className="text-xl font-medium group-hover:text-accent md:text-2xl">
+        {item.name}
+      </span>
       <span className="shrink-0 font-sans text-sm text-muted group-hover:font-medium group-hover:text-accent md:text-base">
         {item.handle}
       </span>
@@ -98,7 +100,7 @@ export default function Contact() {
         <h2 className="font-sans text-xs uppercase tracking-wider text-muted">
           WORK
         </h2>
-        <ul className="flex flex-col gap-2 md:gap-3">
+        <ul className="flex flex-col gap-1 md:gap-1">
           {work.map((item) => (
             <Row key={item.href} item={item} />
           ))}
@@ -109,7 +111,7 @@ export default function Contact() {
         <h2 className="font-sans text-xs uppercase tracking-wider text-muted">
           SOCIALS
         </h2>
-        <ul className="flex flex-col gap-2 md:gap-3">
+        <ul className="flex flex-col gap-1 md:gap-1">
           {socials.map((item) => (
             <Row key={item.href} item={item} />
           ))}

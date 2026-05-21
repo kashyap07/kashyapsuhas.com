@@ -40,6 +40,7 @@ function Blog() {
   const formatter = new Intl.DateTimeFormat("en-US", {
     month: "short",
     day: "numeric",
+    timeZone: "UTC",
   });
 
   return (
@@ -54,26 +55,35 @@ function Blog() {
               <h2 className="font-sans text-xs uppercase tracking-wider text-muted">
                 {year}
               </h2>
-              <ul className="flex flex-col gap-2 md:gap-3">
-                {postsForYear.map((post) => (
-                  <Link
-                    key={post.slug}
-                    className="group"
-                    href={`/blog/${post.slug}`}
-                  >
-                    <li className="flex items-baseline justify-between gap-4">
-                      <span className="text-lg font-medium group-hover:text-accent md:text-xl">
-                        {post.metadata.title}
-                      </span>
-
-                      <span className="shrink-0 font-sans text-sm text-muted group-hover:text-accent md:text-base">
-                        {formatter.format(
-                          new Date(post.metadata.publishedDateTime),
+              <ul className="flex flex-col gap-1">
+                {postsForYear.map((post) => {
+                  const description = post.metadata.description?.trim();
+                  return (
+                    <Link
+                      key={post.slug}
+                      className="group -mx-3 block rounded-lg px-3 py-2.5 transition-colors hover:bg-surface-hover active:bg-surface-subtle md:-mx-4 md:px-4 md:py-3"
+                      href={`/blog/${post.slug}`}
+                    >
+                      <li className="flex flex-col gap-1">
+                        <div className="flex items-baseline justify-between gap-3 md:gap-4">
+                          <h3 className="text-lg font-medium leading-snug transition-colors group-hover:text-accent md:text-xl">
+                            {post.metadata.title}
+                          </h3>
+                          <span className="shrink-0 font-sans text-sm text-muted group-hover:text-accent">
+                            {formatter.format(
+                              new Date(post.metadata.publishedDateTime),
+                            )}
+                          </span>
+                        </div>
+                        {description && (
+                          <p className="text-sm leading-relaxed text-secondary transition-colors group-hover:text-foreground md:text-base">
+                            {description}
+                          </p>
                         )}
-                      </span>
-                    </li>
-                  </Link>
-                ))}
+                      </li>
+                    </Link>
+                  );
+                })}
               </ul>
             </li>
           );

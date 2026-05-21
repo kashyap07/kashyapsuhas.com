@@ -30,15 +30,13 @@ const NavLinks = ({ variant = "muted", className }: Props) => {
     >
       {links.map((link, i) => {
         const isActive =
-          link.href === "/"
-            ? pathname === "/"
-            : pathname.startsWith(link.href);
+          link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
 
         const linkClass =
           variant === "accent"
             ? "text-accent hover:opacity-75"
             : isActive
-              ? "text-foreground hover:text-accent"
+              ? "text-accent font-medium hover:opacity-75"
               : "text-muted hover:text-accent";
 
         return (
@@ -50,7 +48,7 @@ const NavLinks = ({ variant = "muted", className }: Props) => {
               {link.label}
             </Link>
             {i < links.length - 1 && (
-              <span className="text-subtle select-none">·</span>
+              <span className="select-none text-subtle">·</span>
             )}
           </span>
         );

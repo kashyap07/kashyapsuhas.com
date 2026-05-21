@@ -77,7 +77,7 @@ const config: Config = {
         surface: {
           DEFAULT: "var(--background)", // bg-surface
           subtle: "#f9fafb", // bg-surface-subtle (gray-50)
-          hover: "rgb(249 250 251 / 0.5)", // bg-surface-hover (gray-50/50, row hovers)
+          hover: "rgb(243 244 246 / 0.5)", // bg-surface-hover (gray-100 @ 60%, row hovers)
         },
 
         // text hierarchy, use these instead of raw gray-{n}
@@ -114,12 +114,7 @@ const config: Config = {
           "Georgia",
           "serif",
         ],
-        sans: [
-          "var(--font-inter)",
-          "ui-sans-serif",
-          "system-ui",
-          "sans-serif",
-        ],
+        sans: ["var(--font-inter)", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       fontSize: {
         display: ["5rem", { lineHeight: "1", fontWeight: "500" }], // 80px

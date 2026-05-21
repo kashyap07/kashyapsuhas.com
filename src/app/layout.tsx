@@ -11,6 +11,7 @@ import Script from "next/script";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
+import ConsoleEgg from "./ConsoleEgg";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -79,6 +80,7 @@ export default function RootLayout({
     >
       <body className="font-serif">
         {children}
+        <ConsoleEgg />
         <SpeedInsights />
         {process.env.NODE_ENV === "production" && (
           <Script

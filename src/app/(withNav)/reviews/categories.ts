@@ -55,6 +55,20 @@ export const CATEGORY_BG_COLOR_MAP: Record<string, string> = {
   Others: "bg-stone-50",
 };
 
+// saturated category bg, used for filled chips (filter buttons)
+export const CATEGORY_FILL_BG_COLOR_MAP: Record<string, string> = {
+  Media: "bg-indigo-700",
+  Tech: "bg-cyan-700",
+  Vehicles: "bg-slate-700",
+  Games: "bg-amber-700",
+  Restaurants: "bg-orange-700",
+  Services: "bg-violet-700",
+  Travel: "bg-sky-700",
+  Photo: "bg-teal-700",
+  Book: "bg-yellow-700",
+  Others: "bg-stone-700",
+};
+
 export function getCategoryIcon(category: string): LucideIcon {
   return CATEGORY_ICON_MAP[category] ?? MoreHorizontal;
 }

@@ -36,7 +36,9 @@ export function GalleryProvider({ children }: { children: ReactNode }) {
   );
 }
 
-// lightweight wrapper for each image that adds click handler
+// lightweight wrapper for each image that adds click handler.
+// mobile: tap is a no-op (image already fills viewport width, modal made it smaller).
+// desktop: opens modal at md+.
 export function GalleryImageWrapper({
   src,
   title,
@@ -48,7 +50,17 @@ export function GalleryImageWrapper({
 }) {
   const { openImage } = useGalleryContext();
 
-  return <div onClick={() => openImage({ src, title })}>{children}</div>;
+  const handleClick = () => {
+    // md breakpoint = 768px
+    if (typeof window !== "undefined" && window.innerWidth < 768) return;
+    openImage({ src, title });
+  };
+
+  return (
+    <div onClick={handleClick} className="md:cursor-pointer">
+      {children}
+    </div>
+  );
 }
 
 // modal component for displaying selected image
