@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import {
   Fraunces,
   Inter,
@@ -69,6 +69,14 @@ export const metadata: Metadata = {
       },
     ],
   },
+};
+
+// light-only site. colour-scheme tells the browser to render form controls,
+// scrollbars, and the page background in light mode. theme-color tints
+// mobile browser chrome to match the page background.
+export const viewport: Viewport = {
+  colorScheme: "light",
+  themeColor: "#ffffff",
 };
 
 // favicon is added automatically by nextjs

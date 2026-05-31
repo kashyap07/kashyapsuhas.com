@@ -46,6 +46,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     { url: `${siteUrl}/contact`, lastModified: buildDate, priority: 0.5 },
+    { url: `${siteUrl}/privacy`, lastModified: buildDate, priority: 0.3 },
     ...posts.map((post) => ({
       url: `${siteUrl}/blog/${post.slug}`,
       lastModified: post.metadata.publishedDateTime,

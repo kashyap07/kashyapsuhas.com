@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "NODE_OPTIONS='--inspect' TINA_PUBLIC_IS_LOCAL=true tinacms dev -c \"next dev --turbopack\"",
+    "kill": "lsof -ti:3000,9000,9229 2>/dev/null | xargs kill -9 2>/dev/null; pkill -f 'tinacms|next start|next dev' 2>/dev/null; echo killed",
     "build": "GITHUB_BRANCH=main tinacms build && next build",
     "build:analyze": "ANALYZE=true npm run build",
     "start": "next start",

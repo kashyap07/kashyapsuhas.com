@@ -293,8 +293,12 @@ function Reviews({ reviews: initialReviews }: Props) {
       className="mb-section-sm w-full md:mb-section-md"
     >
       {/* search */}
+      <label htmlFor="reviews-search" className="sr-only">
+        Search reviews
+      </label>
       <input
-        type="text"
+        id="reviews-search"
+        type="search"
         placeholder="search reviews"
         className="mb-4 w-full rounded border border-line p-2 font-sans text-sm focus:outline-accent md:w-64"
         defaultValue={reviewsState.searchString}

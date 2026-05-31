@@ -1,0 +1,4 @@
+Contact: mailto:mail@kashyapsuhas.com
+Expires: 2027-05-31T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://www.kashyapsuhas.com/.well-known/security.txt
