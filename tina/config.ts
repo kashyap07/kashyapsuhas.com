@@ -82,6 +82,14 @@ export default defineConfig({
             required: false,
           },
           {
+            type: "boolean",
+            name: "draft",
+            label: "Draft",
+            description:
+              "hidden from listing, rss, sitemap. slug url still works for sharing.",
+            required: false,
+          },
+          {
             type: "rich-text",
             name: "post",
             label: "Post",

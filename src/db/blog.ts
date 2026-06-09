@@ -24,6 +24,7 @@ const metadataSchema = z.object({
   title: z.string().min(1, "title is required"),
   description: z.string().default(""),
   heroImage: z.string().default(""),
+  draft: z.boolean().default(false),
 });
 
 export type Metadata = z.infer<typeof metadataSchema>;
@@ -88,6 +89,12 @@ function getMDXData(dir: string) {
     });
 }
 
-export function getBlogPosts() {
-  return getMDXData(path.join(process.cwd(), "content/blog"));
+// drafts excluded by default. pass { includeDrafts: true } from the slug page
+// so a shareable preview url still resolves while the post stays out of
+// listing, rss feed, and sitemap.
+export function getBlogPosts({
+  includeDrafts = false,
+}: { includeDrafts?: boolean } = {}) {
+  const posts = getMDXData(path.join(process.cwd(), "content/blog"));
+  return includeDrafts ? posts : posts.filter((p) => !p.metadata.draft);
 }

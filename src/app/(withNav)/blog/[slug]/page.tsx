@@ -18,17 +18,22 @@ export async function generateMetadata(props: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata | undefined> {
   const params = await props.params;
-  const post = getBlogPosts().find((post) => post.slug === params.slug);
+  const post = getBlogPosts({ includeDrafts: true }).find(
+    (post) => post.slug === params.slug,
+  );
 
   if (!post) return;
 
-  const { publishedDateTime, title, description, heroImage } = post.metadata;
+  const { publishedDateTime, title, description, heroImage, draft } =
+    post.metadata;
   const imageUrl = toAbsolute(heroImage || "/kashyapcom-og.png");
 
   return {
     title,
     description,
     keywords: ["Suhas Kashyap", title],
+    // drafts must not get indexed even if the url leaks
+    ...(draft && { robots: { index: false, follow: false } }),
     openGraph: {
       title: `${title}`,
       description,
@@ -50,10 +55,13 @@ interface Props {
 
 async function Blog(props: Props) {
   const params = await props.params;
-  const post = getBlogPosts().find((post) => post.slug === params.slug);
+  const post = getBlogPosts({ includeDrafts: true }).find(
+    (post) => post.slug === params.slug,
+  );
   if (!post) notFound();
 
-  const { publishedDateTime, title, description, heroImage } = post.metadata;
+  const { publishedDateTime, title, description, heroImage, draft } =
+    post.metadata;
   const imageUrl = toAbsolute(heroImage || "/kashyapcom-og.png");
 
   return (
@@ -93,6 +101,12 @@ async function Blog(props: Props) {
             }),
           }}
         />
+
+        {draft && (
+          <span className="mb-4 inline-block rounded border border-muted px-2 py-0.5 font-sans text-xs uppercase tracking-wider text-muted">
+            Draft
+          </span>
+        )}
 
         {/* title */}
         <h1 className="title w-full text-heading-sm font-medium md:text-heading-lg">

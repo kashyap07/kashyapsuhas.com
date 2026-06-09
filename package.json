@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "NODE_OPTIONS='--inspect' TINA_PUBLIC_IS_LOCAL=true tinacms dev -c \"next dev --turbopack\"",
+    "dev:mobile": "echo \"\\n  mobile: http://$(ipconfig getifaddr en0 || ipconfig getifaddr en1):3000\\n\" && NODE_OPTIONS='--inspect' TINA_PUBLIC_IS_LOCAL=true tinacms dev -c \"next dev --turbopack -H 0.0.0.0\"",
     "kill": "lsof -ti:3000,9000,9229 2>/dev/null | xargs kill -9 2>/dev/null; pkill -f 'tinacms|next start|next dev' 2>/dev/null; echo killed",
     "build": "GITHUB_BRANCH=main tinacms build && next build",
     "build:analyze": "ANALYZE=true npm run build",
@@ -15,7 +16,9 @@
     "test:coverage": "jest --coverage",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,scss,md,mdx,html,yml,yaml}\" --ignore-path .gitignore",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,css,scss,md,mdx,html,yml,yaml}\" --ignore-path .gitignore",
-    "format:staged": "prettier --write $(git diff --cached --name-only --diff-filter=ACMR | grep -E '\\.(js|jsx|ts|tsx|json|css|scss|md,mdx|html|yml|yaml)$' | tr '\\n' ' ')"
+    "format:staged": "prettier --write $(git diff --cached --name-only --diff-filter=ACMR | grep -E '\\.(js|jsx|ts|tsx|json|css|scss|md,mdx|html|yml|yaml)$' | tr '\\n' ' ')",
+    "process-trip-photos": "node scripts/process-trip-photos.mjs",
+    "build-trip-route": "node scripts/build-trip-route.mjs"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.9",
@@ -28,6 +31,7 @@
     "heic2any": "^0.0.4",
     "katex": "^0.16.28",
     "lucide-react": "^1.16.0",
+    "maplibre-gl": "^5.24.0",
     "next": "^16.1.1",
     "next-mdx-remote": "^6.0.0",
     "onnxruntime-web": "~1.16.0",
@@ -54,6 +58,7 @@
     "clsx": "^2.1.1",
     "eslint": "^9.39.2",
     "eslint-config-next": "^16.1.1",
+    "exifr": "^7.1.3",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^30.2.0",
     "jest-environment-jsdom": "^30.2.0",
@@ -62,6 +67,7 @@
     "prettier": "^3.7.4",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "schema-dts": "^1.1.5",
+    "sharp": "^0.34.5",
     "tailwind-merge": "^3.4.0",
     "tailwindcss": "^3.4.19",
     "tailwindcss-motion": "^1.1.1",
