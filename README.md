@@ -1,7 +1,14 @@
-## personal site at kashyapsuhas.com
+# kashyapsuhas.com
 
-## notes for self
+My personal site. Blog, photos, reviews, and a bunch of small browser tools I built for myself.
 
-- gap-3 as small spacing
-- gap-6 as standard spacing
-- gap-14 as section spacing
+Live at [kashyapsuhas.com](https://www.kashyapsuhas.com).
+
+## Stack
+
+Next.js 16 (App Router) + React 19, Tailwind, TinaCMS for content, MDX for blog posts. Deployed on Vercel.
+
+## Notes
+
+- light mode only
+- design tokens (colors, spacing, type) live in `DESIGN_SYSTEM.md`
