@@ -1,4 +1,10 @@
-import { Children, ReactNode, cloneElement, isValidElement } from "react";
+import {
+  Children,
+  ReactElement,
+  ReactNode,
+  cloneElement,
+  isValidElement,
+} from "react";
 
 export interface PhotoGridProps {
   cols?: 2 | 3;
@@ -10,15 +16,25 @@ const COLS_CLASS: Record<number, string> = {
   3: "grid-cols-2 md:grid-cols-3",
 };
 
+// only the bound TripPhoto (marked in the registry) gets the grid variant;
+// text nodes and other elements render untouched instead of receiving a
+// stray `variant` prop.
+function isTripPhotoElement(
+  child: ReactNode,
+): child is ReactElement<{ variant?: string }> {
+  return (
+    isValidElement(child) &&
+    typeof child.type === "function" &&
+    (child.type as { isTripPhoto?: boolean }).isTripPhoto === true
+  );
+}
+
 // passes `variant="grid"` down to every TripPhoto child so they render as
 // square thumbnails instead of full-width figures.
 export default function PhotoGrid({ cols = 3, children }: PhotoGridProps) {
   const enhanced = Children.map(children, (child) => {
-    // skip text nodes and plain dom elements; only components take variant
-    if (!isValidElement(child) || typeof child.type === "string") return child;
-    return cloneElement(child as React.ReactElement<{ variant?: string }>, {
-      variant: "grid",
-    });
+    if (!isTripPhotoElement(child)) return child;
+    return cloneElement(child, { variant: "grid" });
   });
 
   return (

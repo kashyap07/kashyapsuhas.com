@@ -6,6 +6,13 @@ import { getBlogPosts } from "@db/blog";
 
 export const dynamic = "force-static";
 
+// prerender published posts at build. drafts are excluded here but still
+// resolve on demand (dynamicParams defaults to true), which is what keeps
+// shareable draft urls working.
+export function generateStaticParams() {
+  return getBlogPosts().map((post) => ({ slug: post.slug }));
+}
+
 const SITE_URL = "https://www.kashyapsuhas.com";
 
 // make a relative path absolute for json-ld / og. external urls pass through.

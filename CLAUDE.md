@@ -241,8 +241,8 @@ export async function generateMetadata(props) {
 
 **Static Generation:**
 
-- `export const dynamic = "force-static"` on blog post pages
-- Pre-renders all blog slugs for optimal performance
+- `export const dynamic = "force-static"` + `generateStaticParams` on blog post pages
+- Published slugs prerender at build; draft posts render on demand (shareable preview urls)
 
 ### 7. Data Access Layer Pattern
 

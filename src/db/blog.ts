@@ -65,6 +65,14 @@ function readMDXFile(filePath: string) {
     );
   }
 
+  // publish gate: a post leaving draft must not ship author placeholders.
+  // fails the build (getBlogPosts runs for sitemap/listing at build time).
+  if (!result.data.draft && /<(TODO|FIXME)/.test(content)) {
+    throw new Error(
+      `${filePath} is published (draft: false) but still contains <TODO/<FIXME placeholders`,
+    );
+  }
+
   return { metadata: result.data, content };
 }
 

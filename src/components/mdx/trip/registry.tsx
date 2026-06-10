@@ -46,8 +46,11 @@ export function getTrip(slug: string): TripData | null {
 }
 
 export function bindTripComponents(trip: TripData): MDXComponents {
-  const BoundTripPhoto = (props: TripPhotoProps) => (
-    <TripPhoto photos={trip.photos} {...props} />
+  // isTripPhoto marks the bound component so PhotoGrid can tell real photo
+  // children apart from arbitrary elements (see isTripPhotoElement)
+  const BoundTripPhoto = Object.assign(
+    (props: TripPhotoProps) => <TripPhoto photos={trip.photos} {...props} />,
+    { isTripPhoto: true },
   );
   const BoundStop = (props: StopProps) => (
     <Stop route={trip.route} {...props} />
