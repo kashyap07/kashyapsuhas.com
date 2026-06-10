@@ -124,7 +124,10 @@ async function Blog(props: Props) {
 
         {/* blog content */}
         <article className="prose prose-lg mt-8 text-pretty break-words">
-          <CustomMDX source={post.content} />
+          <CustomMDX
+            source={post.content}
+            trip={post.metadata.trip || undefined}
+          />
         </article>
       </section>
     </Wrapper>

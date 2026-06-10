@@ -25,6 +25,9 @@ const metadataSchema = z.object({
   description: z.string().default(""),
   heroImage: z.string().default(""),
   draft: z.boolean().default(false),
+  // trip slug for travelogue posts; binds the trip mdx components (see
+  // components/mdx/trip/registry)
+  trip: z.string().default(""),
 });
 
 export type Metadata = z.infer<typeof metadataSchema>;

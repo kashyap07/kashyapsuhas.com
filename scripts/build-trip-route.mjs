@@ -1,30 +1,35 @@
 // build-trip-route.mjs
 //
-// hits the public OSRM demo server for each consecutive pair of waypoints,
-// merges the polylines into a single linestring, and writes the result to
-// src/components/mdx/gj-rj/route.json. one-time generation; commit the output.
+// reads driving-order waypoints from content/trips/<trip>/waypoints.json
+// ([{ id, name, coord: [lng, lat] }]), hits the public OSRM demo server for
+// each consecutive pair, merges the polylines into a single linestring, and
+// writes content/trips/<trip>/route.json. one-time generation; commit it.
 //
-// run: npm run build-trip-route
-
+// each output waypoint carries `polyIdx`, its exact index into the merged
+// polyline (legs are simplified individually so join points survive). <Stop>
+// anchors to waypoints by id, so no client-side nearest-point matching.
+//
+// run: npm run build-trip-route [-- <trip-slug>]   (default: gj-rj)
 import fs from "fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
-const OUT_PATH = path.join(ROOT, "src/components/mdx/gj-rj/route.json");
 
-// trip waypoints in driving order. coords are [lng, lat].
-// real trip went through these cities roughly; refine as needed.
-const WAYPOINTS = [
-  { name: "Bangalore", coord: [77.5946, 12.9716] },
-  { name: "Belgaum", coord: [74.4977, 15.8497] },
-  { name: "Pune", coord: [73.8567, 18.5204] },
-  { name: "Vadodara", coord: [73.1812, 22.3072] },
-  { name: "Ahmedabad", coord: [72.5862, 23.0205] },
-  { name: "Udaipur", coord: [73.6839, 24.5771] },
-  { name: "Jodhpur", coord: [73.0243, 26.2389] },
-];
+const TRIP = process.argv[2] ?? "gj-rj";
+const TRIP_DIR = path.join(ROOT, `content/trips/${TRIP}`);
+const WAYPOINTS_PATH = path.join(TRIP_DIR, "waypoints.json");
+const OUT_PATH = path.join(TRIP_DIR, "route.json");
+
+const WAYPOINTS = JSON.parse(await fs.readFile(WAYPOINTS_PATH, "utf-8"));
+for (const w of WAYPOINTS) {
+  if (!w.id || !w.name || !Array.isArray(w.coord)) {
+    throw new Error(
+      `bad waypoint (needs id, name, coord): ${JSON.stringify(w)}`,
+    );
+  }
+}
 
 const OSRM_BASE = "https://router.project-osrm.org/route/v1/driving";
 
@@ -115,26 +120,33 @@ async function main() {
     await new Promise((r) => setTimeout(r, 200));
   }
 
-  // merged polyline: concat legs, drop the duplicate join point between legs
+  // simplify per leg (endpoints always survive douglas-peucker), then merge
+  // dropping the duplicate join point. tracking merged length at each join
+  // gives every waypoint its exact polyline index.
+  let rawCount = 0;
   const merged = [];
+  const polyIdxByWaypoint = [0];
   for (let i = 0; i < legs.length; i++) {
-    const pts = legs[i].polyline;
+    rawCount += legs[i].polyline.length;
+    const pts = simplify(legs[i].polyline, SIMPLIFY_EPSILON);
     if (i === 0) merged.push(...pts);
     else merged.push(...pts.slice(1));
+    polyIdxByWaypoint.push(merged.length - 1);
   }
-
-  const simplified = simplify(merged, SIMPLIFY_EPSILON);
-  const reduction = Math.round((1 - simplified.length / merged.length) * 100);
+  const reduction = Math.round((1 - merged.length / rawCount) * 100);
   console.log(
-    `\nsimplified ${merged.length} -> ${simplified.length} points (${reduction}% reduction)`,
+    `\nsimplified ${rawCount} -> ${merged.length} points (${reduction}% reduction)`,
   );
 
   const output = {
-    waypoints: WAYPOINTS,
+    waypoints: WAYPOINTS.map((w, i) => ({
+      ...w,
+      polyIdx: polyIdxByWaypoint[i],
+    })),
     distance_km: Math.round(totalDist / 1000),
     duration_h: parseFloat((totalDur / 3600).toFixed(1)),
-    point_count: simplified.length,
-    polyline: simplified,
+    point_count: merged.length,
+    polyline: merged,
     legs: legs.map(({ polyline, ...rest }) => rest), // strip polylines from legs (kept in merged)
   };
 

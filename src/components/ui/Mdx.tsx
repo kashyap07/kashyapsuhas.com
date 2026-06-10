@@ -12,7 +12,11 @@ import { MDXRemote, MDXRemoteProps } from "next-mdx-remote/rsc";
 import { highlight } from "sugar-high";
 
 import * as MdxComponents from "@components/mdx";
+import Lightbox from "@components/mdx/trip/Lightbox";
+import { TripRouteProvider } from "@components/mdx/trip/TripContext";
+import { bindTripComponents, getTrip } from "@components/mdx/trip/registry";
 import { ImageAutoHeight } from "@components/ui";
+import slugify from "@utils/slugify";
 
 const { ImageMDX } = MdxComponents;
 
@@ -57,17 +61,6 @@ const Code = ({ children, ...props }: CodeProps) => {
   return <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />;
 };
 
-const slugify = (str: string): string => {
-  return str
-    .toString()
-    .toLowerCase()
-    .trim() // remove whitespace from both ends of a string
-    .replace(/\s+/g, "-") // replace spaces with -
-    .replace(/&/g, "-and-") // replace & with 'and'
-    .replace(/[^\w\-]+/g, "") // remove all non-word characters except for -
-    .replace(/\-\-+/g, "-"); // replace multiple - with single -
-};
-
 const createHeading = (level: number) => {
   const HeadingComponent = ({
     children,
@@ -102,13 +95,35 @@ const defaultComponentMapping: MDXComponents = {
   ...MdxComponents,
 };
 
-function CustomMDX(props: JSX.IntrinsicAttributes & MDXRemoteProps) {
-  return (
+type CustomMDXProps = JSX.IntrinsicAttributes &
+  MDXRemoteProps & {
+    // trip slug from frontmatter. binds <Stop>/<TripPhoto>/<TripMap>/etc to
+    // that trip's manifests and mounts the route provider + lightbox.
+    trip?: string;
+  };
+
+function CustomMDX({ trip, ...props }: CustomMDXProps) {
+  const tripData = trip ? getTrip(trip) : null;
+
+  const mdx = (
     <MDXRemote
       {...props}
       options={{ ...props.options, blockJS: false }}
-      components={{ ...defaultComponentMapping, ...props.components }}
+      components={{
+        ...defaultComponentMapping,
+        ...(tripData ? bindTripComponents(tripData) : {}),
+        ...props.components,
+      }}
     />
+  );
+
+  if (!tripData) return mdx;
+
+  return (
+    <TripRouteProvider route={tripData.route}>
+      {mdx}
+      <Lightbox />
+    </TripRouteProvider>
   );
 }
 

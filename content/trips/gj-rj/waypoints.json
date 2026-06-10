@@ -1,0 +1,12 @@
+[
+  { "id": "bangalore", "name": "Bangalore", "coord": [77.5946, 12.9716] },
+  { "id": "dharwad", "name": "Dharwad", "coord": [75.01, 15.46] },
+  { "id": "pune", "name": "Pune", "coord": [73.7922234, 18.5037251] },
+  { "id": "amboli", "name": "Amboli", "coord": [72.9438226, 21.2984266] },
+  { "id": "ahmedabad", "name": "Ahmedabad", "coord": [72.5714, 23.0225] },
+  { "id": "gandhinagar", "name": "Gandhinagar", "coord": [72.65, 23.223] },
+  { "id": "udaipur", "name": "Udaipur", "coord": [73.7125, 24.5854] },
+  { "id": "om-banna", "name": "Om Banna Temple", "coord": [73.1987, 25.8912] },
+  { "id": "bishnoi", "name": "Bishnoi Village", "coord": [73.0582, 26.0972] },
+  { "id": "jodhpur", "name": "Jodhpur", "coord": [73.0089, 26.2638] }
+]

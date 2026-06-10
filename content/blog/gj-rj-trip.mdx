@@ -3,8 +3,9 @@ publishedDateTime: 2026-06-10T00:00:00.000Z
 title: "My legendary GJ-RJ trip [WIP]"
 description: "A massive travelogue of my 17day 5.5k km road trip traveling through KA, MH, GJ, RJ, MP"
 categories: travel
-heroImage: "/blog/gj-rj/IMG_7694.jpg"
+heroImage: "/blog/gj-rj/img/IMG_7694.jpg"
 draft: true
+trip: gj-rj
 ---
 
 This post is a work in progress.
@@ -19,7 +20,7 @@ This post is very detailed, with like ~400 photos. Take your time, savour it ove
 
 <TripMap />
 
-<Stop title="Prep" coord={[77.5946, 12.9716]}>
+<Stop title="Prep" waypoint="bangalore">
 
 Car service - done.  
 Brand new Michelin tyres - done.  
@@ -36,7 +37,7 @@ New iPhone purchase - done.
 
 </Stop>
 
-<Stop title="Day 0, Dec 14" coord={[75.010, 15.460]}>
+<Stop title="Day 0, Dec 14" waypoint="dharwad">
 
 Bangalore -> Tumkur -> Davangere -> Dharwad
 
@@ -51,7 +52,7 @@ OYOs are so bad yikes. But also cheap. I wanted to save money on stays - imagine
 
 </Stop>
 
-<Stop title="Into Maharashtra" coord={[73.7922234, 18.5037251]}>
+<Stop title="Into Maharashtra" waypoint="pune">
 
 Dharwad -> Belagavi -> Pune
 
@@ -67,7 +68,7 @@ Got a glimpse of "Vikasa Soudha" and headed into Maharashtra. One obvious thing 
 
 </Stop>
 
-<Stop title="Roaming around Pune" coord={[73.7922234, 18.5037251]}>
+<Stop title="Roaming around Pune" waypoint="pune">
 
 Spent the next day roaming around Pune with a friend (my junior from prev workplace), who hosted me at his place for some authentic breakfast, and showed me around. There was upma, "Nachni" - made from Ragi, and chilly oil. Did I mention they REALLY like spicy food? We then headed to a local poha place - which you guessed it, comes with spicy water (very tasty tho, no complaints) and roamed around a bit.
 
@@ -95,9 +96,9 @@ Pune feels very Marathi. I'd say it's like the Mysore of Maharashtra, the cultur
 
 </Stop>
 
-<Stop title="Towards Gujarat" coord={[70.6448386, 22.2990165]}>
+<Stop title="Towards Gujarat" waypoint="amboli">
 
-Pune -> skip Mumbai -> Kathiyawadi
+Pune -> skip Mumbai -> Amboli
 
 An interesting fact I learned during this trip was that there were very many good hotels in the middle of nowhere along the highway. I often thought I had to make pit stops at larger cities, but that wasn't necessary. There was this really cool hotel somewhere between Mumbai and Gujarat border that offered a nice clean small room, and good food. Because of this, I could skip all of Mumbai (which I had been to a couple years ago). Also the Pune -> Mumbai highway is super good (with very many cameras) and a nice food stop.
 The roads started to get really crappy again, and oh god the amount of trucks will kill you. Once you enter Gujarat, the roads get super good agai, but it's alll truck traffic. Very boring.
@@ -121,9 +122,9 @@ Fun fact: My dad was transferred to Gujarat (Khambat) when I was an infant. Guja
 
 </Stop>
 
-<Stop title="The land of Cheese" coord={[72.5714, 23.0225]}>
+<Stop title="The land of Cheese" waypoint="ahmedabad">
 
-Kathiyawadi -> Ahmedabad
+Amboli -> Ahmedabad
 
 I spent a decent amount of time in Ahmedabad. The infra was good, city seemed peaceful, I could see a lot of "development". The people seemed chill and non-confrontational, and overall pretty lean. A very "neutral" looking Indian if I could call it that.
 Also, it's Khaman, not Dhokla. And there are very many varieties of it! I visited this Khaman shop where the shopkeeper was friendly and gave me a sampler plate (which isn't part of the menu, and often denied). I LOVE it!
@@ -215,7 +216,7 @@ There's however ONE thing that Amdavadians apparently love more than anything - 
 
 </Stop>
 
-<Stop title="Short stop at Gandhinagar" coord={[72.650, 23.223]}>
+<Stop title="Short stop at Gandhinagar" waypoint="gandhinagar">
 Ahmedabad -> Gandhinagar
 
 Gandhinagar is super spacious and super well made. Clean roads, good infra. There was a Dandi march related museum (see salt mound shaped buildint) that was very interesting, showed struggles of Mahathma Gandhiji and Indians against the British powers.
@@ -237,7 +238,7 @@ Also BAPS Akshardham is a must visit. Absolutely no photography allowed anywhere
 
 </Stop>
 
-<Stop title="First glimpse of Rajasthan: Udaipur, the white city" coord={[73.7125, 24.5854]}>
+<Stop title="First glimpse of Rajasthan: Udaipur, the white city" waypoint="udaipur">
 
 A thing to note: I don't stop at restarants for food between cities often. I find the flavors not so good, and it's also a massive time kill. I usually fill up my stomach with fruits / small healthy snacks. And tea in northern India is always incredible anywhere you go.
 
@@ -321,7 +322,7 @@ Although the city is very very pretty, I did not really vibe with it. I would pe
 
 </Stop>
 
-<Stop title="Bullet Baba temple" coord={[73.1987, 25.8912]}>
+<Stop title="Bullet Baba temple" waypoint="om-banna">
 Udaipur -> Om Banna Temple
 
 Until now it's been like rest of India - I hadn't seen the desert yet.
@@ -341,15 +342,13 @@ There's a very interesting temple on the way to Jodhpur with a super interesting
 The story is that the rider Om Singh Rathore happened to have crashed and died at the location of this temple, following which the police impounded this bike and took it to the police station. However, the next morning the bike magically had re-appeared at the crash site and the police had to drain the fuel and take it back again along with locking it up. And yet again the bike had mysteriously re-appeared at the same location, following a cycle of locking it up and it re-appearing it again - the locals had then believed that this bike had supernatural powers.
 I was told that this information was logged in the police records.
 
-<PhotoGrid cols={1}>
-  <TripPhoto src="IMG_7526.jpg" caption="Bullet Baba " />
-</PhotoGrid>
+<TripPhoto src="IMG_7526.jpg" caption="Bullet Baba" />
 
 Travelers stop here to seek blessings and pray for a successful journey. I found the whole expereince very fascinating! Hinduism has 33 crore gods and 1 Royal Engield Bullet 350cc.
 
 </Stop>
 
-<Stop title="Bishnoi Village" coord={[73.0582, 26.0972]}>
+<Stop title="Bishnoi Village" waypoint="bishnoi">
 Om Banna Temple -> Bishnoi Village near Jodhpur
 
 On the way to Jodhpur I came across an interesting village of the Bishnoi community. Some interesting history to the place - read up on the "Khejarli Massacre" - where very many vilalgers who were hugging trees to save them from being axed were killed by the Maharaja.
@@ -390,15 +389,13 @@ I stayed at this village resort of sorts, and the owner took me on a Safari in h
 
 </Stop>
 
-<Stop title="Jodhpur, the Blue city" coord={[73.0089, 26.2638]}>
+<Stop title="Jodhpur, the Blue city" waypoint="jodhpur">
 
 Bishnoi Village -> Jodhpur
 
 This city feels culturally rich in a raw and authentic way.
 
-<PhotoGrid cols={1}>
-  <TripPhoto src="IMG_7694.jpg" caption="KA 01 in Jodhpur!" />
-</PhotoGrid>
+<TripPhoto src="IMG_7694.jpg" caption="KA 01 in Jodhpur!" />
 
 Oh btw, the blue / indigo paint is because the Brahmins wanted to identify their houses to showcase high status lol.
 

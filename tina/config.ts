@@ -90,6 +90,14 @@ export default defineConfig({
             required: false,
           },
           {
+            type: "string",
+            name: "trip",
+            label: "Trip",
+            description:
+              "trip slug for travelogue posts (binds TripMap/Stop/TripPhoto). leave empty otherwise.",
+            required: false,
+          },
+          {
             type: "rich-text",
             name: "post",
             label: "Post",
