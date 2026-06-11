@@ -73,9 +73,12 @@ export async function shapeWords(
         let paths = "";
         for (const g of glyphs) {
           const d = font.glyphToPath(g.codepoint);
-          if (d)
-            paths += `<path transform="translate(${x + g.xOffset} ${g.yOffset})" d="${d}"/>`;
-          x += g.xAdvance;
+
+          if (d) {
+            paths += `<path transform="translate(${x + (g.xOffset ?? 0)} ${g.yOffset ?? 0})" d="${d}"/>`;
+          }
+
+          x += g.xAdvance ?? 0;
         }
 
         // glyph paths are font units, y-up: flip inside a viewBox that puts
