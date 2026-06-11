@@ -8,5 +8,44 @@
   { "id": "udaipur", "name": "Udaipur", "coord": [73.7125, 24.5854] },
   { "id": "om-banna", "name": "Om Banna Temple", "coord": [73.1987, 25.8912] },
   { "id": "bishnoi", "name": "Bishnoi Village", "coord": [73.0582, 26.0972] },
-  { "id": "jodhpur", "name": "Jodhpur", "coord": [73.0089, 26.2638] }
+  { "id": "jodhpur", "name": "Jodhpur", "coord": [73.0089, 26.2638] },
+  { "id": "jaisalmer", "name": "Jaisalmer", "coord": [70.9083443, 26.9157487] },
+  { "id": "sam", "name": "Sam Sand Dunes", "coord": [70.5153864, 26.8669181] },
+  { "id": "longewala", "name": "Longewala", "coord": [69.9656444, 27.5195107] },
+  { "id": "tanot", "name": "Tanot Mata", "coord": [70.3465672, 27.7953736] },
+  {
+    "id": "thar-desert",
+    "name": "NH68 Thar Desert",
+    "coord": [70.451363, 27.660913]
+  },
+  {
+    "id": "rat-temple",
+    "name": "Rat Temple",
+    "coord": [72.3321874, 27.5619764]
+  },
+  { "id": "bikaner", "name": "Bikaner", "coord": [73.2783409, 28.0214018] },
+  {
+    "id": "nh52-puncture",
+    "name": "NH52 Puncture Area",
+    "coord": [75.344086, 27.508408]
+  },
+  { "id": "jaipur", "name": "Jaipur", "coord": [75.6257482, 26.8851151] },
+  {
+    "id": "mp-somewhere",
+    "name": "Somewhere in MP",
+    "coord": [76.005456, 23.714358]
+  },
+  {
+    "id": "indore",
+    "name": "Indore Sarafa Night Market",
+    "coord": [75.851058, 22.718692]
+  },
+  { "id": "bijapura", "name": "Bijapura", "coord": [75.729814, 16.827678] },
+  {
+    "id": "basavana-bagewadi",
+    "name": "Basavana Bagewadi",
+    "coord": [75.975708, 16.573033]
+  },
+  { "id": "hosapete", "name": "Hosapete", "coord": [76.389511, 15.27597] },
+  { "id": "home", "name": "Home", "coord": [77.5806842, 12.9270472] }
 ]
