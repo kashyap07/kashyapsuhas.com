@@ -28,6 +28,7 @@
     "astronomy-engine": "^2.1.19",
     "browser-image-compression": "^2.0.2",
     "gray-matter": "^4.0.3",
+    "harfbuzzjs": "^1.2.1",
     "heic2any": "^0.0.4",
     "katex": "^0.16.28",
     "lucide-react": "^1.16.0",

@@ -31,9 +31,7 @@ export async function generateMetadata(props: {
 
   if (!post) return;
 
-  const { publishedDateTime, title, description, heroImage, draft } =
-    post.metadata;
-  const imageUrl = toAbsolute(heroImage || "/kashyapcom-og.png");
+  const { publishedDateTime, title, description, draft } = post.metadata;
 
   return {
     title,
@@ -41,6 +39,8 @@ export async function generateMetadata(props: {
     keywords: ["Suhas Kashyap", title],
     // drafts must not get indexed even if the url leaks
     ...(draft && { robots: { index: false, follow: false } }),
+    // og image comes from the opengraph-image.tsx file convention, which
+    // overrides anything set here
     openGraph: {
       title: `${title}`,
       description,
@@ -48,7 +48,6 @@ export async function generateMetadata(props: {
       publishedTime: publishedDateTime,
       authors: "Suhas Kashyap",
       url: `${SITE_URL}/blog/${post.slug}`,
-      images: [{ url: imageUrl }],
     },
     alternates: {
       canonical: `${SITE_URL}/blog/${post.slug}`,

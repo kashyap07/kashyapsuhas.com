@@ -35,6 +35,9 @@ const SECURITY_HEADERS = [
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // harfbuzzjs (og image text shaping) loads its wasm relative to
+  // import.meta.url, which breaks when bundled. keep it external.
+  serverExternalPackages: ["harfbuzzjs"],
   async headers() {
     // link headers advertise machine-readable resources so agents that don't
     // parse html can still find them.
