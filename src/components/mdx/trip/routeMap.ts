@@ -45,27 +45,34 @@ function applyIndianBorders(map: maplibregl.Map) {
   const firstSymbol = map
     .getStyle()
     .layers.find((l) => l.type === "symbol")?.id;
+  // paint cloned from the tiles' boundary_2 so ours are indistinguishable
+  const paint = {
+    "line-color": "hsl(248,1%,41%)",
+    "line-opacity": ["interpolate", ["linear"], ["zoom"], 0, 0.4, 4, 1],
+    "line-width": ["interpolate", ["linear"], ["zoom"], 3, 1, 5, 1.2, 12, 3],
+  } as unknown as maplibregl.LineLayerSpecification["paint"];
+  // india-pov ind/pak/chn set (10m), all zooms
   map.addLayer(
     {
       id: "india-claim-line",
       type: "line",
       source: "india-claim",
+      filter: ["!", ["has", "low"]],
       layout: { "line-cap": "round", "line-join": "round" },
-      paint: {
-        "line-color": "hsl(248,1%,41%)",
-        "line-opacity": ["interpolate", ["linear"], ["zoom"], 0, 0.4, 4, 1],
-        "line-width": [
-          "interpolate",
-          ["linear"],
-          ["zoom"],
-          3,
-          1,
-          5,
-          1.2,
-          12,
-          3,
-        ],
-      },
+      paint,
+    } as maplibregl.LayerSpecification,
+    firstSymbol,
+  );
+  // whole-world 50m set standing in for the hidden tile borders below z5
+  map.addLayer(
+    {
+      id: "world-borders-low",
+      type: "line",
+      source: "india-claim",
+      maxzoom: 5,
+      filter: ["has", "low"],
+      layout: { "line-cap": "round", "line-join": "round" },
+      paint,
     } as maplibregl.LayerSpecification,
     firstSymbol,
   );

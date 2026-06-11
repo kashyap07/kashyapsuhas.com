@@ -50,6 +50,16 @@ async function getJson(url) {
 }
 
 function compact(f, properties, rnd = round) {
+  // rounding creates runs of identical points; keep one of each
+  const line = (coords) => {
+    const out = [];
+    for (const [x, y] of coords) {
+      const p = [rnd(x), rnd(y)];
+      const last = out[out.length - 1];
+      if (!last || last[0] !== p[0] || last[1] !== p[1]) out.push(p);
+    }
+    return out;
+  };
   return {
     type: "Feature",
     properties,
@@ -57,10 +67,8 @@ function compact(f, properties, rnd = round) {
       type: f.geometry.type,
       coordinates:
         f.geometry.type === "LineString"
-          ? f.geometry.coordinates.map(([x, y]) => [rnd(x), rnd(y)])
-          : f.geometry.coordinates.map((line) =>
-              line.map(([x, y]) => [rnd(x), rnd(y)]),
-            ),
+          ? line(f.geometry.coordinates)
+          : f.geometry.coordinates.map(line),
     },
   };
 }
