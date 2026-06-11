@@ -37,6 +37,19 @@
     @apply font-display;
   }
 
+  /* wonky + max soft fraunces. opsz stays auto so headings pick the display cut */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .font-display {
+    font-variation-settings:
+      "WONK" 1,
+      "SOFT" 100;
+  }
+
   a {
     @apply underline-offset-4 hover:text-accent hover:underline;
   }

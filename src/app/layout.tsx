@@ -14,9 +14,12 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import ConsoleEgg from "./ConsoleEgg";
 import "./globals.css";
 
+// opsz: high-contrast display cut at heading sizes (auto optical sizing).
+// WONK (max, 0-1) + SOFT (max, 0-100) set via font-variation-settings in globals.css
 const fraunces = Fraunces({
   subsets: ["latin"],
   variable: "--font-fraunces",
+  axes: ["WONK", "SOFT"],
 });
 const inter = Inter({
   subsets: ["latin"],
