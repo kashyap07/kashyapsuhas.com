@@ -48,7 +48,12 @@ export function arrivalProgress(raw: number): number {
   return Math.min(1, raw / ARRIVAL_FRACTION);
 }
 
-export type StopEntry = { el: HTMLElement; coord: Coord; polyIdx: number };
+export type StopEntry = {
+  el: HTMLElement;
+  coord: Coord;
+  polyIdx: number;
+  title: string;
+};
 
 // server-rendered <Stop> sections carry their waypoint coord + exact polyline
 // index as data attributes; the client maps read them back here instead of
@@ -66,7 +71,12 @@ export function readStopsFromDom(): StopEntry[] {
       Number.isFinite(lat) &&
       Number.isInteger(polyIdx)
     ) {
-      out.push({ el, coord: [lng, lat], polyIdx });
+      out.push({
+        el,
+        coord: [lng, lat],
+        polyIdx,
+        title: el.dataset.stopTitle ?? "",
+      });
     }
   });
   return out;

@@ -3,6 +3,8 @@
 import dynamic from "next/dynamic";
 import { useSyncExternalStore } from "react";
 
+import TripRibbon from "./TripRibbon";
+
 const TripMap = dynamic(() => import("./TripMap"), {
   ssr: false,
   loading: () => (
@@ -28,18 +30,20 @@ function useIsXl(): boolean {
   );
 }
 
-// layout:
-//   < xl:          nothing rendered. mobile/tablet get per-stop <StopMapBlock>.
-//   xl (1280+):    fixed card in right gutter, 320 wide, 82vh tall.
-//   2xl (1536+):   bigger card, 480 wide, 88vh tall.
-//   centered vertically. shadow + border for a "window in the wall" feel.
+// xl+: fixed follow-map card in the right gutter (320 wide, 480 at 2xl).
+// below xl: sticky ribbon strip (svg route + car) that expands into the same
+// follow-map on demand. the ribbon also ssr-renders (css-hidden on xl), so
+// phones get it on first paint; `active` turns its listeners off on desktop.
 export default function TripMapHero() {
   const isXl = useIsXl();
-  if (!isXl) return null;
-
   return (
-    <div className="fixed right-6 top-1/2 z-20 h-[82vh] w-[320px] -translate-y-1/2 overflow-hidden rounded-lg border border-line shadow-macos 2xl:right-10 2xl:h-[88vh] 2xl:w-[480px]">
-      <TripMap />
-    </div>
+    <>
+      {isXl && (
+        <div className="fixed right-6 top-1/2 z-20 h-[82vh] w-[320px] -translate-y-1/2 overflow-hidden rounded-lg border border-line shadow-macos 2xl:right-10 2xl:h-[88vh] 2xl:w-[480px]">
+          <TripMap />
+        </div>
+      )}
+      <TripRibbon active={!isXl} />
+    </>
   );
 }

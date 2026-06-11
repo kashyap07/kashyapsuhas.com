@@ -2,14 +2,13 @@ import { ReactNode } from "react";
 
 import slugify from "@utils/slugify";
 
-import StopMapBlock from "./StopMapBlock";
 import type { TripRoute } from "./types";
 
 export interface StopProps {
   title: string;
   // waypoint id from content/trips/<slug>/waypoints.json. resolves to a
   // coord + exact polyline index, so stops anchor to the route without any
-  // nearest-point guessing. omit to skip the map block for this stop.
+  // nearest-point guessing. omit to skip map tracking for this stop.
   waypoint?: string;
   children: ReactNode;
 }
@@ -38,6 +37,7 @@ export default function Stop({
   return (
     <section
       data-stop
+      data-stop-title={title}
       data-stop-coord={wp ? wp.coord.join(",") : ""}
       data-stop-idx={wp ? wp.polyIdx : ""}
       className="scroll-mt-12"
@@ -48,7 +48,6 @@ export default function Stop({
       </h2>
       {waypoint && !wp && <UnknownWaypoint id={waypoint} />}
       {children}
-      {wp && <StopMapBlock coord={wp.coord} />}
     </section>
   );
 }
