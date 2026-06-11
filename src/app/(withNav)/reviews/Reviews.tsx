@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useReducer, useRef } from "react";
+import { useEffect, useReducer } from "react";
 
 import { Check, ChevronRight, X } from "lucide-react";
 
@@ -39,7 +39,8 @@ type ReviewsState = {
 type ReducerActions =
   | { type: "SORT"; payload: keyof ReviewsState["sortOrder"] }
   | { type: "FILTER_CATEGORY"; payload: string }
-  | { type: "SEARCH"; payload: string };
+  | { type: "SEARCH"; payload: string }
+  | { type: "SYNC_FROM_URL"; payload: ReturnType<typeof parseUrlParams> };
 
 const getCategoriesList = (reviews: Array<ReviewWithIndex>) => {
   return Array.from(new Set(reviews.map((r) => r.category))).sort();
@@ -141,6 +142,24 @@ const reviewsReducer = (reviewsState: ReviewsState, action: ReducerActions) => {
         selectedCategory: newSelectedCategory,
       });
     }
+    case "SYNC_FROM_URL": {
+      const { searchString, selectedCategory, sortOrder } = action.payload;
+      // bail when url already matches state (our own url writes land here),
+      // returning the same ref skips the re-render
+      if (
+        searchString === reviewsState.searchString &&
+        selectedCategory === reviewsState.selectedCategory &&
+        sortOrder.rating === reviewsState.sortOrder.rating
+      ) {
+        return reviewsState;
+      }
+      return applyFiltersAndSort({
+        ...reviewsState,
+        searchString,
+        selectedCategory,
+        sortOrder,
+      });
+    }
     default:
       return reviewsState;
   }
@@ -171,31 +190,24 @@ function Reviews({ reviews: initialReviews }: Props) {
     },
   );
 
-  // skip URL sync on initial mount
-  const isInitialMount = useRef(true);
-
+  // url -> state: back/forward changes searchParams without remounting.
+  // reducer bails when values already match, so our own url writes are no-ops.
   useEffect(() => {
-    if (isInitialMount.current) {
-      isInitialMount.current = false;
-      return;
-    }
-    const params = serializeState(reviewsState);
-    const newUrl = params.toString()
-      ? `${pathname}?${params.toString()}`
-      : pathname;
+    dispatch({ type: "SYNC_FROM_URL", payload: parseUrlParams(searchParams) });
+  }, [searchParams]);
 
-    // debounce so search input doesn't flood history
+  // state -> url. replace (not push) so typing doesn't flood history.
+  useEffect(() => {
+    const params = serializeState(reviewsState).toString();
+    if (params === searchParams.toString()) return;
+    const newUrl = params ? `${pathname}?${params}` : pathname;
+
+    // debounced so fast typing collapses into one url write
     const timeoutId = setTimeout(() => {
-      router.push(newUrl, { scroll: false });
+      router.replace(newUrl, { scroll: false });
     }, 300);
     return () => clearTimeout(timeoutId);
-  }, [
-    reviewsState.searchString,
-    reviewsState.selectedCategory,
-    reviewsState.sortOrder,
-    router,
-    pathname,
-  ]);
+  }, [reviewsState, searchParams, router, pathname]);
 
   const renderRows = () => {
     if (reviewsState.reviews.length === 0) {
@@ -300,8 +312,8 @@ function Reviews({ reviews: initialReviews }: Props) {
         id="reviews-search"
         type="search"
         placeholder="search reviews"
-        className="mb-4 w-full rounded border border-line p-2 font-sans text-sm focus:outline-accent md:w-64"
-        defaultValue={reviewsState.searchString}
+        className="mb-4 w-full rounded border border-line p-2 font-sans text-base focus:outline-accent md:w-64 md:text-sm"
+        value={reviewsState.searchString}
         onChange={(e) => dispatch({ type: "SEARCH", payload: e.target.value })}
       />
 
