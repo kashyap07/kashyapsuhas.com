@@ -5,14 +5,16 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { ChevronDown } from "lucide-react";
 
+import RouteGlyph from "./RouteGlyph";
 import { useTripRoute } from "./TripContext";
 import {
+  INTRO_STOPS,
   arrivalProgress,
   locateScroll,
   pointAlongLeg,
   readStopsFromDom,
 } from "./geo";
-import type { Coord } from "./types";
+import { buildGlyph, updateGlyph } from "./glyph";
 
 const TripMap = dynamic(() => import("./TripMap"), {
   ssr: false,
@@ -23,72 +25,27 @@ const TripMap = dynamic(() => import("./TripMap"), {
   ),
 });
 
-// keep the inline svg small: the glyph doesn't need every road kink
-const MAX_GLYPH_POINTS = 240;
-const GLYPH_HEIGHT = 100;
-
-// projects the route polyline into a tiny svg glyph. equirectangular with
-// latitude correction; height fixed, width follows the route's real aspect.
-function buildGlyph(polyline: Coord[]) {
-  const stride = Math.max(1, Math.ceil(polyline.length / MAX_GLYPH_POINTS));
-  const pts: Coord[] = [];
-  for (let i = 0; i < polyline.length; i += stride) pts.push(polyline[i]);
-  if (pts[pts.length - 1] !== polyline[polyline.length - 1]) {
-    pts.push(polyline[polyline.length - 1]);
-  }
-
-  let minLng = Infinity,
-    maxLng = -Infinity,
-    minLat = Infinity,
-    maxLat = -Infinity;
-  for (const [lng, lat] of polyline) {
-    if (lng < minLng) minLng = lng;
-    if (lng > maxLng) maxLng = lng;
-    if (lat < minLat) minLat = lat;
-    if (lat > maxLat) maxLat = lat;
-  }
-  const k = Math.cos((((minLat + maxLat) / 2) * Math.PI) / 180);
-  const s = GLYPH_HEIGHT / Math.max(1e-9, maxLat - minLat);
-  const width = (maxLng - minLng) * k * s;
-
-  const px = (c: Coord): [number, number] => [
-    (c[0] - minLng) * k * s,
-    (maxLat - c[1]) * s,
-  ];
-
-  const proj = pts.map(px);
-  const d = proj
-    .map(([x, y], i) => `${i === 0 ? "M" : "L"}${x.toFixed(1)} ${y.toFixed(1)}`)
-    .join("");
-
-  // cumulative length per glyph point, for stroke-dashoffset of the traveled
-  // portion. same units as the path itself, so the dash math is exact.
-  const cum = new Float32Array(proj.length);
-  for (let i = 1; i < proj.length; i++) {
-    cum[i] =
-      cum[i - 1] +
-      Math.hypot(proj[i][0] - proj[i - 1][0], proj[i][1] - proj[i - 1][1]);
-  }
-
-  return { d, width, stride, cum, total: cum[cum.length - 1], px };
-}
-
 // slim sticky journey strip for < xl: the whole route as an svg glyph with
 // the car sliding along it, current stop label, and a tap-to-expand panel
-// hosting the real follow-map (one shared maplibre instance, created on
-// first expand and kept alive after).
+// hosting the real follow-map (one shared maplibre instance, kept alive once
+// created). on load the panel auto-opens on a whole-route overview and folds
+// away once the reader scrolls past the intro stops.
 export default function TripRibbon({ active }: { active: boolean }) {
   const route = useTripRoute();
   const [open, setOpen] = useState(false);
   const [everOpened, setEverOpened] = useState(false);
 
+  // true while the panel is open because of the intro auto-open; a manual
+  // toggle cancels it and hands control back to the reader
+  const autoOpenRef = useRef(false);
+  // intro runs once per page load, not on every effect re-run
+  const introTriedRef = useRef(false);
   const carRef = useRef<SVGCircleElement>(null);
   const traveledRef = useRef<SVGPathElement>(null);
   const titleRef = useRef<HTMLSpanElement>(null);
   const counterRef = useRef<HTMLSpanElement>(null);
 
   const glyph = useMemo(() => buildGlyph(route.polyline), [route]);
-  const start = glyph.px(route.polyline[0]);
 
   // crossing into xl (rotate/resize): drop the panel map so the hidden ribbon
   // doesn't keep a live maplibre instance around next to the sidebar's
@@ -96,6 +53,7 @@ export default function TripRibbon({ active }: { active: boolean }) {
     if (!active) {
       setOpen(false);
       setEverOpened(false);
+      autoOpenRef.current = false;
     }
   }, [active]);
 
@@ -107,9 +65,25 @@ export default function TripRibbon({ active }: { active: boolean }) {
 
     let rafId: number | null = null;
 
+    // first impression: pop the panel open on the whole-route overview, fold
+    // it once the reader is past the intro stops. skipped when the page loads
+    // already scrolled into the journey.
+    if (!introTriedRef.current) {
+      introTriedRef.current = true;
+      if (locateScroll(stops).idx < INTRO_STOPS) {
+        autoOpenRef.current = true;
+        setOpen(true);
+        setEverOpened(true);
+      }
+    }
+
     const tick = () => {
       rafId = null;
       const { idx, progress } = locateScroll(stops);
+      if (autoOpenRef.current && idx >= INTRO_STOPS) {
+        autoOpenRef.current = false;
+        setOpen(false);
+      }
       const fromIdx = idx === 0 ? stops[0].polyIdx : stops[idx - 1].polyIdx;
       const toIdx = stops[idx].polyIdx;
       const { coord, floor } = pointAlongLeg(
@@ -119,20 +93,7 @@ export default function TripRibbon({ active }: { active: boolean }) {
         arrivalProgress(progress),
       );
 
-      if (carRef.current) {
-        const [x, y] = glyph.px(coord);
-        carRef.current.setAttribute("cx", x.toFixed(1));
-        carRef.current.setAttribute("cy", y.toFixed(1));
-      }
-      if (traveledRef.current) {
-        const gi = Math.min(
-          glyph.cum.length - 1,
-          Math.round(floor / glyph.stride),
-        );
-        traveledRef.current.style.strokeDashoffset = String(
-          Math.max(0, glyph.total - glyph.cum[gi]),
-        );
-      }
+      updateGlyph(glyph, carRef.current, traveledRef.current, coord, floor);
       if (titleRef.current) {
         titleRef.current.textContent = stops[idx].title || `stop ${idx + 1}`;
       }
@@ -155,10 +116,11 @@ export default function TripRibbon({ active }: { active: boolean }) {
   }, [active, route, glyph]);
 
   return (
-    <div className="not-prose sticky top-0 z-30 -mx-6 md:mx-0 xl:hidden">
+    <div className="not-prose sticky top-0 z-30 -mx-6 shadow-sm md:mx-0 xl:hidden">
       <button
         type="button"
         onClick={() => {
+          autoOpenRef.current = false;
           setOpen((o) => !o);
           setEverOpened(true);
         }}
@@ -166,41 +128,12 @@ export default function TripRibbon({ active }: { active: boolean }) {
         aria-label="toggle trip map"
         className="flex w-full items-center gap-3 border-b border-line bg-background px-4 py-1.5 text-left"
       >
-        <svg
-          viewBox={`-5 -5 ${glyph.width + 10} ${GLYPH_HEIGHT + 10}`}
+        <RouteGlyph
+          glyph={glyph}
+          carRef={carRef}
+          traveledRef={traveledRef}
           className="h-11 w-auto shrink-0"
-          aria-hidden
-        >
-          <path
-            d={glyph.d}
-            fill="none"
-            stroke="var(--foreground)"
-            opacity="0.18"
-            strokeWidth="4"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            ref={traveledRef}
-            d={glyph.d}
-            fill="none"
-            stroke="var(--columbiaYellow)"
-            strokeWidth="4"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeDasharray={glyph.total}
-            strokeDashoffset={glyph.total}
-          />
-          <circle
-            ref={carRef}
-            cx={start[0].toFixed(1)}
-            cy={start[1].toFixed(1)}
-            r="7"
-            fill="#fff"
-            stroke="var(--columbiaYellow)"
-            strokeWidth="4"
-          />
-        </svg>
+        />
         <span className="min-w-0 flex-1">
           <span
             ref={titleRef}
@@ -212,19 +145,22 @@ export default function TripRibbon({ active }: { active: boolean }) {
             stop - of -
           </span>
         </span>
-        <ChevronDown
-          className={`h-4 w-4 shrink-0 text-muted transition-transform duration-300 ${open ? "rotate-180" : ""}`}
-        />
+        <span className="flex shrink-0 items-center gap-1 rounded-full bg-accent py-1 pl-2.5 pr-1.5 font-sans text-xs font-medium text-black">
+          map
+          <ChevronDown
+            className={`h-3.5 w-3.5 transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+          />
+        </span>
       </button>
 
       <div
         className={`overflow-hidden bg-surface-subtle transition-[height] duration-300 ${
-          open ? "h-[25vh] border-b border-line" : "h-0"
+          open ? "h-[20vh] border-b border-line" : "h-0"
         }`}
       >
         {everOpened && (
-          <div className="h-[25vh] w-full">
-            <TripMap />
+          <div className="h-[20vh] w-full">
+            <TripMap cooperative hud="none" intro />
           </div>
         )}
       </div>

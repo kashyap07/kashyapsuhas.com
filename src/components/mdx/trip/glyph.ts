@@ -1,7 +1,6 @@
 // tiny svg projection of the route polyline, shared by the mobile ribbon and
 // the desktop sidebar hud. hosts own the refs and drive updates from their
 // scroll ticks via updateGlyph.
-
 import type { Coord } from "./types";
 
 // keep the inline svg small: the glyph doesn't need every road kink

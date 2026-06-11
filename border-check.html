@@ -1,0 +1,64 @@
+<!doctype html>
+<!-- temp diagnostic harness for india border rendering, not part of the site -->
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script src="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.css" />
+    <style>
+      body { margin: 0; }
+      #map { width: 900px; height: 700px; }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      const map = new maplibregl.Map({
+        container: "map",
+        style: "https://tiles.openfreemap.org/styles/liberty",
+        center: [78, 32],
+        zoom: 3.5,
+        attributionControl: false,
+      });
+      window.map = map;
+
+      map.once("style.load", async () => {
+        if (map.getLayer("boundary_disputed")) {
+          map.setLayoutProperty("boundary_disputed", "visibility", "none");
+        }
+        const HIDDEN_PAIR = ["literal", ["IND", "PAK", "CHN"]];
+        map.setFilter("boundary_2", [
+          "all",
+          map.getFilter("boundary_2"),
+          [
+            "any",
+            ["!", ["in", ["coalesce", ["get", "adm0_l"], ""], HIDDEN_PAIR]],
+            ["!", ["in", ["coalesce", ["get", "adm0_r"], ""], HIDDEN_PAIR]],
+          ],
+        ]);
+        const indiaClaim = await fetch(
+          "/src/components/mdx/trip/indiaClaim.json?v=" + Date.now(),
+        ).then((r) => r.json());
+        map.addSource("india-claim", { type: "geojson", data: indiaClaim });
+        const firstSymbol = map
+          .getStyle()
+          .layers.find((l) => l.type === "symbol")?.id;
+        map.addLayer(
+          {
+            id: "india-claim-line",
+            type: "line",
+            source: "india-claim",
+            layout: { "line-cap": "round", "line-join": "round" },
+            paint: {
+              "line-color": "hsl(248,1%,41%)",
+              "line-opacity": ["interpolate", ["linear"], ["zoom"], 0, 0.4, 4, 1],
+              "line-width": ["interpolate", ["linear"], ["zoom"], 3, 1, 5, 1.2, 12, 3],
+            },
+          },
+          firstSymbol,
+        );
+        window.ready = true;
+      });
+    </script>
+  </body>
+</html>
