@@ -55,9 +55,11 @@ export default function Hero() {
           )}
         </p>
 
+        {/* roomier on mobile: bigger type + padded links for comfy tap
+            targets, wraps as it needs to. separator dots hide on mobile */}
         <NavLinks
           variant="accent"
-          className="mt-10 justify-center text-base md:text-2xl"
+          className="mt-8 justify-center gap-x-4 px-2 text-xl md:mt-10 md:gap-x-2 md:text-2xl [&>span>span]:hidden md:[&>span>span]:inline [&_a]:inline-block [&_a]:py-1"
         />
       </header>
 
@@ -67,7 +69,7 @@ export default function Hero() {
         id="portrait-anchor"
         aria-label="Portrait of Suhas Kashyap on a Himalayan ridge, camera in hand, rendered from thousands of grains"
         role="img"
-        className="relative mt-4 aspect-[1500/1268] w-[min(82vw,520px)] md:mt-4 md:w-[540px]"
+        className="relative mt-12 aspect-[1500/1268] w-[min(82vw,520px)] md:mt-4 md:w-[540px]"
       />
     </section>
   );

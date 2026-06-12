@@ -123,13 +123,6 @@
       0px 10px 30px rgba(0, 0, 0, 0.2),
       0px 4px 6px rgba(0, 0, 0, 0.1);
   }
-
-  /* ── landing page ─────────────────────────────────────────────── */
-
-  /* paper grain, svg turbulence tile */
-  .grain {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
 }
 
 .prose {

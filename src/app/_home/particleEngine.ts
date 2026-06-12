@@ -13,12 +13,14 @@ import {
 const TRAIL_N = 15;
 
 // vertex: page-space coords (y down), flipped to gl space at the end.
-// states: falling grains (intro) -> portrait (home) -> ridge (scroll morph, parked).
-// the cursor is a brush: samples laid along the raw pointer path throw grains
-// sideways and forward off the stroke like paint splatter, healing as they age.
+// states: falling grains (intro) -> portrait (home) -> vertical katakana
+// (scroll). every grain has a slot in the rasterized text; scroll position
+// scrubs the journey (read, never hijacked), scrolling back reverses it.
+// the cursor is a brush: samples laid along the raw pointer path part grains
+// in a smooth dipole flow, healing as they age.
 const vertexShader = /* glsl */ `
   attribute vec2 aHome;     // portrait uv, y down
-  attribute vec3 aRidge;    // u, v in ridge band, depth below crest
+  attribute vec4 aText;     // u, v in the text block, ink shade, alpha
   attribute float aSize;    // size variance
   attribute float aShade;   // sampled luminance, grain jitter baked in
   attribute float aAlpha;   // sampled alpha, keeps the torn paper edge soft
@@ -27,13 +29,14 @@ const vertexShader = /* glsl */ `
   uniform float uTime;
   uniform float uIntro;
   uniform float uMorph;
+  uniform float uArc;          // 0 under reduced motion: no mid-flight swirl
   uniform vec4 uTrail[${TRAIL_N}]; // xy page coords, zw stroke dir * strength
   uniform float uTrailR;
   uniform vec3 uBurst;         // x, y page coords, z seconds since click
   uniform vec4 uPortraitRect;  // x, y, w, h page coords
-  uniform vec4 uRidgeRect;
+  uniform vec4 uTextRect;
   uniform float uDotScale;
-  uniform float uRidgeScale;
+  uniform float uTextScale;
   uniform float uDpr;
 
   varying float vAlpha;
@@ -46,7 +49,7 @@ const vertexShader = /* glsl */ `
 
   void main() {
     vec2 home = uPortraitRect.xy + aHome * uPortraitRect.zw;
-    vec2 ridge = uRidgeRect.xy + aRidge.xy * uRidgeRect.zw;
+    vec2 textPos = uTextRect.xy + aText.xy * uTextRect.zw;
 
     // intro: print-head sweep, columns left to right, grains drop into place
     float delay = aHome.x * 0.6 + aSeed.x * 0.25;
@@ -54,11 +57,12 @@ const vertexShader = /* glsl */ `
     float ie = easeOutCubic(ip);
     vec2 pos = home + vec2((aSeed.y - 0.5) * 90.0, -(140.0 + aSeed.x * 260.0)) * (1.0 - ie);
 
-    // scroll morph: dissolve, drift with turbulence, settle on the ridge
+    // scroll morph: dissolve, stream down with a little turbulence, and
+    // condense into the katakana block
     float mp = smoothstep(aSeed.z * 0.45, aSeed.z * 0.45 + 0.55, uMorph);
     float me = easeInOutCubic(mp);
-    float arc = sin(me * 3.14159);
-    vec2 target = mix(pos, ridge, me);
+    float arc = sin(me * 3.14159) * uArc;
+    vec2 target = mix(pos, textPos, me);
     target.x += sin(aSeed.y * 6.2832 + me * 5.0) * 90.0 * arc;
     target.y += ((aSeed.x - 0.5) * 140.0 - 60.0) * arc;
 
@@ -96,9 +100,9 @@ const vertexShader = /* glsl */ `
 
     // disturbed grains lift a little: bigger and a touch lighter, like dust
     float lift = min(disp / 60.0, 1.0);
-    float size = aSize * mix(uDotScale, uRidgeScale, me) * (1.0 + lift * 0.35);
-    vAlpha = ie * aAlpha * mix(1.0, 0.38 * (1.0 - aRidge.z * 0.6), me);
-    vShade = min(aShade + lift * 0.05, 1.0);
+    float size = aSize * mix(uDotScale, uTextScale, me) * (1.0 + lift * 0.35);
+    vAlpha = ie * mix(aAlpha, aText.w, me);
+    vShade = min(mix(aShade, aText.z, me) + lift * 0.05, 1.0);
 
     vec4 mv = modelViewMatrix * vec4(target.x, -target.y, 0.0, 1.0);
     gl_Position = projectionMatrix * mv;
@@ -124,9 +128,37 @@ const fragmentShader = /* glsl */ `
 type EngineOpts = {
   imageSrc: string;
   portraitEl: HTMLElement;
-  ridgeEl?: HTMLElement | null;
+  // text target is optional: without an anchor the scroll morph stays inert
+  textEl?: HTMLElement | null;
   reducedMotion?: boolean;
 };
+
+// vertical katakana, two columns read right to left like the print:
+// レス ヤップ / モア ドゥ, "less yap, more do". y values are glyph centres
+// in the 500x800 raster, gaps mirror the reference layout
+const TEXT_RASTER_W = 500;
+const TEXT_RASTER_H = 800;
+const TEXT_COLUMNS: { x: number; glyphs: { ch: string; y: number }[] }[] = [
+  {
+    x: 350,
+    glyphs: [
+      { ch: "レ", y: 95 },
+      { ch: "ス", y: 215 },
+      { ch: "ヤ", y: 430 },
+      { ch: "ッ", y: 540 },
+      { ch: "プ", y: 655 },
+    ],
+  },
+  {
+    x: 150,
+    glyphs: [
+      { ch: "モ", y: 135 },
+      { ch: "ア", y: 255 },
+      { ch: "ド", y: 520 },
+      { ch: "ゥ", y: 630 },
+    ],
+  },
+];
 
 function loadImage(src: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
@@ -135,16 +167,6 @@ function loadImage(src: string): Promise<HTMLImageElement> {
     img.onerror = reject;
     img.src = src;
   });
-}
-
-// jagged but believable skyline, normalized 0..1 (1 = tallest)
-function crest(u: number) {
-  return (
-    0.5 +
-    0.28 * Math.sin(u * 6.7 + 1.7) +
-    0.16 * Math.sin(u * 14.3 + 0.4) +
-    0.06 * Math.sin(u * 31.0 + 2.2)
-  );
 }
 
 type TrailSample = {
@@ -183,10 +205,11 @@ export class HalftoneEngine {
   private trailHead = 0;
   private burst = { x: -9999, y: -9999, t: 1000 };
 
-  // page-space scroll mapping for the morph (inert without a ridge anchor)
+  // scroll range over which the print becomes the text, set in measure()
   private morphStart = Infinity;
   private morphEnd = Infinity;
   private sleepBelow = Infinity;
+  private textGridW = 0;
 
   constructor(canvas: HTMLCanvasElement, opts: EngineOpts) {
     this.opts = opts;
@@ -208,15 +231,22 @@ export class HalftoneEngine {
     this.bind();
     this.lastT = performance.now();
     this.raf = requestAnimationFrame(this.tick);
+    // text targets fill in async once the japanese font is ready; the morph
+    // stays inert until then (measure leaves it off while textGridW is 0)
+    this.rasterizeText().then(() => {
+      if (!this.disposed) this.measure();
+    });
   }
 
   private gridW = 660;
 
   private buildGeometry(img: HTMLImageElement) {
     // sample near display resolution: the source is fine photographic grain,
-    // not halftone, so fidelity needs a grain-sized dot per cell
+    // not halftone, so fidelity needs a grain-sized dot per cell. low-memory
+    // devices get a coarser grid (roughly 40% fewer grains)
     const mobile = window.innerWidth < 768;
-    const gw = mobile ? 380 : 660;
+    const mem = (navigator as { deviceMemory?: number }).deviceMemory ?? 8;
+    const gw = mobile ? (mem <= 4 ? 300 : 380) : mem <= 4 ? 520 : 660;
     const gh = Math.round((gw * img.naturalHeight) / img.naturalWidth);
     this.gridW = gw;
 
@@ -228,7 +258,6 @@ export class HalftoneEngine {
     const data = ctx.getImageData(0, 0, gw, gh).data;
 
     const home: number[] = [];
-    const ridge: number[] = [];
     const size: number[] = [];
     const shade: number[] = [];
     const alphaArr: number[] = [];
@@ -245,37 +274,27 @@ export class HalftoneEngine {
         if (alpha < 0.04) continue;
         if ((1 - lum) * alpha < 0.015) continue; // truly invisible on white
 
-        const u = x / gw;
-        home.push(u, y / gh);
+        home.push(x / gw, y / gh);
         size.push(0.95 + Math.random() * 0.45);
         // re-grain: small luminance jitter keeps the film texture alive
         shade.push(
           Math.min(1, Math.max(0, lum + (Math.random() - 0.5) * 0.06)),
         );
         alphaArr.push(Math.min(1, alpha * 1.05));
-
-        // ridge slot: keep rough left-right order so the dissolve flows sideways
-        const ru = Math.min(
-          1,
-          Math.max(0, u * 0.85 + (Math.random() - 0.5) * 0.3),
-        );
-        const c = Math.min(1, Math.max(0, crest(ru)));
-        const vCrest = (1 - c) * 0.45;
-        const depth = Math.pow(Math.random(), 2.0);
-        ridge.push(ru, vCrest + depth * (1 - vCrest) * 0.9, depth);
-
         seed.push(Math.random(), Math.random(), Math.random(), Math.random());
       }
     }
 
-    const geo = new BufferGeometry();
     const n = size.length;
+
+    const geo = new BufferGeometry();
     geo.setAttribute(
       "position",
       new BufferAttribute(new Float32Array(n * 3), 3),
     );
     geo.setAttribute("aHome", new BufferAttribute(new Float32Array(home), 2));
-    geo.setAttribute("aRidge", new BufferAttribute(new Float32Array(ridge), 3));
+    // filled in async by rasterizeText once the font is available
+    geo.setAttribute("aText", new BufferAttribute(new Float32Array(n * 4), 4));
     geo.setAttribute("aSize", new BufferAttribute(new Float32Array(size), 1));
     geo.setAttribute("aShade", new BufferAttribute(new Float32Array(shade), 1));
     geo.setAttribute(
@@ -294,6 +313,7 @@ export class HalftoneEngine {
         uTime: { value: 0 },
         uIntro: { value: 0 },
         uMorph: { value: 0 },
+        uArc: { value: this.opts.reducedMotion ? 0 : 1 },
         uTrail: {
           value: Array.from(
             { length: TRAIL_N },
@@ -303,9 +323,9 @@ export class HalftoneEngine {
         uTrailR: { value: 80 },
         uBurst: { value: { x: -9999, y: -9999, z: 1000 } },
         uPortraitRect: { value: { x: 0, y: 0, z: 1, w: 1 } },
-        uRidgeRect: { value: { x: 0, y: 0, z: 1, w: 1 } },
+        uTextRect: { value: { x: 0, y: 0, z: 1, w: 1 } },
         uDotScale: { value: 1.5 },
-        uRidgeScale: { value: 2.5 },
+        uTextScale: { value: 1.5 },
         uDpr: { value: 1 },
       },
     });
@@ -314,6 +334,68 @@ export class HalftoneEngine {
     this.points.frustumCulled = false;
     this.points.matrixAutoUpdate = false; // page-scroll updates it manually
     this.scene.add(this.points);
+  }
+
+  // draw the vertical katakana into an offscreen canvas with the site's
+  // japanese serif, sample the ink, and give every grain a slot. several
+  // grains stack per cell (jittered) so the strokes read as solid ink
+  private async rasterizeText() {
+    if (!this.opts.textEl || !this.points) return;
+
+    const family =
+      getComputedStyle(document.documentElement)
+        .getPropertyValue("--font-shippori-mincho")
+        .trim() || "serif";
+    const font = `700 110px ${family}`;
+    try {
+      await document.fonts.load(font, "レスヤップモアドゥ");
+    } catch {
+      // fallback serif still renders katakana, just less pretty
+    }
+    if (this.disposed) return;
+
+    const cnv = document.createElement("canvas");
+    cnv.width = TEXT_RASTER_W;
+    cnv.height = TEXT_RASTER_H;
+    const ctx = cnv.getContext("2d", { willReadFrequently: true })!;
+    ctx.font = font;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = "#000";
+    for (const col of TEXT_COLUMNS) {
+      for (const g of col.glyphs) ctx.fillText(g.ch, col.x, g.y);
+    }
+    const data = ctx.getImageData(0, 0, TEXT_RASTER_W, TEXT_RASTER_H).data;
+
+    // sample on a grid a bit finer than display grain spacing
+    const gw = 340;
+    const gh = Math.round((gw * TEXT_RASTER_H) / TEXT_RASTER_W);
+    const cells: number[] = []; // u, v, alpha triplets
+    for (let y = 0; y < gh; y++) {
+      for (let x = 0; x < gw; x++) {
+        const sx = Math.floor(((x + 0.5) / gw) * TEXT_RASTER_W);
+        const sy = Math.floor(((y + 0.5) / gh) * TEXT_RASTER_H);
+        const a = data[(sy * TEXT_RASTER_W + sx) * 4 + 3] / 255;
+        if (a > 0.35) cells.push((x + 0.5) / gw, (y + 0.5) / gh, a);
+      }
+    }
+    if (cells.length === 0) return; // nothing drawn, morph stays inert
+
+    const attr = this.points.geometry.getAttribute("aText") as BufferAttribute;
+    const out = attr.array as Float32Array;
+    const n = attr.count;
+    const cellCount = cells.length / 3;
+    const ju = 1 / gw; // jitter within a cell keeps stacked grains organic
+    const jv = 1 / gh;
+    for (let i = 0; i < n; i++) {
+      const c = (i % cellCount) * 3;
+      out[i * 4] = cells[c] + (Math.random() - 0.5) * ju;
+      out[i * 4 + 1] = cells[c + 1] + (Math.random() - 0.5) * jv;
+      out[i * 4 + 2] = 0.12 + Math.random() * 0.1; // ink
+      out[i * 4 + 3] = cells[c + 2] * (0.85 + Math.random() * 0.15);
+    }
+    attr.needsUpdate = true;
+    this.textGridW = gw;
   }
 
   private measure = () => {
@@ -344,22 +426,24 @@ export class HalftoneEngine {
     u.uTrailR.value = Math.max(70, pr.width * 0.18);
     u.uDpr.value = dpr;
 
-    const rr = this.opts.ridgeEl?.getBoundingClientRect();
-    if (rr) {
-      // ridge band bleeds past the anchor edges for a full-width skyline
-      u.uRidgeRect.value = {
-        x: -w * 0.04,
-        y: rr.top + scroll,
-        z: w * 1.08,
-        w: rr.height,
+    const tr = this.opts.textEl?.getBoundingClientRect();
+    if (tr && this.textGridW > 0) {
+      u.uTextRect.value = {
+        x: tr.left,
+        y: tr.top + scroll,
+        z: tr.width,
+        w: tr.height,
       };
-      u.uRidgeScale.value = Math.max(2.2, w / 520);
-      this.morphStart = h * 0.12;
+      // same overlap rule as the portrait so the ink reads solid
+      u.uTextScale.value = (tr.width / this.textGridW) * 1.85;
+      // one smooth motion: starts just into the scroll, fully formed by the
+      // time the text block sits around mid-viewport
+      this.morphStart = h * 0.07;
       this.morphEnd = Math.max(
-        this.morphStart + 240,
-        rr.top + scroll - h * 0.45,
+        this.morphStart + 280,
+        tr.top + scroll - h * 0.5,
       );
-      this.sleepBelow = rr.top + scroll + rr.height + h;
+      this.sleepBelow = tr.top + scroll + tr.height + h;
     } else {
       this.morphStart = Infinity;
       this.morphEnd = Infinity;
