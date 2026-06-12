@@ -32,12 +32,13 @@ export async function generateMetadata(props: {
     title,
     description: review.summary,
     keywords: ["Suhas Kashyap", "review", review.name, review.category],
+    // og image comes from the opengraph-image.tsx file convention, which
+    // overrides anything set here
     openGraph: {
       title: `${title}`,
       description: review.summary,
       type: "article",
       url: `https://www.kashyapsuhas.com/reviews/${review.slug}`,
-      images: ["/kashyapcom-og.png"],
     },
     alternates: {
       canonical: `https://www.kashyapsuhas.com/reviews/${review.slug}`,
@@ -58,10 +59,13 @@ export default async function ReviewPage(props: Props) {
   const categoryColor = getCategoryTextColor(review.category);
   const categoryBg = getCategoryBgColor(review.category);
   const reviewDate = new Date(review.reviewDate);
+  // dates are ist-midnight utc timestamps; pin the zone so vercel's utc
+  // servers don't render the previous day
   const dateFormatted = reviewDate.toLocaleDateString("en-IN", {
     year: "numeric",
     month: "short",
     day: "numeric",
+    timeZone: "Asia/Kolkata",
   });
 
   return (

@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 
+import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 
@@ -16,6 +17,12 @@ export const alt = "Blog post by Suhas Kashyap";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
+// prerender published posts' cards at build (heroes read from disk there).
+// drafts still render on demand in the deployed function via the cdn fallback.
+export function generateStaticParams() {
+  return getBlogPosts().map((post) => ({ slug: post.slug }));
+}
+
 // satori can't read css vars, mirror globals.css tokens
 const ACCENT = "#f0a044";
 const FOREGROUND = "#1e293b";
@@ -29,11 +36,20 @@ const MIME: Record<string, string> = {
   ".gif": "image/gif",
 };
 
-// hero lives in public/. inline as data uri so generation doesn't depend on
-// the deployed site being up. external urls pass through, satori fetches them.
+const SITE_URL = "https://www.kashyapsuhas.com";
+
+// hero lives in public/. build/dev prerenders read it from disk and inline a
+// data uri. public/ is excluded from the deployed function bundle (file
+// tracing blew vercel's size limit), so on-demand renders (drafts) fall back
+// to the cdn copy of the asset. external urls pass through.
 async function loadHero(heroImage: string): Promise<string | null> {
   if (!heroImage) return null;
   if (heroImage.startsWith("http")) return heroImage;
+  // public/ absent means we're in the deployed function bundle (file tracing
+  // excludes it): the asset lives on the cdn, satori fetches it from there
+  if (!existsSync(path.join(process.cwd(), "public"))) {
+    return `${SITE_URL}${heroImage.startsWith("/") ? "" : "/"}${heroImage}`;
+  }
   try {
     const rel = decodeURIComponent(heroImage);
     const mime = MIME[path.extname(rel).toLowerCase()];
@@ -44,6 +60,7 @@ async function loadHero(heroImage: string): Promise<string | null> {
     );
     return `data:${mime};base64,${data}`;
   } catch {
+    // file genuinely missing: render the no-hero card instead
     return null;
   }
 }

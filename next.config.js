@@ -38,6 +38,13 @@ const nextConfig = {
   // harfbuzzjs (og image text shaping) loads its wasm relative to
   // import.meta.url, which breaks when bundled. keep it external.
   serverExternalPackages: ["harfbuzzjs"],
+  // og image routes read hero files from public/ with a dynamic path, which
+  // makes vercel's file tracer bundle all 400mb of public/ into the function
+  // (blows the 300mb limit). public/ is served from the cdn anyway; runtime
+  // renders fall back to fetching the cdn url (see loadHero in the og routes).
+  outputFileTracingExcludes: {
+    "/*": ["./public/**"],
+  },
   async headers() {
     // link headers advertise machine-readable resources so agents that don't
     // parse html can still find them.
