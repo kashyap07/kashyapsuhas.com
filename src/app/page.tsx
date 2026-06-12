@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 
-import HomeHero from "./HomeHero";
+import Hero from "./_home/Hero";
+import ParticleField from "./_home/ParticleField";
 
 export const metadata: Metadata = {
   title: "Suhas Kashyap",
@@ -54,7 +55,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main className="flex flex-col">
+    <main className="relative flex flex-col">
       {/* person schema */}
       <script
         type="application/ld+json"
@@ -96,7 +97,8 @@ export default function Home() {
         }}
       />
 
-      <HomeHero />
+      <ParticleField />
+      <Hero />
     </main>
   );
 }
