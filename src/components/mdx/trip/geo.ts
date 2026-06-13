@@ -48,10 +48,9 @@ export function arrivalProgress(raw: number): number {
   return Math.min(1, raw / ARRIVAL_FRACTION);
 }
 
-// the mobile intro covers the first two stop sections (prep + day 0): the
-// ribbon panel auto-opens on a whole-route overview and the camera holds it
-// while the car sets off. once the reader scrolls past these stops the panel
-// folds away and the camera dives down to the car.
+// "near the start" window (prep + day 0): the trip map holds its whole-route
+// overview while idx < INTRO_STOPS, then dives the camera down to the car. a
+// deep-link past these stops skips the overview straight to the car.
 export const INTRO_STOPS = 2;
 
 export type StopEntry = {

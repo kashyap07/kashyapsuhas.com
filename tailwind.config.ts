@@ -140,6 +140,28 @@ const config: Config = {
           "0px 10px 30px rgba(0, 0, 0, 0.2), 0px 4px 6px rgba(0, 0, 0, 0.1)",
       },
 
+      // ── animation ────────────────────────────────────────────────────────────
+      keyframes: {
+        // attention nudge for the mobile "map" pill: soft accent glow + pulse.
+        // intensity (spread / alpha / scale / speed) comes from css vars set
+        // inline, so it ramps up the longer the reader ignores the map. rgba is
+        // --columbiaYellow (#f0a044) at low alpha for the halo.
+        "map-nudge": {
+          "0%, 100%": {
+            boxShadow: "0 0 0 0 rgba(240, 160, 68, 0)",
+            transform: "scale(1)",
+          },
+          "50%": {
+            boxShadow:
+              "0 0 0 var(--nudge-spread, 5px) rgba(240, 160, 68, var(--nudge-alpha, 0.35))",
+            transform: "scale(var(--nudge-scale, 1.05))",
+          },
+        },
+      },
+      animation: {
+        "map-nudge": "map-nudge var(--nudge-speed, 1.6s) ease-in-out infinite",
+      },
+
       // ── transitions ────────────────────────────────────────────────────────
       // duration-100 = fast press feedback
       // duration-200 = standard hover/color transition (default)
