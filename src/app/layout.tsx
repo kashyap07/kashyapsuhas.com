@@ -45,7 +45,11 @@ const tiroKannada = Tiro_Kannada({
 });
 const shipporiMincho = Shippori_Mincho({
   weight: ["400", "500", "700"],
-  subsets: ["latin"],
+  // japanese is the whole point: the particle morph rasterizes katakana with
+  // this face. with latin-only the glyphs were never self-hosted, so it fell
+  // back to the system serif (looked ok on macos/hiragino, plain sans on
+  // android). unicode-range keeps the actual download to just the katakana block
+  subsets: ["latin", "japanese"],
   variable: "--font-shippori-mincho",
   preload: false,
 });
