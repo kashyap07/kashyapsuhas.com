@@ -5,19 +5,14 @@ import {
   Points,
   Scene,
   ShaderMaterial,
-  Vector4,
   WebGLRenderer,
 } from "three";
-
-// number of brush samples behind the cursor; mirrored in the shader loop
-const TRAIL_N = 15;
 
 // vertex: page-space coords (y down), flipped to gl space at the end.
 // states: falling grains (intro) -> portrait (home) -> vertical katakana
 // (scroll). every grain has a slot in the rasterized text; scroll position
 // scrubs the journey (read, never hijacked), scrolling back reverses it.
-// the cursor is a brush: samples laid along the raw pointer path part grains
-// in a smooth dipole flow, healing as they age.
+// no pointer interaction: the print just sits, then morphs as you scroll.
 const vertexShader = /* glsl */ `
   attribute vec2 aHome;     // portrait uv, y down
   attribute vec4 aText;     // u, v in the text block, ink shade, alpha
@@ -26,13 +21,9 @@ const vertexShader = /* glsl */ `
   attribute float aAlpha;   // sampled alpha, keeps the torn paper edge soft
   attribute vec4 aSeed;     // delay, phase, stagger, spare
 
-  uniform float uTime;
   uniform float uIntro;
   uniform float uMorph;
   uniform float uArc;          // 0 under reduced motion: no mid-flight swirl
-  uniform vec4 uTrail[${TRAIL_N}]; // xy page coords, zw stroke dir * strength
-  uniform float uTrailR;
-  uniform vec3 uBurst;         // x, y page coords, z seconds since click
   uniform vec4 uPortraitRect;  // x, y, w, h page coords
   uniform vec4 uTextRect;
   uniform float uDotScale;
@@ -66,43 +57,9 @@ const vertexShader = /* glsl */ `
     target.x += sin(aSeed.y * 6.2832 + me * 5.0) * 90.0 * arc;
     target.y += ((aSeed.x - 0.5) * 140.0 - 60.0) * arc;
 
-    // breathing, very subtle at grain scale
-    float j = 0.1 + aSeed.z * 0.2;
-    target += vec2(
-      sin(uTime * 0.9 + aSeed.y * 6.2832),
-      cos(uTime * 0.8 + aSeed.x * 6.2832)
-    ) * j;
-
-    // brush wake: a smooth dipole flow field around the stroke. grains part
-    // sideways with a tanh falloff across the line (no hard seam) and drift
-    // along the stroke, so the print flows open like water around a finger
-    float disp = 0.0;
-    for (int i = 0; i < ${TRAIL_N}; i++) {
-      vec2 td = target - uTrail[i].xy;
-      float fall = exp(-dot(td, td) / (uTrailR * uTrailR));
-      vec2 dirS = uTrail[i].zw;
-      float st = length(dirS);
-      vec2 dir = dirS / max(st, 0.001);
-      vec2 perp = vec2(-dir.y, dir.x);
-      float across = tanh(dot(td, perp) / (uTrailR * 0.35));
-      vec2 flow = perp * across * (0.8 + 0.5 * aSeed.y)
-                + dir * (0.45 + 0.5 * aSeed.x);
-      float f = fall * st;
-      target += flow * f;
-      disp += f;
-    }
-
-    // click ripple: expanding ring, decays over ~a second
-    vec2 bd = target - uBurst.xy;
-    float br = max(length(bd), 0.001);
-    float ring = exp(-pow(br - uBurst.z * 700.0, 2.0) / 7200.0) * exp(-uBurst.z * 2.2);
-    target += (bd / br) * ring * 55.0;
-
-    // disturbed grains lift a little: bigger and a touch lighter, like dust
-    float lift = min(disp / 60.0, 1.0);
-    float size = aSize * mix(uDotScale, uTextScale, me) * (1.0 + lift * 0.35);
+    float size = aSize * mix(uDotScale, uTextScale, me);
     vAlpha = ie * mix(aAlpha, aText.w, me);
-    vShade = min(mix(aShade, aText.z, me) + lift * 0.05, 1.0);
+    vShade = mix(aShade, aText.z, me);
 
     vec4 mv = modelViewMatrix * vec4(target.x, -target.y, 0.0, 1.0);
     gl_Position = projectionMatrix * mv;
@@ -169,15 +126,6 @@ function loadImage(src: string): Promise<HTMLImageElement> {
   });
 }
 
-type TrailSample = {
-  x: number;
-  y: number;
-  dirX: number;
-  dirY: number;
-  strength: number;
-  age: number;
-};
-
 export class HalftoneEngine {
   private renderer: WebGLRenderer;
   private scene = new Scene();
@@ -190,20 +138,8 @@ export class HalftoneEngine {
   private lastT = 0;
   private intro = -0.2; // small startup delay before the sweep begins
   private disposed = false;
-
-  // raw pointer path; brush samples are laid immediately on each move event
-  // so the stroke lands under the cursor with no smoothing latency
-  private lastPointer = { x: -9999, y: -9999 };
-  private trail: TrailSample[] = Array.from({ length: TRAIL_N }, () => ({
-    x: -9999,
-    y: -9999,
-    dirX: 1,
-    dirY: 0,
-    strength: 0,
-    age: 10,
-  }));
-  private trailHead = 0;
-  private burst = { x: -9999, y: -9999, t: 1000 };
+  // last scroll we drew at; -1 forces a redraw (measure, resize, first frame)
+  private lastScroll = -1;
 
   // scroll range over which the print becomes the text, set in measure()
   private morphStart = Infinity;
@@ -310,18 +246,9 @@ export class HalftoneEngine {
       depthTest: false,
       depthWrite: false,
       uniforms: {
-        uTime: { value: 0 },
         uIntro: { value: 0 },
         uMorph: { value: 0 },
         uArc: { value: this.opts.reducedMotion ? 0 : 1 },
-        uTrail: {
-          value: Array.from(
-            { length: TRAIL_N },
-            () => new Vector4(-9999, -9999, 0, 0),
-          ),
-        },
-        uTrailR: { value: 80 },
-        uBurst: { value: { x: -9999, y: -9999, z: 1000 } },
         uPortraitRect: { value: { x: 0, y: 0, z: 1, w: 1 } },
         uTextRect: { value: { x: 0, y: 0, z: 1, w: 1 } },
         uDotScale: { value: 1.5 },
@@ -423,7 +350,6 @@ export class HalftoneEngine {
     };
     // grains sized to overlap their sample cell so flat tones close up solid
     u.uDotScale.value = (pr.width / this.gridW) * 1.85;
-    u.uTrailR.value = Math.max(70, pr.width * 0.18);
     u.uDpr.value = dpr;
 
     const tr = this.opts.textEl?.getBoundingClientRect();
@@ -449,72 +375,12 @@ export class HalftoneEngine {
       this.morphEnd = Infinity;
       this.sleepBelow = pr.top + scroll + pr.height + h;
     }
-  };
 
-  private laySample(
-    x: number,
-    y: number,
-    dirX: number,
-    dirY: number,
-    strength: number,
-  ) {
-    const s = this.trail[this.trailHead];
-    s.x = x;
-    s.y = y;
-    s.dirX = dirX;
-    s.dirY = dirY;
-    s.strength = strength;
-    s.age = 0;
-    this.trailHead = (this.trailHead + 1) % TRAIL_N;
-  }
-
-  private onPointerMove = (e: PointerEvent) => {
-    const x = e.clientX;
-    const y = e.clientY + window.scrollY;
-    // first contact: just anchor, no stroke from offscreen
-    if (this.lastPointer.x === -9999) {
-      this.lastPointer.x = x;
-      this.lastPointer.y = y;
-      return;
-    }
-    const dx = x - this.lastPointer.x;
-    const dy = y - this.lastPointer.y;
-    const len = Math.hypot(dx, dy);
-    if (len < 4) return; // still-ish cursor lays nothing
-    const dirX = dx / len;
-    const dirY = dy / len;
-    const strength = Math.min(8 + len * 0.9, 48);
-    // interpolate along the segment so fast flicks paint a continuous stroke
-    const steps = Math.min(Math.floor(len / 12) + 1, 8);
-    for (let k = 1; k <= steps; k++) {
-      const t = k / steps;
-      this.laySample(
-        this.lastPointer.x + dx * t,
-        this.lastPointer.y + dy * t,
-        dirX,
-        dirY,
-        strength,
-      );
-    }
-    this.lastPointer.x = x;
-    this.lastPointer.y = y;
-  };
-
-  private onPointerDown = (e: PointerEvent) => {
-    this.burst.x = e.clientX;
-    this.burst.y = e.clientY + window.scrollY;
-    this.burst.t = 0;
+    // geometry/uniforms just changed, force the next tick to redraw
+    this.lastScroll = -1;
   };
 
   private bind() {
-    if (!this.opts.reducedMotion) {
-      window.addEventListener("pointermove", this.onPointerMove, {
-        passive: true,
-      });
-      window.addEventListener("pointerdown", this.onPointerDown, {
-        passive: true,
-      });
-    }
     window.addEventListener("resize", this.onResize);
     this.renderer.domElement.addEventListener(
       "webglcontextlost",
@@ -542,29 +408,14 @@ export class HalftoneEngine {
     // skip work once everything relevant is far above the viewport
     if (scroll > this.sleepBelow) return;
 
-    if (!this.opts.reducedMotion) {
-      u.uTime.value += dt;
+    const introRunning = !this.opts.reducedMotion && this.intro < 1.3;
+    if (introRunning) this.intro += dt / 1.7;
 
-      if (this.intro < 1.3) this.intro += dt / 1.7;
-
-      // age the brush samples; the stroke itself is laid in onPointerMove.
-      // smooth envelope: swell in over ~120ms, then relax out lazily, so the
-      // wake breathes open instead of snapping
-      const trailU = u.uTrail.value as Vector4[];
-      for (let i = 0; i < TRAIL_N; i++) {
-        const s = this.trail[i];
-        s.age += dt;
-        const a = Math.min(s.age / 0.12, 1);
-        const attack = a * a * (3 - 2 * a);
-        const eff = s.strength * attack * Math.exp(-s.age * 1.4);
-        trailU[i].set(s.x, s.y, s.dirX * eff, s.dirY * eff);
-      }
-
-      this.burst.t += dt;
-      u.uBurst.value.x = this.burst.x;
-      u.uBurst.value.y = this.burst.y;
-      u.uBurst.value.z = this.burst.t;
-    }
+    // the print is otherwise static: only redraw while the intro plays or the
+    // page actually moves. keeps the portrait glued to scroll without burning
+    // a full point-cloud render every idle frame
+    if (!introRunning && scroll === this.lastScroll) return;
+    this.lastScroll = scroll;
 
     u.uIntro.value = Math.max(0, Math.min(this.intro, 1.3));
     u.uMorph.value =
@@ -589,8 +440,6 @@ export class HalftoneEngine {
     this.disposed = true;
     cancelAnimationFrame(this.raf);
     window.clearTimeout(this.resizeTimer);
-    window.removeEventListener("pointermove", this.onPointerMove);
-    window.removeEventListener("pointerdown", this.onPointerDown);
     window.removeEventListener("resize", this.onResize);
     this.renderer.domElement.removeEventListener(
       "webglcontextlost",
