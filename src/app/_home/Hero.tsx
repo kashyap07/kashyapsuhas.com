@@ -22,7 +22,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative z-10 flex min-h-dvh w-full flex-col items-center justify-center px-6 py-12 text-center md:py-16">
+    <section className="relative z-10 flex min-h-svh w-full flex-col items-center justify-center px-6 py-12 text-center md:py-16">
       <header className="flex flex-col items-center">
         <Wordmark onCycle={onWordmarkCycle} />
 
