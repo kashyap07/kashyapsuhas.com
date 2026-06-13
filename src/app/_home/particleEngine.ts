@@ -273,11 +273,8 @@ export class HalftoneEngine {
   private async rasterizeText() {
     if (!this.opts.textEl || !this.points) return;
 
-    const family =
-      getComputedStyle(document.documentElement)
-        .getPropertyValue("--font-shippori-mincho")
-        .trim() || "serif";
-    const font = `700 110px ${family}`;
+    // loaded as a 9-glyph google fonts subset via a <link> in the root layout
+    const font = `700 110px "Shippori Mincho", serif`;
     try {
       await document.fonts.load(font, "レスヤップモアドゥ");
     } catch {

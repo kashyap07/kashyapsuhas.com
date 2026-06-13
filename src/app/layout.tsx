@@ -3,7 +3,6 @@ import {
   Fraunces,
   Inter,
   Literata,
-  Shippori_Mincho,
   Tiro_Devanagari_Sanskrit,
   Tiro_Kannada,
 } from "next/font/google";
@@ -43,16 +42,11 @@ const tiroKannada = Tiro_Kannada({
   variable: "--font-tiro-kannada",
   preload: false,
 });
-const shipporiMincho = Shippori_Mincho({
-  weight: ["400", "500", "700"],
-  // japanese is the whole point: the particle morph rasterizes katakana with
-  // this face. with latin-only the glyphs were never self-hosted, so it fell
-  // back to the system serif (looked ok on macos/hiragino, plain sans on
-  // android). unicode-range keeps the actual download to just the katakana block
-  subsets: ["latin", "japanese"],
-  variable: "--font-shippori-mincho",
-  preload: false,
-});
+// shippori mincho is NOT loaded via next/font: it only exposes latin subsets
+// there, so the katakana glyphs were never self-hosted and the particle morph
+// fell back to the system serif (fine on macos/hiragino, plain sans on android).
+// instead we pull just the 9 glyphs the morph needs straight from google fonts
+// via the text= param (see the <link> in the body), a single tiny @font-face.
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -97,9 +91,21 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`dark ${fraunces.variable} ${literata.variable} ${inter.variable} ${tiroDevanagari.variable} ${tiroKannada.variable} ${shipporiMincho.variable}`}
+      className={`dark ${fraunces.variable} ${literata.variable} ${inter.variable} ${tiroDevanagari.variable} ${tiroKannada.variable}`}
     >
       <body className="font-serif">
+        {/* just the katakana the particle morph rasterizes (レス ヤップ / モア ドゥ),
+            subset to those exact glyphs. react 19 hoists these into <head> */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@700&text=%E3%83%AC%E3%82%B9%E3%83%A4%E3%83%83%E3%83%97%E3%83%A2%E3%82%A2%E3%83%89%E3%82%A5&display=swap"
+        />
         {children}
         <ConsoleEgg />
         <SpeedInsights />
