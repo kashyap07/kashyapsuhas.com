@@ -19,7 +19,7 @@ const vertexShader = /* glsl */ `
   attribute float aSize;    // size variance
   attribute float aShade;   // sampled luminance, grain jitter baked in
   attribute float aAlpha;   // sampled alpha, keeps the torn paper edge soft
-  attribute vec4 aSeed;     // delay, phase, stagger, spare
+  attribute vec3 aSeed;     // delay, phase, stagger
 
   uniform float uIntro;
   uniform float uMorph;
@@ -140,11 +140,12 @@ export class HalftoneEngine {
   private disposed = false;
   // last morph value we drew at; -1 forces a redraw (measure/resize/first frame)
   private lastMorph = -1;
+  // kept so we can rebuild the geometry if the gl context is lost and restored
+  private img: HTMLImageElement | null = null;
 
   // scroll range over which the print becomes the text, set in measure()
   private morphStart = Infinity;
   private morphEnd = Infinity;
-  private coverHeight = 0;
   private textGridW = 0;
 
   constructor(canvas: HTMLCanvasElement, opts: EngineOpts) {
@@ -161,6 +162,7 @@ export class HalftoneEngine {
   async init() {
     const img = await loadImage(this.opts.imageSrc);
     if (this.disposed) return;
+    this.img = img;
     this.buildGeometry(img);
     if (this.opts.reducedMotion) this.intro = 1.3; // print is just there, no show
     this.measure();
@@ -217,7 +219,7 @@ export class HalftoneEngine {
           Math.min(1, Math.max(0, lum + (Math.random() - 0.5) * 0.06)),
         );
         alphaArr.push(Math.min(1, alpha * 1.05));
-        seed.push(Math.random(), Math.random(), Math.random(), Math.random());
+        seed.push(Math.random(), Math.random(), Math.random());
       }
     }
 
@@ -237,7 +239,7 @@ export class HalftoneEngine {
       "aAlpha",
       new BufferAttribute(new Float32Array(alphaArr), 1),
     );
-    geo.setAttribute("aSeed", new BufferAttribute(new Float32Array(seed), 4));
+    geo.setAttribute("aSeed", new BufferAttribute(new Float32Array(seed), 3));
 
     this.material = new ShaderMaterial({
       vertexShader,
@@ -373,14 +375,14 @@ export class HalftoneEngine {
     }
 
     // keep the framebuffer inside gpu limits on very tall pages
-    this.coverHeight = Math.min(cover, 8192 / dpr);
+    const coverHeight = Math.min(cover, 8192 / dpr);
 
     this.renderer.setPixelRatio(dpr);
-    this.renderer.setSize(w, this.coverHeight);
+    this.renderer.setSize(w, coverHeight);
     this.camera.left = 0;
     this.camera.right = w;
     this.camera.top = 0;
-    this.camera.bottom = -this.coverHeight;
+    this.camera.bottom = -coverHeight;
     this.camera.updateProjectionMatrix();
 
     // geometry/uniforms just changed, force the next tick to redraw
@@ -389,10 +391,17 @@ export class HalftoneEngine {
 
   private bind() {
     window.addEventListener("resize", this.onResize);
-    this.renderer.domElement.addEventListener(
-      "webglcontextlost",
-      this.onContextLost,
-    );
+    // layout above the portrait can shift as late fonts/images land; the print
+    // is static so a stale measure leaves it detached from its anchor (this is
+    // what put the katakana in the wrong spot on android). re-measure once the
+    // fonts settle and once the page has fully loaded
+    document.fonts?.ready.then(() => {
+      if (!this.disposed) this.measure();
+    });
+    window.addEventListener("load", this.onLoad);
+    const gl = this.renderer.domElement;
+    gl.addEventListener("webglcontextlost", this.onContextLost);
+    gl.addEventListener("webglcontextrestored", this.onContextRestored);
   }
 
   private resizeTimer = 0;
@@ -401,7 +410,30 @@ export class HalftoneEngine {
     this.resizeTimer = window.setTimeout(this.measure, 150);
   };
 
-  private onContextLost = () => this.dispose();
+  private onLoad = () => this.measure();
+
+  // ask the browser to give the context back rather than dying for good, and
+  // pause the loop until it does
+  private onContextLost = (e: Event) => {
+    e.preventDefault();
+    cancelAnimationFrame(this.raf);
+  };
+
+  // gl resources were wiped: rebuild geometry + material from the kept image
+  // and resume. intro state lives in plain js, so it picks up where it left off
+  private onContextRestored = () => {
+    if (this.disposed || !this.img) return;
+    this.scene.remove(this.points);
+    this.points.geometry.dispose();
+    this.material.dispose();
+    this.buildGeometry(this.img);
+    this.measure();
+    this.lastT = performance.now();
+    this.raf = requestAnimationFrame(this.tick);
+    this.rasterizeText().then(() => {
+      if (!this.disposed) this.measure();
+    });
+  };
 
   private tick = (t: number) => {
     if (this.disposed) return;
@@ -443,10 +475,10 @@ export class HalftoneEngine {
     cancelAnimationFrame(this.raf);
     window.clearTimeout(this.resizeTimer);
     window.removeEventListener("resize", this.onResize);
-    this.renderer.domElement.removeEventListener(
-      "webglcontextlost",
-      this.onContextLost,
-    );
+    window.removeEventListener("load", this.onLoad);
+    const gl = this.renderer.domElement;
+    gl.removeEventListener("webglcontextlost", this.onContextLost);
+    gl.removeEventListener("webglcontextrestored", this.onContextRestored);
     this.points?.geometry.dispose();
     this.material?.dispose();
     this.renderer.dispose();
