@@ -138,13 +138,13 @@ export class HalftoneEngine {
   private lastT = 0;
   private intro = -0.2; // small startup delay before the sweep begins
   private disposed = false;
-  // last scroll we drew at; -1 forces a redraw (measure, resize, first frame)
-  private lastScroll = -1;
+  // last morph value we drew at; -1 forces a redraw (measure/resize/first frame)
+  private lastMorph = -1;
 
   // scroll range over which the print becomes the text, set in measure()
   private morphStart = Infinity;
   private morphEnd = Infinity;
-  private sleepBelow = Infinity;
+  private coverHeight = 0;
   private textGridW = 0;
 
   constructor(canvas: HTMLCanvasElement, opts: EngineOpts) {
@@ -259,7 +259,7 @@ export class HalftoneEngine {
 
     this.points = new Points(geo, this.material);
     this.points.frustumCulled = false;
-    this.points.matrixAutoUpdate = false; // page-scroll updates it manually
+    this.points.matrixAutoUpdate = false; // static at the document origin
     this.scene.add(this.points);
   }
 
@@ -326,17 +326,11 @@ export class HalftoneEngine {
   }
 
   private measure = () => {
-    const w = window.innerWidth;
+    // clientWidth excludes the scrollbar, matching getBoundingClientRect and
+    // the canvas css width, so nothing squishes horizontally
+    const w = document.documentElement.clientWidth;
     const h = window.innerHeight;
     const dpr = Math.min(window.devicePixelRatio || 1, w < 768 ? 1.5 : 2);
-
-    this.renderer.setPixelRatio(dpr);
-    this.renderer.setSize(w, h);
-    this.camera.left = 0;
-    this.camera.right = w;
-    this.camera.top = 0;
-    this.camera.bottom = -h;
-    this.camera.updateProjectionMatrix();
 
     const scroll = window.scrollY;
     const pr = this.opts.portraitEl.getBoundingClientRect();
@@ -352,6 +346,12 @@ export class HalftoneEngine {
     u.uDotScale.value = (pr.width / this.gridW) * 1.85;
     u.uDpr.value = dpr;
 
+    // the canvas covers the document from the top down to the bottom of the
+    // last grain target. sized this way it scrolls natively with the page
+    // (compositor, pixel-locked) instead of us chasing scrollY on the main
+    // thread, which is what made the portrait lag behind the text
+    let cover = pr.top + scroll + pr.height + h * 0.2;
+
     const tr = this.opts.textEl?.getBoundingClientRect();
     if (tr && this.textGridW > 0) {
       u.uTextRect.value = {
@@ -365,19 +365,26 @@ export class HalftoneEngine {
       // one smooth motion: starts just into the scroll, fully formed by the
       // time the text block sits around mid-viewport
       this.morphStart = h * 0.07;
-      this.morphEnd = Math.max(
-        this.morphStart + 280,
-        tr.top + scroll - h * 0.5,
-      );
-      this.sleepBelow = tr.top + scroll + tr.height + h;
+      this.morphEnd = Math.max(this.morphStart + 280, tr.top + scroll - h * 0.5);
+      cover = tr.top + scroll + tr.height + h * 0.2;
     } else {
       this.morphStart = Infinity;
       this.morphEnd = Infinity;
-      this.sleepBelow = pr.top + scroll + pr.height + h;
     }
 
+    // keep the framebuffer inside gpu limits on very tall pages
+    this.coverHeight = Math.min(cover, 8192 / dpr);
+
+    this.renderer.setPixelRatio(dpr);
+    this.renderer.setSize(w, this.coverHeight);
+    this.camera.left = 0;
+    this.camera.right = w;
+    this.camera.top = 0;
+    this.camera.bottom = -this.coverHeight;
+    this.camera.updateProjectionMatrix();
+
     // geometry/uniforms just changed, force the next tick to redraw
-    this.lastScroll = -1;
+    this.lastMorph = -1;
   };
 
   private bind() {
@@ -403,22 +410,12 @@ export class HalftoneEngine {
     const dt = Math.min((t - this.lastT) / 1000, 0.05);
     this.lastT = t;
     const u = this.material.uniforms;
-    const scroll = window.scrollY;
-
-    // skip work once everything relevant is far above the viewport
-    if (scroll > this.sleepBelow) return;
 
     const introRunning = !this.opts.reducedMotion && this.intro < 1.3;
     if (introRunning) this.intro += dt / 1.7;
 
-    // the print is otherwise static: only redraw while the intro plays or the
-    // page actually moves. keeps the portrait glued to scroll without burning
-    // a full point-cloud render every idle frame
-    if (!introRunning && scroll === this.lastScroll) return;
-    this.lastScroll = scroll;
-
-    u.uIntro.value = Math.max(0, Math.min(this.intro, 1.3));
-    u.uMorph.value =
+    const scroll = window.scrollY;
+    const morph =
       this.morphEnd === Infinity
         ? 0
         : Math.min(
@@ -429,10 +426,15 @@ export class HalftoneEngine {
             ),
           );
 
-    if (this.points.position.y !== scroll) {
-      this.points.position.y = scroll;
-      this.points.updateMatrix();
-    }
+    // the canvas scrolls natively with the page, so a still portrait needs no
+    // render at all: only redraw while the intro plays or the morph progresses.
+    // no per-frame scrollY chasing means the print stays pixel-locked to the
+    // page like the rest of the content
+    if (!introRunning && morph === this.lastMorph) return;
+    this.lastMorph = morph;
+
+    u.uIntro.value = Math.max(0, Math.min(this.intro, 1.3));
+    u.uMorph.value = morph;
     this.renderer.render(this.scene, this.camera);
   };
 

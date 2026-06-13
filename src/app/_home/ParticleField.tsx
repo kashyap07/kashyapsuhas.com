@@ -7,10 +7,13 @@ import { preload } from "react-dom";
 import { prefersReducedMotion } from "./motion";
 import type { HalftoneEngine } from "./particleEngine";
 
-// fullscreen fixed canvas behind the page. the grain portrait lives here.
+// canvas behind the page, absolutely positioned and sized by the engine to
+// span the document region the grains live in. being part of the scrolled
+// content (not fixed) lets the browser scroll it on the compositor, so the
+// portrait stays pixel-locked to the page instead of lagging behind it.
 // the engine (and three.js with it) loads as a separate chunk after
 // hydration so it stays off the critical path; reduced motion still gets
-// the portrait, just placed instantly with no intro, brush, or ripple.
+// the portrait, just placed instantly with no intro.
 export default function ParticleField() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -50,7 +53,7 @@ export default function ParticleField() {
     <canvas
       ref={canvasRef}
       aria-hidden
-      className="pointer-events-none fixed inset-0 z-0 h-full w-full"
+      className="pointer-events-none absolute left-0 top-0 z-0"
     />
   );
 }
