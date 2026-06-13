@@ -160,7 +160,7 @@ export function RatingDistribution() {
               fontWeight="500"
               fill="white"
             >
-              1750 - I'm here!
+              1750 - I&apos;m here!
             </text>
 
             <line

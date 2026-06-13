@@ -169,7 +169,6 @@ const config: Config = {
         { values: theme("textShadow") },
       );
     }),
-    require("tailwindcss-motion"),
   ],
 };
 export default config;

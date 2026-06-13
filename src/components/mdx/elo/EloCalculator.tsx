@@ -80,7 +80,8 @@ export function EloCalculator() {
             dangerouslySetInnerHTML={{ __html: step1HTML }}
           />
           <div className="mt-2 text-center text-sm text-secondary">
-            You're expected to win {(expected * 100).toFixed(1)}% of the time
+            You&apos;re expected to win {(expected * 100).toFixed(1)}% of the
+            time
           </div>
         </div>
       </div>

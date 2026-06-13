@@ -13,8 +13,9 @@ interface ImageMDXProps {
 export function ImageMDX({ src, alt, mdHalfWidth = false }: ImageMDXProps) {
   if (!src) return null;
   if (process.env.NODE_ENV !== "production" && alt === undefined) {
-    // eslint-disable-next-line no-console
-    console.warn(`[ImageMDX] missing alt for src="${src}". use alt="" if decorative.`);
+    console.warn(
+      `[ImageMDX] missing alt for src="${src}". use alt="" if decorative.`,
+    );
   }
   return (
     <ImageAutoHeight mdHalfWidth={mdHalfWidth} src={src} alt={alt ?? ""} />

@@ -43,6 +43,7 @@ export default function GlobalError({
           >
             try again
           </button>
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- intentional full reload; next/link router is unsafe inside the global error boundary */}
           <a
             href="/"
             style={{
