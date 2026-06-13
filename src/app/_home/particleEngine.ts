@@ -140,13 +140,16 @@ export class HalftoneEngine {
   private disposed = false;
   // last morph value we drew at; -1 forces a redraw (measure/resize/first frame)
   private lastMorph = -1;
-  // kept so we can rebuild the geometry if the gl context is lost and restored
-  private img: HTMLImageElement | null = null;
 
   // scroll range over which the print becomes the text, set in measure()
   private morphStart = Infinity;
   private morphEnd = Infinity;
   private textGridW = 0;
+  // real gpu ceiling for the drawing buffer, queried once. android devices are
+  // commonly 4096 (some low-end 2048), far below desktop. cross it and chrome
+  // android silently blanks the whole canvas, which is why the portrait never
+  // showed up there. 0 = not measured yet
+  private maxBuffer = 0;
 
   constructor(canvas: HTMLCanvasElement, opts: EngineOpts) {
     this.opts = opts;
@@ -162,7 +165,6 @@ export class HalftoneEngine {
   async init() {
     const img = await loadImage(this.opts.imageSrc);
     if (this.disposed) return;
-    this.img = img;
     this.buildGeometry(img);
     if (this.opts.reducedMotion) this.intro = 1.3; // print is just there, no show
     this.measure();
@@ -327,6 +329,22 @@ export class HalftoneEngine {
     this.textGridW = gw;
   }
 
+  // smallest of the buffer-size ceilings the gpu enforces, cached. fall back to
+  // a conservative 4096 if the params come back junk
+  private getMaxBuffer() {
+    if (this.maxBuffer) return this.maxBuffer;
+    try {
+      const gl = this.renderer.getContext();
+      const tex = gl.getParameter(gl.MAX_TEXTURE_SIZE) as number;
+      const view = gl.getParameter(gl.MAX_VIEWPORT_DIMS) as Int32Array;
+      const lim = Math.min(tex || 0, view?.[0] || 0, view?.[1] || 0);
+      this.maxBuffer = lim > 0 ? lim : 4096;
+    } catch {
+      this.maxBuffer = 4096;
+    }
+    return this.maxBuffer;
+  }
+
   private measure = () => {
     // clientWidth excludes the scrollbar, matching getBoundingClientRect and
     // the canvas css width, so nothing squishes horizontally
@@ -346,7 +364,6 @@ export class HalftoneEngine {
     };
     // grains sized to overlap their sample cell so flat tones close up solid
     u.uDotScale.value = (pr.width / this.gridW) * 1.85;
-    u.uDpr.value = dpr;
 
     // the canvas covers the document from the top down to the bottom of the
     // last grain target. sized this way it scrolls natively with the page
@@ -367,17 +384,28 @@ export class HalftoneEngine {
       // one smooth motion: starts just into the scroll, fully formed by the
       // time the text block sits around mid-viewport
       this.morphStart = h * 0.07;
-      this.morphEnd = Math.max(this.morphStart + 280, tr.top + scroll - h * 0.5);
+      this.morphEnd = Math.max(
+        this.morphStart + 280,
+        tr.top + scroll - h * 0.5,
+      );
       cover = tr.top + scroll + tr.height + h * 0.2;
     } else {
       this.morphStart = Infinity;
       this.morphEnd = Infinity;
     }
 
-    // keep the framebuffer inside gpu limits on very tall pages
-    const coverHeight = Math.min(cover, 8192 / dpr);
+    // keep the framebuffer inside the device's real gpu limits. exceeding
+    // MAX_TEXTURE_SIZE / MAX_VIEWPORT_DIMS blanks the entire canvas on chrome
+    // android (desktop limits are huge, so it only bites on phones). drop dpr
+    // before clamping height so the print keeps full vertical coverage, and
+    // only truncate the bottom of the canvas as a last resort
+    const maxBuf = this.getMaxBuffer();
+    let effDpr = Math.min(dpr, maxBuf / w);
+    if (cover * effDpr > maxBuf) effDpr = Math.max(maxBuf / cover, 1);
+    const coverHeight = Math.min(cover, maxBuf / effDpr);
+    u.uDpr.value = effDpr;
 
-    this.renderer.setPixelRatio(dpr);
+    this.renderer.setPixelRatio(effDpr);
     this.renderer.setSize(w, coverHeight);
     this.camera.left = 0;
     this.camera.right = w;
@@ -419,20 +447,19 @@ export class HalftoneEngine {
     cancelAnimationFrame(this.raf);
   };
 
-  // gl resources were wiped: rebuild geometry + material from the kept image
-  // and resume. intro state lives in plain js, so it picks up where it left off
+  // gl resources were wiped. three re-uploads the geometry + material to the
+  // fresh context by itself on the next render, so we just re-measure (the
+  // framebuffer was reset) and resume the loop. intro/morph state lives in
+  // plain js, so it picks up where it left off.
+  // note: do NOT dispose/rebuild here. disposing the old context's buffers
+  // issues cross-context gl deletes ("object does not belong to this context"),
+  // which android drivers treat as fatal and leave the canvas blank for good.
   private onContextRestored = () => {
-    if (this.disposed || !this.img) return;
-    this.scene.remove(this.points);
-    this.points.geometry.dispose();
-    this.material.dispose();
-    this.buildGeometry(this.img);
+    if (this.disposed) return;
     this.measure();
     this.lastT = performance.now();
+    this.lastMorph = -1; // force a redraw even if the morph value is unchanged
     this.raf = requestAnimationFrame(this.tick);
-    this.rasterizeText().then(() => {
-      if (!this.disposed) this.measure();
-    });
   };
 
   private tick = (t: number) => {
