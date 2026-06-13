@@ -11,6 +11,7 @@ import Script from "next/script";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import ConsoleEgg from "./ConsoleEgg";
+import UmamiIdentify from "./UmamiIdentify";
 import "./globals.css";
 
 // opsz: high-contrast display cut at heading sizes (auto optical sizing).
@@ -110,11 +111,15 @@ export default function RootLayout({
         <ConsoleEgg />
         <SpeedInsights />
         {process.env.NODE_ENV === "production" && (
-          <Script
-            defer
-            src="https://cloud.umami.is/script.js"
-            data-website-id="5f57cfa4-f6f0-4820-81ac-6bf61facd981"
-          />
+          <>
+            <Script
+              defer
+              src="https://cloud.umami.is/script.js"
+              data-website-id="5f57cfa4-f6f0-4820-81ac-6bf61facd981"
+            />
+            {/* pins ?ref + utm_* from the landing url to the umami session */}
+            <UmamiIdentify />
+          </>
         )}
       </body>
     </html>
