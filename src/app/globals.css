@@ -9,6 +9,12 @@
     /* --columbiaYellow: #fecb47; */
     --columbiaYellow: #f0a044;
 
+    /* shippori mincho is loaded via a <link> in layout.tsx, not next/font, so
+       its variable isn't auto-defined. it must exist: the serif + display font
+       stacks reference var(--font-shippori-mincho), and an undefined var with
+       no fallback invalidates the WHOLE font-family, dropping headings to sans. */
+    --font-shippori-mincho: "Shippori Mincho";
+
     --sh-class: #6f42c1;
     --sh-identifier: #034e43;
     --sh-sign: #0f1924;
