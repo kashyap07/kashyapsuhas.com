@@ -27,32 +27,7 @@ export default function Hero() {
         <Wordmark onCycle={onWordmarkCycle} />
 
         <p className="mt-1 text-lg text-secondary md:mt-3 md:text-2xl">
-          {chill ? (
-            "chilllllll"
-          ) : (
-            <>
-              Welcome to my{" "}
-              <span className="relative inline-block">
-                slice
-                <svg
-                  aria-hidden
-                  viewBox="0 0 100 10"
-                  preserveAspectRatio="none"
-                  className="absolute -bottom-1.5 left-0 h-2.5 w-full overflow-visible"
-                >
-                  {/* hand-drawn marker swipe */}
-                  <path
-                    d="M3 7 C 22 3.5, 46 8.5, 70 5.5 S 94 4.5, 97 6"
-                    fill="none"
-                    stroke="var(--columbiaYellow)"
-                    strokeWidth={3}
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </span>{" "}
-              of the Interwebs.
-            </>
-          )}
+          {chill ? "chilllllll" : <>Welcome to my slice of the Interwebs.</>}
         </p>
 
         {/* roomier on mobile: bigger type + padded links for comfy tap
