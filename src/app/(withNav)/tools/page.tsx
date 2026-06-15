@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 import { Wrapper } from "@components/ui";
+import { SITE_URL } from "@utils/site";
 
 import tools from "./toolsList";
 
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
   description:
     "Bunch of tools that work directly in the browser without having to upload to any server. Enjoy!",
   alternates: {
-    canonical: "https://www.kashyapsuhas.com/tools",
+    canonical: `${SITE_URL}/tools`,
   },
   keywords: [
     "Suhas Kashyap tools",

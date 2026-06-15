@@ -15,10 +15,22 @@ import * as MdxComponents from "@components/mdx";
 import Lightbox from "@components/mdx/trip/Lightbox";
 import { TripRouteProvider } from "@components/mdx/trip/TripContext";
 import { bindTripComponents, getTrip } from "@components/mdx/trip/registry";
-import { ImageAutoHeight } from "@components/ui";
 import slugify from "@utils/slugify";
 
 const { ImageMDX } = MdxComponents;
+
+// flatten react children to plain text. headings/code can carry nested nodes
+// (`## foo *bar*`, links, inline code), so a bare `typeof === "string"` check
+// drops the text and yields empty slugs / unhighlighted code.
+function getNodeText(node: ReactNode): string {
+  if (node == null || typeof node === "boolean") return "";
+  if (typeof node === "string" || typeof node === "number") return String(node);
+  if (Array.isArray(node)) return node.map(getNodeText).join("");
+  if (React.isValidElement(node)) {
+    return getNodeText((node.props as { children?: ReactNode }).children);
+  }
+  return "";
+}
 
 const CustomLink = (props: AnchorHTMLAttributes<HTMLAnchorElement>) => {
   const { href, children, ...rest } = props;
@@ -55,7 +67,7 @@ interface CodeProps extends HTMLAttributes<HTMLElement> {
 }
 
 const Code = ({ children, ...props }: CodeProps) => {
-  const codeString = typeof children === "string" ? children : "";
+  const codeString = getNodeText(children);
   const codeHTML = highlight(codeString);
 
   return <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />;
@@ -66,7 +78,7 @@ const createHeading = (level: number) => {
     children,
     ...props
   }: HTMLAttributes<HTMLHeadingElement>) => {
-    const text = typeof children === "string" ? children : "";
+    const text = getNodeText(children);
     const slug = slugify(text);
 
     const Heading = `h${level}` as "h1" | "h2" | "h3" | "h4" | "h5" | "h6";

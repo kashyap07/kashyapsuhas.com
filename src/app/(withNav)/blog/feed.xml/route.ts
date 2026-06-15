@@ -1,4 +1,5 @@
 import { getBlogPosts } from "@db/blog";
+import { SITE_URL } from "@utils/site";
 
 export async function GET() {
   const posts = getBlogPosts();
@@ -7,7 +8,7 @@ export async function GET() {
     .map((post) => {
       const { title, description, publishedDateTime, heroImage } =
         post.metadata;
-      const url = `https://www.kashyapsuhas.com/blog/${post.slug}`;
+      const url = `${SITE_URL}/blog/${post.slug}`;
 
       return `
     <item>
@@ -26,18 +27,18 @@ export async function GET() {
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/">
   <channel>
     <title>Suhas Kashyap's Blog</title>
-    <link>https://www.kashyapsuhas.com</link>
+    <link>${SITE_URL}</link>
     <description>Kashyap's Blog</description>
     <language>en-us</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
-    <atom:link href="https://www.kashyapsuhas.com/blog/feed.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="${SITE_URL}/blog/feed.xml" rel="self" type="application/rss+xml" />
     <generator>Next.js</generator>
     <webMaster>mail@kashyapsuhas.com (Suhas Kashyap)</webMaster>
     <managingEditor>mail@kashyapsuhas.com (Suhas Kashyap)</managingEditor>
     <image>
-      <url>https://www.kashyapsuhas.com/kashyapcom-og.png</url>
+      <url>${SITE_URL}/kashyapcom-og.png</url>
       <title>Suhas Kashyap's Blog</title>
-      <link>https://www.kashyapsuhas.com</link>
+      <link>${SITE_URL}</link>
     </image>${rssItems}
   </channel>
 </rss>`;

@@ -21,10 +21,8 @@
       }
     ],
     "paths": {
-      // "@*": ["./src/*"],
       "@utils/*": ["./src/utils/*"],
       "@components/*": ["./src/components/*"],
-      "@hooks/*": ["./src/hooks/*"],
       "@db/*": ["./src/db/*"]
     }
   },
@@ -34,7 +32,6 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "__tests__/**/*",
-    "jest.config.js",
     ".next/dev/types/**/*.ts"
   ],
   "exclude": ["node_modules"]

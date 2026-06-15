@@ -33,7 +33,6 @@ function skewPDF(x: number): number {
 const step = (X_MAX - X_MIN) / NUM_POINTS;
 const curve: { x: number; y: number }[] = [];
 let maxY = 0;
-let cdfAtMark = 0;
 
 for (let i = 0; i <= NUM_POINTS; i++) {
   const x = X_MIN + i * step;
@@ -41,10 +40,7 @@ for (let i = 0; i <= NUM_POINTS; i++) {
   const y = density * N * BIN_EQUIV;
   curve.push({ x, y });
   if (y > maxY) maxY = y;
-  if (x <= MARK) cdfAtMark += density * step;
 }
-
-const playersAbove = Math.round(N * (1 - cdfAtMark));
 
 const width = 700;
 const height = 340;

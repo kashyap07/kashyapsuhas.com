@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 import { Wrapper } from "@components/ui";
+import { SITE_URL } from "@utils/site";
 
 import { GalleryImageWrapper, GalleryProvider } from "./PhotoGallery";
 import galleryImages from "./galleryImages";
@@ -13,7 +14,7 @@ export const metadata = {
   title: "Kashyap's Photos",
   description: "Kashyap's Photos.",
   alternates: {
-    canonical: "https://www.kashyapsuhas.com/photos",
+    canonical: `${SITE_URL}/photos`,
   },
   keywords: [
     "Suhas Kashyap photography",

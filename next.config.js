@@ -4,6 +4,11 @@ const bundleAnalyzer = withBundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
 });
 
+// canonical origin. mirrors src/utils/site.ts (config can't import the ts util).
+const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL || "https://www.kashyapsuhas.com"
+).replace(/\/+$/, "");
+
 // permissions-policy: lock down powerful features we never use. cookieless
 // analytics + speed insights don't need camera/mic/geo/etc.
 const PERMISSIONS_POLICY = [
@@ -49,9 +54,9 @@ const nextConfig = {
     // link headers advertise machine-readable resources so agents that don't
     // parse html can still find them.
     const LINK_HEADER = [
-      '<https://www.kashyapsuhas.com/sitemap.xml>; rel="sitemap"; type="application/xml"',
-      '<https://www.kashyapsuhas.com/llms.txt>; rel="llms"; type="text/markdown"',
-      '<https://www.kashyapsuhas.com/blog/feed.xml>; rel="alternate"; type="application/rss+xml"',
+      `<${SITE_URL}/sitemap.xml>; rel="sitemap"; type="application/xml"`,
+      `<${SITE_URL}/llms.txt>; rel="llms"; type="text/markdown"`,
+      `<${SITE_URL}/blog/feed.xml>; rel="alternate"; type="application/rss+xml"`,
     ].join(", ");
 
     return [

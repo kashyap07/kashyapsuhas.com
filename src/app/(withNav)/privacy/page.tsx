@@ -1,12 +1,13 @@
 import { Metadata } from "next";
 
 import { Wrapper } from "@components/ui";
+import { SITE_URL } from "@utils/site";
 
 export const metadata: Metadata = {
   title: "Privacy",
   description: "Privacy policy for kashyapsuhas.com",
   alternates: {
-    canonical: "https://www.kashyapsuhas.com/privacy",
+    canonical: `${SITE_URL}/privacy`,
   },
 };
 

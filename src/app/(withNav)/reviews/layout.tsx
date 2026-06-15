@@ -1,6 +1,8 @@
 import { Metadata } from "next";
 import { ReactNode } from "react";
 
+import { SITE_URL } from "@utils/site";
+
 export const metadata: Metadata = {
   // re-declare template so /reviews/[slug] still gets "| Suhas Kashyap" appended
   title: {
@@ -10,7 +12,7 @@ export const metadata: Metadata = {
   description:
     "Suhas Kashyap's reviews of movies, products, restaurants, and such",
   alternates: {
-    canonical: "https://www.kashyapsuhas.com/reviews",
+    canonical: `${SITE_URL}/reviews`,
   },
   openGraph: {
     images: ["/kashyapcom-og.png"],

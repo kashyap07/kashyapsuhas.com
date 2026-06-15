@@ -1,11 +1,13 @@
 import { Metadata } from "next";
 
+import { SITE_URL } from "@utils/site";
+
 export const metadata: Metadata = {
   title: "AI Background Remover",
   description:
     "Remove image backgrounds instantly using AI. Runs entirely in your browser with U2-Net via WebAssembly, no uploads.",
   alternates: {
-    canonical: "https://www.kashyapsuhas.com/tools/background-remover",
+    canonical: `${SITE_URL}/tools/background-remover`,
   },
   keywords: [
     "background remover",

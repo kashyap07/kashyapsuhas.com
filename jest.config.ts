@@ -1,16 +1,12 @@
 import type { Config } from "jest";
 
 const config: Config = {
-  preset: "ts-jest",
   testEnvironment: "jsdom",
 
-  // ts-jest configuration
-  globals: {
-    "ts-jest": {
-      tsconfig: {
-        jsx: "react-jsx",
-      },
-    },
+  // ts-jest transform. config lives in the transform tuple now; the old
+  // globals['ts-jest'] form is deprecated.
+  transform: {
+    "^.+\\.tsx?$": ["ts-jest", { tsconfig: { jsx: "react-jsx" } }],
   },
 
   // Setup files
@@ -21,7 +17,6 @@ const config: Config = {
     "^@/(.*)$": "<rootDir>/src/$1",
     "^@utils/(.*)$": "<rootDir>/src/utils/$1",
     "^@components/(.*)$": "<rootDir>/src/components/$1",
-    "^@hooks/(.*)$": "<rootDir>/src/hooks/$1",
     "^@db/(.*)$": "<rootDir>/src/db/$1",
     // Mock CSS imports
     "\\.(css|less|scss|sass)$": "identity-obj-proxy",

@@ -1,3 +1,5 @@
+import { cache } from "react";
+
 import fs from "fs";
 import matter from "gray-matter";
 import path from "path";
@@ -100,12 +102,38 @@ function getMDXData(dir: string) {
     });
 }
 
+// read + parse every post once per request. cache() dedupes the repeated calls
+// a single page makes (generateMetadata + the component + the og image route all
+// ask for posts), so the dir is walked once instead of three times.
+const loadPosts = cache(() =>
+  getMDXData(path.join(process.cwd(), "content/blog")),
+);
+
 // drafts excluded by default. pass { includeDrafts: true } from the slug page
 // so a shareable preview url still resolves while the post stays out of
 // listing, rss feed, and sitemap.
 export function getBlogPosts({
   includeDrafts = false,
 }: { includeDrafts?: boolean } = {}) {
-  const posts = getMDXData(path.join(process.cwd(), "content/blog"));
+  const posts = loadPosts();
   return includeDrafts ? posts : posts.filter((p) => !p.metadata.draft);
+}
+
+// single-post lookup by slug. shares the cached read above.
+export function getBlogPost(
+  slug: string,
+  { includeDrafts = false }: { includeDrafts?: boolean } = {},
+) {
+  return getBlogPosts({ includeDrafts }).find((p) => p.slug === slug);
+}
+
+// raw on-disk source for a slug: frontmatter + body, byte-for-byte. the
+// /blog/:slug.md endpoint serves this so agents get the real file instead of a
+// reconstruction. slugs are lowercased filenames, so match case-insensitively.
+export function getBlogPostSource(slug: string): string | null {
+  const dir = path.join(process.cwd(), "content/blog");
+  const file = getMDXFiles(dir).find(
+    (f) => path.basename(f, ".mdx").toLowerCase() === slug,
+  );
+  return file ? fs.readFileSync(path.join(dir, file), "utf-8") : null;
 }

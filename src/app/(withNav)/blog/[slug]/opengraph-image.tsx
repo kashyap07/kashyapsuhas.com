@@ -4,7 +4,7 @@ import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 
-import { getBlogPosts } from "@db/blog";
+import { getBlogPost, getBlogPosts } from "@db/blog";
 import {
   FRAUNCES,
   ShapedTitle,
@@ -12,6 +12,7 @@ import {
   loadGoogleFont,
   shapeWords,
 } from "@utils/ogText";
+import { SITE_URL } from "@utils/site";
 
 export const alt = "Blog post by Suhas Kashyap";
 export const size = { width: 1200, height: 630 };
@@ -35,8 +36,6 @@ const MIME: Record<string, string> = {
   ".webp": "image/webp",
   ".gif": "image/gif",
 };
-
-const SITE_URL = "https://www.kashyapsuhas.com";
 
 // hero lives in public/. build/dev prerenders read it from disk and inline a
 // data uri. public/ is excluded from the deployed function bundle (file
@@ -72,9 +71,7 @@ export default async function Image({
 }) {
   const { slug } = await params;
   // drafts included so shared preview urls still get a proper card
-  const post = getBlogPosts({ includeDrafts: true }).find(
-    (p) => p.slug === slug,
-  );
+  const post = getBlogPost(slug, { includeDrafts: true });
   if (!post) return new Response("Not found", { status: 404 });
 
   const { title: rawTitle, publishedDateTime, heroImage } = post.metadata;

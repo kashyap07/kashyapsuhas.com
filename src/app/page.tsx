@@ -2,6 +2,7 @@ import { Metadata } from "next";
 
 import { getBlogPosts } from "@db/blog";
 import { getReviews } from "@db/reviews";
+import { SITE_URL } from "@utils/site";
 
 import Hero from "./_home/Hero";
 import LatestWriting from "./_home/LatestWriting";
@@ -31,23 +32,23 @@ export const metadata: Metadata = {
     "tools",
     "reviews",
   ],
-  authors: [{ name: "Suhas Kashyap", url: "https://www.kashyapsuhas.com" }],
+  authors: [{ name: "Suhas Kashyap", url: SITE_URL }],
   creator: "Suhas Kashyap",
   publisher: "Suhas Kashyap",
   alternates: {
-    canonical: "https://www.kashyapsuhas.com/",
+    canonical: `${SITE_URL}/`,
   },
   openGraph: {
     type: "profile",
     title: "Suhas Kashyap",
     description:
       "Suhas Kashyap's slice of the interwebs. See blogs, photos, reviews, tools, contact details.",
-    url: "https://www.kashyapsuhas.com",
+    url: SITE_URL,
     siteName: "Suhas Kashyap",
     locale: "en_US",
     images: [
       {
-        url: "https://www.kashyapsuhas.com/kashyapcom-og.png",
+        url: `${SITE_URL}/kashyapcom-og.png`,
         width: 1200,
         height: 630,
         alt: "Suhas Kashyap",
@@ -79,13 +80,13 @@ export default function Home() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Person",
-            "@id": "https://www.kashyapsuhas.com/#person",
+            "@id": `${SITE_URL}/#person`,
             name: "Suhas Kashyap",
             alternateName: ["Kashyap Suhas", "Suhas", "Kashyap"],
-            url: "https://www.kashyapsuhas.com",
+            url: SITE_URL,
             image: {
               "@type": "ImageObject",
-              url: "https://www.kashyapsuhas.com/kashyapcom-og.png",
+              url: `${SITE_URL}/kashyapcom-og.png`,
               width: 1200,
               height: 630,
             },

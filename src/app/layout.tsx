@@ -10,6 +10,8 @@ import Script from "next/script";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
+import { SITE_URL } from "@utils/site";
+
 import ConsoleEgg from "./ConsoleEgg";
 import UmamiIdentify from "./UmamiIdentify";
 import "./globals.css";
@@ -50,9 +52,7 @@ const tiroKannada = Tiro_Kannada({
 // via the text= param (see the <link> in the body), a single tiny @font-face.
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "https://www.kashyapsuhas.com",
-  ),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Suhas Kashyap",
     template: "%s | Suhas Kashyap",
@@ -64,7 +64,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     images: [
       {
-        url: "https://www.kashyapsuhas.com/kashyapcom-og.png",
+        url: `${SITE_URL}/kashyapcom-og.png`,
         width: 1200,
         height: 630,
         alt: "Suhas Kashyap",
@@ -92,7 +92,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`dark ${fraunces.variable} ${literata.variable} ${inter.variable} ${tiroDevanagari.variable} ${tiroKannada.variable}`}
+      className={`${fraunces.variable} ${literata.variable} ${inter.variable} ${tiroDevanagari.variable} ${tiroKannada.variable}`}
     >
       <body className="font-serif">
         {/* just the katakana the particle morph rasterizes (レス ヤップ / モア ドゥ),

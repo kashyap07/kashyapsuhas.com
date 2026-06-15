@@ -51,9 +51,26 @@ function getNakshatraIndex(moonSid: number): number {
   return Math.floor(moonSid / (360 / 27));
 }
 
-// vaara 0=sun ... 6=sat
+// vaara runs sunrise-to-sunrise, not civil midnight-to-midnight. compute the
+// most recent sunrise at a fixed observer (bengaluru) and take its weekday in
+// IST. without the visitor's own location this is the pragmatic default: correct
+// for the common case and far better than date.getDay() (which flips the vaara
+// at midnight and in the visitor's timezone). 0=sun ... 6=sat.
+const OBSERVER = new Astronomy.Observer(12.9716, 77.5946, 920);
+const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
+
 function getVaaraIndex(date: Date): number {
-  return date.getDay();
+  // +1 = rise direction; negative limit searches backward for the previous one
+  const sunrise = Astronomy.SearchRiseSet(
+    Astronomy.Body.Sun,
+    OBSERVER,
+    +1,
+    Astronomy.MakeTime(date),
+    -2,
+  );
+  if (!sunrise) return date.getDay(); // polar edge case, n/a for bengaluru
+  // weekday of the sunrise day, read in IST (the day the vaara belongs to)
+  return new Date(sunrise.date.getTime() + IST_OFFSET_MS).getUTCDay();
 }
 
 // find most recent new moon before given date

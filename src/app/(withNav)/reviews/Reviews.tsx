@@ -11,7 +11,6 @@ import { type Review } from "@db/reviews";
 import cn from "@utils/cn";
 
 import {
-  CATEGORY_BG_COLOR_MAP,
   CATEGORY_FILL_BG_COLOR_MAP,
   CATEGORY_TEXT_COLOR_MAP,
   getCategoryIcon,

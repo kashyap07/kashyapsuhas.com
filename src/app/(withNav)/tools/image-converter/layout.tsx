@@ -1,11 +1,13 @@
 import { Metadata } from "next";
 
+import { SITE_URL } from "@utils/site";
+
 export const metadata: Metadata = {
   title: "Image Converter",
   description:
     "Convert images between HEIC, JPEG, PNG, and WebP formats directly in your browser. No uploads.",
   alternates: {
-    canonical: "https://www.kashyapsuhas.com/tools/image-converter",
+    canonical: `${SITE_URL}/tools/image-converter`,
   },
   keywords: [
     "image converter",

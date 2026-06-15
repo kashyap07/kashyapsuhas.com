@@ -2,7 +2,8 @@ import { type Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { CustomMDX, RelativeDate, Wrapper } from "@components/ui";
-import { getBlogPosts } from "@db/blog";
+import { getBlogPost, getBlogPosts } from "@db/blog";
+import { SITE_URL } from "@utils/site";
 
 export const dynamic = "force-static";
 
@@ -12,8 +13,6 @@ export const dynamic = "force-static";
 export function generateStaticParams() {
   return getBlogPosts().map((post) => ({ slug: post.slug }));
 }
-
-const SITE_URL = "https://www.kashyapsuhas.com";
 
 // make a relative path absolute for json-ld / og. external urls pass through.
 const toAbsolute = (path: string) =>
@@ -25,9 +24,7 @@ export async function generateMetadata(props: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata | undefined> {
   const params = await props.params;
-  const post = getBlogPosts({ includeDrafts: true }).find(
-    (post) => post.slug === params.slug,
-  );
+  const post = getBlogPost(params.slug, { includeDrafts: true });
 
   if (!post) return;
 
@@ -61,9 +58,7 @@ interface Props {
 
 async function Blog(props: Props) {
   const params = await props.params;
-  const post = getBlogPosts({ includeDrafts: true }).find(
-    (post) => post.slug === params.slug,
-  );
+  const post = getBlogPost(params.slug, { includeDrafts: true });
   if (!post) notFound();
 
   const { publishedDateTime, title, description, heroImage, draft } =
@@ -115,7 +110,7 @@ async function Blog(props: Props) {
         )}
 
         {/* title */}
-        <h1 className="title w-full text-heading-sm font-medium md:text-heading-lg">
+        <h1 className="w-full text-heading-sm font-medium md:text-heading-lg">
           {post.metadata.title}
         </h1>
 

@@ -2,12 +2,13 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 import { Wrapper } from "@components/ui";
+import { SITE_URL } from "@utils/site";
 
 export const metadata: Metadata = {
   title: "Contact",
   description: "Contact Suhas Kashyap",
   alternates: {
-    canonical: "https://www.kashyapsuhas.com/contact",
+    canonical: `${SITE_URL}/contact`,
   },
 };
 

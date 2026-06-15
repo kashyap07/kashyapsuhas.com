@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Wrapper } from "@components/ui";
 
-import { type PanchangaResult, computePanchanga } from "./calculations";
+import type { PanchangaResult, computePanchanga } from "./calculations";
 import { DEVANAGARI, DEVANAGARI_NAKSHATRA } from "./data";
 
 // helper: english → devanagari, with nakshatra-aware override
@@ -76,8 +76,25 @@ export default function PanchangaPage() {
   const [panchanga, setPanchanga] = useState<PanchangaResult | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  // calculations.ts pulls in astronomy-engine (an ephemeris lib). load it after
+  // mount so it's a separate async chunk, not weight in the initial route js.
+  const computeRef = useRef<typeof computePanchanga | null>(null);
+  const [ready, setReady] = useState(false);
+
   useEffect(() => {
     setInputVal(formatDatetimeLocal(new Date()));
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    import("./calculations").then((mod) => {
+      if (cancelled) return;
+      computeRef.current = mod.computePanchanga;
+      setReady(true);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   useEffect(() => {
@@ -93,13 +110,14 @@ export default function PanchangaPage() {
   }, [isLive]);
 
   useEffect(() => {
+    if (!computeRef.current) return; // calc module not loaded yet
     try {
-      setPanchanga(computePanchanga(date));
+      setPanchanga(computeRef.current(date));
       setError(null);
     } catch (e) {
       setError(String(e));
     }
-  }, [date]);
+  }, [date, ready]);
 
   function handleDateChange(e: React.ChangeEvent<HTMLInputElement>) {
     setIsLive(false);

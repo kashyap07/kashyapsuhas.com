@@ -7,6 +7,7 @@ import { ArrowUpRight, Check, Minus, Plus, X } from "lucide-react";
 import { Wrapper } from "@components/ui";
 import { getReviewBySlug, getReviews } from "@db/reviews";
 import cn from "@utils/cn";
+import { SITE_URL } from "@utils/site";
 
 import {
   getCategoryBgColor,
@@ -38,10 +39,10 @@ export async function generateMetadata(props: {
       title: `${title}`,
       description: review.summary,
       type: "article",
-      url: `https://www.kashyapsuhas.com/reviews/${review.slug}`,
+      url: `${SITE_URL}/reviews/${review.slug}`,
     },
     alternates: {
-      canonical: `https://www.kashyapsuhas.com/reviews/${review.slug}`,
+      canonical: `${SITE_URL}/reviews/${review.slug}`,
     },
   };
 }
@@ -107,20 +108,20 @@ export default async function ReviewPage(props: Props) {
                 }
               : undefined,
             datePublished: review.reviewDate,
-            url: `https://www.kashyapsuhas.com/reviews/${review.slug}`,
+            url: `${SITE_URL}/reviews/${review.slug}`,
             mainEntityOfPage: {
               "@type": "WebPage",
-              "@id": `https://www.kashyapsuhas.com/reviews/${review.slug}`,
+              "@id": `${SITE_URL}/reviews/${review.slug}`,
             },
             author: {
               "@type": "Person",
-              "@id": "https://www.kashyapsuhas.com/#person",
+              "@id": `${SITE_URL}/#person`,
               name: "Suhas Kashyap",
-              url: "https://www.kashyapsuhas.com",
+              url: SITE_URL,
             },
             publisher: {
               "@type": "Person",
-              "@id": "https://www.kashyapsuhas.com/#person",
+              "@id": `${SITE_URL}/#person`,
               name: "Suhas Kashyap",
             },
           }),

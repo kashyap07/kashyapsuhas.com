@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { Wrapper } from "@components/ui";
 import { getBlogPosts } from "@db/blog";
+import { SITE_URL } from "@utils/site";
 
 export const dynamic = "force-static";
 
@@ -9,9 +10,9 @@ export const metadata = {
   title: "Kashyap's Blog",
   description: "Kashyap's Blog.",
   alternates: {
-    canonical: "https://www.kashyapsuhas.com/blog",
+    canonical: `${SITE_URL}/blog`,
     types: {
-      "application/rss+xml": "https://www.kashyapsuhas.com/blog/feed.xml",
+      "application/rss+xml": `${SITE_URL}/blog/feed.xml`,
     },
   },
   keywords: ["Suhas Kashyap", "blog", "writing", "essays"],

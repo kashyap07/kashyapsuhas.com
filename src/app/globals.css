@@ -6,7 +6,6 @@
   :root {
     --background: #fff;
     --foreground: #1e293b;
-    /* --columbiaYellow: #fecb47; */
     --columbiaYellow: #f0a044;
 
     /* shippori mincho is loaded via a <link> in layout.tsx, not next/font, so
@@ -105,10 +104,6 @@
     height: calc(100lvh - 100svh);
   }
 
-  .title {
-    /* text-wrap: balance; */
-  }
-
   .vert-rl {
     writing-mode: vertical-rl;
   }
@@ -138,7 +133,8 @@
   max-width: none;
 
   img {
-    @apply rounded-lg shadow-macos;
+    /* don't restyle next/image; reset margin + match the site card look */
+    @apply m-0 rounded-lg shadow-macos;
   }
 
   pre {
@@ -157,11 +153,6 @@
     span {
       @apply font-medium;
     }
-  }
-
-  img {
-    /* Don't apply styles to next/image */
-    @apply m-0;
   }
 
   h2,

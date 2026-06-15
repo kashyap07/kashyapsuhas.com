@@ -1,8 +1,7 @@
 import { getBlogPosts } from "@db/blog";
+import { SITE_URL } from "@utils/site";
 
 export const dynamic = "force-static";
-
-const SITE_URL = "https://www.kashyapsuhas.com";
 
 export function GET() {
   const posts = getBlogPosts();
