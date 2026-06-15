@@ -12,6 +12,7 @@ const reviewSchema = z.object({
   pros: z.array(z.string()),
   cons: z.array(z.string()),
   link: z.string().optional(),
+  spoilers: z.boolean().optional(),
   reviewDate: z.string().min(1),
 });
 

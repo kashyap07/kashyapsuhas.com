@@ -1,6 +1,7 @@
 import { type Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { type CSSProperties } from "react";
 
 import { ArrowUpRight, Check, Minus, Plus, X } from "lucide-react";
 
@@ -50,6 +51,20 @@ export async function generateMetadata(props: {
 interface Props {
   params: Promise<{ slug: string }>;
 }
+
+// css ribbon (folded corner), adapted from the css-tip recipe. the conic
+// border-image paints the darker fold; clip-path notches the tucked ends
+const ribbonStyle = {
+  "--f": "0.5em", // folded part
+  lineHeight: 1.8,
+  paddingInline: "1lh",
+  paddingBottom: "var(--f)",
+  borderImage: "conic-gradient(#0008 0 0) 51%/var(--f)",
+  clipPath:
+    "polygon(100% calc(100% - var(--f)),100% 100%,calc(100% - var(--f)) calc(100% - var(--f)),var(--f) calc(100% - var(--f)), 0 100%,0 calc(100% - var(--f)),999px calc(100% - var(--f) - 999px),calc(100% - 999px) calc(100% - var(--f) - 999px))",
+  transform: "translate(calc((1 - cos(45deg))*100%), -100%) rotate(45deg)",
+  transformOrigin: "0% 100%",
+} as CSSProperties;
 
 export default async function ReviewPage(props: Props) {
   const { slug } = await props.params;
@@ -129,7 +144,17 @@ export default async function ReviewPage(props: Props) {
       />
 
       {/* hero card, uses full WIDE width, tinted by category */}
-      <section className={cn("rounded-lg p-6 md:p-10", categoryBg)}>
+      <section className={cn("relative rounded-lg p-6 md:p-10", categoryBg)}>
+        {/* spoilers ribbon, folded into the top-right corner */}
+        {review.spoilers && (
+          <div
+            title="contains spoilers"
+            className="absolute right-0 top-0 bg-accent font-sans text-[13px] font-bold uppercase tracking-wider text-black"
+            style={ribbonStyle}
+          >
+            has spoilers
+          </div>
+        )}
         <div className="flex flex-col items-start justify-between gap-6 md:flex-row">
           {/* left: title + category/date */}
           <div className="min-w-0 flex-1">

@@ -177,6 +177,13 @@ export default defineConfig({
             required: false,
           },
           {
+            type: "boolean",
+            name: "spoilers",
+            label: "Contains spoilers?",
+            description: "stamps a 'spoilers' ribbon on the review header card",
+            required: false,
+          },
+          {
             type: "datetime",
             name: "reviewDate",
             label: "Review Date",
