@@ -103,6 +103,12 @@ export default function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
+        {/* app router root layout is the document-level place for this link;
+            no-page-custom-font is a pages-router (_document) heuristic that
+            doesn't apply here. self-hosting via next/font isn't an option:
+            next/font/google only exposes Shippori Mincho's latin subset, so the
+            katakana glyphs the particle morph rasterizes wouldn't be included. */}
+        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@700&text=%E3%83%AC%E3%82%B9%E3%83%A4%E3%83%83%E3%83%97%E3%83%A2%E3%82%A2%E3%83%89%E3%82%A5&display=swap"
