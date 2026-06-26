@@ -39,7 +39,7 @@ export default function TripMapHero() {
   return (
     <>
       {isXl && (
-        <div className="fixed right-6 top-1/2 z-20 h-[82vh] w-[320px] -translate-y-1/2 overflow-hidden rounded-lg border border-line shadow-macos 2xl:right-10 2xl:h-[88vh] 2xl:w-[480px]">
+        <div className="fixed right-6 top-1/2 z-20 h-[82vh] w-[320px] -translate-y-1/2 overflow-hidden rounded-lg border border-line 2xl:right-10 2xl:h-[88vh] 2xl:w-[480px]">
           <TripMap />
         </div>
       )}

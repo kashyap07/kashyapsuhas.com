@@ -203,6 +203,26 @@ export function createRouteMap(opts: Options): RouteMapHandle {
 
   const map = new maplibregl.Map(mapOptions);
 
+  // maplibre's compact attribution opens itself the first time the credit
+  // populates (after tiles load), covering the map. at construction the
+  // attribution is still empty, so collapsing then is too early. maplibre only
+  // ever adds the open state once (it's guarded by !contains("compact")), so
+  // strip it the first time it appears, then stop — leaving click-to-expand
+  // intact for attribution. ours runs after maplibre's handler (registered
+  // later), so the class is already there to remove.
+  const collapseAttribution = () => {
+    const el = opts.container.querySelector<HTMLElement>(
+      ".maplibregl-ctrl-attrib.maplibregl-compact-show",
+    );
+    if (!el) return;
+    el.classList.remove("maplibregl-compact-show");
+    el.removeAttribute("open");
+    map.off("idle", collapseAttribution);
+    map.off("sourcedata", collapseAttribution);
+  };
+  map.on("idle", collapseAttribution);
+  map.on("sourcedata", collapseAttribution);
+
   // patch borders as soon as the style is parsed, before the first render
   map.once("style.load", () => applyIndianBorders(map));
 

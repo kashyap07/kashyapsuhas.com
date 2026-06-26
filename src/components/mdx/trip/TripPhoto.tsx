@@ -48,7 +48,7 @@ export default function TripPhoto({
       <figure className="not-prose m-0 flex flex-col gap-1">
         <OpenLightboxButton
           photo={lightboxData}
-          className="relative block aspect-square w-full overflow-hidden rounded transition-opacity hocus:opacity-90"
+          className="relative block aspect-square w-full overflow-hidden rounded"
         >
           <Image
             src={thumbSrc(photo.src)}
@@ -69,10 +69,7 @@ export default function TripPhoto({
 
   return (
     <figure className="my-8 flex flex-col items-center gap-2">
-      <OpenLightboxButton
-        photo={lightboxData}
-        className="block transition-opacity hocus:opacity-90"
-      >
+      <OpenLightboxButton photo={lightboxData} className="block">
         <Image
           src={photo.src}
           width={photo.width}
