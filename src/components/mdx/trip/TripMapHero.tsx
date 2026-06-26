@@ -43,7 +43,9 @@ export default function TripMapHero() {
           <TripMap />
         </div>
       )}
-      <TripRibbon active={!isXl} />
+      {/* key flips on the xl boundary so the ribbon remounts: fresh state and
+          its panel's maplibre instance torn down when it goes inactive */}
+      <TripRibbon key={isXl ? "xl" : "sub-xl"} active={!isXl} />
     </>
   );
 }

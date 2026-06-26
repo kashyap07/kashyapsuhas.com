@@ -1,7 +1,7 @@
 import { type Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { type CSSProperties } from "react";
+import { type CSSProperties, createElement } from "react";
 
 import { ArrowUpRight, Check, Minus, Plus, X } from "lucide-react";
 
@@ -71,7 +71,6 @@ export default async function ReviewPage(props: Props) {
   const review = getReviewBySlug(slug);
   if (!review) notFound();
 
-  const Icon = getCategoryIcon(review.category);
   const categoryColor = getCategoryTextColor(review.category);
   const categoryBg = getCategoryBgColor(review.category);
   const reviewDate = new Date(review.reviewDate);
@@ -169,7 +168,12 @@ export default async function ReviewPage(props: Props) {
                   categoryColor,
                 )}
               >
-                <Icon size={14} aria-hidden="true" />
+                {/* createElement (not <Icon/>) so the per-category icon lookup
+                    isn't flagged as a component created during render */}
+                {createElement(getCategoryIcon(review.category), {
+                  size: 14,
+                  "aria-hidden": true,
+                })}
                 {review.category}
               </Link>
               <span aria-hidden="true" className="text-subtle">

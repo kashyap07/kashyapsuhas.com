@@ -52,17 +52,9 @@ export default function TripRibbon({ active }: { active: boolean }) {
 
   const glyph = useMemo(() => buildGlyph(route.polyline), [route]);
 
-  // crossing into xl (rotate/resize): drop the panel map so the hidden ribbon
-  // doesn't keep a live maplibre instance around next to the sidebar's
-  useEffect(() => {
-    if (!active) {
-      setOpen(false);
-      setEverOpened(false);
-      setNudgeIdx(-1);
-      openedRef.current = false;
-      nudgeIdxRef.current = -1;
-    }
-  }, [active]);
+  // crossing into xl (rotate/resize) remounts this via a key in the host, which
+  // resets all state + refs and drops the panel's live maplibre instance, so no
+  // reset effect is needed here.
 
   useEffect(() => {
     if (!active) return;
