@@ -31,9 +31,10 @@ function useIsXl(): boolean {
 }
 
 // xl+: fixed follow-map card in the right gutter (320 wide, 480 at 2xl).
-// below xl: sticky ribbon strip (svg route + car) that expands into the same
-// follow-map on demand. the ribbon also ssr-renders (css-hidden on xl), so
-// phones get it on first paint; `active` turns its listeners off on desktop.
+// below xl: sticky ribbon strip (svg route + car) with the same follow-map
+// open underneath by default, collapsible by tap. the ribbon also ssr-renders
+// (css-hidden on xl), so phones get it on first paint; `active` turns its
+// listeners and map off on desktop.
 export default function TripMapHero() {
   const isXl = useIsXl();
   return (
