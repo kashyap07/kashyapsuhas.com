@@ -5,7 +5,6 @@ import { useEffect, useMemo, useRef } from "react";
 import RouteGlyph from "./RouteGlyph";
 import { useTripRoute } from "./TripContext";
 import {
-  INTRO_STOPS,
   arrivalProgress,
   bearingDeg,
   locateScroll,
@@ -27,20 +26,13 @@ interface Props {
   // "glyph" overlays the whole-route glyph + stop label (desktop sidebar);
   // "none" for hosts that already show that info elsewhere (mobile ribbon)
   hud?: "glyph" | "none";
-  // start on a whole-route overview and hold it through the first
-  // INTRO_STOPS sections, then glide the camera down to the car
-  intro?: boolean;
 }
 
 // scroll-following map: each stop section's scroll drives the leg
 // coord_{prev} -> coord_{stop}, so while you read a section the car is
 // animating in. the map is fully interactive; a user pan/zoom pauses the
 // follow-cam, and scrolling the article glides the camera back onto the car.
-export default function TripMap({
-  cooperative = false,
-  hud = "glyph",
-  intro = false,
-}: Props) {
+export default function TripMap({ cooperative = false, hud = "glyph" }: Props) {
   const route = useTripRoute();
   const containerRef = useRef<HTMLDivElement>(null);
   const glyphCarRef = useRef<SVGCircleElement>(null);
@@ -59,24 +51,16 @@ export default function TripMap({
 
     let rafId: number | null = null;
     let following = true;
-    // overview phase: camera parked on the whole route, no follow yet
-    let introActive = intro;
-    // first follow on a non-intro map snaps, so a mid-article load lands on
-    // the car instead of gliding in from the initial view
-    let snapNext = !intro;
+    // first follow snaps, so a mid-article load lands on the car instead of
+    // gliding in from the initial view
+    let snapNext = true;
 
     const handle: RouteMapHandle = createRouteMap({
       container: containerRef.current,
       polyline,
       waypoints: route.waypoints,
-      view: intro
-        ? {
-            kind: "fit",
-            coords: polyline,
-            // extra bottom so bangalore + the car clear the attribution bar
-            padding: { top: 20, right: 24, bottom: 56, left: 24 },
-          }
-        : { kind: "center", center: stops[0].coord, zoom: FOLLOW_ZOOM },
+      center: stops[0].coord,
+      zoom: FOLLOW_ZOOM,
       carSize: 50,
       cooperativeGestures: cooperative,
       onUserInteract: () => {
@@ -97,7 +81,6 @@ export default function TripMap({
       rafId = null;
 
       const { idx, progress } = locateScroll(stops);
-      if (introActive && idx >= INTRO_STOPS) introActive = false;
       const fromIdx = idx === 0 ? stops[0].polyIdx : stops[idx - 1].polyIdx;
       const toIdx = stops[idx].polyIdx;
 
@@ -121,7 +104,7 @@ export default function TripMap({
       }
 
       handle.setCar(carCoord, bearing);
-      if (following && !introActive) {
+      if (following) {
         handle.follow(carCoord, FOLLOW_ZOOM, snapNext);
         snapNext = false;
       }
@@ -160,7 +143,7 @@ export default function TripMap({
       window.removeEventListener("scroll", onScroll);
       handle.destroy();
     };
-  }, [route, glyph, cooperative, hud, intro]);
+  }, [route, glyph, cooperative, hud]);
 
   return (
     <div ref={containerRef} className="relative h-full w-full">

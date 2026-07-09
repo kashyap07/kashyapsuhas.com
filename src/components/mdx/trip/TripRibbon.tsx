@@ -128,7 +128,7 @@ export default function TripRibbon({ active }: { active: boolean }) {
             collapsed, so closing and reopening never reboots maplibre */}
         {active && (
           <div className="h-[20vh] w-full">
-            <TripMap cooperative hud="none" intro />
+            <TripMap cooperative hud="none" />
           </div>
         )}
       </div>

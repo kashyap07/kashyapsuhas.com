@@ -48,11 +48,6 @@ export function arrivalProgress(raw: number): number {
   return Math.min(1, raw / ARRIVAL_FRACTION);
 }
 
-// "near the start" window (prep + day 0): the trip map holds its whole-route
-// overview while idx < INTRO_STOPS, then dives the camera down to the car. a
-// deep-link past these stops skips the overview straight to the car.
-export const INTRO_STOPS = 2;
-
 export type StopEntry = {
   el: HTMLElement;
   coord: Coord;

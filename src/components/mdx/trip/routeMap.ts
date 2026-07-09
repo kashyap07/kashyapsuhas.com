@@ -5,7 +5,6 @@
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 
-import indiaClaim from "./indiaClaim.json";
 import type { Coord, Waypoint } from "./types";
 
 const STYLE_URL = "https://tiles.openfreemap.org/styles/liberty";
@@ -18,7 +17,13 @@ const STYLE_URL = "https://tiles.openfreemap.org/styles/liberty";
 // tiles' own international borders.
 const HIDDEN_PAIR = ["literal", ["IND", "PAK", "CHN"]];
 
-function applyIndianBorders(map: maplibregl.Map) {
+// the border geojson is ~340KB, so it stays out of the maplibre chunk and
+// loads in parallel after the style; the map boots and the route draws
+// without waiting for it. `alive` guards the post-await map access against
+// the map being destroyed mid-flight.
+async function applyIndianBorders(map: maplibregl.Map, alive: () => boolean) {
+  const indiaClaim = (await import("./indiaClaim.json")).default;
+  if (!alive()) return;
   if (map.getLayer("boundary_disputed")) {
     map.setLayoutProperty("boundary_disputed", "visibility", "none");
   }
@@ -128,21 +133,13 @@ const carSvg = (size: number) => `
 </svg>
 `;
 
-type View =
-  | { kind: "center"; center: Coord; zoom: number }
-  | {
-      kind: "fit";
-      coords: Coord[];
-      padding: number | maplibregl.PaddingOptions;
-    };
-
 export interface RouteMapHandle {
   setCar(coord: Coord, bearing?: number): void;
   setTrail(coords: Coord[]): void;
   // glide the camera toward the car: each call closes ~a fifth of the
-  // remaining center/zoom gap, so after a user pan/zoom (or the intro
-  // overview) it eases home over the next few scroll ticks instead of
-  // snapping. snap=true jumps straight there, for initial positioning.
+  // remaining center/zoom gap, so after a user pan/zoom it eases home over
+  // the next few scroll ticks instead of snapping. snap=true jumps straight
+  // there, for initial positioning.
   follow(center: Coord, followZoom: number, snap?: boolean): void;
   destroy(): void;
 }
@@ -153,7 +150,8 @@ interface Options {
   polyline: Coord[];
   // optional city dots
   waypoints?: Waypoint[];
-  view: View;
+  center: Coord;
+  zoom: number;
   carSize?: number;
   // two-finger pan / ctrl+wheel zoom; for maps embedded in the scroll flow
   cooperativeGestures?: boolean;
@@ -176,32 +174,17 @@ export function createRouteMap(opts: Options): RouteMapHandle {
   const accent = cssVar("--columbiaYellow", "#f0a044");
   const foreground = cssVar("--foreground", "#1e293b");
 
-  const base: Partial<maplibregl.MapOptions> = {
+  const map = new maplibregl.Map({
     container: opts.container,
     style: STYLE_URL,
+    center: opts.center,
+    zoom: opts.zoom,
     cooperativeGestures: opts.cooperativeGestures ?? false,
     attributionControl: { compact: true },
-  };
-
-  let mapOptions: maplibregl.MapOptions;
-  if (opts.view.kind === "fit") {
-    const coords = opts.view.coords;
-    const bounds = new maplibregl.LngLatBounds(coords[0], coords[0]);
-    for (const c of coords) bounds.extend(c);
-    mapOptions = {
-      ...base,
-      bounds,
-      fitBoundsOptions: { padding: opts.view.padding },
-    } as maplibregl.MapOptions;
-  } else {
-    mapOptions = {
-      ...base,
-      center: opts.view.center,
-      zoom: opts.view.zoom,
-    } as maplibregl.MapOptions;
-  }
-
-  const map = new maplibregl.Map(mapOptions);
+    // no 300ms label crossfade: labels pop in as soon as their tile is ready
+    fadeDuration: 0,
+  });
+  let destroyed = false;
 
   // maplibre's compact attribution opens itself the first time the credit
   // populates (after tiles load), covering the map. at construction the
@@ -223,8 +206,11 @@ export function createRouteMap(opts: Options): RouteMapHandle {
   map.on("idle", collapseAttribution);
   map.on("sourcedata", collapseAttribution);
 
-  // patch borders as soon as the style is parsed, before the first render
-  map.once("style.load", () => applyIndianBorders(map));
+  // patch borders as soon as the style is parsed; the geojson import
+  // resolves on its own time and must not delay anything else
+  map.once("style.load", () => {
+    void applyIndianBorders(map, () => !destroyed);
+  });
 
   // pan + zoom yes, rotation/pitch no: the car sprite's bearing rotation is
   // screen-aligned, so the map must stay north-up for it to read correctly
@@ -264,7 +250,10 @@ export function createRouteMap(opts: Options): RouteMapHandle {
     );
   }
 
-  map.on("load", () => {
+  // route/trail/waypoint layers go in at style.load (style json parsed), not
+  // at `load` (fires only after every initial tile has rendered) — the route
+  // shouldn't wait for the basemap to finish streaming in
+  map.once("style.load", () => {
     map.addSource("route-base", {
       type: "geojson",
       data: lineFeature(opts.polyline),
@@ -372,6 +361,7 @@ export function createRouteMap(opts: Options): RouteMapHandle {
       });
     },
     destroy() {
+      destroyed = true;
       resizeObserver.disconnect();
       map.remove();
     },
