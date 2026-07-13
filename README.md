@@ -1,6 +1,6 @@
 # kashyapsuhas.com
 
-My personal site. Blog, photos, reviews, and a bunch of small browser tools I built for myself.
+My personal site. Blog, photos, reviews, and a bunch of small browser goodies I built for myself.
 
 Live at [kashyapsuhas.com](https://www.kashyapsuhas.com).
 

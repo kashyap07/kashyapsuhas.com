@@ -4,14 +4,14 @@ import { getBlogPosts } from "@db/blog";
 import { getReviews } from "@db/reviews";
 import { SITE_URL } from "@utils/site";
 
-import tools from "./(withNav)/tools/toolsList";
+import goodies from "./(withNav)/goodies/goodiesList";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const posts = getBlogPosts();
   const reviews = getReviews();
 
   // freshness signal: latest post for blog/home, latest review for reviews,
-  // build time for tools (no per-tool changelog yet).
+  // build time for goodies (no per-goodie changelog yet).
   const latestPostDate =
     posts[0]?.metadata.publishedDateTime ?? new Date().toISOString();
   const latestReviewDate = reviews[0]?.reviewDate ?? new Date().toISOString();
@@ -20,10 +20,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: SITE_URL, lastModified: latestPostDate, priority: 1.0 },
     { url: `${SITE_URL}/blog`, lastModified: latestPostDate, priority: 0.9 },
-    { url: `${SITE_URL}/tools`, lastModified: buildDate, priority: 0.8 },
-    // tool pages derived from toolsList so adding a tool updates the sitemap too
-    ...tools.map((tool) => ({
-      url: `${SITE_URL}/${tool.href.replace(/^\//, "")}`,
+    { url: `${SITE_URL}/goodies`, lastModified: buildDate, priority: 0.8 },
+    // goodie pages derived from goodiesList so adding a goodie updates the sitemap too
+    ...goodies.map((goodie) => ({
+      url: `${SITE_URL}/${goodie.href.replace(/^\//, "")}`,
       lastModified: buildDate,
       priority: 0.7,
     })),

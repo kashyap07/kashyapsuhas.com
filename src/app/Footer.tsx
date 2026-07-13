@@ -5,7 +5,7 @@ import { getBlogPosts } from "@db/blog";
 import { getReviews } from "@db/reviews";
 
 import galleryImages from "./(withNav)/photos/galleryImages";
-import tools from "./(withNav)/tools/toolsList";
+import goodies from "./(withNav)/goodies/goodiesList";
 import FooterLiveBits from "./FooterLiveBits";
 import FooterNameCycle from "./FooterNameCycle";
 
@@ -22,7 +22,7 @@ export default function Footer() {
     { label: `${posts.length} posts`, href: "/blog" },
     { label: `${reviews.length} reviews`, href: "/reviews" },
     { label: `${galleryImages.length} photos`, href: "/photos" },
-    { label: `${tools.length} tools`, href: "/tools" },
+    { label: `${goodies.length} goodies`, href: "/goodies" },
   ];
 
   return (

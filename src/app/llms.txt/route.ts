@@ -16,7 +16,7 @@ export function GET() {
     `- [Home](${SITE_URL}/): landing page with intro and links`,
     `- [Blog](${SITE_URL}/blog): essays and writing`,
     `- [Photos](${SITE_URL}/photos): photo gallery`,
-    `- [Tools](${SITE_URL}/tools): browser-side tools`,
+    `- [Goodies](${SITE_URL}/goodies): browser-side goodies`,
     `- [Reviews](${SITE_URL}/reviews): reviews of products and places`,
     `- [Contact](${SITE_URL}/contact): contact details and socials`,
     "",

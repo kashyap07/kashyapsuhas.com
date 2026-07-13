@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     "Convert images between HEIC, JPEG, PNG, and WebP formats directly in your browser. No uploads.",
   alternates: {
-    canonical: `${SITE_URL}/tools/image-converter`,
+    canonical: `${SITE_URL}/goodies/image-converter`,
   },
   keywords: [
     "image converter",

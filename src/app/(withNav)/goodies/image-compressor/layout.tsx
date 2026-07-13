@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     "Compress images directly in your browser. No uploads, no servers, everything stays on your device.",
   alternates: {
-    canonical: `${SITE_URL}/tools/image-compressor`,
+    canonical: `${SITE_URL}/goodies/image-compressor`,
   },
   keywords: [
     "image compressor",

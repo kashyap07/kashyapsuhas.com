@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     template: "%s | Suhas Kashyap",
   },
   description:
-    "Suhas Kashyap's slice of the interwebs. See blogs, photos, reviews, tools, contact details.",
+    "Suhas Kashyap's slice of the interwebs. See blogs, photos, reviews, goodies, contact details.",
   openGraph: {
     siteName: "Suhas Kashyap",
     locale: "en_US",

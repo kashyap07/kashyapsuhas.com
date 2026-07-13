@@ -12,7 +12,7 @@ import RecentlyReviewed from "./_home/RecentlyReviewed";
 export const metadata: Metadata = {
   title: "Suhas Kashyap",
   description:
-    "Suhas Kashyap's slice of the interwebs. See blogs, photos, reviews, tools, contact details.",
+    "Suhas Kashyap's slice of the interwebs. See blogs, photos, reviews, goodies, contact details.",
   keywords: [
     "Suhas Kashyap",
     "Kashyap Suhas",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     "Suhas Kashyap Rakuten",
     "blog",
     "photos",
-    "tools",
+    "goodies",
     "reviews",
   ],
   authors: [{ name: "Suhas Kashyap", url: SITE_URL }],
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     type: "profile",
     title: "Suhas Kashyap",
     description:
-      "Suhas Kashyap's slice of the interwebs. See blogs, photos, reviews, tools, contact details.",
+      "Suhas Kashyap's slice of the interwebs. See blogs, photos, reviews, goodies, contact details.",
     url: SITE_URL,
     siteName: "Suhas Kashyap",
     locale: "en_US",
@@ -93,7 +93,7 @@ export default function Home() {
             jobTitle: "Senior Software Engineer",
             worksFor: { "@type": "Organization", name: "Rakuten" },
             description:
-              "Suhas Kashyap's slice of the interwebs. See blogs, photos, reviews, tools, contact details.",
+              "Suhas Kashyap's slice of the interwebs. See blogs, photos, reviews, goodies, contact details.",
             address: {
               "@type": "PostalAddress",
               addressLocality: "Bengaluru",

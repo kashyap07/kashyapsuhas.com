@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     "Compute accurate Panchanga: samvatsara, ayana, rutu, maasa, paksha, tithi, vaasara, nakshatra. Sankalpa mantra elements for any date.",
   alternates: {
-    canonical: `${SITE_URL}/tools/panchanga`,
+    canonical: `${SITE_URL}/goodies/panchanga`,
   },
   keywords: [
     "panchanga",

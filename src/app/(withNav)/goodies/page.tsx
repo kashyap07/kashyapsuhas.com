@@ -4,20 +4,20 @@ import Link from "next/link";
 import { Wrapper } from "@components/ui";
 import { SITE_URL } from "@utils/site";
 
-import tools from "./toolsList";
+import goodies from "./goodiesList";
 
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: "Tools",
+  title: "Goodies",
   description:
-    "Bunch of tools that work directly in the browser without having to upload to any server. Enjoy!",
+    "A bunch of goodies that work directly in the browser without uploading anything to a server. Enjoy!",
   alternates: {
-    canonical: `${SITE_URL}/tools`,
+    canonical: `${SITE_URL}/goodies`,
   },
   keywords: [
-    "Suhas Kashyap tools",
-    "browser tools",
+    "Suhas Kashyap goodies",
+    "browser goodies",
     "image compressor",
     "image converter",
     "background remover",
@@ -28,18 +28,18 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Tools() {
+export default function Goodies() {
   return (
     <Wrapper className="mb-section-sm w-full md:mb-section-md">
       <ul className="flex flex-col gap-6 md:gap-8">
-        {tools.map((tool) => (
-          <Link key={tool.href} href={tool.href} className="group">
+        {goodies.map((goodie) => (
+          <Link key={goodie.href} href={goodie.href} className="group">
             <li className="flex flex-col gap-1">
               <span className="text-xl font-medium group-hover:text-accent md:text-2xl">
-                {tool.name}
+                {goodie.name}
               </span>
               <span className="text-base text-secondary md:text-lg">
-                {tool.description}
+                {goodie.description}
               </span>
             </li>
           </Link>

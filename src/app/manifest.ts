@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Suhas Kashyap",
     short_name: "Suhas Kashyap",
     description:
-      "Suhas Kashyap's slice of the interwebs. Blogs, photos, reviews, tools.",
+      "Suhas Kashyap's slice of the interwebs. Blogs, photos, reviews, goodies.",
     start_url: "/",
     display: "standalone",
     background_color: "#ffffff",

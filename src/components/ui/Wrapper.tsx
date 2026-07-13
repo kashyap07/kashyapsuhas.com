@@ -12,7 +12,7 @@ interface Props {
  * wraps children and applies one of the three site-wide width modes.
  *
  * DEFAULT  → max-w-2xl, ~65ch, cozy reading. used by most pages and the header.
- * WIDE     → max-w-4xl, for grids/galleries (reviews, photos, interactive tools).
+ * WIDE     → max-w-4xl, for grids/galleries (reviews, photos, interactive goodies).
  * BREAKOUT → w-screen, no padding. for full-bleed escape (modals, hero).
  */
 const Wrapper = ({ children, className, maxWidth = "DEFAULT" }: Props) => {

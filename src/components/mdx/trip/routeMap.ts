@@ -190,7 +190,7 @@ export function createRouteMap(opts: Options): RouteMapHandle {
   // populates (after tiles load), covering the map. at construction the
   // attribution is still empty, so collapsing then is too early. maplibre only
   // ever adds the open state once (it's guarded by !contains("compact")), so
-  // strip it the first time it appears, then stop — leaving click-to-expand
+  // strip it the first time it appears, then stop - leaving click-to-expand
   // intact for attribution. ours runs after maplibre's handler (registered
   // later), so the class is already there to remove.
   const collapseAttribution = () => {
@@ -251,7 +251,7 @@ export function createRouteMap(opts: Options): RouteMapHandle {
   }
 
   // route/trail/waypoint layers go in at style.load (style json parsed), not
-  // at `load` (fires only after every initial tile has rendered) — the route
+  // at `load` (fires only after every initial tile has rendered) - the route
   // shouldn't wait for the basemap to finish streaming in
   map.once("style.load", () => {
     map.addSource("route-base", {

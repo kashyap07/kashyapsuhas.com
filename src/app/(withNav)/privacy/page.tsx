@@ -65,9 +65,9 @@ export default function Privacy() {
           can ask me to delete it at any time.
         </p>
 
-        <h2>Browser tools</h2>
+        <h2>Browser goodies</h2>
         <p>
-          The tools at <a href="/tools">/tools</a> (image compressor, background
+          The goodies at <a href="/goodies">/goodies</a> (image compressor, background
           remover, image converter) run entirely in your browser. Files you
           upload never leave your device.
         </p>

@@ -1,0 +1,40 @@
+export type Goodie = {
+  name: string;
+  description: string;
+  href: string;
+};
+
+const goodies: Array<Goodie> = [
+  {
+    name: "Image Compressor",
+    description: "reduce image size by percentage",
+    href: "goodies/image-compressor",
+  },
+  {
+    name: "Image Converter",
+    description: "convert image heic ↔ jpeg",
+    href: "goodies/image-converter",
+  },
+  {
+    name: "Background Remover",
+    description: "remove image background entirely on your browser",
+    href: "goodies/background-remover",
+  },
+  {
+    name: "Panchanga",
+    description: "sankalpa mantra elements",
+    href: "goodies/panchanga",
+  },
+  {
+    name: "Melakarta Ragas",
+    description: "all 72 melakarta ragas: filter by swara, hear them",
+    href: "goodies/melakarta-ragas",
+  },
+  {
+    name: "Ragle",
+    description: "guess the raga from its sound, daily",
+    href: "goodies/ragle",
+  },
+];
+
+export default goodies;

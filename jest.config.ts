@@ -18,6 +18,7 @@ const config: Config = {
     "^@utils/(.*)$": "<rootDir>/src/utils/$1",
     "^@components/(.*)$": "<rootDir>/src/components/$1",
     "^@db/(.*)$": "<rootDir>/src/db/$1",
+    "^@lib/(.*)$": "<rootDir>/src/lib/$1",
     // Mock CSS imports
     "\\.(css|less|scss|sass)$": "identity-obj-proxy",
   },

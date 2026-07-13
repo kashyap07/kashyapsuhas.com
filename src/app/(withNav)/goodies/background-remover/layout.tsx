@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     "Remove image backgrounds instantly using AI. Runs entirely in your browser with U2-Net via WebAssembly, no uploads.",
   alternates: {
-    canonical: `${SITE_URL}/tools/background-remover`,
+    canonical: `${SITE_URL}/goodies/background-remover`,
   },
   keywords: [
     "background remover",

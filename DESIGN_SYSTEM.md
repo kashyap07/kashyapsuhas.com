@@ -115,7 +115,7 @@ You don't need to do anything special, just write the script and the browser pic
 page title:      text-heading-md md:text-heading-lg   (36 → 48px)
 section title:   text-heading-sm md:text-heading-md   (30 → 36px)
 blog post title: text-heading-sm md:text-heading-lg   (30 → 48px)
-list item title: text-xl         md:text-2xl          (20 → 24px)  used by blog listing, tools listing, contact links
+list item title: text-xl         md:text-2xl          (20 → 24px)  used by blog listing, goodies listing, contact links
 subheading:      text-body-lg    md:text-heading-sm   (21 → 30px)
 ```
 
@@ -179,7 +179,7 @@ Three values only. Nothing else.
 
 | class          | use for                                               |
 | -------------- | ----------------------------------------------------- |
-| `shadow-macos` | images, tool output containers (layered depth shadow) |
+| `shadow-macos` | images, goodie output containers (layered depth shadow) |
 | `shadow-lg`    | dialog, modal overlays                                |
 | `shadow-md`    | button hover state (`hover:shadow-md`)                |
 | `shadow-sm`    | row hover state                                       |
@@ -285,7 +285,7 @@ className = "h-10 w-10 animate-spin text-accent";
 className = "text-danger";
 ```
 
-### Image container (tool output)
+### Image container (goodie output)
 
 ```tsx
 className = "shadow-macos relative w-full overflow-hidden rounded-lg";
@@ -306,7 +306,7 @@ className = "block text-lg font-medium text-muted";
 The `Wrapper` component has three modes:
 
 - `DEFAULT` (default): `max-w-2xl` (~672px / ~65ch at 18px). Cozy reading column. Used by most pages and the shared `(withNav)` header.
-- `WIDE`: `max-w-4xl` (~896px). Use only when content needs the room: grids, galleries, interactive tool UIs.
+- `WIDE`: `max-w-4xl` (~896px). Use only when content needs the room: grids, galleries, interactive goodie UIs.
 - `BREAKOUT`: `w-screen` with no padding. Full-bleed escape for modals/overlays/hero.
 
 ### Page width mapping
@@ -317,11 +317,11 @@ The `Wrapper` component has three modes:
 | `/blog` (listing)             | DEFAULT                                 |
 | `/blog/[slug]`                | DEFAULT                                 |
 | `/contact`                    | DEFAULT                                 |
-| `/tools` (listing)            | DEFAULT                                 |
+| `/goodies` (listing)          | DEFAULT                                 |
 | `/reviews`                    | DEFAULT                                 |
 | `/reviews/[slug]`             | WIDE (hero card) + inner DEFAULT (text) |
 | `/photos`                     | WIDE                                    |
-| `/tools/[tool]` (interactive) | WIDE (BREAKOUT inside modals)           |
+| `/goodies/[goodie]` (interactive) | WIDE (BREAKOUT inside modals)       |
 
 Pick DEFAULT unless the content visibly needs more horizontal space. Default-by-default keeps the site cohesive.
 
