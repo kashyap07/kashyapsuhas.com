@@ -54,7 +54,7 @@ const NAMES: [string, string][] = [
   ["Charukesi", "ಚಾರುಕೇಶಿ"],
   ["Sarasangi", "ಸಾರಸಾಂಗಿ"],
   ["Harikambhoji", "ಹರಿಕಾಂಭೋಜಿ"],
-  ["Dheerasankarabharana", "ಧೀರಶಂಕರಾಭರಣ"],
+  ["Dheerashankarabharana", "ಧೀರಶಂಕರಾಭರಣ"],
   ["Naganandini", "ನಾಗನಂದಿನಿ"],
   ["Yagapriya", "ಯಾಗಪ್ರಿಯ"],
   ["Ragavardhini", "ರಾಗವರ್ಧಿನಿ"],

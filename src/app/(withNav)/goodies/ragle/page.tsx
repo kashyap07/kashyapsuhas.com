@@ -14,13 +14,17 @@ import { SA_HZ, SVARAS } from "@lib/carnatic/pitches";
 import { Wrapper } from "@components/ui";
 
 import {
+  FIXED_SLOTS,
   MAX_GUESSES,
   dailyMela,
+  gridText,
   puzzleNumber,
   randomMela,
   scoreGuess,
   shareText,
 } from "./logic";
+
+const SUB = ["", "₁", "₂", "₃"] as const;
 
 type Stats = {
   played: number;
@@ -32,6 +36,7 @@ type Stats = {
 
 const STATE_KEY = "ragle:state";
 const STATS_KEY = "ragle:stats";
+const TUTORIAL_KEY = "ragle:tutorial";
 const EMPTY_STATS: Stats = {
   played: 0,
   won: 0,
@@ -59,31 +64,78 @@ function saveJSON(key: string, value: unknown) {
 
 function GuessRow({ guess, answer }: { guess: Melakarta; answer: Melakarta }) {
   const score = scoreGuess(guess, answer);
+  // the upper sa rides along for display, fixed like sa and pa
+  const cells = [...guess.scale, "S" as const];
   return (
     <div className="flex gap-1">
-      {guess.scale.map((id, i) => (
-        <div
-          key={i}
-          className={`flex w-9 flex-col items-center rounded py-1 md:w-10 ${
-            score[i]
-              ? "bg-green-600 text-white"
-              : "bg-surface-subtle text-muted"
-          }`}
-        >
-          <span className="font-display text-base leading-tight">
-            {SVARAS[id].kannada}
-          </span>
-          <span className="font-sans text-[10px] leading-tight">
-            {SVARAS[id].latin}
-          </span>
-        </div>
-      ))}
+      {cells.map((id, i) => {
+        const s = SVARAS[id];
+        const upper = i === cells.length - 1;
+        const fixed = upper || FIXED_SLOTS.has(i);
+        return (
+          <div
+            key={i}
+            className={`flex w-9 flex-col items-center rounded py-1 md:w-10 ${
+              fixed
+                ? "text-subtle"
+                : score[i]
+                  ? "bg-green-600 text-white"
+                  : "bg-red-600 text-white"
+            }`}
+          >
+            <span className="h-2 font-sans text-[10px] leading-none">
+              {upper ? "•" : " "}
+            </span>
+            <span className="font-display text-base leading-tight">
+              {s.kannada + SUB[s.variant]}
+            </span>
+            <span className="font-sans text-[10px] leading-tight">
+              {s.latin}
+            </span>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function Tutorial({ replay, onDone }: { replay: boolean; onDone: () => void }) {
+  return (
+    <div className="max-w-prose">
+      <h2 className="mb-4 font-sans text-xs uppercase tracking-wider text-muted">
+        how to play
+      </h2>
+      <ul className="mb-6 flex flex-col gap-2 text-secondary">
+        <li>
+          A mystery Mēḷakartā raga hides here every day. Press play to hear its
+          scale.
+        </li>
+        <li>
+          Guess it by name: swaras in the right spot turn green, wrong ones turn
+          red.
+        </li>
+        <li>You get {MAX_GUESSES} guesses.</li>
+      </ul>
+      <div className="mb-2">
+        <GuessRow guess={MELAKARTAS[28]} answer={MELAKARTAS[14]} />
+      </div>
+      <p className="mb-6 font-sans text-sm text-subtle">
+        Here Dheerashankarabharana was guessed while Mayamalavagowla hid: ri and
+        da missed, the rest landed.
+      </p>
+      <button
+        onClick={onDone}
+        className="rounded border border-accent px-4 py-2 font-sans text-sm text-accent transition-colors hover:bg-accent hover:text-black"
+      >
+        {replay ? "back to the game" : "let's play"}
+      </button>
     </div>
   );
 }
 
 export default function RaglePage() {
   const [puzzle, setPuzzle] = useState<number | null>(null);
+  const [dateLabel, setDateLabel] = useState<string | null>(null);
   const [mode, setMode] = useState<"daily" | "practice">("daily");
   const [answer, setAnswer] = useState<Melakarta | null>(null);
   const [dailyAnswer, setDailyAnswer] = useState<Melakarta | null>(null);
@@ -93,6 +145,7 @@ export default function RaglePage() {
   const [playingKey, setPlayingKey] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [stats, setStats] = useState<Stats>(EMPTY_STATS);
+  const [showTutorial, setShowTutorial] = useState(false);
 
   const playerRef = useRef<RagaPlayer | null>(null);
 
@@ -105,6 +158,13 @@ export default function RaglePage() {
     const p = puzzleNumber(now);
     const mela = dailyMela(now);
     setPuzzle(p);
+    setDateLabel(
+      now.toLocaleDateString("en-IN", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      }),
+    );
     setAnswer(mela);
     setDailyAnswer(mela);
     const saved = loadJSON<{ puzzle: number; guesses: number[] }>(STATE_KEY);
@@ -112,6 +172,8 @@ export default function RaglePage() {
       setGuesses(saved.guesses.map((n) => MELAKARTAS[n - 1]).filter(Boolean));
     }
     setStats(loadJSON<Stats>(STATS_KEY) ?? EMPTY_STATS);
+    // first-timers get the tutorial
+    if (!saved && !loadJSON<boolean>(TUTORIAL_KEY)) setShowTutorial(true);
   }, []);
   /* eslint-enable react-hooks/set-state-in-effect */
 
@@ -208,11 +270,16 @@ export default function RaglePage() {
     );
   }
 
+  function dismissTutorial() {
+    saveJSON(TUTORIAL_KEY, true);
+    setShowTutorial(false);
+  }
+
   async function handleShare() {
     if (!answer) return;
     const rows = guesses.map((g) => scoreGuess(g, answer));
     await navigator.clipboard.writeText(
-      shareText(mode === "daily" ? puzzle : null, rows, won),
+      shareText(mode === "daily" ? dateLabel : null, rows, won),
     );
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -223,16 +290,20 @@ export default function RaglePage() {
       <h1 className="mb-3 text-heading-md font-medium md:text-heading-lg">
         Ragle{" "}
         {puzzle !== null && (
-          <span className="text-secondary">
-            {mode === "daily" ? `#${puzzle}` : "· practice"}
+          <span className="text-lg text-secondary md:text-xl">
+            {mode === "daily" ? dateLabel : "· practice"}
           </span>
         )}
       </h1>
       <p className="mb-8 text-base text-secondary md:text-lg">
-        Guess the mystery raga in {MAX_GUESSES} guesses.
+        Guess the mystery Mēḷakartā raga in {MAX_GUESSES} guesses.
       </p>
 
-      {answer && (
+      {showTutorial && (
+        <Tutorial replay={guesses.length > 0} onDone={dismissTutorial} />
+      )}
+
+      {!showTutorial && answer && (
         <>
           {/* the mystery */}
           <div className="mb-8 flex flex-wrap items-center gap-3">
@@ -256,6 +327,12 @@ export default function RaglePage() {
             >
               tamburi {droneOn ? "on" : "off"}
             </button>
+            <button
+              onClick={() => setShowTutorial(true)}
+              className="font-sans text-sm text-muted transition-colors hover:text-accent"
+            >
+              how to play
+            </button>
           </div>
 
           {/* the board */}
@@ -275,10 +352,10 @@ export default function RaglePage() {
               Array.from({ length: MAX_GUESSES - guesses.length }).map(
                 (_, i) => (
                   <div key={i} className="flex gap-1">
-                    {Array.from({ length: 7 }).map((_, j) => (
+                    {Array.from({ length: 8 }).map((_, j) => (
                       <div
                         key={j}
-                        className="h-10 w-9 rounded border border-dashed border-line md:w-10"
+                        className="h-12 w-9 rounded border border-dashed border-line md:w-10"
                       />
                     ))}
                   </div>
@@ -317,11 +394,13 @@ export default function RaglePage() {
             </div>
           )}
 
-          {/* the reveal */}
+          {/* the end screen */}
           {done && (
             <div className="mb-8 rounded-lg bg-surface-subtle px-6 py-5 md:px-8 md:py-6">
               <p className="mb-1 font-sans text-xs uppercase tracking-wider text-muted">
-                {won ? `got it in ${guesses.length}` : "it slipped away"}
+                {won
+                  ? `got it in ${guesses.length} of ${MAX_GUESSES}`
+                  : "it slipped away"}
               </p>
               <p className="font-display text-2xl text-accent md:text-3xl">
                 {answer.kannada}
@@ -332,6 +411,9 @@ export default function RaglePage() {
                   {answer.scale.map((id) => SVARAS[id].latin).join(" ")}
                 </span>
               </p>
+              <pre className="mb-4 font-sans text-sm leading-snug">
+                {gridText(guesses.map((g) => scoreGuess(g, answer)))}
+              </pre>
               <div className="mb-4 flex flex-wrap gap-3">
                 <button
                   onClick={handleShare}
@@ -364,6 +446,11 @@ export default function RaglePage() {
                 <p className="font-sans text-sm text-subtle">
                   played {stats.played} · won {stats.won} · streak{" "}
                   {stats.streak} · best {stats.maxStreak}
+                </p>
+              )}
+              {mode === "daily" && (
+                <p className="mt-1 font-sans text-sm text-subtle">
+                  a new raga arrives at midnight
                 </p>
               )}
             </div>

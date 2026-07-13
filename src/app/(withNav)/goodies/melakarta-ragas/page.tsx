@@ -20,15 +20,6 @@ import { Wrapper } from "@components/ui";
 // sa, pa and the high sa are in every melakarta, always on
 const LOCKED = new Set([0, 7, UPPER_SA]);
 
-function parseSelected(param: string | null): Set<number> {
-  const sel = new Set(LOCKED);
-  for (const part of (param ?? "").split(",")) {
-    const s = parseInt(part, 10);
-    if (s >= 1 && s <= 11 && !LOCKED.has(s)) sel.add(s);
-  }
-  return sel;
-}
-
 function findMela(param: string | null): Melakarta | null {
   if (!param) return null;
   return (
@@ -38,9 +29,13 @@ function findMela(param: string | null): Melakarta | null {
 
 function MelakartaRagas() {
   const searchParams = useSearchParams();
-  const [selected, setSelected] = useState<Set<number>>(() =>
-    parseSelected(searchParams.get("s")),
-  );
+  // a shared raga is a filter: its swaras arrive pressed
+  const [selected, setSelected] = useState<Set<number>>(() => {
+    const mela = findMela(searchParams.get("raga"));
+    return mela
+      ? new Set([...LOCKED, ...melaSemitones(mela)])
+      : new Set(LOCKED);
+  });
   const [lastPlayed, setLastPlayed] = useState<string | null>(
     () => findMela(searchParams.get("raga"))?.slug ?? null,
   );
@@ -73,22 +68,14 @@ function MelakartaRagas() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // keep the url shareable: pressed swaras and the last raga heard
+  // keep the url shareable: the last raga heard
   useEffect(() => {
-    const params = new URLSearchParams();
-    const extra = [...selected]
-      .filter((s) => !LOCKED.has(s))
-      .sort((a, b) => a - b)
-      .join(",");
-    if (extra) params.set("s", extra);
-    if (lastPlayed) params.set("raga", lastPlayed);
-    const q = params.toString();
     window.history.replaceState(
       null,
       "",
-      q ? `?${q}` : window.location.pathname,
+      lastPlayed ? `?raga=${lastPlayed}` : window.location.pathname,
     );
-  }, [selected, lastPlayed]);
+  }, [lastPlayed]);
 
   // make the sounding key jump
   useEffect(() => {

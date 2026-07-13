@@ -41,11 +41,24 @@ describe("ragle logic", () => {
     ]);
   });
 
-  it("builds wordle-style share text", () => {
-    const text = shareText(3, [[true, false, true]], true);
-    expect(text).toContain(`Ragle #3 1/${MAX_GUESSES}`);
-    expect(text).toContain("🟩⬜🟩");
-    const lost = shareText(null, [[false]], false);
-    expect(lost).toContain(`Ragle practice X/${MAX_GUESSES}`);
+  it("builds share text without the fixed sa and pa", () => {
+    const text = shareText(
+      "14 Jul 2026",
+      [[true, true, false, true, true, false, true]],
+      true,
+    );
+    expect(text).toContain("Ragle 14 Jul 2026");
+    expect(text).toContain(`got it in 1/${MAX_GUESSES}`);
+    // slots 0 and 4 dropped, five scored slots remain
+    expect(text).toContain("🟩🟥🟩🟥🟩");
+    expect(text).toContain("https://kashyapsuhas.com/goodies/ragle");
+    const lost = shareText(
+      null,
+      [[true, false, false, false, true, false, false]],
+      false,
+    );
+    expect(lost).toContain("Ragle practice");
+    expect(lost).toContain(`X/${MAX_GUESSES}`);
+    expect(lost).toContain("🟥🟥🟥🟥🟥");
   });
 });

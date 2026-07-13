@@ -33,20 +33,34 @@ export function randomMela(exclude?: Melakarta): Melakarta {
   return m;
 }
 
+// sa and pa sit in every melakarta, they carry no signal
+export const FIXED_SLOTS = new Set([0, 4]);
+
 // slot-by-slot: is the guess's swara exactly the answer's swara here
 export function scoreGuess(guess: Melakarta, answer: Melakarta): boolean[] {
   return guess.scale.map((id, i) => id === answer.scale[i]);
 }
 
+// the scored slots as emoji rows, shown on the end screen and in shares
+export function gridText(rows: boolean[][]): string {
+  return rows
+    .map((row) =>
+      row
+        .filter((_, i) => !FIXED_SLOTS.has(i))
+        .map((ok) => (ok ? "🟩" : "🟥"))
+        .join(""),
+    )
+    .join("\n");
+}
+
 export function shareText(
-  puzzle: number | null,
+  date: string | null, // null for practice rounds
   rows: boolean[][],
   won: boolean,
 ): string {
-  const grid = rows
-    .map((row) => row.map((ok) => (ok ? "🟩" : "⬜")).join(""))
-    .join("\n");
-  const label = puzzle === null ? "practice" : `#${puzzle}`;
-  const score = won ? `${rows.length}/${MAX_GUESSES}` : `X/${MAX_GUESSES}`;
-  return `Ragle ${label} ${score}\n${grid}\nkashyapsuhas.com/goodies/ragle`;
+  const label = date ?? "practice";
+  const score = won
+    ? `got it in ${rows.length}/${MAX_GUESSES}`
+    : `X/${MAX_GUESSES}, it slipped away`;
+  return `Ragle ${label}\n\n${score}\n\n${gridText(rows)}\n\nhttps://kashyapsuhas.com/goodies/ragle`;
 }

@@ -10,15 +10,25 @@ const ACCENT = "#f0a044";
 const FOREGROUND = "#1e293b";
 const MUTED = "#64748b";
 const SUCCESS = "#16a34a";
-const SURFACE = "#f8fafc";
-const LINE = "#e5e7eb";
+const WRONG = "#dc2626";
+const SUBTLE = "#94a3b8";
 
-const CELLS = ["sa", "ri", "ga", "ma", "pa", "da", "ni"];
+// mirrors the board: sa, pa and the upper sa are fixed ghosts, never scored
+const CELLS = [
+  { label: "sa", fixed: true },
+  { label: "ri", correct: false },
+  { label: "ga", correct: true },
+  { label: "ma", correct: true },
+  { label: "pa", fixed: true },
+  { label: "da", correct: false },
+  { label: "ni", correct: true },
+  { label: "sa", fixed: true, upper: true },
+];
 
 export default async function Image() {
   const font = await loadGoogleFont(
     FRAUNCES,
-    "Ragle Suhas Kashyap a daily melakarta listening game sa ri ga ma pa da ni kashyapsuhas.com",
+    "Ragle Suhas Kashyap A daily Mēḷakartā raga guessing game goodies sa ri ga ma pa da ni kashyapsuhas.com/ •",
   );
 
   return new ImageResponse(
@@ -56,31 +66,35 @@ export default async function Image() {
             marginBottom: 30,
           }}
         >
-          {CELLS.map((cell, index) => {
-            const correct = index === 0 || index === 2 || index === 4;
-            return (
-              <div
-                key={cell}
-                style={{
-                  width: 88,
-                  height: 88,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: 8,
-                  border: `2px solid ${correct ? SUCCESS : LINE}`,
-                  background: correct ? SUCCESS : SURFACE,
-                  color: correct ? "#fff" : MUTED,
-                  fontSize: 28,
-                }}
-              >
-                {cell}
+          {CELLS.map((cell, index) => (
+            <div
+              key={index}
+              style={{
+                width: 88,
+                height: 88,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 8,
+                background: cell.fixed
+                  ? "transparent"
+                  : cell.correct
+                    ? SUCCESS
+                    : WRONG,
+                color: cell.fixed ? SUBTLE : "#fff",
+                fontSize: 28,
+              }}
+            >
+              <div style={{ height: 20, fontSize: 20 }}>
+                {cell.upper ? "•" : " "}
               </div>
-            );
-          })}
+              <div>{cell.label}</div>
+            </div>
+          ))}
         </div>
         <div style={{ color: MUTED, fontSize: 32 }}>
-          a daily melakarta listening game
+          A daily Mēḷakartā raga guessing game
         </div>
       </div>
 
