@@ -1,0 +1,478 @@
+---
+title: codex git archaeology
+description: Wrong click. Lost staging state. Git plumbing. Recovered.
+publishedDateTime: 2026-07-14T03:16:15+05:30
+categories:
+  - tech
+heroImage: ""
+draft: true
+---
+
+I had my original Fable changes staged.
+
+Codex made a bunch of changes. Those were sitting under Changes in VSCode.
+
+I wanted to revert the Codex changes. I clicked the plus icon instead.
+
+So I staged the exact changes I wanted to delete. Nice.
+
+I told Codex:
+
+> undo all these changes except og image. i dont like any you have done. restore to how it was before I asked you please
+
+Then I clarified that it should keep the Twitter image too.
+
+This is the raw recovery log.
+
+## Initial rollback attempt
+
+Codex tried to generate reverse diffs for every file it had touched:
+
+```bash
+git diff -R -- 'src/app/(withNav)/goodies/goodiesList.ts'
+git diff -R -- 'src/app/(withNav)/goodies/melakarta-ragas/layout.tsx'
+git diff -R -- 'src/app/(withNav)/goodies/melakarta-ragas/page.tsx'
+git diff -R -- 'src/app/(withNav)/goodies/ragle/__tests__/logic.test.ts'
+git diff -R -- 'src/app/(withNav)/goodies/ragle/layout.tsx'
+git diff -R -- 'src/app/(withNav)/goodies/ragle/logic.ts'
+git diff -R -- 'src/app/(withNav)/goodies/ragle/page.tsx'
+git diff -R -- 'src/app/globals.css'
+git diff -R -- 'src/components/carnatic/SvaraKeyboard.tsx'
+```
+
+It converted the output into an `apply_patch` payload.
+
+That failed:
+
+```text
+apply_patch verification failed:
+Failed to find context '-108,68 +108,6 @@' in
+/Users/kashyap/__workspace/kashyapsuhas.com/src/app/globals.css
+```
+
+Then it checked the repo:
+
+```bash
+git diff --name-only && git status --short
+```
+
+Important output:
+
+```text
+ M DESIGN_SYSTEM.md
+ M README.md
+ M jest.config.ts
+ D src/app/(withNav)/tools/background-remover/layout.tsx
+ D src/app/(withNav)/tools/background-remover/page.tsx
+ D src/app/(withNav)/tools/page.tsx
+ M src/app/Footer.tsx
+ M src/app/NavLinks.tsx
+?? src/app/(withNav)/goodies/
+?? src/components/carnatic/
+?? src/lib/
+```
+
+The staged state it had recorded earlier was gone. The files were still there, but Git no longer had the useful old-versus-new split in the index.
+
+## Check the usual escape routes
+
+```bash
+git reflog -5 --oneline
+```
+
+```text
+ca0e276 HEAD@{0}: pull --tags origin main: Fast-forward
+e70d265 HEAD@{1}: commit: update gj rj
+571b6db HEAD@{2}: commit: minor perf improvements
+005ca62 HEAD@{3}: commit: remove image opacity change, clean desktop map
+5a0bdd3 HEAD@{4}: commit: new spoiler ribbon for reviews!
+```
+
+Nothing useful.
+
+```bash
+git stash list
+```
+
+```text
+stash@{0}: On main: redesign may 20
+stash@{1}: WIP on feature/photobook: 293856b TinaCMS content update
+stash@{2}: On main: ytdl
+```
+
+Also nothing useful.
+
+```bash
+ls -la .git/index* 2>/dev/null || true
+```
+
+```text
+-rw-r--r--  1 kashyap  staff  174394 Jul 14 02:53 .git/index
+```
+
+No index backup.
+
+It also inspected the index and worktree at blob level:
+
+```bash
+git status --porcelain=v2 | sed -n '1,20p'
+```
+
+And checked the CSS diff:
+
+```bash
+git diff -- src/app/globals.css
+```
+
+That exposed the exact animation and `content-visibility` block Codex had added. It removed that block using `apply_patch`.
+
+## Go hunting inside Git objects
+
+Git had lost the references. The old staged blobs were still in the object database.
+
+First search:
+
+```bash
+git fsck --unreachable --no-reflogs 2>/dev/null |
+awk '$2 == "blob" {print $3}' |
+while read h; do
+  git cat-file -p "$h" 2>/dev/null |
+    rg -q 'SvaraKeyboard' &&
+    echo "$h"
+done
+```
+
+Output:
+
+```text
+5698a622e9c82d14366d129e3f29e847cb3bca23
+401d73991ee8547c095fbdcba4967f7e9e82acc2
+5d296f49be43bdb0c2635eefa9165c6307e74aab
+0b3c8ea51825ccfa5c6befeb48107bc0045b3094
+3ce1536e00115219640cbdc5c555d53ebcee9641
+7677b8456184a8bc55581bb47ff91894f0836bcb
+```
+
+Wrong files. These were Melakarta page revisions that imported `SvaraKeyboard`.
+
+Inspect them:
+
+```bash
+for h in \
+  5698a622e9c82d14366d129e3f29e847cb3bca23 \
+  401d73991ee8547c095fbdcba4967f7e9e82acc2 \
+  5d296f49be43bdb0c2635eefa9165c6307e74aab \
+  0b3c8ea51825ccfa5c6befeb48107bc0045b3094 \
+  3ce1536e00115219640cbdc5c555d53ebcee9641 \
+  7677b8456184a8bc55581bb47ff91894f0836bcb
+do
+  echo "$h $(git cat-file -s "$h")"
+  git cat-file -p "$h" | sed -n '1,12p'
+done
+```
+
+Search all Git objects for a line unique to the actual keyboard:
+
+```bash
+git cat-file --batch-all-objects \
+  --batch-check='%(objectname) %(objecttype)' |
+awk '$2 == "blob" {print $1}' |
+while read h; do
+  git cat-file -p "$h" 2>/dev/null |
+    rg -q 'key id 12 = the high sa' &&
+    echo "$h $(git cat-file -s "$h")"
+done
+```
+
+Output:
+
+```text
+1ff7bde7a99a9c95611167feedd09339141d07ec 2396
+```
+
+Found it.
+
+```bash
+git cat-file -p 1ff7bde7a99a9c95611167feedd09339141d07ec
+```
+
+That printed the exact original `SvaraKeyboard.tsx`.
+
+## Find the remaining files
+
+```bash
+git cat-file --batch-all-objects \
+  --batch-check='%(objectname) %(objecttype)' |
+awk '$2 == "blob" {print $1}' |
+while read h; do
+  match=$(
+    git cat-file -p "$h" 2>/dev/null |
+      rg -m1 \
+      'function MelakartaRagas\(\)|function RaglePage\(\)|describe\("ragle logic"|export function puzzleNumber|canonical: `\$\{SITE_URL\}/goodies/(ragle|melakarta-ragas)' \
+      || true
+  )
+
+  if [ -n "$match" ]; then
+    p=".git/objects/${h:0:2}/${h:2}"
+    m=$(
+      stat -f '%Sm' -t '%Y-%m-%d %H:%M:%S' "$p" \
+      2>/dev/null || echo packed
+    )
+    echo "$h $(git cat-file -s "$h") $m :: $match"
+  fi
+done
+```
+
+Useful output:
+
+```text
+02822fca69c5f2e733eb899823fb03d9d82e8c7b 1754 2026-07-14 01:26:05 :: describe("ragle logic", () => {
+20211b48b5109432d919c52be104bdbd1c16a56a 854 2026-07-14 01:26:05 :: canonical: `${SITE_URL}/goodies/melakarta-ragas`,
+5542c530e5ea6a9179c48d5275f121645ee79d1e 1621 2026-07-14 01:26:05 :: export function puzzleNumber(d: Date): number {
+8d7bf748ef8d8a85497deac1d588ac866e269446 9296 2026-07-14 01:26:05 :: function MelakartaRagas() {
+d4cec7597cdcc892d6af4920a6ff6939aca8c089 732 2026-07-14 01:26:05 :: canonical: `${SITE_URL}/goodies/ragle`,
+dcc60de141d50de6731cca837938db59010fe5f5 12653 2026-07-14 01:35:43 :: export default function RaglePage() {
+```
+
+Find the goodies list:
+
+```bash
+git cat-file --batch-all-objects \
+  --batch-check='%(objectname) %(objecttype)' |
+awk '$2 == "blob" {print $1}' |
+while read h; do
+  if git cat-file -p "$h" 2>/dev/null |
+    rg -q 'const goodies: Array<Goodie>'
+  then
+    p=".git/objects/${h:0:2}/${h:2}"
+    m=$(
+      stat -f '%Sm' -t '%Y-%m-%d %H:%M:%S' "$p" \
+      2>/dev/null || echo packed
+    )
+    echo "$h $(git cat-file -s "$h") $m"
+    git cat-file -p "$h" |
+      rg -n 'Melakarta Ragas|Ragle|description:' |
+      tail -6
+  fi
+done
+```
+
+Output:
+
+```text
+306914c25bdb3501737aa242da926ec99b54cd81 912 2026-07-14 02:58:43
+30: description: "explore all 72 melakarta parent scales",
+35: description: "guess the melakarta from its scale preview, daily",
+
+8d07c5ded03bd29a1a4d57cd519a18c506b8f59b 911 2026-07-14 01:26:05
+30: description: "all 72 melakarta ragas: filter by swara, hear them",
+35: description: "guess the raga from its sound, daily",
+```
+
+The second blob was the original.
+
+Compare two close Ragle revisions:
+
+```bash
+git diff --no-index -- /dev/fd/3 /dev/fd/4 \
+  3< <(git cat-file -p 586d216d521264c250008fe121995494593c5acb) \
+  4< <(git cat-file -p dcc60de141d50de6731cca837938db59010fe5f5) \
+  || true
+```
+
+The newer pre-Codex blob had my final copy and button sizing. Keep that.
+
+## Restore exact blobs
+
+Final mapping:
+
+```text
+8d07c5ded03bd29a1a4d57cd519a18c506b8f59b  goodiesList.ts
+20211b48b5109432d919c52be104bdbd1c16a56a  melakarta-ragas/layout.tsx
+8d7bf748ef8d8a85497deac1d588ac866e269446  melakarta-ragas/page.tsx
+02822fca69c5f2e733eb899823fb03d9d82e8c7b  ragle/__tests__/logic.test.ts
+d4cec7597cdcc892d6af4920a6ff6939aca8c089  ragle/layout.tsx
+5542c530e5ea6a9179c48d5275f121645ee79d1e  ragle/logic.ts
+dcc60de141d50de6731cca837938db59010fe5f5  ragle/page.tsx
+1ff7bde7a99a9c95611167feedd09339141d07ec  SvaraKeyboard.tsx
+```
+
+For every file:
+
+```bash
+git cat-file -p <blob-hash>
+```
+
+Codex replaced the current contents with the blob contents using `apply_patch`.
+
+It deleted its new files using `apply_patch`:
+
+```text
+src/app/(withNav)/goodies/ragle/__tests__/page.test.tsx
+src/components/carnatic/__tests__/SvaraKeyboard.test.tsx
+src/lib/share.ts
+```
+
+It kept:
+
+```text
+src/app/(withNav)/goodies/ragle/opengraph-image.tsx
+src/app/(withNav)/goodies/ragle/twitter-image.tsx
+```
+
+## Verify every restored file
+
+First attempt:
+
+```bash
+for item in \
+'8d07c5ded03bd29a1a4d57cd519a18c506b8f59b src/app/(withNav)/goodies/goodiesList.ts' \
+'20211b48b5109432d919c52be104bdbd1c16a56a src/app/(withNav)/goodies/melakarta-ragas/layout.tsx' \
+'8d7bf748ef8d8a85497deac1d588ac866e269446 src/app/(withNav)/goodies/melakarta-ragas/page.tsx' \
+'02822fca69c5f2e733eb899823fb03d9d82e8c7b src/app/(withNav)/goodies/ragle/__tests__/logic.test.ts' \
+'d4cec7597cdcc892d6af4920a6ff6939aca8c089 src/app/(withNav)/goodies/ragle/layout.tsx' \
+'5542c530e5ea6a9179c48d5275f121645ee79d1e src/app/(withNav)/goodies/ragle/logic.ts' \
+'dcc60de141d50de6731cca837938db59010fe5f5 src/app/(withNav)/goodies/ragle/page.tsx' \
+'1ff7bde7a99a9c95611167feedd09339141d07ec src/components/carnatic/SvaraKeyboard.tsx'
+do
+  expected=${item%% *}
+  path=${item#* }
+  actual=$(git hash-object "$path")
+  [ "$expected" = "$actual" ] &&
+    echo "ok $path" ||
+    echo "MISMATCH $path $actual"
+done
+```
+
+Output:
+
+```text
+zsh: command not found: git
+MISMATCH src/app/(withNav)/goodies/goodiesList.ts
+zsh: command not found: git
+MISMATCH src/app/(withNav)/goodies/melakarta-ragas/layout.tsx
+...
+```
+
+Why? `path` is a special zsh variable tied to `PATH`. The loop replaced the shell command path with a filename. lol.
+
+Rename it:
+
+```bash
+for item in \
+'8d07c5ded03bd29a1a4d57cd519a18c506b8f59b src/app/(withNav)/goodies/goodiesList.ts' \
+'20211b48b5109432d919c52be104bdbd1c16a56a src/app/(withNav)/goodies/melakarta-ragas/layout.tsx' \
+'8d7bf748ef8d8a85497deac1d588ac866e269446 src/app/(withNav)/goodies/melakarta-ragas/page.tsx' \
+'02822fca69c5f2e733eb899823fb03d9d82e8c7b src/app/(withNav)/goodies/ragle/__tests__/logic.test.ts' \
+'d4cec7597cdcc892d6af4920a6ff6939aca8c089 src/app/(withNav)/goodies/ragle/layout.tsx' \
+'5542c530e5ea6a9179c48d5275f121645ee79d1e src/app/(withNav)/goodies/ragle/logic.ts' \
+'dcc60de141d50de6731cca837938db59010fe5f5 src/app/(withNav)/goodies/ragle/page.tsx' \
+'1ff7bde7a99a9c95611167feedd09339141d07ec src/components/carnatic/SvaraKeyboard.tsx'
+do
+  expected=${item%% *}
+  filepath=${item#* }
+  actual=$(git hash-object "$filepath")
+  [ "$expected" = "$actual" ] &&
+    echo "ok $filepath" ||
+    echo "MISMATCH $filepath $actual"
+done
+```
+
+Output:
+
+```text
+ok src/app/(withNav)/goodies/goodiesList.ts
+ok src/app/(withNav)/goodies/melakarta-ragas/layout.tsx
+ok src/app/(withNav)/goodies/melakarta-ragas/page.tsx
+ok src/app/(withNav)/goodies/ragle/__tests__/logic.test.ts
+ok src/app/(withNav)/goodies/ragle/layout.tsx
+ok src/app/(withNav)/goodies/ragle/logic.ts
+ok src/app/(withNav)/goodies/ragle/page.tsx
+ok src/components/carnatic/SvaraKeyboard.tsx
+```
+
+EXACT blobs restored.
+
+## Rebuild the staging area
+
+Codex had recorded the original `git status`. It staged only those paths:
+
+```bash
+git add -A -- \
+  DESIGN_SYSTEM.md \
+  README.md \
+  jest.config.ts \
+  'src/app/(withNav)/tools' \
+  'src/app/(withNav)/goodies/background-remover' \
+  'src/app/(withNav)/goodies/image-compressor' \
+  'src/app/(withNav)/goodies/image-converter' \
+  'src/app/(withNav)/goodies/page.tsx' \
+  'src/app/(withNav)/goodies/panchanga' \
+  'src/app/(withNav)/goodies/goodiesList.ts' \
+  'src/app/(withNav)/goodies/melakarta-ragas' \
+  'src/app/(withNav)/goodies/ragle/__tests__/logic.test.ts' \
+  'src/app/(withNav)/goodies/ragle/layout.tsx' \
+  'src/app/(withNav)/goodies/ragle/logic.ts' \
+  'src/app/(withNav)/goodies/ragle/page.tsx' \
+  'src/app/(withNav)/privacy/page.tsx' \
+  src/app/Footer.tsx \
+  src/app/NavLinks.tsx \
+  src/app/layout.tsx \
+  src/app/llms.txt/route.ts \
+  src/app/manifest.ts \
+  src/app/page.tsx \
+  src/app/sitemap.ts \
+  src/components/carnatic/SvaraKeyboard.tsx \
+  src/components/ui/Wrapper.tsx \
+  src/lib/carnatic \
+  tsconfig.json
+```
+
+Final Git check:
+
+```bash
+git status --short &&
+git diff --check &&
+git diff --cached --check
+```
+
+Important output:
+
+```text
+A  src/app/(withNav)/goodies/melakarta-ragas/page.tsx
+A  src/app/(withNav)/goodies/ragle/page.tsx
+A  src/components/carnatic/SvaraKeyboard.tsx
+?? src/app/(withNav)/goodies/ragle/opengraph-image.tsx
+?? src/app/(withNav)/goodies/ragle/twitter-image.tsx
+```
+
+No unstaged diff:
+
+```bash
+git diff --name-only
+```
+
+No output.
+
+## Tests
+
+```bash
+npm test -- --runInBand
+```
+
+```text
+Test Suites: 6 passed, 6 total
+Tests:       49 passed, 49 total
+```
+
+```bash
+npx tsc --noEmit
+```
+
+No output. Exit code `0`.
+
+It never ran `git reset --hard`. Never ran `git checkout`. Never made a commit.
+
+I clicked the wrong button. Codex recovered unreferenced blobs from Git's object database, rebuilt the exact files, recreated the staging area, and kept only the two files I asked for.
+
+AI is ridiculously good now. It's so joever.
