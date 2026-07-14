@@ -32,7 +32,8 @@ const goodies: Array<Goodie> = [
   },
   {
     name: "Raagle",
-    description: "guess the raga hiding in a familiar tune, daily",
+    description:
+      "guess the myster melakarta raga hiding in a familiar tune, daily",
     href: "goodies/raagle",
   },
 ];

@@ -129,15 +129,15 @@ function Tutorial({ replay, onDone }: { replay: boolean; onDone: () => void }) {
       <ul className="mb-6 flex flex-col gap-2 text-secondary">
         <li>
           A mystery Mēḷakartā raga hides here every day. Press play to hear a
-          familiar varnam sung in it, its swaras bent to the mystery scale.
+          familiar varna bent to the mystery raga&apos;s scale.
         </li>
         <li>
-          Don&apos;t know the 72 names? Tap the swaras you hear on the keyboard
-          and the list narrows to the ragas that hold them.
+          Don&apos;t know all 72 names? Tap swaras you hear on the keyboard to
+          narrow down.
         </li>
         <li>
-          Guess by name: swaras in the right spot turn green, wrong ones turn
-          red. You get {MAX_GUESSES} guesses.
+          Guess by name: swaras in the right spot turn *green*, wrong ones turn
+          *red*. You get {MAX_GUESSES} guesses.
         </li>
       </ul>
       <div className="mb-2">
@@ -388,7 +388,7 @@ export default function RaaglePage() {
         )}
       </h1>
       <p className="mb-8 text-base text-secondary md:text-lg">
-        A familiar tune, a mystery Mēḷakartā raga. Guess it in {MAX_GUESSES}.
+        Guess the mystery Mēḷakartā raga within {MAX_GUESSES} turns.
       </p>
 
       {showTutorial && (
@@ -427,8 +427,7 @@ export default function RaaglePage() {
             </button>
           </div>
           <p className="mb-8 font-sans text-sm text-subtle">
-            today&apos;s tune: {song.title} {song.kannada} · sung in the mystery
-            raga
+            today&apos;s tune: {song.title} {song.kannada}
           </p>
 
           {/* the board */}

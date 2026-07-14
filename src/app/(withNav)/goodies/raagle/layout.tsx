@@ -20,7 +20,8 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: "Raagle",
-    description: "guess the raga hiding in a familiar tune, daily",
+    description:
+      "Guess the mystery Mēḷakartā raga hiding in a familiar tune, daily",
     images: ["/kashyapcom-og.png"],
   },
 };

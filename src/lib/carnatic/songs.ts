@@ -21,7 +21,7 @@ export const SONGS: Song[] = [
     kannada: "ವನಜಾಕ್ಷಿ",
     homeMela: 65,
     homeRaga: "Kalyani",
-    detail: "adi tala varnam by Ramanathapuram Srinivasa Iyengar",
+    detail: "adi tala varna by Ramanathapuram Srinivasa Iyengar",
     notation: `
       S' S' , S' | N D R' S' | N N D D | P M G M |
       P D N D | , R' S' N | D P M G | M P D N |
@@ -40,7 +40,7 @@ export const SONGS: Song[] = [
     kannada: "ಚಲಮೇಲ",
     homeMela: 29,
     homeRaga: "Shankarabharana",
-    detail: "ata tala varnam by Swati Tirunal",
+    detail: "ata tala varna by Swati Tirunal",
     notation: `
       S' , N , | P , , M | G , R , | S , , , |
       , , d R | , , , R | S R G R | R G R S | , , , |
