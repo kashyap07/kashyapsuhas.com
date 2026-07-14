@@ -3,13 +3,14 @@ import { Metadata } from "next";
 import { SITE_URL } from "@utils/site";
 
 export const metadata: Metadata = {
-  title: "Ragle",
+  title: "Raagle",
   description:
-    "A daily raga guessing game. Hear a mystery melakarta raga, guess it in six tries, get wordle-style feedback on your swaras.",
+    "A daily raga guessing game. Hear a familiar varnam sung in a mystery melakarta raga, find its swaras on the keyboard, guess it in three tries.",
   alternates: {
-    canonical: `${SITE_URL}/goodies/ragle`,
+    canonical: `${SITE_URL}/goodies/raagle`,
   },
   keywords: [
+    "raagle",
     "ragle",
     "raga guessing game",
     "daily raga puzzle",
@@ -18,8 +19,8 @@ export const metadata: Metadata = {
     "wordle for ragas",
   ],
   openGraph: {
-    title: "Ragle",
-    description: "guess the raga from its sound, daily",
+    title: "Raagle",
+    description: "guess the raga hiding in a familiar tune, daily",
     images: ["/kashyapcom-og.png"],
   },
 };

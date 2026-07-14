@@ -31,9 +31,9 @@ const goodies: Array<Goodie> = [
     href: "goodies/melakarta-ragas",
   },
   {
-    name: "Ragle",
-    description: "guess the raga from its sound, daily",
-    href: "goodies/ragle",
+    name: "Raagle",
+    description: "guess the raga hiding in a familiar tune, daily",
+    href: "goodies/raagle",
   },
 ];
 

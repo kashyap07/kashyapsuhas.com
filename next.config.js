@@ -68,6 +68,12 @@ const nextConfig = {
   },
   async redirects() {
     return [
+      // the raga game shipped its first two days as "ragle"
+      {
+        source: "/goodies/ragle",
+        destination: "/goodies/raagle",
+        permanent: true,
+      },
       {
         source: "/resume",
         destination:

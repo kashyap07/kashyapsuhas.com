@@ -4,27 +4,31 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 import { RagaPlayer } from "@lib/carnatic/audio";
-import {
-  MELAKARTAS,
-  Melakarta,
-  arohaAvarohaPlayable,
-} from "@lib/carnatic/melakarta";
-import { SA_HZ, SVARAS } from "@lib/carnatic/pitches";
+import { MELAKARTAS, Melakarta, melaSemitones } from "@lib/carnatic/melakarta";
+import { notationPlayable } from "@lib/carnatic/notation";
+import { SA_HZ, SVARAS, svaraFreq } from "@lib/carnatic/pitches";
+import { Song } from "@lib/carnatic/songs";
 
+import SvaraKeyboard, { UPPER_SA } from "@components/carnatic/SvaraKeyboard";
 import { Wrapper } from "@components/ui";
 
 import {
   FIXED_SLOTS,
   MAX_GUESSES,
   dailyMela,
+  dailySong,
   gridText,
   puzzleNumber,
   randomMela,
+  randomSong,
   scoreGuess,
   shareText,
 } from "./logic";
 
 const SUB = ["", "₁", "₂", "₃"] as const;
+
+// sa, pa and the high sa are in every melakarta, always on
+const LOCKED = new Set([0, 7, UPPER_SA]);
 
 type Stats = {
   played: number;
@@ -34,9 +38,9 @@ type Stats = {
   lastPuzzle: number;
 };
 
-const STATE_KEY = "ragle:state";
-const STATS_KEY = "ragle:stats";
-const TUTORIAL_KEY = "ragle:tutorial";
+const STATE_KEY = "raagle:state";
+const STATS_KEY = "raagle:stats";
+const TUTORIAL_KEY = "raagle:tutorial";
 const EMPTY_STATS: Stats = {
   played: 0,
   won: 0,
@@ -44,6 +48,23 @@ const EMPTY_STATS: Stats = {
   maxStreak: 0,
   lastPuzzle: 0,
 };
+
+// the game spent its first two days named "ragle"; carry saves across
+function migrateOldKeys() {
+  try {
+    for (const k of ["state", "stats", "tutorial"]) {
+      const old = localStorage.getItem(`ragle:${k}`);
+      if (old !== null) {
+        if (localStorage.getItem(`raagle:${k}`) === null) {
+          localStorage.setItem(`raagle:${k}`, old);
+        }
+        localStorage.removeItem(`ragle:${k}`);
+      }
+    }
+  } catch {
+    // storage blocked, nothing to carry
+  }
+}
 
 function loadJSON<T>(key: string): T | null {
   try {
@@ -107,14 +128,17 @@ function Tutorial({ replay, onDone }: { replay: boolean; onDone: () => void }) {
       </h2>
       <ul className="mb-6 flex flex-col gap-2 text-secondary">
         <li>
-          A mystery Mēḷakartā raga hides here every day. Press play to hear its
-          scale.
+          A mystery Mēḷakartā raga hides here every day. Press play to hear a
+          familiar varnam sung in it, its swaras bent to the mystery scale.
         </li>
         <li>
-          Guess it by name: swaras in the right spot turn green, wrong ones turn
-          red.
+          Don&apos;t know the 72 names? Tap the swaras you hear on the keyboard
+          and the list narrows to the ragas that hold them.
         </li>
-        <li>You get {MAX_GUESSES} guesses.</li>
+        <li>
+          Guess by name: swaras in the right spot turn green, wrong ones turn
+          red. You get {MAX_GUESSES} guesses.
+        </li>
       </ul>
       <div className="mb-2">
         <GuessRow guess={MELAKARTAS[28]} answer={MELAKARTAS[14]} />
@@ -133,14 +157,17 @@ function Tutorial({ replay, onDone }: { replay: boolean; onDone: () => void }) {
   );
 }
 
-export default function RaglePage() {
+export default function RaaglePage() {
   const [puzzle, setPuzzle] = useState<number | null>(null);
   const [dateLabel, setDateLabel] = useState<string | null>(null);
   const [mode, setMode] = useState<"daily" | "practice">("daily");
   const [answer, setAnswer] = useState<Melakarta | null>(null);
   const [dailyAnswer, setDailyAnswer] = useState<Melakarta | null>(null);
+  const [song, setSong] = useState<Song | null>(null);
+  const [dailyTune, setDailyTune] = useState<Song | null>(null);
   const [guesses, setGuesses] = useState<Melakarta[]>([]);
   const [input, setInput] = useState("");
+  const [selected, setSelected] = useState<Set<number>>(new Set());
   const [droneOn, setDroneOn] = useState(true);
   const [playingKey, setPlayingKey] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
@@ -154,9 +181,11 @@ export default function RaglePage() {
   // on mount.
   /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
+    migrateOldKeys();
     const now = new Date();
     const p = puzzleNumber(now);
     const mela = dailyMela(now);
+    const tune = dailySong(now);
     setPuzzle(p);
     setDateLabel(
       now.toLocaleDateString("en-IN", {
@@ -167,6 +196,8 @@ export default function RaglePage() {
     );
     setAnswer(mela);
     setDailyAnswer(mela);
+    setSong(tune);
+    setDailyTune(tune);
     const saved = loadJSON<{ puzzle: number; guesses: number[] }>(STATE_KEY);
     if (saved?.puzzle === p) {
       setGuesses(saved.guesses.map((n) => MELAKARTAS[n - 1]).filter(Boolean));
@@ -182,13 +213,19 @@ export default function RaglePage() {
   const won = answer !== null && guesses.includes(answer);
   const done = won || guesses.length >= MAX_GUESSES;
 
+  // the keyboard narrows the field, the text box narrows it further
+  const kbMatches = MELAKARTAS.filter((m) => {
+    const have = new Set(melaSemitones(m));
+    return [...selected].every((s) => have.has(s));
+  });
+  const query = input.trim().toLowerCase();
   const suggestions =
-    input.trim().length > 0 && !done
-      ? MELAKARTAS.filter(
-          (m) =>
-            m.name.toLowerCase().includes(input.trim().toLowerCase()) &&
-            !guesses.includes(m),
-        ).slice(0, 8)
+    !done && (query.length > 0 || selected.size > 0)
+      ? kbMatches
+          .filter(
+            (m) => m.name.toLowerCase().includes(query) && !guesses.includes(m),
+          )
+          .slice(0, 8)
       : [];
 
   function ensurePlayer(): RagaPlayer {
@@ -198,6 +235,7 @@ export default function RaglePage() {
   }
 
   async function handlePlay(key: string, m: Melakarta) {
+    if (!song) return;
     const player = ensurePlayer();
     if (playingKey === key) {
       player.stopMelody();
@@ -205,7 +243,9 @@ export default function RaglePage() {
       return;
     }
     setPlayingKey(key);
-    await player.play(arohaAvarohaPlayable(m), () => setPlayingKey(null));
+    await player.play(notationPlayable(song.notation, m), () =>
+      setPlayingKey(null),
+    );
   }
 
   function handleDroneToggle() {
@@ -215,6 +255,37 @@ export default function RaglePage() {
     if (!player) return;
     if (next) player.startDrone(SA_HZ, 3 / 2);
     else player.stopDrone();
+  }
+
+  // a lone reference tone, so the ear can check itself against the tune
+  function soundKey(id: number) {
+    const freq =
+      id === UPPER_SA
+        ? svaraFreq("S", 1)
+        : svaraFreq(
+            Object.values(SVARAS).find((v) => v.semitone === id)!.id,
+            0,
+          );
+    ensurePlayer().play(
+      [{ freq, beats: 1.5, restBefore: 0, idx: -1 }],
+      () => {},
+    );
+    setPlayingKey(null);
+  }
+
+  function handleTap(id: number) {
+    if (LOCKED.has(id)) {
+      soundKey(id);
+      return;
+    }
+    const next = new Set(selected);
+    if (next.has(id)) {
+      next.delete(id);
+    } else {
+      next.add(id);
+      soundKey(id);
+    }
+    setSelected(next);
   }
 
   function handleGuess(m: Melakarta) {
@@ -252,8 +323,10 @@ export default function RaglePage() {
     setPlayingKey(null);
     setMode("practice");
     setAnswer(randomMela(dailyAnswer ?? undefined));
+    setSong(randomSong());
     setGuesses([]);
     setInput("");
+    setSelected(new Set());
   }
 
   function backToDaily() {
@@ -261,7 +334,9 @@ export default function RaglePage() {
     setPlayingKey(null);
     setMode("daily");
     setAnswer(dailyAnswer);
+    setSong(dailyTune);
     setInput("");
+    setSelected(new Set());
     const saved = loadJSON<{ puzzle: number; guesses: number[] }>(STATE_KEY);
     setGuesses(
       saved?.puzzle === puzzle
@@ -288,7 +363,7 @@ export default function RaglePage() {
   return (
     <Wrapper className="mb-section-sm w-full md:mb-section-md">
       <h1 className="mb-3 text-heading-md font-medium md:text-heading-lg">
-        Ragle{" "}
+        Raagle{" "}
         {puzzle !== null && (
           <span className="text-lg text-secondary md:text-xl">
             {mode === "daily" ? dateLabel : "· practice"}
@@ -296,17 +371,17 @@ export default function RaglePage() {
         )}
       </h1>
       <p className="mb-8 text-base text-secondary md:text-lg">
-        Guess the mystery Mēḷakartā raga in {MAX_GUESSES} guesses.
+        A familiar tune, a mystery Mēḷakartā raga. Guess it in {MAX_GUESSES}.
       </p>
 
       {showTutorial && (
         <Tutorial replay={guesses.length > 0} onDone={dismissTutorial} />
       )}
 
-      {!showTutorial && answer && (
+      {!showTutorial && answer && song && (
         <>
           {/* the mystery */}
-          <div className="mb-8 flex flex-wrap items-center gap-3">
+          <div className="mb-2 flex flex-wrap items-center gap-3">
             <button
               onClick={() => handlePlay("mystery", answer)}
               className={`rounded px-4 py-2 font-sans text-sm font-medium transition-colors ${
@@ -334,6 +409,10 @@ export default function RaglePage() {
               how to play
             </button>
           </div>
+          <p className="mb-8 font-sans text-sm text-subtle">
+            today&apos;s tune: {song.title} {song.kannada} · sung in the mystery
+            raga
+          </p>
 
           {/* the board */}
           <div className="mb-8 flex flex-col gap-2">
@@ -363,9 +442,32 @@ export default function RaglePage() {
               )}
           </div>
 
-          {/* guessing */}
+          {/* guessing: the keyboard finds, the box confirms */}
           {!done && (
             <div className="mb-8">
+              <div className="mb-3">
+                <SvaraKeyboard
+                  selected={selected}
+                  locked={LOCKED}
+                  active={null}
+                  onTap={handleTap}
+                />
+              </div>
+              <div className="mb-3 flex flex-wrap items-center gap-3">
+                <span className="font-sans text-sm text-subtle">
+                  {selected.size > 0
+                    ? `${kbMatches.length} of 72 hold those swaras`
+                    : "tap the swaras you hear to narrow the names"}
+                </span>
+                {selected.size > 0 && (
+                  <button
+                    onClick={() => setSelected(new Set())}
+                    className="font-sans text-sm text-muted transition-colors hover:text-accent"
+                  >
+                    reset
+                  </button>
+                )}
+              </div>
               <input
                 type="text"
                 value={input}
@@ -405,11 +507,15 @@ export default function RaglePage() {
               <p className="font-display text-2xl text-accent md:text-3xl">
                 {answer.kannada}
               </p>
-              <p className="mb-3 text-lg">
+              <p className="mb-1 text-lg">
                 #{answer.n} {answer.name} ·{" "}
                 <span className="font-sans text-sm text-subtle">
                   {answer.scale.map((id) => SVARAS[id].latin).join(" ")}
                 </span>
+              </p>
+              <p className="mb-3 font-sans text-sm text-subtle">
+                you heard {song.title}, {song.detail} · its true home is{" "}
+                {song.homeRaga} (#{song.homeMela})
               </p>
               <pre className="mb-4 font-sans text-sm leading-snug">
                 {gridText(guesses.map((g) => scoreGuess(g, answer)))}

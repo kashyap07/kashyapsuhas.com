@@ -1,6 +1,7 @@
 import { MELAKARTAS, Melakarta } from "@lib/carnatic/melakarta";
+import { SONGS, Song } from "@lib/carnatic/songs";
 
-export const MAX_GUESSES = 6;
+export const MAX_GUESSES = 3;
 
 // puzzle #1 on 2026-07-14, counted on the player's local calendar day
 const EPOCH_UTC = Date.UTC(2026, 6, 14);
@@ -19,10 +20,17 @@ function fnv1a(s: string): number {
   return h >>> 0;
 }
 
+const dateKey = (d: Date) =>
+  `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+
 // everyone gets the same raga on the same day
 export function dailyMela(d: Date): Melakarta {
-  const key = `ragle|${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
-  return MELAKARTAS[fnv1a(key) % MELAKARTAS.length];
+  return MELAKARTAS[fnv1a(`raagle|${dateKey(d)}`) % MELAKARTAS.length];
+}
+
+// and the same tune to hear it in, drawn independently of the raga
+export function dailySong(d: Date): Song {
+  return SONGS[fnv1a(`raagle-song|${dateKey(d)}`) % SONGS.length];
 }
 
 export function randomMela(exclude?: Melakarta): Melakarta {
@@ -31,6 +39,10 @@ export function randomMela(exclude?: Melakarta): Melakarta {
     m = MELAKARTAS[Math.floor(Math.random() * MELAKARTAS.length)];
   } while (m === exclude);
   return m;
+}
+
+export function randomSong(): Song {
+  return SONGS[Math.floor(Math.random() * SONGS.length)];
 }
 
 // sa and pa sit in every melakarta, they carry no signal
@@ -62,5 +74,5 @@ export function shareText(
   const score = won
     ? `got it in ${rows.length}/${MAX_GUESSES}`
     : `X/${MAX_GUESSES}, it slipped away`;
-  return `Ragle ${label}\n\n${score}\n\n${gridText(rows)}\n\nhttps://kashyapsuhas.com/goodies/ragle`;
+  return `Raagle ${label}\n\n${score}\n\n${gridText(rows)}\n\nhttps://kashyapsuhas.com/goodies/raagle`;
 }

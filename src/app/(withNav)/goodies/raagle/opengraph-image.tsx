@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 
 import { FRAUNCES, loadGoogleFont } from "@utils/ogText";
 
-export const alt = "Ragle, a daily melakarta listening game";
+export const alt = "Raagle, a daily melakarta listening game";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -28,7 +28,7 @@ const CELLS = [
 export default async function Image() {
   const font = await loadGoogleFont(
     FRAUNCES,
-    "Ragle Suhas Kashyap A daily Mēḷakartā raga guessing game goodies sa ri ga ma pa da ni kashyapsuhas.com/ •",
+    "Raagle Suhas Kashyap A daily Mēḷakartā raga guessing game goodies sa ri ga ma pa da ni kashyapsuhas.com/ •",
   );
 
   return new ImageResponse(
@@ -53,11 +53,11 @@ export default async function Image() {
         }}
       >
         <div style={{ color: ACCENT, fontSize: 32 }}>Suhas Kashyap</div>
-        <div style={{ color: MUTED, fontSize: 24 }}>goodies / ragle</div>
+        <div style={{ color: MUTED, fontSize: 24 }}>goodies / raagle</div>
       </div>
 
       <div style={{ display: "flex", flexDirection: "column" }}>
-        <div style={{ fontSize: 104, lineHeight: 1 }}>Ragle</div>
+        <div style={{ fontSize: 104, lineHeight: 1 }}>Raagle</div>
         <div
           style={{
             display: "flex",
@@ -99,7 +99,7 @@ export default async function Image() {
       </div>
 
       <div style={{ display: "flex", color: MUTED, fontSize: 24 }}>
-        kashyapsuhas.com/goodies/ragle
+        kashyapsuhas.com/goodies/raagle
       </div>
     </div>,
     {

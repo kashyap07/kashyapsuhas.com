@@ -1,14 +1,16 @@
 import { MELAKARTAS } from "@lib/carnatic/melakarta";
+import { SONGS } from "@lib/carnatic/songs";
 
 import {
   MAX_GUESSES,
   dailyMela,
+  dailySong,
   puzzleNumber,
   scoreGuess,
   shareText,
 } from "../logic";
 
-describe("ragle logic", () => {
+describe("raagle logic", () => {
   it("numbers puzzles from the epoch", () => {
     expect(puzzleNumber(new Date(2026, 6, 14, 9, 30))).toBe(1);
     expect(puzzleNumber(new Date(2026, 6, 15, 0, 0))).toBe(2);
@@ -20,6 +22,13 @@ describe("ragle logic", () => {
     const night = dailyMela(new Date(2026, 6, 20, 23, 59));
     expect(morning).toBe(night);
     expect(dailyMela(new Date(2026, 6, 21))).toBeDefined();
+  });
+
+  it("picks the same daily tune all day, from the song pool", () => {
+    const morning = dailySong(new Date(2026, 6, 20, 6, 0));
+    const night = dailySong(new Date(2026, 6, 20, 23, 59));
+    expect(morning).toBe(night);
+    expect(SONGS).toContain(morning);
   });
 
   it("scores sa and pa as always correct", () => {
@@ -34,10 +43,22 @@ describe("ragle logic", () => {
     const mayamalavagowla = MELAKARTAS[14]; // s r1 g3 m1 p d1 n3
     const kamavardhini = MELAKARTAS[50]; // s r1 g3 m2 p d1 n3
     expect(scoreGuess(mayamalavagowla, mayamalavagowla)).toEqual([
-      true, true, true, true, true, true, true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
     ]);
     expect(scoreGuess(kamavardhini, mayamalavagowla)).toEqual([
-      true, true, true, false, true, true, true,
+      true,
+      true,
+      true,
+      false,
+      true,
+      true,
+      true,
     ]);
   });
 
@@ -47,17 +68,17 @@ describe("ragle logic", () => {
       [[true, true, false, true, true, false, true]],
       true,
     );
-    expect(text).toContain("Ragle 14 Jul 2026");
+    expect(text).toContain("Raagle 14 Jul 2026");
     expect(text).toContain(`got it in 1/${MAX_GUESSES}`);
     // slots 0 and 4 dropped, five scored slots remain
     expect(text).toContain("🟩🟥🟩🟥🟩");
-    expect(text).toContain("https://kashyapsuhas.com/goodies/ragle");
+    expect(text).toContain("https://kashyapsuhas.com/goodies/raagle");
     const lost = shareText(
       null,
       [[true, false, false, false, true, false, false]],
       false,
     );
-    expect(lost).toContain("Ragle practice");
+    expect(lost).toContain("Raagle practice");
     expect(lost).toContain(`X/${MAX_GUESSES}`);
     expect(lost).toContain("🟥🟥🟥🟥🟥");
   });
