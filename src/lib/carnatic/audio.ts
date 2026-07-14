@@ -23,6 +23,9 @@ export class RagaPlayer {
   private droneBus: GainNode | null = null;
   private droneOscs: OscillatorNode[] = [];
   private doneTimer: ReturnType<typeof setTimeout> | null = null;
+  // per-play gain node + its sources, so stop can kill them for real
+  private voice: GainNode | null = null;
+  private voiceNodes: AudioScheduledSourceNode[] = [];
 
   private ensure(): AudioContext {
     if (this.ctx) return this.ctx;
@@ -67,6 +70,8 @@ export class RagaPlayer {
 
   startDrone(saHz: number, secondRatio: number | null) {
     const ctx = this.ensure();
+    // safari can hand back a suspended context even inside a user gesture
+    void ctx.resume();
     if (this.droneOscs.length) return;
 
     const pitches = [
@@ -134,10 +139,10 @@ export class RagaPlayer {
     await ctx.resume();
     this.stopMelody();
 
-    const t0 = ctx.currentTime;
-    this.melodyBus!.gain.cancelScheduledValues(t0);
-    this.melodyBus!.gain.setValueAtTime(1, t0);
+    this.voice = ctx.createGain();
+    this.voice.connect(this.melodyBus!);
 
+    const t0 = ctx.currentTime;
     let t = t0 + 0.2;
     let prevFreq: number | null = null;
     const sched: Scheduled["sched"] = [];
@@ -159,9 +164,23 @@ export class RagaPlayer {
       clearTimeout(this.doneTimer);
       this.doneTimer = null;
     }
-    if (!this.ctx || !this.melodyBus) return;
-    // mute the bus; scheduled oscillators stop themselves shortly after
-    this.melodyBus.gain.setTargetAtTime(0.0001, this.ctx.currentTime, 0.05);
+    if (!this.ctx || !this.voice) return;
+    // fade this play's voice to avoid a click, then kill its sources
+    const voice = this.voice;
+    const nodes = this.voiceNodes;
+    this.voice = null;
+    this.voiceNodes = [];
+    voice.gain.setTargetAtTime(0.0001, this.ctx.currentTime, 0.05);
+    setTimeout(() => {
+      for (const n of nodes) {
+        try {
+          n.stop();
+        } catch {
+          // already stopped
+        }
+      }
+      voice.disconnect();
+    }, 400);
   }
 
   dispose() {
@@ -199,6 +218,7 @@ export class RagaPlayer {
       lfo.connect(depth).connect(osc.frequency);
       lfo.start(t);
       lfo.stop(t + dur + 0.3);
+      this.voiceNodes.push(lfo);
     }
 
     const amp = ctx.createGain();
@@ -206,9 +226,10 @@ export class RagaPlayer {
     amp.gain.exponentialRampToValueAtTime(0.26, t + 0.05);
     amp.gain.setTargetAtTime(0.2, t + 0.08, 0.12);
     amp.gain.setTargetAtTime(0.0001, t + dur - 0.06, 0.045);
-    osc.connect(amp).connect(this.melodyBus!);
+    osc.connect(amp).connect(this.voice!);
     osc.start(t);
     osc.stop(t + dur + 0.3);
+    this.voiceNodes.push(osc);
 
     // breath: a soft chiff at the attack, faint hiss through the note
     const noise = ctx.createBufferSource();
@@ -222,8 +243,9 @@ export class RagaPlayer {
     ng.gain.setValueAtTime(0.05, t);
     ng.gain.exponentialRampToValueAtTime(0.006, t + 0.1);
     ng.gain.setTargetAtTime(0.0001, t + dur - 0.05, 0.03);
-    noise.connect(bp).connect(ng).connect(this.melodyBus!);
+    noise.connect(bp).connect(ng).connect(this.voice!);
     noise.start(t);
     noise.stop(t + dur + 0.1);
+    this.voiceNodes.push(noise);
   }
 }

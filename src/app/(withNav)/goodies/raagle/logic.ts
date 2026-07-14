@@ -1,7 +1,7 @@
 import { MELAKARTAS, Melakarta } from "@lib/carnatic/melakarta";
 import { SONGS, Song } from "@lib/carnatic/songs";
 
-export const MAX_GUESSES = 3;
+export const MAX_GUESSES = 4;
 
 // puzzle #1 on 2026-07-14, counted on the player's local calendar day
 const EPOCH_UTC = Date.UTC(2026, 6, 14);
@@ -72,7 +72,7 @@ export function shareText(
 ): string {
   const label = date ?? "practice";
   const score = won
-    ? `got it in ${rows.length}/${MAX_GUESSES}`
+    ? `Got it in ${rows.length}/${MAX_GUESSES}`
     : `X/${MAX_GUESSES}, it slipped away`;
-  return `Raagle ${label}\n\n${score}\n\n${gridText(rows)}\n\nhttps://kashyapsuhas.com/goodies/raagle`;
+  return `Raagle - ${label}\n${score}\n${gridText(rows)}\nhttps://kashyapsuhas.com/goodies/raagle`;
 }

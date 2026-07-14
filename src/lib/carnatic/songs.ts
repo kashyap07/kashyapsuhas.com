@@ -21,12 +21,18 @@ export const SONGS: Song[] = [
     kannada: "ವನಜಾಕ್ಷಿ",
     homeMela: 65,
     homeRaga: "Kalyani",
-    detail: "ata tala varnam by Pallavi Gopala Iyer",
+    detail: "adi tala varnam by Ramanathapuram Srinivasa Iyengar",
     notation: `
-      S , n d | n S R G | P , M , | G , , R | R , , , |
-      G M P G | R S n d | R S S , | R d G R | G P M R | , , , ||
+      S' S' , S' | N D R' S' | N N D D | P M G M |
+      P D N D | , R' S' N | D P M G | M P D N |
+      S' R' G' R' | S' N S' R' | S' N R' S' | N D N D |
+      N , , , | , , S' N | D P M G | M P D N |
+      P , M G | N D , M | D P , M | G R S n |
+      S R G M | , , G M | P G , M | N D N P |
+      D N S' R' | , S' R' G' | S' R' G' R' | S' N D N |
+      D G' R' S' | N D P N | D P M G | M P D N | , , ||
     `,
-    sahitya: "vanajakshi ninne kori yunnadira",
+    sahitya: "vanajakshiro ee viraha morvane vasudevuni todi deve",
   },
   {
     slug: "chalamela",
@@ -37,7 +43,9 @@ export const SONGS: Song[] = [
     detail: "ata tala varnam by Swati Tirunal",
     notation: `
       S' , N , | P , , M | G , R , | S , , , |
-      , , d R | , , , R | S R G R | R G R S | , , , ||
+      , , d R | , , , R | S R G R | R G R S | , , , |
+      n , , S | R G S , | S R G M | P D N S' |
+      N , S' D | N P D N | R' N S' D | , , , ||
     `,
     sahitya: "chalamela jesevura sarasaku rara sami",
   },

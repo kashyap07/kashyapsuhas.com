@@ -68,8 +68,8 @@ describe("raagle logic", () => {
       [[true, true, false, true, true, false, true]],
       true,
     );
-    expect(text).toContain("Raagle 14 Jul 2026");
-    expect(text).toContain(`got it in 1/${MAX_GUESSES}`);
+    expect(text).toContain("Raagle - 14 Jul 2026");
+    expect(text).toContain(`Got it in 1/${MAX_GUESSES}`);
     // slots 0 and 4 dropped, five scored slots remain
     expect(text).toContain("🟩🟥🟩🟥🟩");
     expect(text).toContain("https://kashyapsuhas.com/goodies/raagle");
@@ -78,7 +78,7 @@ describe("raagle logic", () => {
       [[true, false, false, false, true, false, false]],
       false,
     );
-    expect(lost).toContain("Raagle practice");
+    expect(lost).toContain("Raagle - practice");
     expect(lost).toContain(`X/${MAX_GUESSES}`);
     expect(lost).toContain("🟥🟥🟥🟥🟥");
   });

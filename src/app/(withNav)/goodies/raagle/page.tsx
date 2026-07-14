@@ -168,11 +168,12 @@ export default function RaaglePage() {
   const [guesses, setGuesses] = useState<Melakarta[]>([]);
   const [input, setInput] = useState("");
   const [selected, setSelected] = useState<Set<number>>(new Set());
-  const [droneOn, setDroneOn] = useState(true);
+  const [droneOn, setDroneOn] = useState(false);
   const [playingKey, setPlayingKey] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [stats, setStats] = useState<Stats>(EMPTY_STATS);
   const [showTutorial, setShowTutorial] = useState(false);
+  const [showResult, setShowResult] = useState(false);
 
   const playerRef = useRef<RagaPlayer | null>(null);
 
@@ -213,6 +214,22 @@ export default function RaaglePage() {
   const won = answer !== null && guesses.includes(answer);
   const done = won || guesses.length >= MAX_GUESSES;
 
+  // the result pops up once the game ends, after the last row lands
+  useEffect(() => {
+    if (!done) return;
+    const t = setTimeout(() => setShowResult(true), 700);
+    return () => clearTimeout(t);
+  }, [done]);
+
+  useEffect(() => {
+    if (!showResult) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setShowResult(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [showResult]);
+
   // the keyboard narrows the field, the text box narrows it further
   const kbMatches = MELAKARTAS.filter((m) => {
     const have = new Set(melaSemitones(m));
@@ -251,10 +268,8 @@ export default function RaaglePage() {
   function handleDroneToggle() {
     const next = !droneOn;
     setDroneOn(next);
-    const player = playerRef.current;
-    if (!player) return;
-    if (next) player.startDrone(SA_HZ, 3 / 2);
-    else player.stopDrone();
+    if (next) ensurePlayer().startDrone(SA_HZ, 3 / 2);
+    else playerRef.current?.stopDrone();
   }
 
   // a lone reference tone, so the ear can check itself against the tune
@@ -321,6 +336,7 @@ export default function RaaglePage() {
   function startPractice() {
     playerRef.current?.stopMelody();
     setPlayingKey(null);
+    setShowResult(false);
     setMode("practice");
     setAnswer(randomMela(dailyAnswer ?? undefined));
     setSong(randomSong());
@@ -332,6 +348,7 @@ export default function RaaglePage() {
   function backToDaily() {
     playerRef.current?.stopMelody();
     setPlayingKey(null);
+    setShowResult(false);
     setMode("daily");
     setAnswer(dailyAnswer);
     setSong(dailyTune);
@@ -384,10 +401,10 @@ export default function RaaglePage() {
           <div className="mb-2 flex flex-wrap items-center gap-3">
             <button
               onClick={() => handlePlay("mystery", answer)}
-              className={`rounded px-4 py-2 font-sans text-sm font-medium transition-colors ${
+              className={`min-w-52 rounded border border-accent px-4 py-2 font-sans text-sm font-medium transition-colors ${
                 playingKey === "mystery"
-                  ? "bg-accent text-black"
-                  : "border border-line text-muted hover:text-accent"
+                  ? "hover:bg-accent/10 text-accent"
+                  : "hover:bg-accent/80 bg-accent text-black"
               }`}
             >
               {playingKey === "mystery" ? "■ stop" : "▶ hear the mystery raga"}
@@ -496,69 +513,98 @@ export default function RaaglePage() {
             </div>
           )}
 
-          {/* the end screen */}
-          {done && (
-            <div className="mb-8 rounded-lg bg-surface-subtle px-6 py-5 md:px-8 md:py-6">
-              <p className="mb-1 font-sans text-xs uppercase tracking-wider text-muted">
-                {won
-                  ? `got it in ${guesses.length} of ${MAX_GUESSES}`
-                  : "it slipped away"}
-              </p>
-              <p className="font-display text-2xl text-accent md:text-3xl">
-                {answer.kannada}
-              </p>
-              <p className="mb-1 text-lg">
-                #{answer.n} {answer.name} ·{" "}
-                <span className="font-sans text-sm text-subtle">
-                  {answer.scale.map((id) => SVARAS[id].latin).join(" ")}
-                </span>
-              </p>
-              <p className="mb-3 font-sans text-sm text-subtle">
-                you heard {song.title}, {song.detail} · its true home is{" "}
-                {song.homeRaga} (#{song.homeMela})
-              </p>
-              <pre className="mb-4 font-sans text-sm leading-snug">
-                {gridText(guesses.map((g) => scoreGuess(g, answer)))}
-              </pre>
-              <div className="mb-4 flex flex-wrap gap-3">
+          {/* the end screen, a popup once the game ends */}
+          {done && !showResult && (
+            <button
+              onClick={() => setShowResult(true)}
+              className="mb-8 rounded border border-accent px-4 py-2 font-sans text-sm text-accent transition-colors hover:bg-accent hover:text-black"
+            >
+              see results
+            </button>
+          )}
+          {done && showResult && (
+            <div
+              className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+              onClick={() => setShowResult(false)}
+            >
+              <div
+                role="dialog"
+                aria-modal="true"
+                className="relative w-full max-w-md rounded-lg bg-surface px-6 py-5 shadow-macos md:px-8 md:py-6"
+                onClick={(e) => e.stopPropagation()}
+              >
                 <button
-                  onClick={handleShare}
-                  className="rounded border border-line px-3 py-1.5 font-sans text-sm text-muted transition-colors hover:text-accent"
+                  onClick={() => setShowResult(false)}
+                  aria-label="close"
+                  className="absolute right-4 top-4 font-sans text-sm text-muted transition-colors hover:text-accent"
                 >
-                  {copied ? "copied ✓" : "share result"}
+                  ✕
                 </button>
-                <Link
-                  href={`/goodies/melakarta-ragas?raga=${answer.slug}`}
-                  className="rounded border border-line px-3 py-1.5 font-sans text-sm text-muted transition-colors hover:text-accent"
-                >
-                  open in explorer →
-                </Link>
-                <button
-                  onClick={startPractice}
-                  className="rounded border border-line px-3 py-1.5 font-sans text-sm text-muted transition-colors hover:text-accent"
-                >
-                  {mode === "daily" ? "practice round" : "another one"}
-                </button>
-                {mode === "practice" && (
-                  <button
-                    onClick={backToDaily}
-                    className="rounded border border-line px-3 py-1.5 font-sans text-sm text-muted transition-colors hover:text-accent"
-                  >
-                    back to today
-                  </button>
+                <p className="mb-1 font-sans text-xs uppercase tracking-wider text-muted">
+                  {won
+                    ? `got it in ${guesses.length} of ${MAX_GUESSES}`
+                    : "it slipped away"}
+                </p>
+                <p className="font-display text-2xl text-accent md:text-3xl">
+                  {answer.kannada}
+                </p>
+                <p className="mb-1 text-lg">
+                  #{answer.n} {answer.name} ·{" "}
+                  <span className="font-sans text-sm text-subtle">
+                    {answer.scale.map((id) => SVARAS[id].latin).join(" ")}
+                  </span>
+                </p>
+                <p className="mb-3 font-sans text-sm text-subtle">
+                  you heard {song.title}, {song.detail} · its true home is{" "}
+                  {song.homeRaga} (#{song.homeMela})
+                </p>
+                <pre className="mb-4 font-sans text-sm leading-snug">
+                  {gridText(guesses.map((g) => scoreGuess(g, answer)))}
+                </pre>
+                <div className="mb-4 flex flex-wrap gap-3">
+                  {mode !== "practice" && (
+                    <button
+                      onClick={handleShare}
+                      className="w-full min-w-full rounded border border-accent bg-accent px-3 py-1.5 font-sans text-sm font-medium text-black transition-colors"
+                    >
+                      {copied ? "copied to clipboard ✓" : "share result"}
+                    </button>
+                  )}
+                  <div className="flex w-full justify-between">
+                    <Link
+                      href={`/goodies/melakarta-ragas?raga=${answer.slug}`}
+                      className="rounded border border-line px-3 py-1.5 font-sans text-sm text-muted transition-colors hover:text-accent"
+                    >
+                      open in raga explorer →
+                    </Link>
+                    <button
+                      onClick={startPractice}
+                      className="rounded border border-line px-3 py-1.5 font-sans text-sm text-muted transition-colors hover:text-accent"
+                    >
+                      {mode === "daily" ? "practice round" : "another one"}
+                    </button>
+                  </div>
+                  {mode === "practice" && (
+                    <button
+                      onClick={backToDaily}
+                      className="w-full rounded border border-line px-3 py-1.5 font-sans text-sm text-muted transition-colors hover:text-accent"
+                    >
+                      back to today
+                    </button>
+                  )}
+                </div>
+                {mode === "daily" && stats.played > 0 && (
+                  <p className="font-sans text-sm text-subtle">
+                    played {stats.played} · won {stats.won} · streak{" "}
+                    {stats.streak} · best {stats.maxStreak}
+                  </p>
+                )}
+                {mode === "daily" && (
+                  <p className="mt-1 font-sans text-sm text-subtle">
+                    a new raga arrives at midnight
+                  </p>
                 )}
               </div>
-              {mode === "daily" && stats.played > 0 && (
-                <p className="font-sans text-sm text-subtle">
-                  played {stats.played} · won {stats.won} · streak{" "}
-                  {stats.streak} · best {stats.maxStreak}
-                </p>
-              )}
-              {mode === "daily" && (
-                <p className="mt-1 font-sans text-sm text-subtle">
-                  a new raga arrives at midnight
-                </p>
-              )}
             </div>
           )}
 

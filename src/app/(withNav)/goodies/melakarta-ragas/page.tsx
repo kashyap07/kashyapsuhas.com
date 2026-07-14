@@ -39,7 +39,7 @@ function MelakartaRagas() {
   const [lastPlayed, setLastPlayed] = useState<string | null>(
     () => findMela(searchParams.get("raga"))?.slug ?? null,
   );
-  const [droneOn, setDroneOn] = useState(true);
+  const [droneOn, setDroneOn] = useState(false);
   const [playingSlug, setPlayingSlug] = useState<string | null>(null);
   const [activeKey, setActiveKey] = useState<number | null>(null);
 
@@ -156,10 +156,8 @@ function MelakartaRagas() {
   function handleDroneToggle() {
     const next = !droneOn;
     setDroneOn(next);
-    const player = playerRef.current;
-    if (!player) return;
-    if (next) player.startDrone(SA_HZ, 3 / 2);
-    else player.stopDrone();
+    if (next) ensurePlayer().startDrone(SA_HZ, 3 / 2);
+    else playerRef.current?.stopDrone();
   }
 
   const extraCount = [...selected].filter((s) => !LOCKED.has(s)).length;
