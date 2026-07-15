@@ -1,4 +1,7 @@
-// tiny web audio raga instrument: breathy flute lead over a tamburi-ish drone
+// tiny web audio raga instrument: karplus-strong veena over a plucked
+// tanpura drone. the strings themselves are rendered offline in pluck.ts;
+// this file just schedules buffers and shapes them live.
+import { renderPluck, renderReverbImpulse, renderTanpuraCycle } from "./pluck";
 
 export const BEAT = 0.42; // seconds
 
@@ -17,52 +20,57 @@ export type Scheduled = {
 
 export class RagaPlayer {
   private ctx: AudioContext | null = null;
-  private wave: PeriodicWave | null = null;
-  private noise: AudioBuffer | null = null;
   private melodyBus: GainNode | null = null;
   private droneBus: GainNode | null = null;
-  private droneOscs: OscillatorNode[] = [];
+  private droneSrcs: AudioScheduledSourceNode[] = [];
   private doneTimer: ReturnType<typeof setTimeout> | null = null;
   // per-play gain node + its sources, so stop can kill them for real
   private voice: GainNode | null = null;
   private voiceNodes: AudioScheduledSourceNode[] = [];
+  // rendered plucks, keyed by pitch + attack variant
+  private plucks = new Map<string, AudioBuffer>();
+  private tanpura: { key: string; buf: AudioBuffer } | null = null;
 
   private ensure(): AudioContext {
     if (this.ctx) return this.ctx;
     const ctx = new AudioContext();
 
-    // flute-ish tone: strong fundamental, a touch of 2nd and 3rd harmonic
-    this.wave = ctx.createPeriodicWave(
-      new Float32Array([0, 0, 0, 0]),
-      new Float32Array([0, 1, 0.22, 0.06]),
-    );
-
-    // shared noise buffer for breath
-    const n = ctx.sampleRate;
-    const buf = ctx.createBuffer(1, n, ctx.sampleRate);
-    const data = buf.getChannelData(0);
-    for (let i = 0; i < n; i++) data[i] = Math.random() * 2 - 1;
-    this.noise = buf;
-
-    // gentle echo so the flute has some air around it
-    const delay = ctx.createDelay(1);
-    delay.delayTime.value = 0.28;
-    const damp = ctx.createBiquadFilter();
-    damp.type = "lowpass";
-    damp.frequency.value = 2400;
-    const feedback = ctx.createGain();
-    feedback.gain.value = 0.3;
-    delay.connect(damp).connect(feedback).connect(delay);
+    // a small dark room from a generated impulse, so the plucks have air
+    // around them without the distinct repeats a slap delay would give
+    const [l, r] = renderReverbImpulse(ctx.sampleRate);
+    const ir = ctx.createBuffer(2, l.length, ctx.sampleRate);
+    ir.copyToChannel(l, 0);
+    ir.copyToChannel(r, 1);
+    const verb = ctx.createConvolver();
+    verb.buffer = ir;
     const wet = ctx.createGain();
-    wet.gain.value = 0.16;
-    delay.connect(wet).connect(ctx.destination);
+    wet.gain.value = 0.14;
+    verb.connect(wet).connect(ctx.destination);
+
+    // veena body: two gentle resonant bumps, then trim the string fizz
+    const body1 = ctx.createBiquadFilter();
+    body1.type = "peaking";
+    body1.frequency.value = 210;
+    body1.gain.value = 3.5;
+    body1.Q.value = 1.1;
+    const body2 = ctx.createBiquadFilter();
+    body2.type = "peaking";
+    body2.frequency.value = 700;
+    body2.gain.value = 2.5;
+    body2.Q.value = 2;
+    const shelf = ctx.createBiquadFilter();
+    shelf.type = "highshelf";
+    shelf.frequency.value = 3800;
+    shelf.gain.value = -2;
 
     this.melodyBus = ctx.createGain();
-    this.melodyBus.connect(ctx.destination);
-    this.melodyBus.connect(delay);
+    this.melodyBus.connect(body1).connect(body2).connect(shelf);
+    shelf.connect(ctx.destination);
+    shelf.connect(verb);
 
     this.droneBus = ctx.createGain();
     this.droneBus.connect(ctx.destination);
+    this.droneBus.connect(verb);
 
     this.ctx = ctx;
     return ctx;
@@ -72,57 +80,43 @@ export class RagaPlayer {
     const ctx = this.ensure();
     // safari can hand back a suspended context even inside a user gesture
     void ctx.resume();
-    if (this.droneOscs.length) return;
+    if (this.droneSrcs.length) return;
 
-    const pitches = [
-      { f: saHz / 2, g: 0.05 },
-      ...(secondRatio ? [{ f: (saHz / 2) * secondRatio, g: 0.038 }] : []),
-      { f: saHz, g: 0.02 },
-    ];
+    const key = `${saHz}|${secondRatio ?? ""}|${ctx.sampleRate}`;
+    if (this.tanpura?.key !== key) {
+      const data = renderTanpuraCycle({
+        saHz,
+        secondRatio,
+        sampleRate: ctx.sampleRate,
+      });
+      const buf = ctx.createBuffer(1, data.length, ctx.sampleRate);
+      buf.copyToChannel(data, 0);
+      this.tanpura = { key, buf };
+    }
 
     const t = ctx.currentTime;
     this.droneBus!.gain.cancelScheduledValues(t);
     this.droneBus!.gain.setValueAtTime(0.0001, t);
     this.droneBus!.gain.exponentialRampToValueAtTime(1, t + 2);
 
-    for (const { f, g } of pitches) {
-      for (const detune of [-4, 4]) {
-        const osc = ctx.createOscillator();
-        osc.type = "sawtooth";
-        osc.frequency.value = f;
-        osc.detune.value = detune;
-
-        const lp = ctx.createBiquadFilter();
-        lp.type = "lowpass";
-        lp.frequency.value = 1000;
-        lp.Q.value = 0.5;
-
-        // slow filter drift gives the drone its shimmer
-        const lfo = ctx.createOscillator();
-        lfo.frequency.value = 0.07 + Math.random() * 0.05;
-        const lfoGain = ctx.createGain();
-        lfoGain.gain.value = 300;
-        lfo.connect(lfoGain).connect(lp.frequency);
-        lfo.start();
-
-        const gain = ctx.createGain();
-        gain.gain.value = g / 2;
-        osc.connect(lp).connect(gain).connect(this.droneBus!);
-        osc.start();
-        this.droneOscs.push(osc, lfo);
-      }
-    }
+    const src = ctx.createBufferSource();
+    src.buffer = this.tanpura.buf;
+    src.loop = true;
+    src.connect(this.droneBus!);
+    // drop in mid-cycle so it doesn't always open on the same pluck
+    src.start(t, Math.random() * this.tanpura.buf.duration);
+    this.droneSrcs.push(src);
   }
 
   stopDrone() {
     if (!this.ctx || !this.droneBus) return;
     this.droneBus.gain.setTargetAtTime(0.0001, this.ctx.currentTime, 0.3);
-    const oscs = this.droneOscs;
-    this.droneOscs = [];
+    const srcs = this.droneSrcs;
+    this.droneSrcs = [];
     setTimeout(() => {
-      for (const o of oscs) {
+      for (const s of srcs) {
         try {
-          o.stop();
+          s.stop();
         } catch {
           // already stopped
         }
@@ -131,7 +125,7 @@ export class RagaPlayer {
   }
 
   get droneRunning() {
-    return this.droneOscs.length > 0;
+    return this.droneSrcs.length > 0;
   }
 
   async play(notes: PlayableNote[], onDone: () => void): Promise<Scheduled> {
@@ -145,17 +139,19 @@ export class RagaPlayer {
     const t0 = ctx.currentTime;
     let t = t0 + 0.2;
     let prevFreq: number | null = null;
+    // flip attack variants per play, so replays don't repeat identically
+    const flip = Math.random() < 0.5 ? 1 : 0;
     const sched: Scheduled["sched"] = [];
     for (const n of notes) {
       t += n.restBefore * BEAT;
       const dur = n.beats * BEAT;
-      this.fluteNote(n.freq, t, dur, prevFreq);
+      this.pluckNote(n.freq, t, dur, prevFreq, (n.idx & 1) ^ flip);
       sched.push({ start: t, end: t + dur, idx: n.idx });
       prevFreq = n.freq;
       t += dur;
     }
 
-    this.doneTimer = setTimeout(onDone, (t - t0 + 0.4) * 1000);
+    this.doneTimer = setTimeout(onDone, (t - t0 + 0.6) * 1000);
     return { sched, now: () => ctx.currentTime };
   }
 
@@ -185,27 +181,53 @@ export class RagaPlayer {
 
   dispose() {
     this.stopMelody();
+    this.plucks.clear();
+    this.tanpura = null;
     this.ctx?.close();
     this.ctx = null;
   }
 
-  private fluteNote(
+  private pluckBuffer(freq: number, variant: number): AudioBuffer {
+    const ctx = this.ctx!;
+    const key = `${freq.toFixed(1)}v${variant}`;
+    const hit = this.plucks.get(key);
+    if (hit) return hit;
+    const data = renderPluck({
+      freq,
+      sampleRate: ctx.sampleRate,
+      seed: Math.round(freq * 100) * 31 + variant,
+    });
+    const buf = ctx.createBuffer(1, data.length, ctx.sampleRate);
+    buf.copyToChannel(data, 0);
+    // maps iterate in insertion order, so this is a crude fifo cap (~48
+    // buffers of ~1.6s mono ≈ 15mb worst case)
+    if (this.plucks.size >= 48) {
+      this.plucks.delete(this.plucks.keys().next().value!);
+    }
+    this.plucks.set(key, buf);
+    return buf;
+  }
+
+  private pluckNote(
     freq: number,
     t: number,
     dur: number,
     prevFreq: number | null,
+    variant: number,
   ) {
     const ctx = this.ctx!;
+    const src = ctx.createBufferSource();
+    src.buffer = this.pluckBuffer(freq, variant);
 
-    const osc = ctx.createOscillator();
-    osc.setPeriodicWave(this.wave!);
-    // glide in from the previous note, gamaka style
+    // gamaka glide: the buffer is at target pitch, bend in from the previous
+    // note via playback rate. wide leaps just get plucked clean.
     if (prevFreq && prevFreq !== freq) {
-      const glide = Math.min(0.1, dur * 0.3);
-      osc.frequency.setValueAtTime(prevFreq, t);
-      osc.frequency.exponentialRampToValueAtTime(freq, t + glide);
-    } else {
-      osc.frequency.setValueAtTime(freq, t);
+      const ratio = prevFreq / freq;
+      if (ratio > 1 / 1.6 && ratio < 1.6) {
+        const glide = Math.min(0.09, dur * 0.35);
+        src.playbackRate.setValueAtTime(ratio, t);
+        src.playbackRate.exponentialRampToValueAtTime(1, t + glide);
+      }
     }
 
     // vibrato blooms late, only on held notes
@@ -214,38 +236,22 @@ export class RagaPlayer {
       lfo.frequency.value = 5.2;
       const depth = ctx.createGain();
       depth.gain.setValueAtTime(0, t);
-      depth.gain.linearRampToValueAtTime(freq * 0.008, t + dur * 0.7);
-      lfo.connect(depth).connect(osc.frequency);
+      depth.gain.linearRampToValueAtTime(0.008, t + dur * 0.7);
+      lfo.connect(depth).connect(src.playbackRate);
       lfo.start(t);
-      lfo.stop(t + dur + 0.3);
+      lfo.stop(t + dur + 1);
       this.voiceNodes.push(lfo);
     }
 
-    const amp = ctx.createGain();
-    amp.gain.setValueAtTime(0.0001, t);
-    amp.gain.exponentialRampToValueAtTime(0.26, t + 0.05);
-    amp.gain.setTargetAtTime(0.2, t + 0.08, 0.12);
-    amp.gain.setTargetAtTime(0.0001, t + dur - 0.06, 0.045);
-    osc.connect(amp).connect(this.voice!);
-    osc.start(t);
-    osc.stop(t + dur + 0.3);
-    this.voiceNodes.push(osc);
-
-    // breath: a soft chiff at the attack, faint hiss through the note
-    const noise = ctx.createBufferSource();
-    noise.buffer = this.noise!;
-    noise.loop = true;
-    const bp = ctx.createBiquadFilter();
-    bp.type = "bandpass";
-    bp.frequency.value = freq * 2.5;
-    bp.Q.value = 1.5;
-    const ng = ctx.createGain();
-    ng.gain.setValueAtTime(0.05, t);
-    ng.gain.exponentialRampToValueAtTime(0.006, t + 0.1);
-    ng.gain.setTargetAtTime(0.0001, t + dur - 0.05, 0.03);
-    noise.connect(bp).connect(ng).connect(this.voice!);
-    noise.start(t);
-    noise.stop(t + dur + 0.1);
-    this.voiceNodes.push(noise);
+    // the buffer carries the attack and the natural ring; the gain just sets
+    // pick strength and finger-damps a moment after the written duration
+    const g = ctx.createGain();
+    const level = 0.5 * (0.85 + 0.3 * Math.random());
+    g.gain.setValueAtTime(level, t);
+    g.gain.setTargetAtTime(0.0001, t + dur, 0.18);
+    src.connect(g).connect(this.voice!);
+    src.start(t);
+    src.stop(t + dur + 1);
+    this.voiceNodes.push(src);
   }
 }
