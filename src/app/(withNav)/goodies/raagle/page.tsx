@@ -129,15 +129,15 @@ function Tutorial({ replay, onDone }: { replay: boolean; onDone: () => void }) {
       <ul className="mb-6 flex flex-col gap-2 text-secondary">
         <li>
           A mystery Mēḷakartā raga hides here every day. Press play to hear a
-          familiar varna bent to the mystery raga&apos;s scale.
+          popular varna bent to the mystery raga&apos;s scale.
         </li>
         <li>
-          Don&apos;t know all 72 names? Tap swaras you hear on the keyboard to
+          if you don&apos;t know all 72 names, tap swaras you hear on the keyboard to
           narrow down.
         </li>
         <li>
-          Guess by name: swaras in the right spot turn *green*, wrong ones turn
-          *red*. You get {MAX_GUESSES} guesses.
+          Guess by name: swaras in the right spot turn <b>green</b>, wrong ones turn
+          <b>red</b>. You get {MAX_GUESSES} guesses.
         </li>
       </ul>
       <div className="mb-2">
@@ -145,13 +145,13 @@ function Tutorial({ replay, onDone }: { replay: boolean; onDone: () => void }) {
       </div>
       <p className="mb-6 font-sans text-sm text-subtle">
         Here Dheerashankarabharana was guessed while Mayamalavagowla hid: ri and
-        da missed, the rest landed.
+        da missed, the rest were right.
       </p>
       <button
         onClick={onDone}
         className="rounded border border-accent px-4 py-2 font-sans text-sm text-accent transition-colors hover:bg-accent hover:text-black"
       >
-        {replay ? "back to the game" : "let's play"}
+        {replay ? "back to game" : "let's play"}
       </button>
     </div>
   );
@@ -388,7 +388,7 @@ export default function RaaglePage() {
         )}
       </h1>
       <p className="mb-8 text-base text-secondary md:text-lg">
-        Guess the mystery Mēḷakartā raga within {MAX_GUESSES} turns.
+        Guess the mystery Mēḷakartā raga in {MAX_GUESSES} turns.
       </p>
 
       {showTutorial && (
@@ -407,7 +407,7 @@ export default function RaaglePage() {
                   : "hover:bg-accent/80 bg-accent text-black"
               }`}
             >
-              {playingKey === "mystery" ? "■ stop" : "▶ hear the mystery raga"}
+              {playingKey === "mystery" ? "■ stop" : "▶ hear the mystery raaga"}
             </button>
             <button
               onClick={handleDroneToggle}
@@ -473,7 +473,7 @@ export default function RaaglePage() {
                 <span className="font-sans text-sm text-subtle">
                   {selected.size > 0
                     ? `${kbMatches.length} of 72 hold those swaras`
-                    : "tap the swaras you hear to narrow the names"}
+                    : "tap swaras you hear to narrow down names"}
                 </span>
                 {selected.size > 0 && (
                   <button
@@ -574,7 +574,7 @@ export default function RaaglePage() {
                       href={`/goodies/melakarta-ragas?raga=${answer.slug}`}
                       className="rounded border border-line px-3 py-1.5 font-sans text-sm text-muted transition-colors hover:text-accent"
                     >
-                      open in raga explorer →
+                      open in raaga explorer →
                     </Link>
                     <button
                       onClick={startPractice}
@@ -600,7 +600,7 @@ export default function RaaglePage() {
                 )}
                 {mode === "daily" && (
                   <p className="mt-1 font-sans text-sm text-subtle">
-                    a new raga arrives at midnight
+                    a new raaga arrives at midnight
                   </p>
                 )}
               </div>
