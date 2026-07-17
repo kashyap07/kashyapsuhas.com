@@ -28,7 +28,7 @@ const CELLS = [
 export default async function Image() {
   const font = await loadGoogleFont(
     FRAUNCES,
-    "Raagle Suhas Kashyap A daily Mēḷakartā raga guessing game goodies sa ri ga ma pa da ni kashyapsuhas.com/ •",
+    "Raagle Suhas Kashyap A daily Mēḷakartā raaga guessing game goodies sa ri ga ma pa da ni kashyapsuhas.com/ •",
   );
 
   return new ImageResponse(
@@ -94,7 +94,7 @@ export default async function Image() {
           ))}
         </div>
         <div style={{ color: MUTED, fontSize: 32 }}>
-          A daily Mēḷakartā raga guessing game
+          A daily Mēḷakartā raaga guessing game
         </div>
       </div>
 
