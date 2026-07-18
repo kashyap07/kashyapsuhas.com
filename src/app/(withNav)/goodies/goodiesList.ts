@@ -6,6 +6,11 @@ export type Goodie = {
 
 const goodies: Array<Goodie> = [
   {
+    name: "Dreamify",
+    description: "dreamy wedding-photo look: brushed defocus + highlight bloom",
+    href: "goodies/dreamify",
+  },
+  {
     name: "Image Compressor",
     description: "reduce image size by percentage",
     href: "goodies/image-compressor",
