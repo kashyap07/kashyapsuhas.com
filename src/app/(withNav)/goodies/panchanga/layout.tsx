@@ -18,11 +18,6 @@ export const metadata: Metadata = {
     "lahiri ayanamsha",
     "brahmin sandhyavandane sankalpa",
   ],
-  openGraph: {
-    title: "Panchanga",
-    description: "Sankalpa Mantra info",
-    images: [{ url: "/blog/kashyapananda.jpeg" }],
-  },
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
