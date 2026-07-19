@@ -61,7 +61,7 @@ export default async function Image() {
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ fontSize: 104, lineHeight: 1 }}>Dreamify</div>
           <div style={{ color: MUTED, fontSize: 32, marginTop: 28 }}>
-            the dreamy wedding-photo look,
+            dreamy wedding-photo look,
           </div>
           <div style={{ color: MUTED, fontSize: 32 }}>in your browser</div>
         </div>

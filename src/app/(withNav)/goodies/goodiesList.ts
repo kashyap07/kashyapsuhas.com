@@ -6,8 +6,13 @@ export type Goodie = {
 
 const goodies: Array<Goodie> = [
   {
+    name: "Raagle",
+    description: "a daily Mēḷakartā raaga guessing game",
+    href: "goodies/raagle",
+  },
+  {
     name: "Dreamify",
-    description: "dreamy wedding-photo look: radial defocus, glow and haze",
+    description: "dreamy wedding-photo look, meesho photoshop",
     href: "goodies/dreamify",
   },
   {
@@ -32,14 +37,13 @@ const goodies: Array<Goodie> = [
   },
   {
     name: "Melakarta Ragas",
-    description: "all 72 melakarta ragas: filter by swara, hear them",
+    description: "all 72 melakarta raagas: filter by swara, hear them",
     href: "goodies/melakarta-ragas",
   },
   {
-    name: "Raagle",
-    description:
-      "guess the myster melakarta raga hiding in a familiar tune, daily",
-    href: "goodies/raagle",
+    name: "Raga Radar",
+    description: "[experimental] sing to detect raaga",
+    href: "goodies/raga-radar",
   },
 ];
 

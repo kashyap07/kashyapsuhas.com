@@ -10,10 +10,11 @@ const SITE_URL = (
 ).replace(/\/+$/, "");
 
 // permissions-policy: lock down powerful features we never use. cookieless
-// analytics + speed insights don't need camera/mic/geo/etc.
+// analytics + speed insights don't need camera/geo/etc. mic stays same-origin
+// only: raga radar listens to it, third-party frames never can
 const PERMISSIONS_POLICY = [
   "camera=()",
-  "microphone=()",
+  "microphone=(self)",
   "geolocation=()",
   "payment=()",
   "usb=()",
