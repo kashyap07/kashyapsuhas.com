@@ -7,7 +7,7 @@ export type Goodie = {
 const goodies: Array<Goodie> = [
   {
     name: "Dreamify",
-    description: "dreamy wedding-photo look: brushed defocus + highlight bloom",
+    description: "dreamy wedding-photo look: radial defocus, glow and haze",
     href: "goodies/dreamify",
   },
   {

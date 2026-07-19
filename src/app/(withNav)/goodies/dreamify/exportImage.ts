@@ -51,13 +51,13 @@ async function copyExif(originalFile: File, encoded: Blob): Promise<Blob> {
 
 export async function exportBlurred(opts: {
   originalFile: File;
-  bitmap: ImageBitmap;
-  params: DreamParams; // sigmas in full-res px
+  source: ImageBitmap | HTMLCanvasElement; // full res, or capped on phone gpus
+  params: DreamParams; // sigmas in source px
   format: "jpeg" | "png";
   quality?: number; // 0..1, jpeg only
 }): Promise<Blob> {
-  const { originalFile, bitmap, params, format, quality = 0.95 } = opts;
-  const canvas = renderToCanvas({ bitmap, params });
+  const { originalFile, source, params, format, quality = 0.95 } = opts;
+  const canvas = renderToCanvas({ source, params });
   if (format === "png") {
     return blobFromCanvas(canvas, "image/png");
   }
