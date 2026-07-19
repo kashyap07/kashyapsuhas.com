@@ -24,11 +24,9 @@ const ELEMENTS = [
 ];
 
 const LABEL_SIZE = 40;
-// title devanagari reuses the same shaped svg, just scaled up
-const TITLE_DEVA_SIZE = 54;
 
 export default async function Image() {
-  const devaText = ["पञ्चाङ्ग", ...ELEMENTS.map((e) => e.deva)].join(" ");
+  const devaText = ELEMENTS.map((e) => e.deva).join(" ");
   const [fraunces, shaped] = await Promise.all([
     loadGoogleFont(
       FRAUNCES,
@@ -38,8 +36,7 @@ export default async function Image() {
     shapeWords(devaText, LABEL_SIZE, ACCENT),
   ]);
 
-  const [titleDeva, ...labels] = shaped ?? [];
-  const k = TITLE_DEVA_SIZE / LABEL_SIZE;
+  const labels = shaped ?? [];
 
   return new ImageResponse(
     <div
@@ -69,14 +66,6 @@ export default async function Image() {
       <div style={{ display: "flex", flexDirection: "column" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 28 }}>
           <div style={{ fontSize: 96, lineHeight: 1 }}>Panchanga</div>
-          {titleDeva && (
-            <img
-              src={titleDeva.src}
-              width={titleDeva.width * k}
-              height={titleDeva.height * k}
-              alt=""
-            />
-          )}
         </div>
 
         <div
