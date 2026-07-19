@@ -1,14 +1,7 @@
-import { ImageResponse } from "next/og";
-
-import { FRAUNCES, loadGoogleFont } from "@utils/ogText";
+import { MUTED, OgFrame, ogImage } from "@utils/og";
 
 export const alt = "Dreamify, the dreamy wedding-photo look in your browser";
-export const size = { width: 1200, height: 630 };
-export const contentType = "image/png";
-
-const ACCENT = "#f0a044";
-const FOREGROUND = "#1e293b";
-const MUTED = "#64748b";
+export { contentType, size } from "@utils/og";
 
 // soft bokeh dots scattered over the card's dreamy sunset gradient
 const BOKEH = [
@@ -20,37 +13,9 @@ const BOKEH = [
   { x: 40, y: 330, s: 40 },
 ];
 
-export default async function Image() {
-  const font = await loadGoogleFont(
-    FRAUNCES,
-    "Dreamify Suhas Kashyap goodies/dreamy wedding-photo look in your browser kashyapsuhas.com/",
-  );
-
-  return new ImageResponse(
-    <div
-      style={{
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        background: "#fff",
-        color: FOREGROUND,
-        padding: 64,
-        fontFamily: "Fraunces",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <div style={{ color: ACCENT, fontSize: 32 }}>Suhas Kashyap</div>
-        <div style={{ color: MUTED, fontSize: 24 }}>goodies / dreamify</div>
-      </div>
-
+export default function Image() {
+  return ogImage(
+    <OgFrame path="goodies/dreamify">
       <div
         style={{
           display: "flex",
@@ -61,9 +26,11 @@ export default async function Image() {
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ fontSize: 104, lineHeight: 1 }}>Dreamify</div>
           <div style={{ color: MUTED, fontSize: 32, marginTop: 28 }}>
-            dreamy wedding-photo look,
+            dreamy wedding-photo look:
           </div>
-          <div style={{ color: MUTED, fontSize: 32 }}>in your browser</div>
+          <div style={{ color: MUTED, fontSize: 32 }}>
+            runs in your browser!
+          </div>
         </div>
 
         {/* a vertical photo card wearing the focal ellipse guide */}
@@ -133,16 +100,6 @@ export default async function Image() {
           />
         </div>
       </div>
-
-      <div style={{ display: "flex", color: MUTED, fontSize: 24 }}>
-        kashyapsuhas.com/goodies/dreamify
-      </div>
-    </div>,
-    {
-      ...size,
-      fonts: font
-        ? [{ name: "Fraunces", data: font, style: "normal", weight: 600 }]
-        : undefined,
-    },
+    </OgFrame>,
   );
 }

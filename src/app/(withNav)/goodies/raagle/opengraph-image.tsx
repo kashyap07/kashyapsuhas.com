@@ -1,17 +1,7 @@
-import { ImageResponse } from "next/og";
-
-import { FRAUNCES, loadGoogleFont } from "@utils/ogText";
+import { DANGER, MUTED, OgFrame, SUBTLE, SUCCESS, ogImage } from "@utils/og";
 
 export const alt = "Raagle, a daily melakarta listening game";
-export const size = { width: 1200, height: 630 };
-export const contentType = "image/png";
-
-const ACCENT = "#f0a044";
-const FOREGROUND = "#1e293b";
-const MUTED = "#64748b";
-const SUCCESS = "#16a34a";
-const WRONG = "#dc2626";
-const SUBTLE = "#94a3b8";
+export { contentType, size } from "@utils/og";
 
 // mirrors the board: sa, pa and the upper sa are fixed ghosts, never scored
 const CELLS = [
@@ -25,37 +15,9 @@ const CELLS = [
   { label: "sa", fixed: true, upper: true },
 ];
 
-export default async function Image() {
-  const font = await loadGoogleFont(
-    FRAUNCES,
-    "Raagle Suhas Kashyap A daily Mēḷakartā raaga guessing game goodies sa ri ga ma pa da ni kashyapsuhas.com/ •",
-  );
-
-  return new ImageResponse(
-    <div
-      style={{
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        background: "#fff",
-        color: FOREGROUND,
-        padding: 64,
-        fontFamily: "Fraunces",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <div style={{ color: ACCENT, fontSize: 32 }}>Suhas Kashyap</div>
-        <div style={{ color: MUTED, fontSize: 24 }}>goodies / raagle</div>
-      </div>
-
+export default function Image() {
+  return ogImage(
+    <OgFrame path="goodies/raagle">
       <div style={{ display: "flex", flexDirection: "column" }}>
         <div style={{ fontSize: 104, lineHeight: 1 }}>Raagle</div>
         <div
@@ -81,7 +43,7 @@ export default async function Image() {
                   ? "transparent"
                   : cell.correct
                     ? SUCCESS
-                    : WRONG,
+                    : DANGER,
                 color: cell.fixed ? SUBTLE : "#fff",
                 fontSize: 28,
               }}
@@ -97,16 +59,6 @@ export default async function Image() {
           A daily Mēḷakartā raaga guessing game
         </div>
       </div>
-
-      <div style={{ display: "flex", color: MUTED, fontSize: 24 }}>
-        kashyapsuhas.com/goodies/raagle
-      </div>
-    </div>,
-    {
-      ...size,
-      fonts: font
-        ? [{ name: "Fraunces", data: font, style: "normal", weight: 600 }]
-        : undefined,
-    },
+    </OgFrame>,
   );
 }

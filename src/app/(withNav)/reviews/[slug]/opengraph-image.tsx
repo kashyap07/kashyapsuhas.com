@@ -1,31 +1,25 @@
-import { ImageResponse } from "next/og";
-
 import { getReviewBySlug, getReviews } from "@db/reviews";
 import {
-  FRAUNCES,
+  DANGER,
+  FOREGROUND,
+  MUTED,
+  OgFrame,
   ShapedTitle,
+  SUCCESS,
   hasComplexScript,
-  loadGoogleFont,
+  ogImage,
   shapeWords,
-} from "@utils/ogText";
+} from "@utils/og";
 
 export const alt = "Review by Suhas Kashyap";
-export const size = { width: 1200, height: 630 };
-export const contentType = "image/png";
+export { contentType, size } from "@utils/og";
 
 // prerender all review cards at build, no runtime font fetches
 export function generateStaticParams() {
   return getReviews().map((r) => ({ slug: r.slug }));
 }
 
-// satori can't read css vars or tailwind classes, mirror the tokens.
-// tints/text colors follow categories.ts (tailwind *-50 / *-700 values).
-const ACCENT = "#f0a044";
-const FOREGROUND = "#1e293b";
-const MUTED = "#64748b";
-const SUCCESS = "#16a34a";
-const DANGER = "#dc2626";
-
+// tints/text colors follow categories.ts (tailwind *-50 / *-700 values)
 const CATEGORY_COLORS: Record<string, { bg: string; text: string }> = {
   Media: { bg: "#eef2ff", text: "#4338ca" },
   Tech: { bg: "#ecfeff", text: "#0e7490" },
@@ -62,14 +56,9 @@ export default async function Image({
   const titleSize = name.length > 50 ? 54 : name.length > 30 ? 62 : 72;
 
   // indic names get harfbuzz-shaped word images (satori can't shape them)
-  const complex = hasComplexScript(name);
-  const [fraunces, shapedName] = await Promise.all([
-    loadGoogleFont(
-      FRAUNCES,
-      `${complex ? "" : name}Suhas Kashyap${category}${date}${rating}/10${verdict}· `,
-    ),
-    complex ? shapeWords(name, titleSize, FOREGROUND) : null,
-  ]);
+  const shapedName = hasComplexScript(name)
+    ? await shapeWords(name, titleSize, FOREGROUND)
+    : null;
 
   const nameNode = shapedName ? (
     <ShapedTitle words={shapedName} fontSize={titleSize} />
@@ -79,21 +68,35 @@ export default async function Image({
     </div>
   );
 
-  return new ImageResponse(
-    <div
-      style={{
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        background: colors.bg,
-        padding: 64,
-        fontFamily: "Fraunces",
-      }}
+  return ogImage(
+    <OgFrame
+      background={colors.bg}
+      footer={
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-end",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "baseline" }}>
+            <span style={{ color: FOREGROUND, fontSize: 84 }}>{rating}</span>
+            <span style={{ color: MUTED, fontSize: 32, marginLeft: 6 }}>
+              /10
+            </span>
+          </div>
+          <span
+            style={{
+              color: wouldRecommend ? SUCCESS : DANGER,
+              fontSize: 30,
+              marginBottom: 14,
+            }}
+          >
+            {verdict}
+          </span>
+        </div>
+      }
     >
-      <div style={{ color: ACCENT, fontSize: 32 }}>Suhas Kashyap</div>
-
       <div style={{ display: "flex", flexDirection: "column", maxWidth: 1000 }}>
         {nameNode}
         <div style={{ display: "flex", marginTop: 18, fontSize: 26 }}>
@@ -102,34 +105,6 @@ export default async function Image({
           <span style={{ color: MUTED, marginLeft: 10 }}>{`· ${date}`}</span>
         </div>
       </div>
-
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-end",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "baseline" }}>
-          <span style={{ color: FOREGROUND, fontSize: 84 }}>{rating}</span>
-          <span style={{ color: MUTED, fontSize: 32, marginLeft: 6 }}>/10</span>
-        </div>
-        <span
-          style={{
-            color: wouldRecommend ? SUCCESS : DANGER,
-            fontSize: 30,
-            marginBottom: 14,
-          }}
-        >
-          {verdict}
-        </span>
-      </div>
-    </div>,
-    {
-      ...size,
-      fonts: fraunces
-        ? [{ name: "Fraunces", data: fraunces, style: "normal", weight: 600 }]
-        : undefined,
-    },
+    </OgFrame>,
   );
 }

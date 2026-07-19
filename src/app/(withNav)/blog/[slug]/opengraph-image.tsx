@@ -1,33 +1,28 @@
-import { ImageResponse } from "next/og";
-
 import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 
 import { getBlogPost, getBlogPosts } from "@db/blog";
 import {
-  FRAUNCES,
+  ACCENT,
+  FOREGROUND,
+  MUTED,
+  OgFrame,
   ShapedTitle,
   hasComplexScript,
-  loadGoogleFont,
+  ogImage,
   shapeWords,
-} from "@utils/ogText";
+} from "@utils/og";
 import { SITE_URL } from "@utils/site";
 
 export const alt = "Blog post by Suhas Kashyap";
-export const size = { width: 1200, height: 630 };
-export const contentType = "image/png";
+export { contentType, size } from "@utils/og";
 
 // prerender published posts' cards at build (heroes read from disk there).
 // drafts still render on demand in the deployed function via the cdn fallback.
 export function generateStaticParams() {
   return getBlogPosts().map((post) => ({ slug: post.slug }));
 }
-
-// satori can't read css vars, mirror globals.css tokens
-const ACCENT = "#f0a044";
-const FOREGROUND = "#1e293b";
-const MUTED = "#64748b";
 
 const MIME: Record<string, string> = {
   ".jpg": "image/jpeg",
@@ -90,14 +85,9 @@ export default async function Image({
 
   // indic titles get harfbuzz-shaped word images (satori can't shape them),
   // everything else renders as plain fraunces text
-  const complex = hasComplexScript(title);
-  const [fraunces, shapedTitle] = await Promise.all([
-    loadGoogleFont(
-      FRAUNCES,
-      `${complex ? "" : title}Suhas Kashyap${date}kashyapsuhas.com· `,
-    ),
-    complex ? shapeWords(title, titleSize, titleColor) : null,
-  ]);
+  const shapedTitle = hasComplexScript(title)
+    ? await shapeWords(title, titleSize, titleColor)
+    : null;
 
   const titleNode = shapedTitle ? (
     <ShapedTitle words={shapedTitle} fontSize={titleSize} />
@@ -169,38 +159,24 @@ export default async function Image({
     </div>
   ) : (
     // no hero: light card matching the site
-    <div
-      style={{
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        background: "#fff",
-        padding: 64,
-        fontFamily: "Fraunces",
-      }}
+    <OgFrame
+      footer={
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            color: MUTED,
+            fontSize: 24,
+          }}
+        >
+          <span>{date}</span>
+          <span>kashyapsuhas.com</span>
+        </div>
+      }
     >
-      <div style={{ color: ACCENT, fontSize: 32 }}>Suhas Kashyap</div>
       <div style={{ display: "flex", maxWidth: 1000 }}>{titleNode}</div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          color: MUTED,
-          fontSize: 24,
-        }}
-      >
-        <span>{date}</span>
-        <span>kashyapsuhas.com</span>
-      </div>
-    </div>
+    </OgFrame>
   );
 
-  return new ImageResponse(card, {
-    ...size,
-    fonts: fraunces
-      ? [{ name: "Fraunces", data: fraunces, style: "normal", weight: 600 }]
-      : undefined,
-  });
+  return ogImage(card);
 }
