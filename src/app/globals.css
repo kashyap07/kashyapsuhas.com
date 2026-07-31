@@ -132,6 +132,13 @@
   --tw-prose-bold: var(--foreground);
   max-width: none;
 
+  /* leading scales with measure. mobile is ~37 chars/line, so prose-lg's 1.78
+     is too airy there. desktop runs ~75+ chars and wants the looser default */
+  p,
+  li {
+    @apply leading-[1.6] md:leading-[1.75];
+  }
+
   img {
     /* don't restyle next/image; reset margin + match the site card look */
     @apply m-0 rounded-lg shadow-macos;
