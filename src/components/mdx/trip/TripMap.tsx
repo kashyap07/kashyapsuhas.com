@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useRef } from "react";
 
-import RouteGlyph from "./RouteGlyph";
 import { useTripRoute } from "./TripContext";
 import {
   arrivalProgress,
@@ -11,7 +10,6 @@ import {
   pointAlongLeg,
   readStopsFromDom,
 } from "./geo";
-import { buildGlyph, updateGlyph } from "./glyph";
 import { type RouteMapHandle, createRouteMap } from "./routeMap";
 import type { Coord } from "./types";
 
@@ -23,24 +21,15 @@ const BEARING_LOOKAHEAD = 10;
 interface Props {
   // two-finger pan / ctrl+wheel (for the inline mobile panel)
   cooperative?: boolean;
-  // "glyph" overlays the whole-route glyph + stop label (desktop sidebar);
-  // "none" for hosts that already show that info elsewhere (mobile ribbon)
-  hud?: "glyph" | "none";
 }
 
 // scroll-following map: each stop section's scroll drives the leg
 // coord_{prev} -> coord_{stop}, so while you read a section the car is
 // animating in. the map is fully interactive; a user pan/zoom pauses the
 // follow-cam, and scrolling the article glides the camera back onto the car.
-export default function TripMap({ cooperative = false, hud = "glyph" }: Props) {
+export default function TripMap({ cooperative = false }: Props) {
   const route = useTripRoute();
   const containerRef = useRef<HTMLDivElement>(null);
-  const glyphCarRef = useRef<SVGCircleElement>(null);
-  const glyphTraveledRef = useRef<SVGPathElement>(null);
-  const titleRef = useRef<HTMLSpanElement>(null);
-  const counterRef = useRef<HTMLSpanElement>(null);
-
-  const glyph = useMemo(() => buildGlyph(route.polyline), [route]);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -112,22 +101,6 @@ export default function TripMap({ cooperative = false, hud = "glyph" }: Props) {
       const trail: Coord[] = polyline.slice(0, floor + 1);
       trail.push(carCoord);
       handle.setTrail(trail);
-
-      if (hud === "glyph") {
-        updateGlyph(
-          glyph,
-          glyphCarRef.current,
-          glyphTraveledRef.current,
-          carCoord,
-          floor,
-        );
-        if (titleRef.current) {
-          titleRef.current.textContent = stops[idx].title || `stop ${idx + 1}`;
-        }
-        if (counterRef.current) {
-          counterRef.current.textContent = `stop ${idx + 1} of ${stops.length}`;
-        }
-      }
     }
 
     function onScroll() {
@@ -143,31 +116,7 @@ export default function TripMap({ cooperative = false, hud = "glyph" }: Props) {
       window.removeEventListener("scroll", onScroll);
       handle.destroy();
     };
-  }, [route, glyph, cooperative, hud]);
+  }, [route, cooperative]);
 
-  return (
-    <div ref={containerRef} className="relative h-full w-full">
-      {hud === "glyph" && (
-        <div className="pointer-events-none absolute left-3 top-3 z-20 flex items-center gap-2.5 rounded bg-white/90 px-2.5 py-1.5 font-sans shadow-sm backdrop-blur-sm">
-          <RouteGlyph
-            glyph={glyph}
-            carRef={glyphCarRef}
-            traveledRef={glyphTraveledRef}
-            className="h-12 w-auto shrink-0"
-          />
-          <span className="min-w-0">
-            <span
-              ref={titleRef}
-              className="block max-w-44 truncate text-xs font-medium text-foreground"
-            >
-              the route
-            </span>
-            <span ref={counterRef} className="block text-xs text-muted">
-              stop - of -
-            </span>
-          </span>
-        </div>
-      )}
-    </div>
-  );
+  return <div ref={containerRef} className="h-full w-full" />;
 }
