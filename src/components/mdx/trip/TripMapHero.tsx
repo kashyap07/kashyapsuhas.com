@@ -30,7 +30,9 @@ function useIsXl(): boolean {
   );
 }
 
-// xl+: fixed follow-map card in the right gutter (320 wide, 480 at 2xl).
+// xl+: fixed follow-map card in the right gutter (320 wide, 400 at 2xl). the
+// height is vh-based but px-capped so it doesn't turn into a full-height slab
+// on tall desktop screens.
 // below xl: sticky ribbon strip (svg route + car) with the same follow-map
 // open underneath by default, collapsible by tap. the ribbon also ssr-renders
 // (css-hidden on xl), so phones get it on first paint; `active` turns its
@@ -40,7 +42,7 @@ export default function TripMapHero() {
   return (
     <>
       {isXl && (
-        <div className="fixed right-6 top-1/2 z-20 h-[82vh] w-[320px] -translate-y-1/2 overflow-hidden rounded-lg border border-line 2xl:right-10 2xl:h-[88vh] 2xl:w-[480px]">
+        <div className="fixed right-6 top-1/2 z-20 h-[82vh] max-h-[620px] w-[320px] -translate-y-1/2 overflow-hidden rounded-lg border border-line 2xl:right-10 2xl:h-[88vh] 2xl:max-h-[680px] 2xl:w-[400px]">
           <TripMap />
         </div>
       )}
