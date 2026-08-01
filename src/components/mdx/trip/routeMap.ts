@@ -263,7 +263,7 @@ export function createRouteMap(opts: Options): RouteMapHandle {
       type: "line",
       source: "route-base",
       layout: { "line-join": "round", "line-cap": "round" },
-      paint: { "line-color": "#fff", "line-width": 6, "line-opacity": 0.55 },
+      paint: { "line-color": "#fff", "line-width": 8, "line-opacity": 0.55 },
     });
     map.addLayer({
       id: "route-line",
@@ -273,7 +273,9 @@ export function createRouteMap(opts: Options): RouteMapHandle {
       paint: { "line-color": accent, "line-width": 2.5, "line-opacity": 0.4 },
     });
 
-    // bright traveled portion, grows as the car moves
+    // bright traveled portion, grows as the car moves. the halo above is sized
+    // to stay a touch wider than this, so the traveled line keeps a white
+    // outline against the basemap instead of sitting flush on it
     map.addSource("traveled", {
       type: "geojson",
       data: lineFeature([opts.polyline[0], opts.polyline[0]]),
@@ -283,7 +285,7 @@ export function createRouteMap(opts: Options): RouteMapHandle {
       type: "line",
       source: "traveled",
       layout: { "line-join": "round", "line-cap": "round" },
-      paint: { "line-color": accent, "line-width": 4 },
+      paint: { "line-color": accent, "line-width": 5.5 },
     });
 
     if (opts.waypoints?.length) {

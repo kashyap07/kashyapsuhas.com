@@ -142,8 +142,18 @@ export default async function ReviewPage(props: Props) {
         }}
       />
 
-      {/* hero card, uses full WIDE width, tinted by category */}
-      <section className={cn("relative rounded-lg p-6 md:p-10", categoryBg)}>
+      {/* hero card, uses full WIDE width, tinted by category. on mobile it
+          bleeds past the wrapper's px-6 so the title gets the whole screen
+          width instead of page padding + card padding */}
+      <section
+        className={cn(
+          // overflow-hidden: the ribbon's folded ends stick out past the card,
+          // and with the card flush to the viewport edge on mobile that became
+          // horizontal page scroll. the wrapper's px-6 used to absorb it
+          "relative -mx-6 overflow-hidden rounded-none p-6 md:mx-0 md:rounded-lg md:p-10",
+          categoryBg,
+        )}
+      >
         {/* spoilers ribbon, folded into the top-right corner */}
         {review.spoilers && (
           <div

@@ -61,12 +61,12 @@ async function Blog(props: Props) {
   const post = getBlogPost(params.slug, { includeDrafts: true });
   if (!post) notFound();
 
-  const { publishedDateTime, title, description, heroImage, draft } =
+  const { publishedDateTime, title, description, heroImage, draft, trip } =
     post.metadata;
   const imageUrl = toAbsolute(heroImage || "/kashyapcom-og.png");
 
   return (
-    <Wrapper className="mb-section-sm w-full md:mb-section-md">
+    <Wrapper maxWidth="WIDE" className="mb-section-sm w-full md:mb-section-md">
       <section>
         {/* structured data */}
         <script
@@ -103,33 +103,39 @@ async function Blog(props: Props) {
           }}
         />
 
-        {draft && (
-          <span className="mb-4 inline-block rounded border border-muted px-2 py-0.5 font-sans text-xs uppercase tracking-wider text-muted">
-            Draft
-          </span>
-        )}
+        {/* hero card, uses full WIDE width (same treatment as review titles).
+            on mobile it bleeds past the wrapper's px-6 so the title gets the
+            whole screen width instead of page padding + card padding */}
+        <div className="-mx-6 rounded-none bg-surface-subtle p-6 md:mx-0 md:rounded-lg md:p-10">
+          {draft && (
+            <span className="mb-4 inline-block rounded border border-muted px-2 py-0.5 font-sans text-xs uppercase tracking-wider text-muted">
+              Draft
+            </span>
+          )}
 
-        {/* title */}
-        <h1 className="w-full text-pretty text-heading-sm font-medium md:text-heading-lg">
-          {post.metadata.title}
-        </h1>
+          {/* title */}
+          <h1 className="w-full text-pretty text-heading-sm font-medium md:text-heading-lg">
+            {post.metadata.title}
+          </h1>
 
-        {/* machine-readable date wrapping the human-friendly relative version */}
-        <time
-          dateTime={publishedDateTime}
-          className="mb-2 mt-4 block font-sans text-sm text-muted md:text-base"
-        >
-          <RelativeDate date={publishedDateTime} />
-        </time>
-        <hr />
+          {/* machine-readable date wrapping the human-friendly relative version */}
+          <time
+            dateTime={publishedDateTime}
+            className="mt-3 block font-sans text-sm text-muted md:text-base"
+          >
+            <RelativeDate date={publishedDateTime} />
+          </time>
+        </div>
 
-        {/* blog content */}
-        <article className="prose mt-8 break-words md:prose-lg">
-          <CustomMDX
-            source={post.content}
-            trip={post.metadata.trip || undefined}
-          />
-        </article>
+        {/* blog content, constrained back to DEFAULT reading width. the width
+            lives on this div, not the article: globals.css sets
+            .prose { max-width: none } after the utilities layer, so a
+            max-w-* on .prose itself would lose the cascade */}
+        <div className="mx-auto max-w-2xl">
+          <article className="prose mt-8 break-words md:prose-lg md:mt-14">
+            <CustomMDX source={post.content} trip={trip || undefined} />
+          </article>
+        </div>
       </section>
     </Wrapper>
   );

@@ -30,9 +30,18 @@ function useIsXl(): boolean {
   );
 }
 
-// xl+: fixed follow-map card in the right gutter (320 wide, 400 at 2xl). the
-// height is vh-based but px-capped so it doesn't turn into a full-height slab
-// on tall desktop screens.
+// xl+: follow-map card parked in the right gutter. it is a sticky child of the
+// article, sitting in the flow where <TripMap /> is written in the mdx (just
+// above the first stop), so it scrolls up into view with the prose and only
+// then pins at viewport centre. that keeps it out of the intro and off the
+// post's title card without any js scroll gate.
+//
+// the h-0 sticky parent is what travels; the card hangs off it as an absolute
+// child so it costs no vertical space in the reading column and its own
+// -translate-y-1/2 centres it whatever the height cap resolves to.
+// width tracks the real gutter, (50vw - half the 42rem column) less margins,
+// capped at 400, so it can never push past the viewport at narrow xl widths.
+//
 // below xl: sticky ribbon strip (svg route + car) with the same follow-map
 // open underneath by default, collapsible by tap. the ribbon also ssr-renders
 // (css-hidden on xl), so phones get it on first paint; `active` turns its
@@ -42,8 +51,10 @@ export default function TripMapHero() {
   return (
     <>
       {isXl && (
-        <div className="fixed right-6 top-1/2 z-20 h-[82vh] max-h-[620px] w-[320px] -translate-y-1/2 overflow-hidden rounded-lg border border-line 2xl:right-10 2xl:h-[88vh] 2xl:max-h-[680px] 2xl:w-[400px]">
-          <TripMap />
+        <div className="not-prose sticky top-1/2 z-20 h-0">
+          <div className="absolute left-full ml-6 h-[82vh] max-h-[620px] w-[min(400px,calc(50vw-21rem-3.5rem))] -translate-y-1/2 overflow-hidden rounded-lg border border-line 2xl:max-h-[680px]">
+            <TripMap />
+          </div>
         </div>
       )}
       {/* key flips on the xl boundary so the ribbon remounts: fresh state and
