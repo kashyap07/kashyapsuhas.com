@@ -132,6 +132,10 @@
   --tw-prose-bold: var(--foreground);
   max-width: none;
 
+  /* mobile font size */
+  font-size: 17px;
+  line-height: 1.65;
+
   img {
     /* don't restyle next/image; reset margin + match the site card look */
     @apply m-0 rounded-lg shadow-macos;
@@ -153,6 +157,16 @@
     span {
       @apply font-medium;
     }
+  }
+
+  /* pretty wrapping is for headings only, body text keeps the default */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply text-pretty;
   }
 
   h2,

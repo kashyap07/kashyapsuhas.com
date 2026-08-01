@@ -110,7 +110,7 @@ async function Blog(props: Props) {
         )}
 
         {/* title */}
-        <h1 className="w-full text-heading-sm font-medium md:text-heading-lg">
+        <h1 className="w-full text-pretty text-heading-sm font-medium md:text-heading-lg">
           {post.metadata.title}
         </h1>
 
@@ -124,7 +124,7 @@ async function Blog(props: Props) {
         <hr />
 
         {/* blog content */}
-        <article className="prose prose-lg mt-8 text-pretty break-words">
+        <article className="prose mt-8 break-words md:prose-lg">
           <CustomMDX
             source={post.content}
             trip={post.metadata.trip || undefined}
