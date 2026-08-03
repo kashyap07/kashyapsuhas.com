@@ -29,17 +29,24 @@ const sourceWaypoints: Record<string, unknown> = {
 
 const warnedStale = new Set<string>();
 
-type WaypointShape = { id?: string; name?: string; coord?: number[] };
+type WaypointShape = {
+  id?: string;
+  name?: string;
+  coord?: number[];
+  via?: boolean;
+};
 
 // compare only the fields the builder carries over (id, name, coord) element by
 // element. avoids false "stale" warnings from json key order / formatting, which
-// the old JSON.stringify compare was sensitive to.
+// the old JSON.stringify compare was sensitive to. `via: true` entries shape the
+// polyline but are dropped from route.json by design, so they're excluded from
+// the source side rather than counted as drift.
 function sameWaypoints(a: unknown, b: unknown): boolean {
-  if (!Array.isArray(a) || !Array.isArray(b) || a.length !== b.length) {
-    return false;
-  }
+  if (!Array.isArray(a) || !Array.isArray(b)) return false;
+  const source = (b as WaypointShape[]).filter((wp) => !wp.via);
+  if (a.length !== source.length) return false;
   return a.every((wp: WaypointShape, i) => {
-    const other = b[i] as WaypointShape;
+    const other = source[i];
     return (
       wp.id === other.id &&
       wp.name === other.name &&

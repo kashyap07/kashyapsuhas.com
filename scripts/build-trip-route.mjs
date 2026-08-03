@@ -9,6 +9,12 @@
 // polyline (legs are simplified individually so join points survive). <Stop>
 // anchors to waypoints by id, so no client-side nearest-point matching.
 //
+// an entry marked `"via": true` is a shaping point, not a place: osrm is
+// routed through it so the line follows the road actually driven (osrm picks
+// the *fastest* path, which isn't always the one you took), but it's left out
+// of route.json entirely - no map dot, no <Stop> anchor - and the hops either
+// side of it collapse into one leg. `name` is optional on those.
+//
 // run: npm run build-trip-route [-- <trip-slug>]   (default: gj-rj)
 import fs from "fs/promises";
 import path from "path";
@@ -24,12 +30,18 @@ const OUT_PATH = path.join(TRIP_DIR, "route.json");
 
 const WAYPOINTS = JSON.parse(await fs.readFile(WAYPOINTS_PATH, "utf-8"));
 for (const w of WAYPOINTS) {
-  if (!w.id || !w.name || !Array.isArray(w.coord)) {
+  if (!w.id || !Array.isArray(w.coord) || (!w.name && !w.via)) {
     throw new Error(
-      `bad waypoint (needs id, name, coord): ${JSON.stringify(w)}`,
+      `bad waypoint (needs id, coord, and name unless via): ${JSON.stringify(w)}`,
     );
   }
 }
+if (WAYPOINTS.at(0)?.via || WAYPOINTS.at(-1)?.via) {
+  throw new Error("first and last waypoint can't be via points");
+}
+
+// vias have no name; fall back to the id for console output only
+const label = (w) => w.name ?? `${w.id} (via)`;
 
 const OSRM_BASE = "https://router.project-osrm.org/route/v1/driving";
 
@@ -100,18 +112,14 @@ async function main() {
   for (let i = 0; i < WAYPOINTS.length - 1; i++) {
     const a = WAYPOINTS[i];
     const b = WAYPOINTS[i + 1];
-    process.stdout.write(`  ${a.name} -> ${b.name} ... `);
+    process.stdout.write(`  ${label(a)} -> ${label(b)} ... `);
     const leg = await fetchLeg(a.coord, b.coord);
     const km = Math.round(leg.distance_m / 1000);
     const h = (leg.duration_s / 3600).toFixed(1);
     console.log(`${km}km / ~${h}h, ${leg.polyline.length} points`);
     legs.push({
-      from: a.name,
-      to: b.name,
-      from_coord: a.coord,
-      to_coord: b.coord,
-      distance_km: km,
-      duration_h: parseFloat(h),
+      distance_m: leg.distance_m,
+      duration_s: leg.duration_s,
       polyline: leg.polyline,
     });
     totalDist += leg.distance_m;
@@ -138,16 +146,40 @@ async function main() {
     `\nsimplified ${rawCount} -> ${merged.length} points (${reduction}% reduction)`,
   );
 
+  // a via contributes two osrm hops that are really one journey, so fold them
+  // back together: `legs` stays a list of the drives a reader would recognise.
+  const mergedLegs = [];
+  let acc = null;
+  for (let i = 0; i < legs.length; i++) {
+    const a = WAYPOINTS[i];
+    const b = WAYPOINTS[i + 1];
+    acc ??= { from: a.name, from_coord: a.coord, distance_m: 0, duration_s: 0 };
+    acc.distance_m += legs[i].distance_m;
+    acc.duration_s += legs[i].duration_s;
+    if (b.via) continue;
+    mergedLegs.push({
+      from: acc.from,
+      to: b.name,
+      from_coord: acc.from_coord,
+      to_coord: b.coord,
+      distance_km: Math.round(acc.distance_m / 1000),
+      duration_h: parseFloat((acc.duration_s / 3600).toFixed(1)),
+    });
+    acc = null;
+  }
+
   const output = {
+    // vias shape the line only: they never reach route.json, so nothing
+    // downstream can render a dot for them or anchor a <Stop> to one.
     waypoints: WAYPOINTS.map((w, i) => ({
       ...w,
       polyIdx: polyIdxByWaypoint[i],
-    })),
+    })).filter((w) => !w.via),
     distance_km: Math.round(totalDist / 1000),
     duration_h: parseFloat((totalDur / 3600).toFixed(1)),
     point_count: merged.length,
     polyline: merged,
-    legs: legs.map(({ polyline, ...rest }) => rest), // strip polylines from legs (kept in merged)
+    legs: mergedLegs,
   };
 
   await fs.writeFile(OUT_PATH, JSON.stringify(output, null, 2) + "\n");

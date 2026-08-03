@@ -124,21 +124,32 @@ export default function Lightbox() {
             }
           }}
         >
-          <Image
-            src={item.src}
-            alt={item.caption}
-            width={item.width}
-            height={item.height}
-            unoptimized
-            className="max-h-[78vh] w-auto rounded"
-            priority
-          />
-          {item.caption && (
-            <p className="max-w-[85vw] text-center text-sm text-white/90">
-              {item.caption}
-            </p>
-          )}
-          <div className="flex items-center gap-4 text-sm text-white/75">
+          {/* fixed-height stage: portrait and landscape shots both center
+              inside it, so the caption + controls below sit at the same y for
+              every photo instead of riding the image height. clicking the
+              empty space beside the photo closes, same as the backdrop. */}
+          <div
+            className="flex h-[78vh] max-h-full min-h-0 w-full items-center justify-center"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) setIdx(null);
+            }}
+          >
+            <Image
+              src={item.src}
+              alt={item.caption}
+              width={item.width}
+              height={item.height}
+              unoptimized
+              className="max-h-full w-auto rounded"
+              priority
+            />
+          </div>
+          {/* always rendered: the reserved two lines keep an absent or
+              wrapping caption from shifting the controls */}
+          <p className="min-h-[2.5rem] max-w-[85vw] text-center text-sm text-white/90">
+            {item.caption}
+          </p>
+          <div className="flex items-center gap-3 text-sm text-white/75 sm:gap-4">
             <button
               type="button"
               onClick={prev}
@@ -148,7 +159,10 @@ export default function Lightbox() {
             >
               ←
             </button>
-            <span>
+            {/* fixed width + tabular figures: the date and counter change
+                length photo to photo, and a shrink-to-fit label would drag
+                both arrows sideways under the cursor while paging */}
+            <span className="w-44 shrink-0 whitespace-nowrap text-center tabular-nums">
               {taken && `${taken} · `}
               {idx + 1} / {items.length}
             </span>

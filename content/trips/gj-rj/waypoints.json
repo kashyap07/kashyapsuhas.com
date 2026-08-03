@@ -18,6 +18,7 @@
     "name": "NH68 Thar Desert",
     "coord": [70.451363, 27.660913]
   },
+  { "id": "nh968-detour", "coord": [71.36, 27.41], "via": true },
   {
     "id": "rat-temple",
     "name": "Rat Temple",
