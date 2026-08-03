@@ -12,6 +12,7 @@ import { MDXRemote, MDXRemoteProps } from "next-mdx-remote/rsc";
 import { highlight } from "sugar-high";
 
 import * as MdxComponents from "@components/mdx";
+import { bindFootnoteComponents } from "@components/mdx/Footnotes";
 import Lightbox from "@components/mdx/trip/Lightbox";
 import { TripRouteProvider } from "@components/mdx/trip/TripContext";
 import { bindTripComponents, getTrip } from "@components/mdx/trip/registry";
@@ -116,6 +117,11 @@ type CustomMDXProps = JSX.IntrinsicAttributes &
 
 function CustomMDX({ trip, ...props }: CustomMDXProps) {
   const tripData = trip ? getTrip(trip) : null;
+  // footnotes number themselves from the order their markers appear, which
+  // means reading the source before it's compiled.
+  const footnotes = bindFootnoteComponents(
+    typeof props.source === "string" ? props.source : "",
+  );
 
   const mdx = (
     <MDXRemote
@@ -123,6 +129,7 @@ function CustomMDX({ trip, ...props }: CustomMDXProps) {
       options={{ ...props.options, blockJS: false }}
       components={{
         ...defaultComponentMapping,
+        ...footnotes,
         ...(tripData ? bindTripComponents(tripData) : {}),
         ...props.components,
       }}
