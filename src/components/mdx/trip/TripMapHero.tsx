@@ -52,7 +52,7 @@ export default function TripMapHero() {
     <>
       {isXl && (
         <div className="not-prose sticky top-1/2 z-20 h-0">
-          <div className="absolute left-full ml-6 h-[82vh] max-h-[620px] w-[min(400px,calc(50vw-21rem-3.5rem))] -translate-y-1/2 overflow-hidden rounded-lg border border-line 2xl:max-h-[680px]">
+          <div className="absolute left-full ml-6 h-[82vh] max-h-[620px] w-[min(400px,calc(50vw-21rem-3.5rem))] -translate-y-1/2 overflow-hidden rounded-lg border border-line 2xl:ml-32 2xl:max-h-[680px]">
             <TripMap />
           </div>
         </div>
