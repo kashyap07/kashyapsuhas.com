@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+
+import { hasWebGL } from "@lib/webgl";
 
 import { useTripRoute } from "./TripContext";
 import {
@@ -30,6 +32,13 @@ interface Props {
 export default function TripMap({ cooperative = false }: Props) {
   const route = useTripRoute();
   const containerRef = useRef<HTMLDivElement>(null);
+  // maplibre 5 dropped its supported() check: with webgl off (firefox's
+  // webgl.disabled, blocklisted drivers) the Map constructor throws, and a
+  // throw from the effect below takes the whole post to the error boundary,
+  // not just the map. so probe up front - lazy initial state is fine here,
+  // this component only ever loads via dynamic({ ssr: false }) - and still
+  // guard the constructor for what a probe can't see (context limits).
+  const [noWebGL, setNoWebGL] = useState(() => !hasWebGL());
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -44,27 +53,34 @@ export default function TripMap({ cooperative = false }: Props) {
     // gliding in from the initial view
     let snapNext = true;
 
-    const handle: RouteMapHandle = createRouteMap({
-      container: containerRef.current,
-      polyline,
-      waypoints: route.waypoints,
-      center: stops[0].coord,
-      zoom: FOLLOW_ZOOM,
-      carSize: 50,
-      cooperativeGestures: cooperative,
-      onUserInteract: () => {
-        following = false;
-      },
-      onReady: () => {
-        if (stops.length > 1) {
-          handle.setCar(
-            stops[0].coord,
-            bearingDeg(stops[0].coord, stops[1].coord),
-          );
-        }
-        tickScroll();
-      },
-    });
+    let handle: RouteMapHandle;
+    try {
+      handle = createRouteMap({
+        container: containerRef.current,
+        polyline,
+        waypoints: route.waypoints,
+        center: stops[0].coord,
+        zoom: FOLLOW_ZOOM,
+        carSize: 50,
+        cooperativeGestures: cooperative,
+        onUserInteract: () => {
+          following = false;
+        },
+        onReady: () => {
+          if (stops.length > 1) {
+            handle.setCar(
+              stops[0].coord,
+              bearingDeg(stops[0].coord, stops[1].coord),
+            );
+          }
+          tickScroll();
+        },
+      });
+    } catch {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- recovery path, not sync: one extra render beats the throw escaping to the error boundary
+      setNoWebGL(true);
+      return;
+    }
 
     function tickScroll() {
       rafId = null;
@@ -117,6 +133,15 @@ export default function TripMap({ cooperative = false }: Props) {
       handle.destroy();
     };
   }, [route, cooperative]);
+
+  if (noWebGL) {
+    return (
+      <div className="flex h-full w-full items-center justify-center bg-surface-subtle p-4 text-center font-sans text-sm text-muted">
+        This map needs webgl which is disabled on your browser. <br />
+        It is juicy, so I recommend you enable it or use a different browser.
+      </div>
+    );
+  }
 
   return <div ref={containerRef} className="h-full w-full" />;
 }
