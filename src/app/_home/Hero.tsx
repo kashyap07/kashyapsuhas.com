@@ -1,24 +1,14 @@
 "use client";
 
-import { useRef, useState, useSyncExternalStore } from "react";
-
-import { hasWebGL } from "@lib/webgl";
+import { useRef, useState } from "react";
 
 import NavLinks from "../NavLinks";
 import Wordmark from "./Wordmark";
-
-// webgl support can't change within a page's life, so there's nothing to
-// subscribe to; this only exists to read a client-only value without
-// tripping hydration
-const noSubscribe = () => () => {};
 
 export default function Hero() {
   const [chill, setChill] = useState(false);
   const streakRef = useRef(0);
   const chillTimeoutRef = useRef<number | null>(null);
-  // ssr assumes webgl, so the markup is unchanged for everyone who has it;
-  // the hydration pass is what drops the stage on browsers that don't
-  const webgl = useSyncExternalStore(noSubscribe, hasWebGL, () => true);
 
   // ten rapid clicks on the name and the site asks you to relax
   const onWordmarkCycle = () => {
@@ -49,17 +39,15 @@ export default function Hero() {
       </header>
 
       {/* empty stage: the grain portrait renders itself onto the canvas exactly
-          over this anchor, raining into place on load. without webgl nothing
-          ever paints it, so the stage is dropped instead of reserving a
-          portrait-sized hole - the hero just centres on its text */}
-      {webgl && (
-        <div
-          id="portrait-anchor"
-          aria-label="Portrait of Suhas Kashyap on a Himalayan ridge, camera in hand, rendered from thousands of grains"
-          role="img"
-          className="relative mt-12 aspect-[1500/1268] w-[min(82vw,520px)] md:mt-4 md:w-[540px]"
-        />
-      )}
+          over this anchor, raining into place on load. if the engine can't
+          start (no webgl) it collapses this stage itself, so nothing on the
+          render path has to ask the gpu anything */}
+      <div
+        id="portrait-anchor"
+        aria-label="Portrait of Suhas Kashyap on a Himalayan ridge, camera in hand, rendered from thousands of grains"
+        role="img"
+        className="relative mt-12 aspect-[1500/1268] w-[min(82vw,520px)] md:mt-4 md:w-[540px]"
+      />
     </section>
   );
 }

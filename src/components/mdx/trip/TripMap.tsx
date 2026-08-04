@@ -2,8 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 
-import { hasWebGL } from "@lib/webgl";
-
 import { useTripRoute } from "./TripContext";
 import {
   arrivalProgress,
@@ -35,10 +33,11 @@ export default function TripMap({ cooperative = false }: Props) {
   // maplibre 5 dropped its supported() check: with webgl off (firefox's
   // webgl.disabled, blocklisted drivers) the Map constructor throws, and a
   // throw from the effect below takes the whole post to the error boundary,
-  // not just the map. so probe up front - lazy initial state is fine here,
-  // this component only ever loads via dynamic({ ssr: false }) - and still
-  // guard the constructor for what a probe can't see (context limits).
-  const [noWebGL, setNoWebGL] = useState(() => !hasWebGL());
+  // not just the map. catching it there is the whole fix - don't feature
+  // probe up front, a throwaway probe context costs a real context create
+  // + loseContext right before maplibre asks for its own, which stalls
+  // noticeably on ios safari.
+  const [noWebGL, setNoWebGL] = useState(false);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -77,6 +76,10 @@ export default function TripMap({ cooperative = false }: Props) {
         },
       });
     } catch {
+      // maplibre fills the container with its canvas and controls before the
+      // painter fails, and react never knew about those children, so it won't
+      // clear them when this swaps to the notice. wipe them by hand.
+      containerRef.current.replaceChildren();
       // eslint-disable-next-line react-hooks/set-state-in-effect -- recovery path, not sync: one extra render beats the throw escaping to the error boundary
       setNoWebGL(true);
       return;

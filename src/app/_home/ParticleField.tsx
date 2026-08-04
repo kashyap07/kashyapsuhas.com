@@ -28,6 +28,16 @@ export default function ParticleField() {
 
     let engine: HalftoneEngine | null = null;
     let cancelled = false;
+    // nothing will ever paint the stage, so collapse it rather than leave a
+    // portrait-sized hole in the hero. done here (imperatively, on a node
+    // react renders once and never touches again) so the happy path never
+    // pays for the check - asking the gpu anything up front costs a real
+    // context create, which is slow on ios safari
+    const collapseStage = () => {
+      engine?.dispose();
+      engine = null;
+      portraitEl.style.display = "none";
+    };
     import("./particleEngine").then(({ HalftoneEngine: Engine }) => {
       if (cancelled || !canvasRef.current) return;
       try {
@@ -37,9 +47,10 @@ export default function ParticleField() {
           textEl,
           reducedMotion: prefersReducedMotion(),
         });
-        engine.init().catch(() => engine?.dispose());
+        engine.init().catch(collapseStage);
       } catch {
-        // no webgl: nothing renders, the page still works as plain text
+        // no webgl: page still works as plain text, just without the portrait
+        collapseStage();
       }
     });
 
