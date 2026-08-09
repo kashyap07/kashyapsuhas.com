@@ -3,8 +3,8 @@ import {
   Fraunces,
   Inter,
   Literata,
-  Tiro_Devanagari_Sanskrit,
-  Tiro_Kannada,
+  Noto_Serif_Devanagari,
+  Noto_Serif_Kannada,
 } from "next/font/google";
 import Script from "next/script";
 
@@ -33,16 +33,16 @@ const literata = Literata({
 });
 // non-latin scripts for the wordmark easter egg. preload: false so they don't
 // block first paint, they only load when user clicks to cycle.
-const tiroDevanagari = Tiro_Devanagari_Sanskrit({
-  weight: "400",
+const notoSerifDevanagari = Noto_Serif_Devanagari({
+  weight: ["400", "700"],
   subsets: ["devanagari"],
-  variable: "--font-tiro-devanagari",
+  variable: "--font-noto-devanagari",
   preload: false,
 });
-const tiroKannada = Tiro_Kannada({
-  weight: "400",
+const notoSerifKannada = Noto_Serif_Kannada({
+  weight: ["400", "700"],
   subsets: ["kannada"],
-  variable: "--font-tiro-kannada",
+  variable: "--font-noto-kannada",
   preload: false,
 });
 // shippori mincho is NOT loaded via next/font: it only exposes latin subsets
@@ -92,7 +92,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${fraunces.variable} ${literata.variable} ${inter.variable} ${tiroDevanagari.variable} ${tiroKannada.variable}`}
+      className={`${fraunces.variable} ${literata.variable} ${inter.variable} ${notoSerifDevanagari.variable} ${notoSerifKannada.variable}`}
     >
       <body className="font-serif">
         {/* just the katakana the particle morph rasterizes (レス ヤップ / モア ドゥ),

@@ -97,8 +97,8 @@ const config: Config = {
       fontFamily: {
         serif: [
           "var(--font-literata)",
-          "var(--font-tiro-devanagari)",
-          "var(--font-tiro-kannada)",
+          "var(--font-noto-devanagari)",
+          "var(--font-noto-kannada)",
           "var(--font-shippori-mincho)",
           "ui-serif",
           "Georgia",
@@ -106,8 +106,8 @@ const config: Config = {
         ],
         display: [
           "var(--font-fraunces)",
-          "var(--font-tiro-devanagari)",
-          "var(--font-tiro-kannada)",
+          "var(--font-noto-devanagari)",
+          "var(--font-noto-kannada)",
           "var(--font-shippori-mincho)",
           "ui-serif",
           "Georgia",
