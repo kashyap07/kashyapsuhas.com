@@ -159,16 +159,6 @@
     }
   }
 
-  /* pretty wrapping is for headings only, body text keeps the default */
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply text-pretty;
-  }
-
   h2,
   h3,
   h4 {

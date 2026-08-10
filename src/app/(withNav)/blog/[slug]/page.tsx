@@ -114,7 +114,7 @@ async function Blog(props: Props) {
           )}
 
           {/* title */}
-          <h1 className="w-full text-pretty text-heading-sm font-medium md:text-heading-lg">
+          <h1 className="w-full text-heading-sm font-medium md:text-heading-lg">
             {post.metadata.title}
           </h1>
 
