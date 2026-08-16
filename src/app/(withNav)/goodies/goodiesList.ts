@@ -36,6 +36,11 @@ const goodies: Array<Goodie> = [
     href: "goodies/panchanga",
   },
   {
+    name: "Jaataka",
+    description: "south indian birth chart, grahas, bhavas, vimshottari dasha",
+    href: "goodies/jaataka",
+  },
+  {
     name: "Melakarta Ragas",
     description: "all 72 melakarta raagas: filter by swara, hear them",
     href: "goodies/melakarta-ragas",
