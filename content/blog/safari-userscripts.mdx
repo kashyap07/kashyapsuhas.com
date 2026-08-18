@@ -1,0 +1,136 @@
+---
+title: Safari userscripts
+description: iCloud folder. Done. Stop overthinking it.
+publishedDateTime: 2026-08-18T14:30:00+05:30
+categories:
+  - tech
+heroImage: ""
+draft: true
+---
+
+Userscripts are tiny bits of JS that run on pages you visit. Kill an annoying sticky header, nuke a paywall nag, add a keyboard shortcut that a site should have shipped with. Greasemonkey stuff. It's been around forever.
+
+Safari can do this too. You need [Userscripts](https://github.com/quoid/userscripts) by quoid. Free, open source, no account, no telemetry, doesn't phone home. Install from the App Store, enable it in Safari settings, done.
+
+But then it asks you a question that nobody prepares you for.
+
+**"Choose a directory to save your scripts."**
+
+And this is the actual post. Because the answer decides whether your userscripts survive the next three years or die with your laptop.
+
+## The options and why most of them suck
+
+Userscripts (the extension) is different from Tampermonkey in one big way: it does NOT keep your scripts in some opaque extension database. Every script is a plain `.js` file in a folder YOU pick. That's the whole design. Beautiful.
+
+So the options:
+
+**Some random local folder.** `~/Documents/userscripts` or whatever. Works. Until you get a new mac, or you're on the iPad and want the same script, and now you don't have it. Skip.
+
+**A git repo.** Very tempting for people like us. Version control on a 12 line script that removes a div. You'll set it up, feel great about it, and then never commit again because committing means opening a terminal and you were just trying to browse Reddit. Also your phone can't push. I tried this. It lasted 4 days.
+
+**iCloud Drive folder.** This one. This is the answer.
+
+## iCloud Drive. Just do it.
+
+Make a folder. `iCloud Drive/userscripts`. Point the extension at it.
+
+```
+~/Library/Mobile Documents/com~apple~CloudDocs/userscripts
+```
+
+That's the real path if you ever need to `cd` into it. In Finder it just shows up as `userscripts` under iCloud Drive.
+
+Why this wins:
+
+- Userscripts is on iOS too. Same extension, same App Store purchase. Point iOS Safari at the same iCloud folder and every script you write on the mac just APPEARS on your phone. This is the entire ballgame.
+- No git. No sync tool. No conflict resolution UI. Files sync, that's it.
+- Edit in whatever you want. VSCode, vim, the extension's own editor. It's a file on disk.
+- New machine, sign in, folder's there.
+
+The one gotcha: iCloud loves to evict files you haven't touched. If a script is showing as not-downloaded you'll get weird behaviour. Right click the folder, "Keep Downloaded". Do this once and forget it.
+
+## Ok fine, some examples
+
+You need `@match` patterns and a metadata block. That's basically it. Files go in the folder as `whatever.js`.
+
+Sticky headers. The eternal enemy.
+
+```js
+// ==UserScript==
+// @name         death to sticky headers
+// @match        *://*/*
+// @run-at       document-idle
+// ==/UserScript==
+
+document.querySelectorAll("*").forEach((el) => {
+  const pos = getComputedStyle(el).position;
+  if (pos === "sticky" || pos === "fixed") {
+    el.style.position = "static";
+  }
+});
+```
+
+Crude. Nukes some navbars you actually wanted. I don't care.
+
+Youtube, force the good speed and skip the shorts shelf:
+
+```js
+// ==UserScript==
+// @name         youtube sanity
+// @match        *://www.youtube.com/*
+// @run-at       document-idle
+// ==/UserScript==
+
+// shorts shelf, gone
+const killShorts = () => {
+  document
+    .querySelectorAll("ytd-rich-shelf-renderer[is-shorts]")
+    .forEach((el) => el.remove());
+};
+
+new MutationObserver(killShorts).observe(document.body, {
+  childList: true,
+  subtree: true,
+});
+
+killShorts();
+```
+
+The MutationObserver bit is the thing you'll write over and over. Modern sites render everything client side and re-render half of it when you sneeze, so a one-shot script at page load does nothing. Observe, react, move on.
+
+One more. Copy the page title and URL as a markdown link, because I do this 30 times a day:
+
+```js
+// ==UserScript==
+// @name         copy as markdown link
+// @match        *://*/*
+// ==/UserScript==
+
+document.addEventListener("keydown", (e) => {
+  // cmd + shift + m
+  if (e.metaKey && e.shiftKey && e.key === "m") {
+    e.preventDefault();
+    navigator.clipboard.writeText(`[${document.title}](${location.href})`);
+  }
+});
+```
+
+Straight into Obsidian. Chef's kiss.
+
+## Naming
+
+Don't. Seriously, don't build a taxonomy. Flat folder, lowercase filenames that say what they do.
+
+```
+userscripts/
+  youtube-sanity.js
+  kill-sticky.js
+  copy-md-link.js
+  reddit-old-redirect.js
+```
+
+The moment you make subfolders you'll spend an evening deciding whether `github-diff-width.js` goes in `dev/` or `github/`. It goes in the folder. There is one folder.
+
+That's it. iCloud folder, flat files, MutationObserver when the site fights back.
+
+Enjoy!
