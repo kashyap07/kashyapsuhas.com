@@ -75,7 +75,8 @@ export default async function Image({
     month: "long",
     day: "numeric",
     year: "numeric",
-    timeZone: "UTC",
+    // my tz, so late-night posts do not render as the previous day
+    timeZone: "Asia/Kolkata",
   });
 
   const hero = await loadHero(heroImage);
