@@ -10,7 +10,7 @@ const dateFmt = new Intl.DateTimeFormat("en-IN", {
   day: "numeric",
   month: "short",
   year: "numeric",
-  timeZone: "Asia/Kolkata",
+  timeZone: "UTC",
 });
 
 function Badge({
@@ -26,7 +26,7 @@ function Badge({
     slate: "bg-slate-100 text-slate-600",
   }[tone];
   return (
-    <span className={`rounded px-1.5 py-0.5 text-xs whitespace-nowrap ${cls}`}>
+    <span className={`whitespace-nowrap rounded px-1.5 py-0.5 text-xs ${cls}`}>
       {children}
     </span>
   );

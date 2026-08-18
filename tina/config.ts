@@ -188,6 +188,26 @@ export default defineConfig({
             name: "reviewDate",
             label: "Review Date",
             required: false,
+            ui: {
+              dateFormat: "YYYY-MM-DD",
+              // tina persists the picker's LOCAL midnight as utc, which from
+              // ist lands on 18:30z, i.e. the previous day. everything on the
+              // site renders in utc, so store utc midnight of the day that was
+              // actually picked and the two stop disagreeing.
+              // tina types this as a string, but react-datetime really hands
+              // back a moment (their own docs call .format on it).
+              parse: (value: string) => {
+                if (!value) return value;
+                const picked = value as unknown as {
+                  format?: (f: string) => string;
+                };
+                const day =
+                  typeof value === "string"
+                    ? value.slice(0, 10)
+                    : picked.format?.("YYYY-MM-DD");
+                return day ? `${day}T00:00:00.000Z` : value;
+              },
+            },
           },
         ],
       },

@@ -75,8 +75,8 @@ export default async function Image({
     month: "long",
     day: "numeric",
     year: "numeric",
-    // my tz, so late-night posts do not render as the previous day
-    timeZone: "Asia/Kolkata",
+    // utc everywhere, so the card matches the date on the page itself
+    timeZone: "UTC",
   });
 
   const hero = await loadHero(heroImage);

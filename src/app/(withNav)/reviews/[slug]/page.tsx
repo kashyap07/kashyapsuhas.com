@@ -74,13 +74,13 @@ export default async function ReviewPage(props: Props) {
   const categoryColor = getCategoryTextColor(review.category);
   const categoryBg = getCategoryBgColor(review.category);
   const reviewDate = new Date(review.reviewDate);
-  // dates are ist-midnight utc timestamps; pin the zone so vercel's utc
-  // servers don't render the previous day
+  // reviewDate is utc midnight of the day that was picked, so read it back in
+  // utc. every date on the site renders in utc.
   const dateFormatted = reviewDate.toLocaleDateString("en-IN", {
     year: "numeric",
     month: "short",
     day: "numeric",
-    timeZone: "Asia/Kolkata",
+    timeZone: "UTC",
   });
 
   return (

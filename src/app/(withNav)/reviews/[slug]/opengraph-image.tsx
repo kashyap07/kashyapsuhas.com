@@ -4,8 +4,8 @@ import {
   FOREGROUND,
   MUTED,
   OgFrame,
-  ShapedTitle,
   SUCCESS,
+  ShapedTitle,
   hasComplexScript,
   ogImage,
   shapeWords,
@@ -44,13 +44,13 @@ export default async function Image({
 
   const { name, category, rating, wouldRecommend, reviewDate } = review;
   const colors = CATEGORY_COLORS[category] ?? CATEGORY_COLORS.Others;
-  // review dates are stored as ist-midnight utc timestamps, format in ist so
-  // the date doesn't slip back a day
+  // reviewDate is utc midnight of the day that was picked, so read it back in
+  // utc. matches the date on the review page itself.
   const date = new Date(reviewDate).toLocaleDateString("en-IN", {
     year: "numeric",
     month: "short",
     day: "numeric",
-    timeZone: "Asia/Kolkata",
+    timeZone: "UTC",
   });
   const verdict = wouldRecommend ? "would recommend" : "would not recommend";
   const titleSize = name.length > 50 ? 54 : name.length > 30 ? 62 : 72;

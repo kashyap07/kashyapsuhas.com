@@ -23,7 +23,7 @@ const splitPostsByYear = (posts: ReturnType<typeof getBlogPosts>) => {
   let currentYear: number | null = null;
 
   for (const post of posts) {
-    const year = new Date(post.metadata.publishedDateTime).getFullYear();
+    const year = new Date(post.metadata.publishedDateTime).getUTCFullYear();
     if (year !== currentYear) {
       groups.push([]);
       currentYear = year;
@@ -50,7 +50,7 @@ function Blog() {
         {blogPostsByYear.map((postsForYear, groupIdx) => {
           const year = new Date(
             postsForYear[0].metadata.publishedDateTime,
-          ).getFullYear();
+          ).getUTCFullYear();
           return (
             <li key={groupIdx} className="flex flex-col gap-3">
               <h2 className="font-sans text-xs uppercase tracking-wider text-muted">
