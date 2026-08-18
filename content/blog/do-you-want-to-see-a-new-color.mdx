@@ -1,0 +1,64 @@
+---
+title: Do you want to see a new color?
+description: A simulation that is supposed to be close to "Olo"
+publishedDateTime: 2026-08-19T00:34:00+05:30
+categories:
+  - tech
+heroImage: ""
+---
+
+I came across an [HN thread](https://news.ycombinator.com/item?id=49270194) and some news articles about ["Olo"](<https://en.wikipedia.org/wiki/Olo_(color)>) and went into a bit of a rabbit hole.  
+Olo is supposed to be a brand new color, which can only be seen through blasting lasers into your eyes.
+
+5 subjects apparently have seen this, and they described it as a "blue-green of unprecedented saturation".
+
+## What's Olo
+
+_All of this is internet-collated info, I'm not an expert_.
+
+Ok so there's 2 types of photoreceptors in our eyes - rods and [cones](https://en.wikipedia.org/wiki/Cone_cell). The cones, then, are of 3 types:
+
+1. L-cones: Long wavelength, red
+2. M-cones: Medium wavelength, green
+3. S-cones: Short wavelength, blue
+
+<ImageMDX
+  mdHalfWidth
+  alt="S, M and L cone wavelength"
+  src={"/blog/olo/cone-fundamentals.png"}
+/>
+
+_image by [BenRG](https://commons.wikimedia.org/wiki/File:Cone-fundamentals-with-srgb-spectrum.svg) via Wikimedia Commons._
+
+The curves overlap, and M in particular sits almost entirely underneath L. As in, there's no way to _exclusively_ hit M-cones or see _"true green"_ or whatever that color is actually supposed to be.
+
+So the scientists who "discovered this new color" (new or not is controversial apparently) blasted lasers to only activate M-cones, making the test subjects see this (L, M, S) = (0, 1, 0) color aka Olo.
+
+The closest color on the RGB spectrum is supposed to be `#00ffcc`:
+
+<div style={{ background: "#00FFCC", height: "60px", borderRadius: "8px" }} />
+
+..which is teal.
+
+So there's no way to actually experience this Olo.
+
+## Or is it?
+
+Full credit to [dynomight's write-up on this](https://dynomight.net/colors/). Please read it.
+
+The idea is to exhaust the L-cones (by staring at red for a circle) so that our green hits typical M-cones, but less of L-cones.
+
+Witness magic:
+
+<ConeSaturation />
+
+## OMG
+
+That felt insane!
+
+Is this actually Olo? idk.  
+There is apparently a technical term for this called ["Chimerical colors"](https://en.wikipedia.org/wiki/Impossible_color#Chimerical_colors). So it's perhaps not the real deal.
+
+It is very very cool regardless! The way the eyes kinda twitch and see those super-duper-saturated teal arcs.
+
+Enjoy!
