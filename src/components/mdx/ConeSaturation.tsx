@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { createPortal } from "react-dom";
+
 // cone-cell saturation illusion. stare at the dot, one colour fatigues the
 // matching cone class, then it gets pulled away and the leftover signal shows
 // up as a colour your eye normally can't be shown.
@@ -44,6 +46,19 @@ const PRESETS: Preset[] = [
     note: "orange, but more orange than orange gets",
   },
 ];
+
+// safari still ships the prefixed element fullscreen on ipad, and iphone
+// safari ships neither (only <video> gets webkitEnterFullscreen), which is
+// why the css overlay below exists.
+type FsElement = HTMLDivElement & {
+  webkitRequestFullscreen?: () => Promise<void> | void;
+};
+type FsDocument = Document & { webkitFullscreenElement?: Element | null };
+
+type WakeLockSentinelish = { release: () => Promise<void> };
+type WakeLockNavigator = Navigator & {
+  wakeLock?: { request: (type: "screen") => Promise<WakeLockSentinelish> };
+};
 
 // wcag-ish relative luminance, only used to keep the dot and the timer bar
 // visible against whatever colours got picked
@@ -90,19 +105,87 @@ export function ConeSaturation({
   const [runId, setRunId] = useState(0);
   const [done, setDone] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  // css-only stand-in for browsers with no element fullscreen (iphone safari)
+  const [faux, setFaux] = useState(false);
 
   const stageRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const wakeLockRef = useRef<WakeLockSentinelish | null>(null);
 
   const running = runId > 0 && !done;
+  const immersive = isFullscreen || faux;
 
   useEffect(() => {
-    const sync = () => setIsFullscreen(Boolean(document.fullscreenElement));
+    const sync = () => {
+      const d = document as FsDocument;
+      setIsFullscreen(
+        Boolean(d.fullscreenElement ?? d.webkitFullscreenElement),
+      );
+    };
     document.addEventListener("fullscreenchange", sync);
-    return () => document.removeEventListener("fullscreenchange", sync);
+    document.addEventListener("webkitfullscreenchange", sync);
+    return () => {
+      document.removeEventListener("fullscreenchange", sync);
+      document.removeEventListener("webkitfullscreenchange", sync);
+    };
   }, []);
 
   useEffect(() => () => clearTimeout(timerRef.current ?? undefined), []);
+
+  // the run is 90s of not touching anything, so ios would happily auto-lock
+  // mid-stare. wake lock drops itself when the tab hides, hence the re-ask.
+  useEffect(() => {
+    if (!running) return;
+    let cancelled = false;
+
+    const acquire = async () => {
+      if (wakeLockRef.current) return;
+      try {
+        const lock = await (navigator as WakeLockNavigator).wakeLock?.request(
+          "screen",
+        );
+        if (!lock) return;
+        if (cancelled) void lock.release().catch(() => {});
+        else wakeLockRef.current = lock;
+      } catch {
+        // unsupported or refused. the illusion still works, screen may dim
+      }
+    };
+
+    const onVisible = () => {
+      if (document.visibilityState === "visible") void acquire();
+    };
+
+    void acquire();
+    document.addEventListener("visibilitychange", onVisible);
+    return () => {
+      cancelled = true;
+      document.removeEventListener("visibilitychange", onVisible);
+      void wakeLockRef.current?.release().catch(() => {});
+      wakeLockRef.current = null;
+    };
+  }, [running]);
+
+  // faux fullscreen has no browser chrome to escape with, so lock the page
+  // behind it and wire up esc ourselves
+  useEffect(() => {
+    if (!faux) return;
+    const html = document.documentElement;
+    const prevHtml = html.style.overflow;
+    const prevBody = document.body.style.overflow;
+    html.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setFaux(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      html.style.overflow = prevHtml;
+      document.body.style.overflow = prevBody;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [faux]);
 
   const start = useCallback(() => {
     clearTimeout(timerRef.current ?? undefined);
@@ -115,12 +198,15 @@ export function ConeSaturation({
   }, [countdownSec, durationSec]);
 
   const goFullscreen = useCallback(() => {
-    const el = stageRef.current as
-      | (HTMLDivElement & { webkitRequestFullscreen?: () => void })
-      | null;
+    const el = stageRef.current as FsElement | null;
     if (!el) return;
-    if (el.requestFullscreen) void el.requestFullscreen();
-    else el.webkitRequestFullscreen?.();
+    const req = el.requestFullscreen ?? el.webkitRequestFullscreen;
+    if (req) {
+      // the unprefixed one returns a promise that can still reject
+      Promise.resolve(req.call(el)).catch(() => setFaux(true));
+    } else {
+      setFaux(true);
+    }
     start();
   }, [start]);
 
@@ -135,111 +221,143 @@ export function ConeSaturation({
   const r0 = 400;
   const dotColor = contrastOn(running || !done ? insideColor : outsideColor);
   const barColor = contrastOn(outsideColor);
+  const exitColor = contrastOn(outsideColor);
+
+  const stage = (
+    <div
+      ref={stageRef}
+      className={
+        immersive
+          ? "relative h-full w-full"
+          : "relative aspect-square w-full overflow-hidden rounded-lg"
+      }
+      style={{ backgroundColor: outsideColor }}
+    >
+      {/* "meet", not "slice". on a wide fullscreen screen slice scales the
+          square viewBox to cover the WIDTH, which blows the disc up to ~95%
+          of the screen height and leaves almost no outside colour for the
+          rim to flood into. meet fits the square to the short side and the
+          stage's own background fills the letterbox in the same colour. */}
+      <svg
+        key={runId}
+        viewBox="0 0 1600 1600"
+        preserveAspectRatio="xMidYMid meet"
+        className="absolute inset-0 h-full w-full"
+      >
+        <rect x="0" y="0" width="1600" height="1600" fill={outsideColor} />
+        <circle cx="800" cy="800" r={r0} fill={insideColor}>
+          {runId > 0 && (
+            <animate
+              attributeName="r"
+              from={r0}
+              to={animMode === "shrink" ? 0 : 1200}
+              begin={`${countdownSec}s`}
+              dur={`${durationSec}s`}
+              fill="freeze"
+            />
+          )}
+        </circle>
+
+        {/* fixation dot. this is the whole trick, do not look away from it */}
+        <rect x="796" y="796" width="8" height="8" fill={dotColor} />
+      </svg>
+
+      {/* countdown bar, collapses to nothing. its own svg pinned to the left
+          edge so it hugs the real edge instead of the letterboxed one */}
+      {runId > 0 && (
+        <svg
+          key={`bar-${runId}`}
+          viewBox="0 0 20 1600"
+          preserveAspectRatio="none"
+          className="absolute inset-y-0 left-0 h-full w-3"
+        >
+          <rect x="0" y="0" width="20" height="1600" fill={barColor}>
+            <animate
+              attributeName="y"
+              from="0"
+              to="800"
+              dur={`${countdownSec}s`}
+              fill="freeze"
+            />
+            <animate
+              attributeName="height"
+              from="1600"
+              to="0"
+              dur={`${countdownSec}s`}
+              fill="freeze"
+            />
+          </rect>
+        </svg>
+      )}
+
+      {runId === 0 && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-black/45 p-6 text-center">
+          <p className="max-w-xs text-sm text-white">
+            Stare at the dot in the middle <br />
+            (takes a minute),
+            <br /> don&apos;t move your head or your eyes, <br />
+            blinking is ok tho.
+          </p>
+          <button
+            onClick={start}
+            className="rounded bg-accent px-4 py-2 text-sm font-medium text-white hover:shadow-md"
+          >
+            start
+          </button>
+          <button
+            onClick={goFullscreen}
+            className="text-sm text-white/80 underline underline-offset-4 hover:text-white"
+          >
+            go fullscreen
+          </button>
+        </div>
+      )}
+
+      {done && (
+        <div className="absolute inset-x-0 bottom-0 flex justify-center p-4">
+          <button
+            onClick={start}
+            className="rounded bg-black/60 px-4 py-2 text-sm font-medium text-white"
+          >
+            again
+          </button>
+        </div>
+      )}
+    </div>
+  );
 
   return (
     <div className="not-prose my-8 rounded-lg border border-line p-4 md:p-6">
-      <div
-        ref={stageRef}
-        className={
-          isFullscreen
-            ? "relative h-full w-full"
-            : "relative aspect-square w-full overflow-hidden rounded-lg"
-        }
-        style={{ backgroundColor: outsideColor }}
-      >
-        {/* "meet", not "slice". on a wide fullscreen screen slice scales the
-            square viewBox to cover the WIDTH, which blows the disc up to ~95%
-            of the screen height and leaves almost no outside colour for the
-            rim to flood into. meet fits the square to the short side and the
-            stage's own background fills the letterbox in the same colour. */}
-        <svg
-          key={runId}
-          viewBox="0 0 1600 1600"
-          preserveAspectRatio="xMidYMid meet"
-          className="absolute inset-0 h-full w-full"
-        >
-          <rect x="0" y="0" width="1600" height="1600" fill={outsideColor} />
-          <circle cx="800" cy="800" r={r0} fill={insideColor}>
-            {runId > 0 && (
-              <animate
-                attributeName="r"
-                from={r0}
-                to={animMode === "shrink" ? 0 : 1200}
-                begin={`${countdownSec}s`}
-                dur={`${durationSec}s`}
-                fill="freeze"
-              />
-            )}
-          </circle>
+      {faux ? (
+        // hold the page height so nothing jumps when the overlay closes
+        <div className="aspect-square w-full rounded-lg bg-surface-subtle" />
+      ) : (
+        stage
+      )}
 
-          {/* fixation dot. this is the whole trick, do not look away from it */}
-          <rect x="796" y="796" width="8" height="8" fill={dotColor} />
-        </svg>
-
-        {/* countdown bar, collapses to nothing. its own svg pinned to the left
-            edge so it hugs the real edge instead of the letterboxed one */}
-        {runId > 0 && (
-          <svg
-            key={`bar-${runId}`}
-            viewBox="0 0 20 1600"
-            preserveAspectRatio="none"
-            className="absolute inset-y-0 left-0 h-full w-3"
+      {faux &&
+        createPortal(
+          <div
+            role="dialog"
+            aria-label="cone saturation illusion, fullscreen"
+            className="fixed inset-0 z-50 touch-none overscroll-none"
+            style={{ backgroundColor: outsideColor }}
           >
-            <rect x="0" y="0" width="20" height="1600" fill={barColor}>
-              <animate
-                attributeName="y"
-                from="0"
-                to="800"
-                dur={`${countdownSec}s`}
-                fill="freeze"
-              />
-              <animate
-                attributeName="height"
-                from="1600"
-                to="0"
-                dur={`${countdownSec}s`}
-                fill="freeze"
-              />
-            </rect>
-          </svg>
+            {stage}
+            {/* kept dim on purpose, bright chrome in the corner of your eye
+                works against the whole illusion */}
+            <button
+              onClick={() => setFaux(false)}
+              style={{ color: exitColor }}
+              className="absolute right-3 top-3 z-10 rounded px-3 py-1.5 font-sans text-label-sm opacity-40 transition-opacity hover:opacity-100"
+            >
+              exit
+            </button>
+          </div>,
+          document.body,
         )}
 
-        {runId === 0 && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-black/45 p-6 text-center">
-            <p className="max-w-xs text-sm text-white">
-              Stare at the dot in the middle <br />
-              (takes a minute),
-              <br /> don&apos;t move your head or your eyes, <br />
-              blinking is ok tho.
-            </p>
-            <button
-              onClick={start}
-              className="rounded bg-accent px-4 py-2 text-sm font-medium text-white hover:shadow-md"
-            >
-              start
-            </button>
-            <button
-              onClick={goFullscreen}
-              className="text-sm text-white/80 underline underline-offset-4 hover:text-white"
-            >
-              go fullscreen
-            </button>
-          </div>
-        )}
-
-        {done && (
-          <div className="absolute inset-x-0 bottom-0 flex justify-center p-4">
-            <button
-              onClick={start}
-              className="rounded bg-black/60 px-4 py-2 text-sm font-medium text-white"
-            >
-              again
-            </button>
-          </div>
-        )}
-      </div>
-
-      {!isFullscreen && (
+      {!immersive && (
         <>
           <div className="mt-4 flex flex-wrap items-center gap-2">
             {PRESETS.map((p) => {
