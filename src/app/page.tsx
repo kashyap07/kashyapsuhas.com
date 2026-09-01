@@ -1,13 +1,9 @@
 import { Metadata } from "next";
 
-import { getBlogPosts } from "@db/blog";
-import { getReviews } from "@db/reviews";
 import { SITE_URL } from "@utils/site";
 
 import Hero from "./_home/Hero";
-import LatestWriting from "./_home/LatestWriting";
 import ParticleField from "./_home/ParticleField";
-import RecentlyReviewed from "./_home/RecentlyReviewed";
 
 export const metadata: Metadata = {
   title: "Suhas Kashyap",
@@ -60,16 +56,6 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-  const posts = getBlogPosts()
-    .slice(0, 3)
-    .map((p) => ({
-      slug: p.slug,
-      title: p.metadata.title,
-      description: p.metadata.description,
-      publishedDateTime: p.metadata.publishedDateTime,
-    }));
-  const reviews = getReviews().slice(0, 3);
-
   return (
     <main className="relative flex flex-col">
       {/* person schema */}
@@ -124,14 +110,6 @@ export default function Home() {
         aria-label="レスヤップ モアドゥ, less yap more do, written vertically in katakana"
         className="relative z-10 mx-auto mt-[8vh] aspect-[5/8] w-[min(58vw,300px)]"
       />
-
-      <div className="mt-16 md:mt-24">
-        <LatestWriting posts={posts} />
-      </div>
-
-      <div className="mt-section-sm md:mt-section-md">
-        <RecentlyReviewed reviews={reviews} />
-      </div>
 
       <div className="pb-page-bottom" />
     </main>
