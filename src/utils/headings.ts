@@ -15,6 +15,11 @@ const FENCE = /^```[\s\S]*?^```/gm;
 // is too granular to be worth a row in a sidebar.
 const HEADING = /^(#{2,3})\s+(.+?)\s*$/gm;
 
+// trip posts have no markdown h2s: every section is a <Stop>, which renders an
+// h2 with the same slugify(title) id. without this a 27 stop travelogue looks
+// like a one heading post and gets no toc at all.
+const STOP = /^<Stop\b[^>]*?\stitle="([^"]+)"/gm;
+
 // strip the inline markdown that would otherwise show up as literal syntax in
 // the sidebar: `code`, **bold**, _em_, [text](href).
 function plain(md: string): string {
@@ -26,17 +31,26 @@ function plain(md: string): string {
 
 export function extractHeadings(source: string): Heading[] {
   const body = source.replace(FENCE, "");
-  const out: Heading[] = [];
+  // collected with their source offset so markdown headings and stops end up
+  // interleaved in document order, which is what the toc's scroll tracking
+  // assumes
+  const found: { at: number; heading: Heading }[] = [];
 
-  for (const [, hashes, rawText] of body.matchAll(HEADING)) {
-    const text = plain(rawText);
+  for (const m of body.matchAll(HEADING)) {
+    const text = plain(m[2]);
     if (!text) continue;
-    out.push({
-      id: slugify(text),
-      text,
-      level: hashes.length === 2 ? 2 : 3,
+    found.push({
+      at: m.index,
+      heading: { id: slugify(text), text, level: m[1].length === 2 ? 2 : 3 },
     });
   }
 
-  return out;
+  for (const m of body.matchAll(STOP)) {
+    // titles are jsx attributes, already plain text
+    const text = m[1].trim();
+    if (!text) continue;
+    found.push({ at: m.index, heading: { id: slugify(text), text, level: 2 } });
+  }
+
+  return found.sort((a, b) => a.at - b.at).map((f) => f.heading);
 }
