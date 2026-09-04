@@ -12,3 +12,4 @@ export {
   RatingDistribution,
   RatingGapTable,
 } from "./elo";
+export { LeakySearch } from "./memory";

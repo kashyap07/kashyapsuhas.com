@@ -1,0 +1,472 @@
+---
+title: Everything I know about fixing browser memory leaks
+description: Your tab is at 2GB. Let's go find out why.
+publishedDateTime: 2026-09-04T18:20:00+05:30
+categories:
+  - tech
+heroImage: ""
+draft: true
+---
+
+WIP. This is fully AI generated. Reference material.
+
+---
+
+The ticket said "search gets slow after a while".
+
+That's it. That's the whole ticket. No repro steps, no browser version, nothing. And on my machine it was fine, because I reload the app roughly forty times an hour like a normal deranged frontend person.
+
+The users don't. They open the tab on Monday and close it on Friday.
+
+Here's the thing nobody tells you about memory leaks in a browser: users don't notice memory. Nobody has ever filed a bug that says "my tab is using 1.8GB". What they notice is that typing feels like wading through wet cement. The leak is the cause. The lag is the symptom. And you go hunting for the lag, find nothing in your render profile, and lose an afternoon.
+
+So let's start with the symptom.
+
+## Feel it first
+
+Mash the keyboard in the box below. Type whatever, it's not searching for anything. Should be instant.
+
+Now hit **leak a panel** ONCE. Type again.
+
+Then hit it a few more times.
+
+<LeakySearch />
+
+Here's the part that should bother you: the input does nothing. There is no filtering, no results list, no work for it to do. Every millisecond you just felt belongs to panels that are not on screen.
+
+Each click simulates one mount-and-unmount of a panel that forgot to clean up. It registers a `window` listener whose closure still holds its own 30,000 row index and a 300 node detached DOM subtree, and that handler re-ranks the whole index on every keystroke. Nothing ever removes it.
+
+One dead panel costs about 30ms per keypress on my machine. Fifteen of them is 450,000 rows getting lowercased, scored and sorted every single time you touch a key, on behalf of panels nobody can see.
+
+Hit **reset** and it's instant again. Reset does nothing except call `removeEventListener` in a loop, which is what the cleanup function was supposed to do in the first place.
+
+That's the entire post in one component, honestly. The rest is just how you'd find it if you didn't already know.
+
+## What's actually leaking
+
+Here is the panel from the demo, in about as few lines as it takes. You've written this. I've written this.
+
+```js
+function mountSearchPanel(container, docs) {
+  const index = buildIndex(docs); // ~3 MB of strings
+  const panel = document.createElement("div");
+  container.append(panel);
+
+  window.addEventListener("input", (e) => {
+    panel.innerHTML = render(search(index, e.target.value));
+  });
+}
+
+function unmountSearchPanel(panel) {
+  panel.remove();
+}
+```
+
+`unmount` looks finished. It removes the thing you can see. Three problems:
+
+1. **The listener is still on `window`.** Removing the panel doesn't touch it. It will run on every keystroke for the rest of the page's life.
+2. **The handler is anonymous.** Even if you remembered `removeEventListener`, you have no reference to pass it. You cannot fix this without rewriting it.
+3. **That handler's closure holds `index` and `panel`.** So the 3MB index stays, and `panel`, now removed from the document, becomes a detached node that can never be collected.
+
+Mount it again and you have two of everything. That is the demo, exactly.
+
+The fix, using the nicest thing added to the DOM in years:
+
+```js
+function mountSearchPanel(container, docs) {
+  const index = buildIndex(docs);
+  const panel = document.createElement("div");
+  container.append(panel);
+
+  const ac = new AbortController();
+  window.addEventListener(
+    "input",
+    (e) => {
+      panel.innerHTML = render(search(index, e.target.value));
+    },
+    { signal: ac.signal },
+  );
+
+  // hand the caller its teardown. this is the entire fix.
+  return () => {
+    ac.abort();
+    panel.remove();
+  };
+}
+
+const unmount = mountSearchPanel(document.body, docs);
+// later
+unmount();
+```
+
+`addEventListener` takes a `signal`. Abort the controller and the listener detaches, closure and all. No named function to keep around, no matching argument lists, no `{ capture: true }` mismatch silently turning your removal into a no-op (yes, that's real, the options have to match).
+
+One controller can kill a dozen registrations. More on that later.
+
+## Ok but what IS a leak
+
+Quick detour, because the mental model makes everything downstream easier.
+
+The garbage collector does not collect things that are "unused". It collects things that are **unreachable**. Those are wildly different.
+
+There's a set of GC roots: `window`, the DOM tree that's currently attached to the document, the active call stack, and anything a live closure is holding. If there exists ANY chain of references from a root down to your object, that object is alive. Forever. Even if the last line of code that would ever touch it was deleted two releases ago.
+
+So a leak isn't "I forgot to free memory". You can't free memory in JS. A leak is **an accidental reference from something immortal to something that should have died**.
+
+`window` is immortal. That's why `window.addEventListener` is where 80% of frontend leaks live.
+
+Two numbers you'll see in DevTools:
+
+- **Shallow size**: how big the object itself is. An array of a million objects has a tiny shallow size. It's just pointers.
+- **Retained size**: how much memory comes back if this object dies. THIS is the number you care about. Sort by it. Always.
+
+And one more thing that makes all of this worse than it used to be: a page reload used to be a free reset. Now your user does two hundred route changes in an SPA and never unloads the document once. Every leak compounds across the whole session.
+
+## The manual hunt
+
+Six steps, roughly in order of how much of your life they cost. Do them in order and stop when you have an answer.
+
+### 0. Task Manager
+
+`Shift + Esc` in Chrome. Chrome's own task manager, not your OS one.
+
+Right click the column headers and turn on **JavaScript memory**, it's off by default. Now you have two useful columns:
+
+- **Memory footprint**: total for the process. DOM, decoded images, canvas backing stores, the works.
+- **JavaScript memory**: the JS heap. The number in parentheses next to it is the LIVE size, i.e. what survives a GC.
+
+Watch the parenthesised number while you use the app. If it climbs across a repeated action and never comes back down, congratulations, you have a leak.
+
+If Memory footprint grows but JavaScript memory doesn't, your leak isn't JS objects. It's detached DOM, decoded images, or a canvas. Different hunt, same tools.
+
+This step takes fifteen seconds and rules out half of everything.
+
+### 1. Performance Monitor
+
+The fastest signal in DevTools and I have never once seen someone use it.
+
+`Cmd + Shift + P` (or the three dots) → **Show Performance Monitor**. Tick these three:
+
+- JS heap size
+- DOM Nodes
+- JS event listeners
+
+Now go do the suspicious thing ten times. Open the modal, close it. Change routes, come back. Whatever. Watch the shape of the lines:
+
+- **Sawtooth, up then back down** → that's GC doing its job. Fine. Move on.
+- **Staircase, up and never down** → leak.
+- **JS event listeners climbing and never dropping** → you're already done. Go read your cleanup functions. This is the single most diagnostic line in DevTools.
+- **DOM Nodes climbing while the page looks identical** → detached nodes.
+
+That listeners counter is SO useful. It's a plain integer. It goes up when you register and down when you remove, no GC involved, no interpretation needed. If you open and close a modal ten times and it's up by ten, you found your bug in about forty seconds and you never opened the Memory panel.
+
+<ImageMDX
+  alt="Performance Monitor with JS event listeners climbing in a staircase"
+  src="/blog/memory-leaks/performance-monitor.png"
+/>
+
+_The listener count going up and never coming back down. That's the whole diagnosis._
+
+One gotcha: the heap doesn't shrink until a GC actually runs. Before you declare a leak, hit the trash can icon in the Memory panel to force one, then look again.
+
+### 2. Performance panel
+
+Record a trace with the **Memory** checkbox ticked. You get JS Heap, Documents, Nodes, Listeners and GPU Memory as time series underneath the flame chart.
+
+Why bother when Performance Monitor already showed you the staircase? Because here the staircase is **correlated with what the page was doing**. You see the step happen, and directly above it, the flame chart tells you which function was on the stack when it happened.
+
+For the demo at the top of this post, a trace of one keystroke at fifteen leaks shows a single ~180ms long task, with self time buried in `rankAll`, called fifteen times from fifteen different anonymous handlers on `window`. That's not subtle. That's a screenshot you can put in a PR description.
+
+This is also the step that tells you your problem is a long task and not a rendering problem, which is where I've wasted the most time historically.
+
+### 3. Three heap snapshots
+
+This is the actual technique. Memory panel → **Heap snapshot** profiling type.
+
+1. Load the page. Do the suspect action **once** to warm up lazy caches. Take **snapshot 1**.
+2. Do the action **ten times**, returning to the starting state each time.
+3. Take **snapshot 2**.
+4. Do the action ten more times, same way.
+5. Take **snapshot 3**.
+
+Why three and not two? Because the delta from 1 to 2 is full of noise. Route chunks getting lazily imported, caches warming, fonts, the framework allocating stuff it will allocate exactly once. All of that shows up as "growth" and none of it is a leak.
+
+A real leak grows in the 1→2 delta AND in the 2→3 delta, at roughly the same rate. One-off allocations only show in the first. The second delta is your signal.
+
+DevTools forces a full GC before taking each snapshot, so anything present in a snapshot is genuinely reachable. That's the whole reason this is trustworthy.
+
+### 4. Comparison view
+
+Select snapshot 3, change the dropdown from **Summary** to **Comparison**, and pick snapshot 2 as the baseline.
+
+Columns you get: New, Deleted, Delta, Alloc. Size, Freed Size, Size Delta. **Sort by Size Delta, descending.**
+
+Read a row like a sentence: constructor name, N objects created, M objects deleted. If you did ten interactions and a row says `New: 10, Deleted: 0`, that's it. That's your object. You don't need to be clever about this, the arithmetic just falls out.
+
+For the demo above you'd see `(closure)`, `(array)`, `(string)` and `Detached HTMLDivElement` all going up by exactly the number of times you clicked the button, and down by zero.
+
+Two shortcuts worth knowing:
+
+- Type `Detached` into the class filter box. Fastest DOM leak find there is.
+- The Memory panel has a separate **Detached elements** profiling type. It gives you the actual detached nodes and their counts without doing a full snapshot at all. If you suspect DOM, start here, it's much faster.
+
+<ImageMDX
+  alt="Heap snapshot Comparison view sorted by size delta"
+  src="/blog/memory-leaks/comparison.png"
+/>
+
+_Snapshot 3 against snapshot 2. `New: 10, Deleted: 0` for ten interactions is not a coincidence._
+
+### 5. Retainers. The only part that matters.
+
+Everything up to now told you WHAT leaked. That's interesting and completely unactionable. Retainers tells you WHO is holding it, and that's the thing you can actually go fix.
+
+Select the leaked object, look at the **Retainers** pane at the bottom. Read it bottom to top: that's the path from a GC root down to your object.
+
+For our search panel it reads something like:
+
+```
+(string)
+ └─ in elements[] of (array)
+     └─ in index of (closure) @ search.js:6
+         └─ in handler of EventListener
+             └─ in [[listeners]] of Window
+```
+
+<ImageMDX
+  alt="DevTools Retainers pane showing the path from Window down to the leaked object"
+  src="/blog/memory-leaks/retainers.png"
+/>
+
+And you're done. `Window` at the bottom is the immortal root. The `(closure)` with a filename and a line number is the thing to go delete. Everything in between is just plumbing.
+
+Two things about the colouring:
+
+- **Yellow** = the object has a direct JavaScript reference pointing at it.
+- **Red** = it's detached from the DOM tree and has no direct JS reference. Something yellow further up is keeping the entire subtree alive.
+
+If you see a big red subtree under one yellow row, don't chase the red. Fix the yellow one and all of it goes at once. One detached `<div>` held in a `Map` can retain thousands of child nodes, and the parent chain too.
+
+Right click any node → **Store as global variable**. You get `temp1` in the console. Then `getEventListeners(temp1)` and poke at it directly. Confirm your theory before you go and edit code, because retaining paths through framework internals can be genuinely misleading.
+
+**Two gotchas that will waste your afternoon:**
+
+`console.log(bigObject)` makes that object immortal for as long as the console holds the entry. Your own logging will show up as a leak. Clear the console before you snapshot. Same for whatever node is currently selected in the Elements panel, that's retained too.
+
+And run the whole investigation in an **Incognito window with extensions disabled**. React DevTools and Redux DevTools both retain component trees and action history by design. They will absolutely show up in your snapshot as a beautiful staircase and you will spend an hour debugging a devtool.
+
+## The mistakes. All of them.
+
+In rough order of how often I've personally shipped them.
+
+**1. Listeners on long-lived targets.**
+
+`window`, `document`, `visualViewport`, `matchMedia` results, `BroadcastChannel`, `WebSocket`, workers. These outlive your component by definition.
+
+Listeners on an element you're about to remove are FINE, they get collected with the element. It's the global targets that are forever. Fix with `AbortController`.
+
+**2. Timers.**
+
+`setInterval` you never clear is the obvious one. Less obvious: the interval's callback retains its entire closure scope, so a 30 second poll on an unmounted component is a memory leak AND a permanent background network request. Two bugs, one line.
+
+Also `requestAnimationFrame` loops. If your rAF callback schedules the next frame unconditionally, unmounting the component does nothing at all. Keep the id, `cancelAnimationFrame` it.
+
+**3. Observers.**
+
+`IntersectionObserver`, `MutationObserver`, `ResizeObserver`, `PerformanceObserver`. All four need `.disconnect()`. `ResizeObserver` is the one that sneaks in, because it ends up inside every "auto-sizing" utility hook in the codebase.
+
+**4. Detached DOM parked in a Map or a ref.**
+
+```js
+const nodeCache = new Map();
+nodeCache.set(id, element); // element gets removed from the DOM later
+```
+
+The element is gone from the page. The Map still points at it. And because a DOM node references its children AND its parent, one detached node can retain an enormous tree.
+
+Fix: `WeakMap` keyed by the element, or actually delete the entry when you remove the node. `WeakMap` is the right default here and people forget it exists.
+
+**5. Module-scope caches with no eviction.**
+
+```js
+const memo = {}; // at the top of the file, so: immortal
+```
+
+Every codebase has one. It's always innocent when it's written. Give it a cap and an eviction policy, or use `WeakRef` + `FinalizationRegistry` if you have to key by object identity.
+
+**6. Closures capturing more than they read.**
+
+This one is genuinely surprising the first time.
+
+```js
+function setup() {
+  const hugeBlob = new Array(1_000_000).fill("x"); // ~8 MB
+  const tiny = () => "hi";
+
+  window.onSomething = tiny; // hugeBlob is now immortal
+}
+```
+
+`tiny` doesn't reference `hugeBlob` at all. Doesn't matter. Sibling closures in the same scope share ONE context object, and V8 keeps that whole context alive as long as any closure from it is alive. So the four line function pins the 8MB array.
+
+V8 does optimise away variables it can prove nothing captures, but the moment there's an `eval`, a `debugger`, or just a shape it can't reason about, you get the full context. Don't rely on it. If you have something big and something long-lived in the same function, put the big thing in its own scope.
+
+**7. Subscriptions and in-flight requests.**
+
+Every `subscribe` returns an `unsubscribe`. Store it, call it. Same for a socket, an event emitter, a firebase `onSnapshot`.
+
+And a `fetch` nobody cancelled holds its whole `.then` chain alive, which holds every closure in it. Pass it the same `signal` as your listeners.
+
+**8. Third party widgets.**
+
+Charts, maps, editors, video players. Chart.js wants `.destroy()`. MapLibre wants `.remove()`. Monaco wants `.dispose()`. hls.js wants `.destroy()`.
+
+All of these allocate things you can't see from JS: WebGL contexts, worker threads, their own listeners. If a library hands you a `destroy`/`dispose`/`remove`, calling it is not optional. If a library DOESN'T hand you one, that's a red flag about the library.
+
+**9. Object URLs, canvas, decoded images.**
+
+`URL.createObjectURL(blob)` without a matching `revokeObjectURL` pins the entire Blob. That can be a 40MB video file held alive by a string.
+
+Decoded images are the sneaky one: a 2MB JPEG at 4000x3000 is about **48MB** in memory once decoded, because it's stored as raw RGBA. Nothing you do in JS shows this. It's in Memory footprint, not JavaScript memory, which is exactly why step 0 up there matters.
+
+And WebGL contexts have a hard cap (around 16 in Chrome). Blow past it and Chrome silently kills the oldest one with a `webglcontextlost` event that you are almost certainly not handling.
+
+### The one rule
+
+Whatever you register, return the un-registration from the same block. Same block. Not the same file, not the same component, the same block, so it's physically impossible to read the one without seeing the other.
+
+`AbortController` makes this pleasant because one signal kills everything:
+
+```js
+function startWidget(socket) {
+  const ac = new AbortController();
+  const { signal } = ac;
+
+  window.addEventListener("resize", onResize, { signal });
+  document.addEventListener("visibilitychange", onVisible, { signal });
+  socket.addEventListener("message", onMessage, { signal });
+
+  fetch("/api/thing", { signal })
+    .then((r) => r.json())
+    .then(render)
+    .catch((e) => {
+      if (e.name !== "AbortError") throw e;
+    });
+
+  const timer = setInterval(poll, 30_000);
+
+  return () => {
+    ac.abort();
+    clearInterval(timer); // timers don't take a signal, this one is on you
+  };
+}
+```
+
+Four registrations killed by one abort, and the teardown is sitting right there in the same function where you can't miss it. Whatever framework you're in, this is the shape: the thing that sets up returns the thing that tears down.
+
+## Now make Claude Code do it
+
+Everything above is six steps of clicking. Steps 3 and 4 are twenty interactions and a spreadsheet stare. I do not have the attention span for step 4 at 6pm.
+
+Google ships an official MCP server for this: [chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp). It's not screenshot-and-vibes browser automation. It hands the agent the actual Chrome DevTools Protocol, including real heap snapshots and real retaining paths.
+
+### Setup
+
+```sh
+claude mcp add chrome-devtools --scope user npx chrome-devtools-mcp@latest
+```
+
+Or install it as a plugin, which gets you the MCP server plus their skills:
+
+```
+/plugin marketplace add ChromeDevTools/chrome-devtools-mcp
+/plugin install chrome-devtools-mcp@chrome-devtools-plugins
+```
+
+Restart Claude Code after either. Needs Node LTS and a current stable Chrome. If you'd previously added the MCP server by hand, remove that first or you'll end up with two.
+
+Flags worth knowing:
+
+- `--isolated` gives you a fresh temp profile per run. **Use this for memory work.** It's the extensions problem from earlier, solved.
+- `--headless` for CI.
+- `--channel canary` if you need a newer DevTools.
+
+By default it drives your real Chrome, which means it can reach your app while you're logged in. That's the killer feature and also exactly why you should think for two seconds about what URL you point it at.
+
+### What it actually gets you
+
+There are thirteen memory tools. Four of them do the work:
+
+- `take_heapsnapshot` and `compare_heapsnapshots`, which is steps 3 and 4.
+- `query_heapsnapshot_objects`, which filters on `className`, `isDetached` and `retainedSize`, with sorting. "Every detached node, by retained size, descending" is fiddly in the UI and one call here.
+- `get_heapsnapshot_retaining_paths`, which is the Retainers pane as data. This is the one that matters: it's how the agent gets from "this leaked" to "here is the file and line" with no human reading a tree widget in between.
+
+Add `performance_start_trace` / `performance_stop_trace` and the driving tools (`navigate_page`, `click`, `fill`, `evaluate_script`) and you have the manual workflow above, minus the mouse.
+
+### The prompt
+
+This is the one I keep around. Point it at any laggy page.
+
+Add `--isolated` to the server args before you run it, that part is on you, the agent can't change its own flags mid-session.
+
+```
+You have the chrome-devtools MCP. Find the memory leak on <URL>.
+
+1. Navigate, wait for the main content, then perform the suspect
+   interaction ONCE to warm lazy caches.
+2. take_heapsnapshot -> call it A.
+3. Perform the interaction 10 more times, returning to the starting
+   state each time. take_heapsnapshot -> B.
+4. Perform it 10 more times the same way. take_heapsnapshot -> C.
+5. compare_heapsnapshots(A, B) and compare_heapsnapshots(B, C).
+   I only care about classes that grow in BOTH deltas at roughly the
+   same rate. Anything that only grows A->B is warmup, ignore it.
+6. For the top 3 classes by size delta, pull retaining paths for a
+   representative node. Separately run query_heapsnapshot_objects
+   with isDetached true, sorted by retainedSize desc.
+7. Map each retaining path back to a file:line in this repo. Open the
+   file. Show me the exact registration that has no matching teardown.
+8. Propose the smallest diff that fixes it. Then tell me how to verify
+   by hand: which Performance Monitor counter should stop climbing,
+   and what number it should return to.
+
+Rules:
+- No guessing. Every claim cites a snapshot number or a retaining path.
+- Report retained size, not shallow size.
+- If growth is under ~1% per cycle, call it noise and stop.
+- Page through large result sets and close_heapsnapshot when done.
+```
+
+That last rule matters more than it looks. Heap snapshot payloads are enormous and an agent that dumps three of them into context is an agent that has forgotten what you asked it.
+
+### Where it's genuinely better than me
+
+- **The tedium.** Twenty interactions, three snapshots, two diffs, five retaining paths. That's twenty minutes of clicking that I will get bored of and rush. It doesn't get bored on step four.
+- **Path to file:line.** This is the bit manual DevTools fundamentally cannot do. You read a retaining path in a tree widget and then alt-tab to your editor and search for it yourself. The agent has both open.
+- **The filters.** `isDetached: true` sorted by retained size is just better as a query than as a UI.
+- **Writing the actual fix.** Once you know it's an un-torn-down listener, the diff is boring, and boring diffs are what this is for.
+
+### Where it still needs you
+
+- **"Leak or cache?"** A growing LRU is not a bug. A session store that accumulates by design is not a bug. The agent will flag both, confidently. You're the one who knows which growth is intentional. This is the single biggest source of false positives.
+- **Reproduction that needs judgement.** A leak that only happens on websocket reconnect, or under a specific auth state, or on the third tab restore. You still have to describe the interaction properly.
+- **Extensions.** If you forget `--isolated` it WILL find a beautiful staircase in React DevTools and report it with total confidence.
+- **Leaks that aren't memory.** In the demo at the top of this post there are two problems: memory grows, and each keystroke does O(dead panels) work. The memory is the less painful half. The agent finds memory by default. If you want the long-task story, ask for the performance trace too, in the same prompt.
+
+None of this is magic. It's the same six steps. It's just that the machine doesn't get bored on step four, and I do.
+
+## Verify with a counter, not a vibe
+
+Whatever you fix, prove it:
+
+- Performance Monitor open, three lines ticked
+- do the action twenty times
+- **JS event listeners** returns to baseline
+- **DOM Nodes** returns to baseline
+- force GC, **JS heap size** comes back within a few MB of baseline
+
+All three flat? Done. Two out of three? You fixed one leak. There are usually several, they stack, and you'll be back here next quarter.
+
+Go scroll up, hit **leak a panel** fifteen times, mash the keyboard, then hit **reset**.
+
+That drop is what a cleanup function looks like.
