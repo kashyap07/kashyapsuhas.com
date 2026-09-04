@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import {
   Fraunces,
+  IBM_Plex_Mono,
   Inter,
   Literata,
   Noto_Serif_Devanagari,
@@ -30,6 +31,19 @@ const inter = Inter({
 const literata = Literata({
   subsets: ["latin"],
   variable: "--font-literata",
+});
+// code, everywhere: fenced blocks, inline chips, the font-mono numbers in the
+// goodies. plex mono is a sibling of plex serif/sans, so it carries editorial
+// weight rather than ide neutrality, which is what the warm code surface wants.
+// two weights, not the whole family: blocks render at 400 and the goodies pair
+// font-mono with font-medium. no italic, github-light-default never sets one.
+// preload: false on purpose. most pages have no code on them, and next/font's
+// size-adjusted fallback keeps the swap from shifting the block when it lands.
+const ibmPlexMono = IBM_Plex_Mono({
+  weight: ["400", "500"],
+  subsets: ["latin"],
+  variable: "--font-ibm-plex-mono",
+  preload: false,
 });
 // non-latin scripts for the wordmark easter egg. preload: false so they don't
 // block first paint, they only load when user clicks to cycle.
@@ -92,7 +106,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${fraunces.variable} ${literata.variable} ${inter.variable} ${notoSerifDevanagari.variable} ${notoSerifKannada.variable}`}
+      className={`${fraunces.variable} ${literata.variable} ${inter.variable} ${ibmPlexMono.variable} ${notoSerifDevanagari.variable} ${notoSerifKannada.variable}`}
     >
       <body className="font-serif">
         {/* just the katakana the particle morph rasterizes (レス ヤップ / モア ドゥ),

@@ -3,15 +3,17 @@ import type {
   AnchorHTMLAttributes,
   HTMLAttributes,
   JSX,
+  ReactElement,
   ReactNode,
 } from "react";
-import React from "react";
+import React, { Children, isValidElement } from "react";
 
+import { highlightCode } from "@lib/highlight";
 import type { MDXComponents } from "mdx/types";
 import { MDXRemote, MDXRemoteProps } from "next-mdx-remote/rsc";
-import { highlight } from "sugar-high";
 
 import * as MdxComponents from "@components/mdx";
+import { CodeBlock } from "@components/mdx/CodeBlock";
 import { bindFootnoteComponents } from "@components/mdx/Footnotes";
 import Lightbox from "@components/mdx/trip/Lightbox";
 import { TripRouteProvider } from "@components/mdx/trip/TripContext";
@@ -63,15 +65,33 @@ const CustomLink = (props: AnchorHTMLAttributes<HTMLAnchorElement>) => {
   );
 };
 
-interface CodeProps extends HTMLAttributes<HTMLElement> {
+// inline `code` only. fenced blocks never reach this: Pre reads its child's
+// props for the source and renders shiki output itself, so the mapped <code>
+// element is built but thrown away. inline code is deliberately NOT
+// highlighted, a one-word chip coloured like a keyword reads as noise.
+const Code = (props: HTMLAttributes<HTMLElement>) => (
+  <code {...props} className="inline-code" />
+);
+
+interface PreProps extends HTMLAttributes<HTMLPreElement> {
   children?: ReactNode;
 }
 
-const Code = ({ children, ...props }: CodeProps) => {
-  const codeString = getNodeText(children);
-  const codeHTML = highlight(codeString);
+// async server component: highlighting is a build-time concern, so the shiki
+// grammars never ship to the browser. mdx hands us <pre> wrapping a <code>
+// whose className carries the fence language and whose child is still the raw
+// source string, which is exactly what both shiki and the copy button need.
+const Pre = async ({ children }: PreProps) => {
+  const child = Children.toArray(children).find(isValidElement) as
+    | ReactElement<{ className?: string; children?: ReactNode }>
+    | undefined;
 
-  return <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />;
+  const raw = getNodeText(child ?? children).replace(/\n$/, "");
+  const lang = /language-([\w-]+)/.exec(child?.props?.className ?? "")?.[1];
+
+  const { html, lang: label } = await highlightCode(raw, lang);
+
+  return <CodeBlock html={html} raw={raw} lang={label} />;
 };
 
 const createHeading = (level: number) => {
@@ -105,6 +125,7 @@ const defaultComponentMapping: MDXComponents = {
   img: ImageMDX,
   a: CustomLink,
   code: Code,
+  pre: Pre,
   ...MdxComponents,
 };
 

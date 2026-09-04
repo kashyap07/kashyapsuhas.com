@@ -56,6 +56,33 @@ Tokens are defined in `tailwind.config.ts` under `theme.extend`.
 | `border-line` | gray-200 | standard dividers, input borders, table rows |
 | `border-line-subtle` | gray-100 | faint separators, subtle card borders |
 
+**Code**
+
+Warm off-white, deliberately not the cool `surface-subtle` grey. Code is its own
+surface: it should read as an inset object in the serif prose, and the warm tint
+sits with the amber accent instead of fighting it. Values are css vars in
+`globals.css` so the shiki theme and the chrome stay in one place.
+
+| class              | value     | use for                         |
+| ------------------ | --------- | ------------------------------- |
+| `bg-code`          | `#faf9f6` | fenced code block surface       |
+| `bg-code-chip`     | `#f2f0ea` | inline `code` chip, copy button |
+| `border-code-line` | `#e8e5dc` | copy button border              |
+| `text-code-faint`  | `#8a8578` | language label, copy icon       |
+
+### Sizes and colours through `cn()`
+
+`cn()` runs tailwind-merge, which cannot tell a custom size token
+(`text-label-sm`) from a colour (`text-muted`) by name alone. Left to itself it
+files both under text-colour, decides they conflict, and **silently drops the
+size**. `src/utils/cn.ts` declares the named sizes so they land in the font-size
+group instead.
+
+**If you add a font size to `tailwind.config.ts`, add it to `FONT_SIZES` in
+`src/utils/cn.ts` too.** Miss it and any `cn("text-your-size", "text-muted")`
+renders at the inherited size with no error anywhere. Plain static `className`
+strings are unaffected, this only bites through `cn()`.
+
 ### DO NOT use
 
 - `text-gray-{n}`: use `text-secondary`, `text-muted`, or `text-subtle`
@@ -76,13 +103,14 @@ Tokens are defined in `tailwind.config.ts` under `theme.extend`.
 
 ### Fonts
 
-Two serif families, loaded via `next/font/google` in `src/app/layout.tsx`. Tailwind exposes them as `font-display` and `font-serif`.
+Four families, all loaded via `next/font/google` in `src/app/layout.tsx` and exposed as tailwind tokens.
 
 | token          | font                        | use for                                                                                                                                                                                                                                                    |
 | -------------- | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `font-display` | **Fraunces (wonky + soft)** | all headings (h1-h6), the "Suhas Kashyap" wordmark, any title-style text. Loaded with `opsz` + `WONK` + `SOFT` axes, and `WONK 1, SOFT 100` (both maxed) is forced via `font-variation-settings` in `globals.css` so it doesn't look like default Fraunces |
 | `font-serif`   | **Literata**                | body text (default on `<body>`), paragraphs, lists, captions                                                                                                                                                                                               |
 | `font-sans`    | **Inter**                   | interface chrome: small labels, year headers, dates next to titles, tag badges, filter chips, table headers, form inputs, social handles. Use for anything UI-flavored vs editorial content.                                                               |
+| `font-mono`    | **IBM Plex Mono**           | all code: fenced blocks, inline chips, and the numeric readouts in the goodies. Applied to `pre`/`code` globally in `globals.css`, so markdown needs nothing; reach for `font-mono` by hand only in components                                             |
 
 Headings get `font-display` automatically via a global rule in `globals.css`, you don't need to add it on every `<h1>`/`<h2>`. The wordmark and other non-heading display text needs `font-display` explicitly.
 
@@ -288,6 +316,55 @@ className = "h-10 w-10 animate-spin text-accent";
 className = "text-danger";
 ```
 
+### Code blocks (mdx)
+
+Authored as plain markdown fences. `CustomMDX` maps `pre` to an async server
+component that runs shiki at build time and renders `CodeBlock`, so no
+highlighter reaches the browser.
+
+- **Theme:** `github-light-default` (`src/lib/highlight.ts`), chosen on
+  **measured contrast against `--code-bg`**, not on looks. Every token clears
+  4.3:1, average ~9.7. The previous pick (`vitesse-light`) was prettier and
+  unreadable: 32 of 68 tokens in a plain JS sample fell under 3:1. If you swap
+  the theme, measure first.
+- **Font:** IBM Plex Mono (`font-mono`). Picked over an IDE face like Source
+  Code Pro on purpose: Plex Mono is a sibling of Plex Serif and Plex Sans, so it
+  reads editorial next to Literata and Fraunces, and it carries more weight on
+  the warm code surface, where a cooler mono goes pale. All the usual monos sit
+  at a 0.6em advance, so the choice costs nothing in characters per line (90 at
+  13px in a 736px block). The one thing it gives up is a marked zero: Plex Mono
+  draws a plain `0`, where Source Code Pro dots it.
+- **Weights:** 400 and 500 only, no italic. Blocks render at 400; the goodies
+  pair `font-mono` with `font-medium`, and shipping 400 alone would leave the
+  browser faking a bold. `github-light-default` never sets an italic.
+  `preload: false`: most pages carry no code, and next/font's size-adjusted
+  fallback keeps the swap from shifting the block. `font-variant-ligatures: none`
+  stays on, since a fallback in the stack could still ship coding ligatures.
+- **Size:** 13px mobile, 14px desktop, `line-height: 1.65`. Code reads _smaller_
+  than the serif body, never larger.
+- **Width:** breaks out of the reading column by 32px a side from `md`
+  (`md:-mx-8`), so 736px against the prose's 672px. Code needs room prose
+  doesn't, and the wrapper is `max-w-4xl` so there is 112px of slack a side to
+  take it from. Wider than this starts colliding with the toc.
+- **No language label.** A floating label sat on top of long first lines and was
+  unreadable. The fence language is on the wrapper as `data-language` instead.
+  If it ever comes back it needs its own header bar, not an overlay.
+- The copy button is the only overlay, and it is opaque with a border and a
+  shadow precisely because it does sit over code.
+- **Adding a language:** add it to `LANGS` in `src/lib/highlight.ts`. An unknown
+  fence degrades to plain text rather than throwing the page.
+- Each line is a block carrying its own horizontal padding, so a long line
+  scrolls without sliding out from under the block's right-hand padding.
+
+### Inline code
+
+`` `like this` `` renders as a chip via `.inline-code`. Never syntax
+highlighted, a one-word chip coloured like a keyword is noise.
+
+The `@tailwindcss/typography` plugin renders literal backticks around every
+`<code>` through `::before`/`::after`. `globals.css` sets `content: none` on
+those. **Don't remove that reset**, the backticks come straight back.
+
 ### Image container (goodie output)
 
 ```tsx
@@ -314,17 +391,17 @@ The `Wrapper` component has three modes:
 
 ### Page width mapping
 
-| Route                         | Mode                                    |
-| ----------------------------- | --------------------------------------- |
-| `(withNav)` header            | DEFAULT                                 |
-| `/blog` (listing)             | DEFAULT                                 |
-| `/blog/[slug]`                | DEFAULT                                 |
-| `/contact`                    | DEFAULT                                 |
-| `/goodies` (listing)          | DEFAULT                                 |
-| `/reviews`                    | DEFAULT                                 |
-| `/reviews/[slug]`             | WIDE (hero card) + inner DEFAULT (text) |
-| `/photos`                     | WIDE                                    |
-| `/goodies/[goodie]` (interactive) | WIDE (BREAKOUT inside modals)       |
+| Route                             | Mode                                    |
+| --------------------------------- | --------------------------------------- |
+| `(withNav)` header                | DEFAULT                                 |
+| `/blog` (listing)                 | DEFAULT                                 |
+| `/blog/[slug]`                    | DEFAULT                                 |
+| `/contact`                        | DEFAULT                                 |
+| `/goodies` (listing)              | DEFAULT                                 |
+| `/reviews`                        | DEFAULT                                 |
+| `/reviews/[slug]`                 | WIDE (hero card) + inner DEFAULT (text) |
+| `/photos`                         | WIDE                                    |
+| `/goodies/[goodie]` (interactive) | WIDE (BREAKOUT inside modals)           |
 
 Pick DEFAULT unless the content visibly needs more horizontal space. Default-by-default keeps the site cohesive.
 
@@ -333,8 +410,8 @@ Pick DEFAULT unless the content visibly needs more horizontal space. Default-by-
 All (withNav) pages:
 
 ```tsx
-<Wrapper className="mb-section-sm md:mb-section-md w-full">
-  <h1 className="text-heading-md md:text-heading-xl font-medium">Page Title</h1>
+<Wrapper className="mb-section-sm w-full md:mb-section-md">
+  <h1 className="text-heading-md font-medium md:text-heading-xl">Page Title</h1>
   {/* content */}
 </Wrapper>
 ```
@@ -353,8 +430,8 @@ column is. It takes nothing from the page layout; `page.tsx` renders it next to
 the article only to keep the two together in the source.
 
 - Shown from the custom **`toc` breakpoint (1400px)** up, not `xl`. The margin
-  has to hold the rail, the opened panel, _and_ the code blocks' 40px breakout
-  without collision. At 1400 that leaves 34px of clearance; at 1280 the panel
+  has to hold the rail, the opened panel, _and_ the code blocks' 32px breakout
+  without collision. At 1400 that leaves 28px of clearance; at 1280 the panel
   would sit on the code.
 - **At rest it is a rail of tick marks**, one per heading: 1.5px thick, 12px
   pitch, right flush, 16px wide for an h2 and 12px for an h3. The level

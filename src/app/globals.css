@@ -14,15 +14,15 @@
        no fallback invalidates the WHOLE font-family, dropping headings to sans. */
     --font-shippori-mincho: "Shippori Mincho";
 
-    --sh-class: #6f42c1;
-    --sh-identifier: #034e43;
-    --sh-sign: #0f1924;
-    --sh-property: #2c8cc0;
-    --sh-entity: #0a9f2d;
-    --sh-jsxliterals: #0262cf;
-    --sh-string: #d14829;
-    --sh-keyword: #ff0019;
-    --sh-comment: #6a737d;
+    /* code surface. warm off-white rather than a grey slab so fenced blocks
+       sit with the serif prose and the amber accent. shiki's
+       github-light-default supplies the token colours (chosen on measured
+       contrast, see lib/highlight.ts), these own everything around them. */
+    --code-bg: #faf9f6;
+    --code-chip: #f2f0ea;
+    --code-line: #e8e5dc;
+    --code-faint: #8a8578;
+    --code-fg: #1f2328; /* github-light-default foreground, for plain text fences */
   }
 
   html,
@@ -61,7 +61,10 @@
 
   pre,
   code {
-    font-family: "Monaco", "Menlo", "Courier New", Courier, monospace;
+    @apply font-mono;
+    /* a fallback in the stack could still ship coding ligatures. code should
+       read as the characters that were typed. */
+    font-variant-ligatures: none;
   }
 
   ::-moz-selection {
@@ -141,22 +144,52 @@
     @apply m-0 rounded-lg shadow-macos;
   }
 
-  pre {
-    background-color: #f4f4f4;
-    @apply text-lg;
+  /* fenced blocks. the container (rounded surface, copy button) is
+     CodeBlock.tsx; this styles the shiki <pre> that lives inside it, so the
+     padding belongs here and not on the scroll container, otherwise a long
+     line scrolls out from under its own right hand padding. */
+  .code-scroll pre {
+    @apply m-0 overflow-visible rounded-none border-0 bg-transparent p-0;
+    color: var(--code-fg);
+    font-size: 0.8125rem; /* 13px, was 18px. code should read smaller than serif body */
+    line-height: 1.65;
+    tab-size: 2;
   }
 
-  pre code {
-    @apply block p-0 leading-5 md:leading-6;
+  .code-scroll pre code {
+    @apply block w-fit min-w-full p-0 font-normal;
+    background: none;
     border: initial;
+    font-size: inherit;
+  }
 
-    .sh__line {
-      @apply inline-block !text-base leading-5 md:leading-6;
-    }
+  /* one line per row, so long lines scroll instead of wrapping and the
+     copy button always has a clean gutter to sit in */
+  .code-scroll .line {
+    @apply block px-4 first:pt-4 last:pb-4;
+    min-height: 1.65em; /* keeps blank lines from collapsing */
+  }
 
-    span {
-      @apply font-medium;
+  @screen md {
+    .code-scroll pre {
+      font-size: 0.875rem; /* 14px */
     }
+  }
+
+  /* inline code. no backticks (see the typography reset below), just a chip */
+  .inline-code {
+    @apply rounded px-1 py-0.5 font-normal;
+    background: var(--code-chip);
+    color: var(--code-fg);
+    font-size: 0.875em; /* relative, so it tracks headings and body alike */
+    word-break: break-word;
+  }
+
+  /* @tailwindcss/typography renders literal backticks around every <code>
+     via ::before/::after. we have a chip, we don't need the punctuation. */
+  code::before,
+  code::after {
+    content: none !important;
   }
 
   /* anchor targets clear the top of the viewport when jumped to from the toc */
