@@ -146,6 +146,12 @@ const config: Config = {
       dropShadow: {},
       screens: {
         xs: "320px",
+        // blog post table of contents. it lives in the left page margin, and
+        // that margin only exists once the viewport can hold the toc, a real
+        // gap, and the code blocks' breakout without them colliding. xl
+        // (1280) is ~16px short, so it gets its own stop rather than a
+        // cramped one. clears a 13" macbook air at full width.
+        toc: "1400px",
       },
     },
   },

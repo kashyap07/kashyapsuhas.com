@@ -159,6 +159,13 @@
     }
   }
 
+  /* anchor targets clear the top of the viewport when jumped to from the toc */
+  h2,
+  h3,
+  h4 {
+    scroll-margin-top: 5rem;
+  }
+
   h2,
   h3,
   h4 {
@@ -191,5 +198,44 @@
       content: "#";
       @apply hidden md:block;
     }
+  }
+}
+
+/* the toc list scrolls itself on long posts. a thin, mostly invisible
+   scrollbar so it doesn't read as a second piece of page chrome. these live at
+   the top level on purpose: the toc sits in the page margin, outside .prose. */
+.toc-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--code-line) transparent;
+  overscroll-behavior: contain;
+}
+
+/* soft bottom edge, only while there is more list to scroll to, so a clipped
+   last item reads as "more below" instead of a rendering bug */
+.toc-scroll[data-overflowing] {
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 2rem), transparent);
+}
+
+/* the tick rail scrolls from the middle out, so it fades at both ends. must
+   follow the rule above, which it ties with on specificity. */
+.toc-scroll[data-overflowing="ends"] {
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 2rem calc(100% - 2rem),
+    transparent
+  );
+}
+
+/* the toc panel arriving from behind its rail. there is no exit to match: the
+   panel unmounts on close, and a disclosure that lingers reads as lag. */
+.toc-panel {
+  animation: toc-panel-in 160ms ease-out;
+}
+
+@keyframes toc-panel-in {
+  from {
+    opacity: 0;
+    transform: translateX(-6px);
   }
 }

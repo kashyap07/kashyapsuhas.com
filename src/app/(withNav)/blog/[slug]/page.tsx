@@ -1,8 +1,9 @@
 import { type Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { CustomMDX, RelativeDate, Wrapper } from "@components/ui";
+import { CustomMDX, RelativeDate, Toc, Wrapper } from "@components/ui";
 import { getBlogPost, getBlogPosts } from "@db/blog";
+import { extractHeadings } from "@utils/headings";
 import { SITE_URL } from "@utils/site";
 
 export const dynamic = "force-static";
@@ -64,6 +65,10 @@ async function Blog(props: Props) {
   const { publishedDateTime, title, description, heroImage, draft, trip } =
     post.metadata;
   const imageUrl = toAbsolute(heroImage || "/kashyapcom-og.png");
+
+  // a two heading post doesn't need a sidebar to navigate itself
+  const headings = extractHeadings(post.content);
+  const showToc = headings.length >= 3;
 
   return (
     <Wrapper maxWidth="WIDE" className="mb-section-sm w-full md:mb-section-md">
@@ -131,7 +136,12 @@ async function Blog(props: Props) {
             lives on this div, not the article: globals.css sets
             .prose { max-width: none } after the utilities layer, so a
             max-w-* on .prose itself would lose the cascade */}
-        <div className="mx-auto max-w-2xl">
+        <div className="relative mx-auto max-w-2xl">
+          {/* the toc pins itself to the left edge of the viewport, so it needs
+              nothing from this container. it is rendered here only to keep it
+              next to the article it belongs to. */}
+          {showToc && <Toc headings={headings} />}
+
           <article className="prose mt-8 break-words md:prose-lg md:mt-14">
             <CustomMDX source={post.content} trip={trip || undefined} />
           </article>

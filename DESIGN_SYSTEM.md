@@ -177,14 +177,17 @@ Three values only. Nothing else.
 
 ## Shadows
 
-| class          | use for                                               |
-| -------------- | ----------------------------------------------------- |
+| class          | use for                                                 |
+| -------------- | ------------------------------------------------------- |
 | `shadow-macos` | images, goodie output containers (layered depth shadow) |
-| `shadow-lg`    | dialog, modal overlays                                |
-| `shadow-md`    | button hover state (`hover:shadow-md`)                |
-| `shadow-sm`    | row hover state                                       |
+| `shadow-lg`    | dialog, modal overlays                                  |
+| `shadow-md`    | button hover state (`hover:shadow-md`)                  |
+| `shadow-sm`    | row hover state                                         |
 
 `shadow-macos` value: `0px 10px 30px rgba(0,0,0,0.2), 0px 4px 6px rgba(0,0,0,0.1)`
+
+Panels that float over **empty page margin** (the blog toc) take a `ring-1
+ring-line` hairline and no shadow. A shadow out there reads as a modal.
 
 ---
 
@@ -338,13 +341,63 @@ All (withNav) pages:
 
 Add `maxWidth="WIDE"` only when the page genuinely needs more room (see width mapping above).
 
+### Blog post table of contents
+
+`/blog/[slug]` renders `<Toc>` when the post has **3+ markdown headings**
+(`extractHeadings`, h2 and h3 only). Posts driven by components rather than
+headings (travelogues) get none.
+
+It pins itself to the viewport, `fixed left-2 top-1/2 -translate-y-1/2 z-30`,
+vertically centred, so it sits in the same place regardless of where the reading
+column is. It takes nothing from the page layout; `page.tsx` renders it next to
+the article only to keep the two together in the source.
+
+- Shown from the custom **`toc` breakpoint (1400px)** up, not `xl`. The margin
+  has to hold the rail, the opened panel, _and_ the code blocks' 40px breakout
+  without collision. At 1400 that leaves 34px of clearance; at 1280 the panel
+  would sit on the code.
+- **At rest it is a rail of tick marks**, one per heading: 1.5px thick, 12px
+  pitch, right flush, 16px wide for an h2 and 12px for an h3. The level
+  difference is deliberately small, enough to read as a level and not enough to
+  read as a bar chart. The current section is marked by **colour alone**
+  (`bg-foreground` against `bg-subtle`), never by thickness.
+- Nothing is marked above the first heading. Over the intro no heading has been
+  passed yet, and lighting up row 0 there would be a lie.
+- **The whole rail is one `<button>`.** The ticks are `aria-hidden` decoration
+  and every link lives in the panel. A 16px wide target should not have to serve
+  as nineteen separate ones.
+- **Click opens the panel and it stays open.** Not hover: the point of the rail
+  is that nothing expands under the cursor while you read. It closes on a second
+  rail click, on Escape (focus returns to the button), or on a pointerdown
+  outside. Clicking a heading jumps and leaves the panel open.
+- The panel is a **disclosure, not a modal**. No focus trap, no backdrop, no
+  scroll lock.
+- Panel titles **truncate to one line**. Uniform rows are the whole point of a
+  list you scan rather than read.
+- Active section is tracked by **scroll position against a 120px activation
+  line**, not IntersectionObserver, so behaviour stays predictable through long
+  sections. Heading offsets are measured once and cached; a `ResizeObserver` on
+  `body` re-measures when late images or fonts move them. The scroll handler
+  itself only compares numbers.
+- Rail and panel both cap at `max-h-[70vh]`. `data-overflowing` on a
+  `.toc-scroll` element fades the clipped edge: `"ends"` for the rail, which
+  scrolls from the middle out and so fades at both, and the bare attribute for
+  the panel list, which fades at the bottom only. It is set from a
+  `ResizeObserver`, so a short post never gets a gradient over nothing.
+- **`.toc-scroll` and `.toc-panel` live at the top level of `globals.css`, not
+  inside `.prose`.** The toc sits in the page margin, outside the article.
+  Nested under `.prose` they silently match nothing, which is exactly the bug
+  that hid the fade for as long as it existed.
+- Headings get `scroll-margin-top: 5rem` so anchor jumps clear the viewport top.
+
 ---
 
 ## Z-index layers
 
-| value  | use for                              |
-| ------ | ------------------------------------ |
-| `z-10` | base floating elements               |
-| `z-20` | mid-level overlays                   |
-| `z-40` | high overlays (nav, sticky elements) |
-| `z-50` | dialogs, modals, loaders             |
+| value  | use for                                |
+| ------ | -------------------------------------- |
+| `z-10` | base floating elements                 |
+| `z-20` | mid-level overlays                     |
+| `z-30` | viewport-pinned page chrome (blog toc) |
+| `z-40` | high overlays (nav, sticky elements)   |
+| `z-50` | dialogs, modals, loaders               |
