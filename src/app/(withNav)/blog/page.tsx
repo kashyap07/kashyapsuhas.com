@@ -34,8 +34,13 @@ const splitPostsByYear = (posts: ReturnType<typeof getBlogPosts>) => {
   return groups;
 };
 
+// drafts show up in the listing on `next dev` only, tagged, so they're easy to
+// get back to while writing. prod builds run with NODE_ENV=production and drop
+// them again. rss/sitemap/footer/llms.txt never see drafts either way.
+const SHOW_DRAFTS = process.env.NODE_ENV === "development";
+
 function Blog() {
-  const blogPosts = getBlogPosts();
+  const blogPosts = getBlogPosts({ includeDrafts: SHOW_DRAFTS });
   const blogPostsByYear = splitPostsByYear(blogPosts);
 
   const formatter = new Intl.DateTimeFormat("en-US", {
@@ -69,6 +74,11 @@ function Blog() {
                         <div className="flex items-baseline justify-between gap-3 md:gap-4">
                           <h3 className="text-lg font-medium leading-snug transition-colors group-hover:text-accent md:text-xl">
                             {post.metadata.title}
+                            {post.metadata.draft && (
+                              <span className="ml-2 inline-block whitespace-nowrap rounded border border-line px-1.5 py-0.5 align-middle font-sans text-label-sm uppercase tracking-wider text-muted">
+                                draft
+                              </span>
+                            )}
                           </h3>
                           <span className="shrink-0 font-sans text-sm text-muted group-hover:text-accent">
                             {formatter.format(

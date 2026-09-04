@@ -12,10 +12,14 @@ import plugin from "tailwindcss/plugin";
 //   text tiers  → text-foreground (black), text-secondary, text-muted, text-subtle
 //   feedback    → text-danger / bg-danger, text-success / bg-success
 //   borders     → border-line (standard), border-line-subtle (faint)
+//   code        → bg-code (fenced block), bg-code-chip (inline chip),
+//                 border-code-line, text-code-faint
 //   note: category badge colors (blue-100, teal-100 etc.) are intentional
 //         data-driven colors, not ui chrome. leave them as-is
 //
 // TYPOGRAPHY (responsive pattern: text-{step} mobile → md:text-{step} desktop)
+//   families:        font-display (fraunces), font-serif (literata),
+//                    font-sans (inter), font-mono (ibm plex mono)
 //   page titles:     text-heading-lg  → md:text-display
 //   section titles:  text-heading-md  → md:text-heading-xl
 //   subheadings:     text-heading-sm  → md:text-heading-md
@@ -91,6 +95,17 @@ const config: Config = {
         // borders
         line: "#e5e7eb", // border-line (gray-200, standard divider)
         "line-subtle": "#f3f4f6", // border-line-subtle (gray-100, faint)
+
+        // code surface. warm off-white so fenced blocks read as their own
+        // object against the serif prose without going full grey slab.
+        // token values live in globals.css so the shiki theme and the css
+        // stay in one place
+        code: {
+          DEFAULT: "var(--code-bg)", // bg-code, the fenced block surface
+          chip: "var(--code-chip)", // bg-code-chip, inline code + copy button
+          line: "var(--code-line)", // border-code-line
+          faint: "var(--code-faint)", // text-code-faint, code block chrome
+        },
       },
 
       // ── typography ─────────────────────────────────────────────────────────
@@ -114,6 +129,16 @@ const config: Config = {
           "serif",
         ],
         sans: ["var(--font-inter)", "ui-sans-serif", "system-ui", "sans-serif"],
+        // code. the fallbacks only matter for the moment before the webfont
+        // lands, since plex mono is self-hosted by next/font
+        mono: [
+          "var(--font-ibm-plex-mono)",
+          "ui-monospace",
+          "SFMono-Regular",
+          "Menlo",
+          "Consolas",
+          "monospace",
+        ],
       },
       fontSize: {
         display: ["5rem", { lineHeight: "1", fontWeight: "500" }], // 80px
