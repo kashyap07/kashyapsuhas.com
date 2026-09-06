@@ -100,6 +100,16 @@ Similarly, with truncation, you should consider if the text is important informa
 
 RTL (Arabic, Hebrew) is a whole different beast that I'm going to skip at the moment.
 
+### CJK Zenkaku
+
+When Keyboard layout is set to these, afaik the characters that are output use "Zenkaku" or extra-width, such that the individual characters are as wide as a typical western letter.  
+The problem is when a CJK user types in English in the middle, all your validation is going to fail!
+
+| Type               | Narrow / halfwidth | Fullwidth    |
+| ------------------ | ------------------ | ------------ |
+| Letters and digits | ABC123             | ＡＢＣ１２３ |
+| Katakana           | ｶﾀｶﾅ               | カタカナ     |
+
 ## Numbers
 
 Numbers of any kind must always pass through a formatter function.  
@@ -159,6 +169,8 @@ For hours some prefer `HH`, some `H`, etc etc. There's also meridians: some coun
 | ja-JP  | 05/04 15:30     |
 | vi-VN  | 04/05, CH 3:30  |
 
+Countries also have their own first day of the week, what's considered a weekend, and what have you.
+
 ## Names and Addresses
 
 Japan, China, and few other Asian countries follow a `lastName, firstName` system, while rest of the world follows the opposite.  
@@ -179,6 +191,12 @@ These are even more important when setting up your input forms - think a numeric
 | Japan   | Prefecture       |
 | Russia  | Oblast           |
 | UAE     | Emirate          |
+
+---
+
+Hope this was helpful. If you know of a unique formatting that I've missed here, let me know!
+
+These are from a codebase perspective. I should perhaps write a bit about how to set your architecture up to be performant with allll the permutation combinations. Non-technical stuff is not covered here (think legal requirements like GDPR and other EU Laws).
 
 <Footnotes>
   <Footnote id="ota">
