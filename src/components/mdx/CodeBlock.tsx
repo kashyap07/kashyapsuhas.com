@@ -42,7 +42,7 @@ export function CodeBlock({ html, raw, lang }: Props) {
   return (
     <div
       data-language={lang}
-      className="not-prose group relative my-7 overflow-hidden rounded-lg bg-code md:-mx-8"
+      className="not-prose group relative my-7 overflow-hidden rounded-lg bg-code md:-mx-4"
     >
       {/* copy sits absolute so it never pushes the code down, and above the
           scroll container so a wide line scrolls under it rather than
