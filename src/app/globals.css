@@ -145,10 +145,8 @@
   }
 
   /* fenced blocks. the container (rounded surface, copy button) is
-     CodeBlock.tsx; this styles the shiki <pre> that lives inside it, so the
-     padding belongs here and not on the scroll container, otherwise a long
-     line scrolls out from under its own right hand padding. */
-  .code-scroll pre {
+     CodeBlock.tsx; this styles the shiki <pre> that lives inside it. */
+  .code-body pre {
     @apply m-0 overflow-visible rounded-none border-0 bg-transparent p-0;
     color: var(--code-fg);
     font-size: 0.8125rem; /* 13px, was 18px. code should read smaller than serif body */
@@ -156,22 +154,22 @@
     tab-size: 2;
   }
 
-  .code-scroll pre code {
-    @apply block w-fit min-w-full p-0 font-normal;
+  /* padding lives on <code>, not on the scroll container and not on the line
+     spans. fit-content + min-width:100% means the padding is inside the box
+     that scrolls, so a long line never slides out from under its own right
+     hand gutter. lines stay inline: the newlines between them are real text
+     nodes (see lib/highlight), which is what keeps the block readable with
+     css stripped. making the lines display:block would render every one of
+     those newlines as an extra empty row. */
+  .code-body pre code {
+    @apply block w-fit min-w-full p-4 font-normal;
     background: none;
     border: initial;
     font-size: inherit;
   }
 
-  /* one line per row, so long lines scroll instead of wrapping and the
-     copy button always has a clean gutter to sit in */
-  .code-scroll .line {
-    @apply block px-4 first:pt-4 last:pb-4;
-    min-height: 1.65em; /* keeps blank lines from collapsing */
-  }
-
   @screen md {
-    .code-scroll pre {
+    .code-body pre {
       font-size: 0.875rem; /* 14px */
     }
   }

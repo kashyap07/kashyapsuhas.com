@@ -17,6 +17,13 @@ interface Props {
 // the visible shell around a highlighted fence: copy button plus the shiki
 // markup. highlighting happens on the server (lib/highlight), this exists
 // purely because clipboard access needs a client component.
+//
+// the class names are load bearing beyond styling. reader modes (safari
+// reader, and every readability descendant) score a div by its class string
+// and delete anything scoring negative. "hidden" and "scroll" are both in
+// that negative list, so `overflow-hidden` + `code-scroll` used to get every
+// code block on the page thrown away. `overflow-clip` is neutral and
+// "code-body" scores positive. don't reintroduce either word here.
 export function CodeBlock({ html, raw, lang }: Props) {
   const [copied, setCopied] = useState(false);
   const timer = useRef<number | null>(null);
@@ -42,7 +49,7 @@ export function CodeBlock({ html, raw, lang }: Props) {
   return (
     <div
       data-language={lang}
-      className="not-prose group relative my-7 overflow-hidden rounded-lg bg-code md:-mx-4"
+      className="not-prose group relative my-7 overflow-clip rounded-lg bg-code md:-mx-4"
     >
       {/* copy sits absolute so it never pushes the code down, and above the
           scroll container so a wide line scrolls under it rather than
@@ -63,7 +70,7 @@ export function CodeBlock({ html, raw, lang }: Props) {
       </div>
 
       <div
-        className="code-scroll overflow-x-auto"
+        className="code-body overflow-x-auto"
         dangerouslySetInnerHTML={{ __html: html }}
       />
     </div>

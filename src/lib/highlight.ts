@@ -78,18 +78,14 @@ export async function highlightCode(
         // would beat any stylesheet rule. drop it so the code surface is
         // owned by globals.css (--code-bg / --code-fg) and stays one edit.
         // tabindex stays: it makes a scrolling block keyboard reachable.
+        //
+        // the "\n" text nodes shiki puts between line spans are left alone.
+        // they are the only line breaks a css-less reader gets (safari
+        // reader, rss, screen readers, plain text extraction), so the lines
+        // must not be display:block or the preserved newline doubles every
+        // row's height. see .code-body in globals.css.
         pre(node) {
           delete node.properties.style;
-        },
-        // shiki separates line spans with a literal "\n" text node. inside a
-        // <pre> that newline is preserved whitespace, so with the lines also
-        // set to display:block every row rendered twice as tall as it should.
-        // the lines are blocks (they carry the horizontal padding so it
-        // survives an overflow scroll), so the newlines have to go.
-        code(node) {
-          node.children = node.children.filter(
-            (child) => !(child.type === "text" && child.value.trim() === ""),
-          );
         },
       },
     ],

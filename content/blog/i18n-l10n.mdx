@@ -1,5 +1,5 @@
 ---
-title: Internationalisation or i18n aka Localization or l10n
+title: Internationalization or i18n aka Localization or l10n
 description: An insight into what it takes to make your product "global", starting from your code.
 publishedDateTime: 2026-09-06T12:40:00+05:30
 categories:
@@ -7,8 +7,6 @@ categories:
 heroImage: ""
 draft: true
 ---
-
-_An insight into what it takes to make your product "global", starting from your code._
 
 Consider this scenario: You're a person from from the US, staying in Canada, and looking to book a hotel room in Jaipur, India from my Traveel site. You're looking at a card like this:
 
@@ -31,13 +29,13 @@ Jaipur grand hotel --- 05/04 -> 07/04 --- CAD 112,107.43 --- Free cancellation
 
 You'd realise that you had accidentally chosen 2 months of stay instead of 2 days, that the currency was in Canadian Dollars, and that it said "Free cancellation". And perhaps would've continued booking a room on my Travel OTA<Fn id="ota" />.
 
-This is a small glimpse into why supporting l10n is super important if you want to take your product global. i18n or Internationalisation is the codebase architecture set up part of supporting l10n. Here's a couple of things I've learnt through my work at [Rakuten Travel](https://travel.rakuten.com)<Fn id="rt" />.
+This is a small glimpse into why supporting l10n is super important if you want to take your product global. i18n or Internationalization is the codebase architecture set up part of supporting l10n. Here's a couple of things I've learnt through my work at [Rakuten Travel](https://travel.rakuten.com)<Fn id="rt" />.
 
 ## Step 0
 
 Never hardcode user-facing strings. Always pass it through a localization function.
 
-An important note is to also never assume a user's preferences. For example, a person located in Japan could be a tourist and not be able to undersrand Japanese text. Or an Indian located in India may not be able to understand Hindi. Always give the user an option to change their interface localisation settings, and make the setting obvious and accessible.
+An important note is to also never force preferences on to a user. For example, a person located in Japan could be a tourist and not be able to undersrand Japanese text. Or an Indian located in India may not be able to understand Hindi. Always give the user an option to change their interface localisation settings, and make the setting obvious and accessible.
 
 ## Language
 
