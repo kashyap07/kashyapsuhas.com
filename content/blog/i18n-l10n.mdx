@@ -37,7 +37,7 @@ Never hardcode user-facing strings. Always pass it through a localization functi
 
 An important note is to also never force preferences on to a user. For example, a person located in Japan could be a tourist and not be able to undersrand Japanese text. Or an Indian located in India may not be able to understand Hindi. Always give the user an option to change their interface localisation settings, and make the setting obvious and accessible.
 
-## Language
+## Translation
 
 This one starts easy. A bunch of json files per key, categorised and boxed into directories based on function, Think `Listing.Cancellation.Free_Cancellation`, with sub-keys being languages and then the values.
 
@@ -102,13 +102,14 @@ RTL (Arabic, Hebrew) is a whole different beast that I'm going to skip at the mo
 
 ## Numbers
 
-Numbers of any kind must always pass through a formatter function.
+Numbers of any kind must always pass through a formatter function.  
+Numbers can be monetary values, distances, ratings, percentages.
 
 ### Separator
 
 Comma separators are different in different countries, and yes they're not always commas!
 
-Most countries follow a 3,3,3. decimals, many Europian swap comma with dots, and India has it's own Lakh and Crore system.
+Many countries group digits in threes, some European ones swap comma with dots, and India has its own lakh and crore system.
 
 | locale | Separation   |
 | ------ | ------------ |
@@ -119,7 +120,7 @@ Most countries follow a 3,3,3. decimals, many Europian swap comma with dots, and
 
 ### Money
 
-Money notation differ by placement of currency symbols, space between symbol and amount, local-global symbols, and fraction amount and non-existence of it.
+Money notation differs by placement of currency symbols, space between symbol and amount, local-global symbols, and fraction amount and non-existence of it.
 
 Some currencies have a local version - Japanese use "円" locally, while Yen is denoted by "¥" internationally. Also, many countries using Dollar use "$" locally, but for an international traveler it's important to know which dollar they are looking at - USD, SGD, HKD, etc.  
 The way to sort this out is to typically show the local currency symbol if a combination of market, language, and currency matches a default.
@@ -127,7 +128,7 @@ The way to sort this out is to typically show the local currency symbol if a com
 It's also important to let users choose their currency regardless of where they are located. For example Indians would generally prefer to read a number with 2,2,3.2 format.
 
 ```js
-// value in db must be standard tho. USD is the usual choice for these.
+// assume standard value in db is USD.
 const systemAmount = 123456.78;
 const formattedAmount = l10nMoney(systemAmount, locale, currency);
 ```
@@ -135,7 +136,7 @@ const formattedAmount = l10nMoney(systemAmount, locale, currency);
 | Locale | Currency | Display         |
 | ------ | -------- | --------------- |
 | en-US  | USD      | $123,456.78     |
-| en-IN  | INR      | ₹11,665,492.87  |
+| en-IN  | INR      | ₹1,16,65,492.87 |
 | de-DE  | EUR      | 106.300,61 €    |
 | fr-FR  | EUR      | 106 300,61 €    |
 | en-JP  | JPY      | ￥19,253,084    |

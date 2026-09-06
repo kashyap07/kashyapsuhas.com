@@ -59,6 +59,10 @@
     @apply underline-offset-4 hover:text-accent hover:underline;
   }
 
+  table {
+    @apply font-sans;
+  }
+
   pre,
   code {
     @apply font-mono;
