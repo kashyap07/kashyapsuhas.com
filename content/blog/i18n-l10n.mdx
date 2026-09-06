@@ -43,7 +43,7 @@ This one starts easy. A bunch of json files per key, categorised and boxed into 
 
 One thing to note here is that you should probably not load all the translations into memory, as this is going to end up being very very fat as you scale.
 
-| locale | `Listing.Cancellation.Free_Cancellation` |
+| Locale | `Listing.Cancellation.Free_Cancellation` |
 | ------ | ---------------------------------------- |
 | en-US  | Free Cancellation                        |
 | en-IN  | Free Cancellation                        |
@@ -90,7 +90,7 @@ The conditions can also be for other booleans and enums.
 
 Then comes text length and layout consideration. You'd ideally want to let your components grow with paddings and margins instead of tight fixed sizes.
 
-| locale | Translation         |
+| Locale | Translation         |
 | ------ | ------------------- |
 | ko-KR  | 123 조회            |
 | en-US  | 123 views           |
@@ -105,13 +105,15 @@ RTL (Arabic, Hebrew) is a whole different beast that I'm going to skip at the mo
 Numbers of any kind must always pass through a formatter function.  
 Numbers can be monetary values, distances, ratings, percentages.
 
+Example keys in your config to save: `measurementSytem`, `numberSeparator.decimals`, `currency.decimalPlaces`, `currency.symbol.domestic`.
+
 ### Separator
 
 Comma separators are different in different countries, and yes they're not always commas!
 
 Many countries group digits in threes, some European ones swap comma with dots, and India has its own lakh and crore system.
 
-| locale | Separation   |
+| Locale | Separation   |
 | ------ | ------------ |
 | en-US  | 1,234,567.89 |
 | de-DE  | 1.234.567,89 |
@@ -142,6 +144,20 @@ const formattedAmount = l10nMoney(systemAmount, locale, currency);
 | en-JP  | JPY      | ￥19,253,084    |
 | ja-JP  | JPY      | 19,253,084円    |
 | vi-VN  | VND      | 3.217.282.465 ₫ |
+
+## Dates and times
+
+Back to our 2 months vs 2 days confusion. Some countries use DD/MM, some MM/DD. Also, some use an AM/PM format, while others a 24-hr one.  
+It's generally a good idea to also denote what timezone (IST, JST, PST) a time is in, so that it's super clear (think: should check-in time be user's timezone or hotel's timezone?).
+
+For hours some prefer `HH`, some `H`, etc etc. There's also meridians: some countries have their own version of "AM" and "PM" and their placements!
+
+| Locale | Display         |
+| ------ | --------------- |
+| en-US  | 05/04, 03:30 PM |
+| en-GB  | 04/05, 15:30    |
+| ja-JP  | 05/04 15:30     |
+| vi-VN  | 04/05, CH 3:30  |
 
 <Footnotes>
   <Footnote id="ota">
