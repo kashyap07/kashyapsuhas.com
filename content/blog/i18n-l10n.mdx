@@ -159,6 +159,27 @@ For hours some prefer `HH`, some `H`, etc etc. There's also meridians: some coun
 | ja-JP  | 05/04 15:30     |
 | vi-VN  | 04/05, CH 3:30  |
 
+## Names and Addresses
+
+Japan, China, and few other Asian countries follow a `lastName, firstName` system, while rest of the world follows the opposite.  
+Also addresses and the order in which country, zip or postcode, street, state or "prefecture" are presented varies too!
+
+| Country | Postal Field | Example  |
+| ------- | ------------ | -------- |
+| USA     | ZIP code     | 02108    |
+| UK      | Postcode     | SW1A 1AA |
+| India   | PIN code     | 560001   |
+
+These are even more important when setting up your input forms - think a numeric regex validator for postcode. Would fail for UK.
+
+| Country | State Equivalent |
+| ------- | ---------------- |
+| USA     | State            |
+| Canada  | Province         |
+| Japan   | Prefecture       |
+| Russia  | Oblast           |
+| UAE     | Emirate          |
+
 <Footnotes>
   <Footnote id="ota">
     OTA: Online Travel Agency. A web based platform to book a hotel room /
