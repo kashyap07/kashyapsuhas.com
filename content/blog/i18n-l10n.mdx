@@ -1,27 +1,26 @@
 ---
 title: Internationalization (i18n) and Localization (l10n)
 description: An insight into what it takes to make your product "global", starting from your code.
-publishedDateTime: 2026-09-06T12:40:00+05:30
+publishedDateTime: 2026-09-07T06:22:25+05:30
 categories:
   - tech
 heroImage: ""
-draft: true
 ---
 
-Consider this scenario: You're a person from from the US, staying in Canada, and looking to book a hotel room in Jaipur, India from my Traveel site. You're looking at a card like this:
+Consider this scenario: You're a person from the US, staying in Canada, and looking to book a hotel room in Jaipur, India from my Travel site. You're looking at a card like this:
 
 ```
 Jaipur grand hotel --- 04/05 -> 04/07 --- $1,12,107.43 --- फ्री कैंसिलेशन
 ```
 
-"Ok, why is 2 days of stay showing up as a million Dollars?"  
-"What does it say in Hindi?"  
-"Wait, that's not a million, why are the commas all wrong?"  
-"Is the rate in Canadian Dollars or US Dollars?"
+"ok, why is 2 days of stay showing up as a million Dollars?"  
+"what does it say in Hindi?"  
+"wait, that's not a million, why are the commas all wrong?"  
+"is the rate in Canadian Dollars or US Dollars?"
 
 "aaah I'm going to book from a different website!"
 
-If my site happened to have supported localization or l10n, you would've switched to the exact format that you'd understand, and see this card instead:
+If my site happened to have supported good localization (l10n), you would've switched to the exact format that you'd understand, and seen this card instead:
 
 ```
 Jaipur grand hotel --- 05/04 -> 07/04 --- CAD 112,107.43 --- Free cancellation
@@ -29,17 +28,17 @@ Jaipur grand hotel --- 05/04 -> 07/04 --- CAD 112,107.43 --- Free cancellation
 
 You'd realise that you had accidentally chosen 2 months of stay instead of 2 days, that the currency was in Canadian Dollars, and that it said "Free cancellation". And perhaps would've continued booking a room on my Travel OTA<Fn id="ota" />.
 
-This is a small glimpse into why supporting l10n is super important if you want to take your product global. i18n or Internationalization is the codebase architecture set up part of supporting l10n. Here's a couple of things I've learnt through my work at [Rakuten Travel](https://travel.rakuten.com)<Fn id="rt" />.
+This is a small glimpse into why supporting l10n is super important if you want to take your product global. i18n or Internationalization is the codebase architecture set up part of supporting l10n.
 
 ## Step 0
 
-Never hardcode user-facing strings. Always pass it through a localization function.
+Never hardcode user-facing strings. Always pass them through a localization function.
 
-An important note is to also never force preferences on to a user. For example, a person located in Japan could be a tourist and not be able to undersrand Japanese text. Or an Indian located in India may not be able to understand Hindi. Always give the user an option to change their interface localisation settings, and make the setting obvious and accessible.
+An important note is to also never force preferences onto a user. For example, a person located in Japan could be a tourist and not be able to understand Japanese text. Or an Indian located in India may not be able to understand Hindi. Always give the user an option to change their interface localisation settings, and make the setting obvious and accessible.
 
 ## Translation
 
-This one starts easy. A bunch of json files per key, categorised and boxed into directories based on function, Think `Listing.Cancellation.Free_Cancellation`, with sub-keys being languages and then the values.
+This one starts easy. A bunch of JSON files per key, categorised and boxed into directories based on function, think `Listing.Cancellation.Free_Cancellation`, with sub-keys being languages and then the values.
 
 One thing to note here is that you should probably not load all the translations into memory, as this is going to end up being very very fat as you scale.
 
@@ -52,7 +51,7 @@ One thing to note here is that you should probably not load all the translations
 
 ### Conditionals
 
-Complexity starts when you realise languages have their own version of denoting plurals, grammar, etc. Apart from not doing the silly mistake of adding an "s" at the end, a way to solve this is to have conditions in your translations. This way you can abstract away conditional complexity into your translation function instead of muddying your code  
+Complexity starts when you realise languages have their own rules for plurals, grammar, etc. Apart from not making the silly mistake of adding an "s" at the end, a way to solve this is to have conditions in your translations. This way you can abstract away conditional complexity into your translation function instead of muddying your code.  
 Think something like this:
 
 ```js
@@ -60,12 +59,12 @@ Think something like this:
 const label = `Book ${roomCount} room${roomCount === 1 ? "" : "s"}`;
 
 // try something like
-<Translate id="Booking.Confirmaton.Book_rooms" count={roomCount} />;
+<Translate id="Booking.Confirmation.Book_rooms" count={roomCount} />;
 ```
 
 ```json
 {
-  "Booking.Confirmaton.Book_rooms": [
+  "Booking.Confirmation.Book_rooms": [
     {
       "condition": "count === 1",
       "value": [
@@ -88,7 +87,7 @@ The conditions can also be for other booleans and enums.
 
 ### Layout
 
-Then comes text length and layout consideration. You'd ideally want to let your components grow with paddings and margins instead of tight fixed sizes.
+Then come text length and layout considerations. You'd ideally want to let your components grow with padding and margins instead of tight fixed widths.
 
 | Locale | Translation         |
 | ------ | ------------------- |
@@ -96,13 +95,13 @@ Then comes text length and layout consideration. You'd ideally want to let your 
 | en-US  | 123 views           |
 | it-IT  | 123 visualizzazioni |
 
-Similarly, with truncation, you should consider if the text is important information or not, and let it perhaps wrap to next line gracefully.
+Similarly, with truncation, you should consider if the text is important information or not, and let it perhaps wrap to the next line gracefully.
 
 RTL (Arabic, Hebrew) is a whole different beast that I'm going to skip at the moment.
 
 ### CJK Zenkaku
 
-When Keyboard layout is set to these, afaik the characters that are output use "Zenkaku" or extra-width, such that the individual characters are as wide as a typical western letter.  
+When Keyboard layout is set to these, afaik the characters that are output use "Zenkaku" or extra-width, such that the individual characters are as wide as a typical Lating letter.  
 The problem is when a CJK user types in English in the middle, all your validation is going to fail!
 
 | Type               | Narrow / halfwidth | Fullwidth    |
@@ -115,13 +114,13 @@ The problem is when a CJK user types in English in the middle, all your validati
 Numbers of any kind must always pass through a formatter function.  
 Numbers can be monetary values, distances, ratings, percentages.
 
-Example keys in your config to save: `measurementSytem`, `numberSeparator.decimals`, `currency.decimalPlaces`, `currency.symbol.domestic`.
+Example keys in your config to save: `measurementSystem`, `numberSeparator.decimals`, `currency.decimalPlaces`, `currency.symbol.domestic`.
 
 ### Separator
 
 Comma separators are different in different countries, and yes they're not always commas!
 
-Many countries group digits in threes, some European ones swap comma with dots, and India has its own lakh and crore system.
+Many countries group digits in threes, some European ones swap commas with dots, and India has its own lakh and crore system.
 
 | Locale | Separation   |
 | ------ | ------------ |
@@ -132,12 +131,12 @@ Many countries group digits in threes, some European ones swap comma with dots, 
 
 ### Money
 
-Money notation differs by placement of currency symbols, space between symbol and amount, local-global symbols, and fraction amount and non-existence of it.
+Money notation differs by placement of currency symbols, space between symbol and amount, local-global symbols, and fraction amount or the lack of.
 
-Some currencies have a local version - Japanese use "円" locally, while Yen is denoted by "¥" internationally. Also, many countries using Dollar use "$" locally, but for an international traveler it's important to know which dollar they are looking at - USD, SGD, HKD, etc.  
+Some currencies have a local version - Japanese use "円" locally, while yen is denoted by "¥" internationally. Also, many countries using dollars use "$" locally, but for an international traveler it's important to know which dollar they are looking at - USD, SGD, HKD, etc.  
 The way to sort this out is to typically show the local currency symbol if a combination of market, language, and currency matches a default.
 
-It's also important to let users choose their currency regardless of where they are located. For example Indians would generally prefer to read a number with 2,2,3.2 format.
+It's also important to let users choose their currency regardless of where they are located. For example, Indians would generally prefer to read a number in a 2,2,3.2 format.
 
 ```js
 // assume standard value in db is USD.
@@ -182,7 +181,7 @@ Also addresses and the order in which country, zip or postcode, street, state or
 | UK      | Postcode     | SW1A 1AA |
 | India   | PIN code     | 560001   |
 
-These are even more important when setting up your input forms - think a numeric regex validator for postcode. Would fail for UK.
+These are even more important when setting up your input forms - think a numeric regex validator for postcodes. Would fail for the UK.
 
 | Country | State Equivalent |
 | ------- | ---------------- |
@@ -194,17 +193,13 @@ These are even more important when setting up your input forms - think a numeric
 
 ---
 
-Hope this was helpful. If you know of a unique formatting that I've missed here, let me know!
+These are from a codebase perspective. I should perhaps write a bit about how to set your architecture up to be performant with allll the permutations and combinations. Non-technical stuff is not covered here (think legal requirements like GDPR and other EU laws).
 
-These are from a codebase perspective. I should perhaps write a bit about how to set your architecture up to be performant with allll the permutation combinations. Non-technical stuff is not covered here (think legal requirements like GDPR and other EU Laws).
+Hope this was helpful. If you know of a unique format that I've missed here, let me know!
 
 <Footnotes>
   <Footnote id="ota">
     OTA: Online Travel Agency. A web based platform to book a hotel room /
     flight / taxi etc.
-  </Footnote>
-  <Footnote id="rt">
-    .com version is the global site, .co.jp is the domestic one (which happens
-    to be a market leader).
   </Footnote>
 </Footnotes>
