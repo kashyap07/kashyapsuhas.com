@@ -124,7 +124,23 @@ Money notation differ by placement of currency symbols, space between symbol and
 Some currencies have a local version - Japanese use "円" locally, while Yen is denoted by "¥" internationally. Also, many countries using Dollar use "$" locally, but for an international traveler it's important to know which dollar they are looking at - USD, SGD, HKD, etc.  
 The way to sort this out is to typically show the local currency symbol if a combination of market, language, and currency matches a default.
 
-It's also important to let user choose their currency regardless of where they are located. For example Indians would generally prefer to read a number with 2,2,3.2 format.
+It's also important to let users choose their currency regardless of where they are located. For example Indians would generally prefer to read a number with 2,2,3.2 format.
+
+```js
+// value in db must be standard tho. USD is the usual choice for these.
+const systemAmount = 123456.78;
+const formattedAmount = l10nMoney(systemAmount, locale, currency);
+```
+
+| Locale | Currency | Display         |
+| ------ | -------- | --------------- |
+| en-US  | USD      | $123,456.78     |
+| en-IN  | INR      | ₹11,665,492.87  |
+| de-DE  | EUR      | 106.300,61 €    |
+| fr-FR  | EUR      | 106 300,61 €    |
+| en-JP  | JPY      | ￥19,253,084    |
+| ja-JP  | JPY      | 19,253,084円    |
+| vi-VN  | VND      | 3.217.282.465 ₫ |
 
 <Footnotes>
   <Footnote id="ota">
