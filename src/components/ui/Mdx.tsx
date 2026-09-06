@@ -11,6 +11,7 @@ import React, { Children, isValidElement } from "react";
 import { highlightCode } from "@lib/highlight";
 import type { MDXComponents } from "mdx/types";
 import { MDXRemote, MDXRemoteProps } from "next-mdx-remote/rsc";
+import remarkGfm from "remark-gfm";
 
 import * as MdxComponents from "@components/mdx";
 import { CodeBlock } from "@components/mdx/CodeBlock";
@@ -147,7 +148,20 @@ function CustomMDX({ trip, ...props }: CustomMDXProps) {
   const mdx = (
     <MDXRemote
       {...props}
-      options={{ ...props.options, blockJS: false }}
+      options={{
+        ...props.options,
+        blockJS: false,
+        mdxOptions: {
+          ...props.options?.mdxOptions,
+          // gfm is what turns pipe tables into real <table>s. also brings
+          // strikethrough and autolinked urls. footnotes here are the custom
+          // <Fn>/<Footnote> jsx pair, so gfm's [^1] syntax never collides.
+          remarkPlugins: [
+            ...(props.options?.mdxOptions?.remarkPlugins ?? []),
+            remarkGfm,
+          ],
+        },
+      }}
       components={{
         ...defaultComponentMapping,
         ...footnotes,

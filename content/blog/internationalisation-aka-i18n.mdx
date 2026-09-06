@@ -1,0 +1,96 @@
+---
+title: Internationalisation or i18n aka Localization or l10n
+description: An insight into what it takes to make your product "global", starting from your code.
+publishedDateTime: 2026-09-06T12:40:00+05:30
+categories:
+  - tech
+heroImage: ""
+draft: true
+---
+
+_An insight into what it takes to make your product "global", starting from your code._
+
+Consider this scenario: You're a person from from the US, staying in Canada, and looking to book a hotel room in Jaipur, India from my Traveel site. You're looking at a card like this:
+
+```
+Jaipur grand hotel --- 04/05 -> 04/07 --- $1,12,107.43 --- फ्री कैंसिलेशन
+```
+
+"Ok, why is 2 days of stay showing up as a million Dollars?"  
+"What does it say in Hindi?"  
+"Wait, that's not a million, why are the commas all wrong?"  
+"Is the rate in Canadian Dollars or US Dollars?"
+
+"aaah I'm going to book from a different website!"
+
+If my site happened to have supported localization or l10n, you would've switched to the exact format that you'd understand, and see this card instead:
+
+```
+Jaipur grand hotel --- 05/04 -> 07/04 --- CAD 112,107.43 --- Free cancellation
+```
+
+You'd realise that you had accidentally chosen 2 months of stay instead of 2 days, that the currency was in Canadian Dollars, and that it said "Free cancellation". And perhaps would've continued booking a room on my Travel OTA<Fn id="ota" />.
+
+This is a small glimpse into why supporting l10n is super important if you want to take your product global. i18n or Internationalisation is the codebase architecture set up part of supporting l10n. Here's a couple of things I've learnt through my work at [Rakuten Travel](https://travel.rakuten.com)<Fn id="rt" />.
+
+## Step 0
+
+Never hardcode user-facing strings. Always pass it through a localization function.
+
+An important note is to also never assume a user's preferences. For example, a person located in Japan could be a tourist and not be able to undersrand Japanese text. Or an Indian located in India may not be able to understand Hindi. Always give the user an option to change their interface localisation settings, and make the setting obvious and accessible.
+
+## Language
+
+This one starts easy. A bunch of json files per key, categorised and boxed into directories based on function, Think `Listing.Cancellation.Free_Cancellation`, with sub-keys being languages and then the values.
+
+One thing to note here is that you should probably not load all the translations into memory, as this is going to end up being very very fat as you scale.
+
+| locale | `Listing.Cancellation.Free_Cancellation` |
+| ------ | ---------------------------------------- |
+| en-US  | Free Cancellation                        |
+| en-IN  | Free Cancellation                        |
+| hi-IN  | फ्री कैंसिलेशन                           |
+| ko-KR  | 예약 무료 취소                           |
+
+Complexity starts when you realise languages have their own version of denoting plurals, grammar, etc. Apart from not doing the silly mistake of adding an "s" at the end, a way to solve this is to have conditions in your translations. This way you can abstract away conditional complexity into your translation function instead of muddying your code  
+Think something like this:
+
+```js
+// this is a terrible idea
+const label = `Book ${roomCount} room${roomCount === 1 ? "" : "s"}`;
+
+// try something like
+<Translate id="Booking.Confirmaton.Book_rooms" count={roomCount} />;
+```
+
+```json
+{
+  "Booking.Confirmaton.Book_rooms": [
+    {
+      "condition": "count === 1",
+      "value": [
+        { "lang": "en-US", "value": "Book {count} room." },
+        { "lang": "ja-JP", "value": "部屋を{count}部屋予約する。" }
+      ]
+    },
+    {
+      "condition": "count > 1",
+      "value": [
+        { "lang": "en-US", "value": "Book all {count} rooms." },
+        { "lang": "ja-JP", "value": "{count}部屋予約する。" }
+      ]
+    }
+  ]
+}
+```
+
+<Footnotes>
+  <Footnote id="ota">
+    OTA: Online Travel Agency. A web based platform to book a hotel room /
+    flight / taxi etc.
+  </Footnote>
+  <Footnote id="rt">
+    .com version is the global site, .co.jp is the domestic one (which happens
+    to be a market leader).
+  </Footnote>
+</Footnotes>

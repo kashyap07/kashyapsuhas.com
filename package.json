@@ -39,6 +39,7 @@
     "react": "19.2.3",
     "react-compare-image": "^3.5.14",
     "react-dom": "19.2.3",
+    "remark-gfm": "^4.0.1",
     "shiki": "^4.4.3",
     "three": "^0.184.0",
     "tinacms": "^3.3.0",
