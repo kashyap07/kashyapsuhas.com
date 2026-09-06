@@ -50,6 +50,8 @@ One thing to note here is that you should probably not load all the translations
 | hi-IN  | फ्री कैंसिलेशन                           |
 | ko-KR  | 예약 무료 취소                           |
 
+### Conditionals
+
 Complexity starts when you realise languages have their own version of denoting plurals, grammar, etc. Apart from not doing the silly mistake of adding an "s" at the end, a way to solve this is to have conditions in your translations. This way you can abstract away conditional complexity into your translation function instead of muddying your code  
 Think something like this:
 
@@ -81,6 +83,48 @@ const label = `Book ${roomCount} room${roomCount === 1 ? "" : "s"}`;
   ]
 }
 ```
+
+The conditions can also be for other booleans and enums.
+
+### Layout
+
+Then comes text length and layout consideration. You'd ideally want to let your components grow with paddings and margins instead of tight fixed sizes.
+
+| locale | Translation         |
+| ------ | ------------------- |
+| ko-KR  | 123 조회            |
+| en-US  | 123 views           |
+| it-IT  | 123 visualizzazioni |
+
+Similarly, with truncation, you should consider if the text is important information or not, and let it perhaps wrap to next line gracefully.
+
+RTL (Arabic, Hebrew) is a whole different beast that I'm going to skip at the moment.
+
+## Numbers
+
+Numbers of any kind must always pass through a formatter function.
+
+### Separator
+
+Comma separators are different in different countries, and yes they're not always commas!
+
+Most countries follow a 3,3,3. decimals, many Europian swap comma with dots, and India has it's own Lakh and Crore system.
+
+| locale | Separation   |
+| ------ | ------------ |
+| en-US  | 1,234,567.89 |
+| de-DE  | 1.234.567,89 |
+| en-IN  | 12,34,567.89 |
+| fr-FR  | 1 234 567,89 |
+
+### Money
+
+Money notation differ by placement of currency symbols, space between symbol and amount, local-global symbols, and fraction amount and non-existence of it.
+
+Some currencies have a local version - Japanese use "円" locally, while Yen is denoted by "¥" internationally. Also, many countries using Dollar use "$" locally, but for an international traveler it's important to know which dollar they are looking at - USD, SGD, HKD, etc.  
+The way to sort this out is to typically show the local currency symbol if a combination of market, language, and currency matches a default.
+
+It's also important to let user choose their currency regardless of where they are located. For example Indians would generally prefer to read a number with 2,2,3.2 format.
 
 <Footnotes>
   <Footnote id="ota">
