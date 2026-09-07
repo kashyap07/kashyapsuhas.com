@@ -83,7 +83,9 @@ const fragmentShader = /* glsl */ `
 `;
 
 type EngineOpts = {
-  imageSrc: string;
+  // already in flight by the time we get here: the field kicks the download off
+  // at module scope so it overlaps the engine chunk instead of following it
+  image: HTMLImageElement | Promise<HTMLImageElement>;
   portraitEl: HTMLElement;
   // text target is optional: without an anchor the scroll morph stays inert
   textEl?: HTMLElement | null;
@@ -117,15 +119,6 @@ const TEXT_COLUMNS: { x: number; glyphs: { ch: string; y: number }[] }[] = [
   },
 ];
 
-function loadImage(src: string): Promise<HTMLImageElement> {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => resolve(img);
-    img.onerror = reject;
-    img.src = src;
-  });
-}
-
 export class HalftoneEngine {
   private renderer: WebGLRenderer;
   private scene = new Scene();
@@ -136,7 +129,9 @@ export class HalftoneEngine {
 
   private raf = 0;
   private lastT = 0;
-  private intro = -0.2; // small startup delay before the sweep begins
+  // dead air before the print-head sweep, in intro units (/1.7s per unit).
+  // was -0.2 (~340ms), which read as lag now that the grains arrive early
+  private intro = -0.05;
   private disposed = false;
   // last morph value we drew at; -1 forces a redraw (measure/resize/first frame)
   private lastMorph = -1;
@@ -163,7 +158,7 @@ export class HalftoneEngine {
   }
 
   async init() {
-    const img = await loadImage(this.opts.imageSrc);
+    const img = await this.opts.image;
     if (this.disposed) return;
     this.buildGeometry(img);
     if (this.opts.reducedMotion) this.intro = 1.3; // print is just there, no show
@@ -197,11 +192,16 @@ export class HalftoneEngine {
     ctx.drawImage(img, 0, 0, gw, gh);
     const data = ctx.getImageData(0, 0, gw, gh).data;
 
-    const home: number[] = [];
-    const size: number[] = [];
-    const shade: number[] = [];
-    const alphaArr: number[] = [];
-    const seed: number[] = [];
+    // sized for every cell up front and sliced down to the kept grains at the
+    // end. growable number[] + a Float32Array copy of each was ~2m boxed pushes
+    // on the critical path, right where the first frame is waiting
+    const cells = gw * gh;
+    const home = new Float32Array(cells * 2);
+    const size = new Float32Array(cells);
+    const shade = new Float32Array(cells);
+    const alphaArr = new Float32Array(cells);
+    const seed = new Float32Array(cells * 3);
+    let n = 0;
 
     for (let y = 0; y < gh; y++) {
       for (let x = 0; x < gw; x++) {
@@ -214,34 +214,31 @@ export class HalftoneEngine {
         if (alpha < 0.04) continue;
         if ((1 - lum) * alpha < 0.015) continue; // truly invisible on white
 
-        home.push(x / gw, y / gh);
-        size.push(0.95 + Math.random() * 0.45);
+        home[n * 2] = x / gw;
+        home[n * 2 + 1] = y / gh;
+        size[n] = 0.95 + Math.random() * 0.45;
         // re-grain: small luminance jitter keeps the film texture alive
-        shade.push(
-          Math.min(1, Math.max(0, lum + (Math.random() - 0.5) * 0.06)),
-        );
-        alphaArr.push(Math.min(1, alpha * 1.05));
-        seed.push(Math.random(), Math.random(), Math.random());
+        shade[n] = Math.min(1, Math.max(0, lum + (Math.random() - 0.5) * 0.06));
+        alphaArr[n] = Math.min(1, alpha * 1.05);
+        seed[n * 3] = Math.random();
+        seed[n * 3 + 1] = Math.random();
+        seed[n * 3 + 2] = Math.random();
+        n++;
       }
     }
-
-    const n = size.length;
 
     const geo = new BufferGeometry();
     geo.setAttribute(
       "position",
       new BufferAttribute(new Float32Array(n * 3), 3),
     );
-    geo.setAttribute("aHome", new BufferAttribute(new Float32Array(home), 2));
+    geo.setAttribute("aHome", new BufferAttribute(home.subarray(0, n * 2), 2));
     // filled in async by rasterizeText once the font is available
     geo.setAttribute("aText", new BufferAttribute(new Float32Array(n * 4), 4));
-    geo.setAttribute("aSize", new BufferAttribute(new Float32Array(size), 1));
-    geo.setAttribute("aShade", new BufferAttribute(new Float32Array(shade), 1));
-    geo.setAttribute(
-      "aAlpha",
-      new BufferAttribute(new Float32Array(alphaArr), 1),
-    );
-    geo.setAttribute("aSeed", new BufferAttribute(new Float32Array(seed), 3));
+    geo.setAttribute("aSize", new BufferAttribute(size.subarray(0, n), 1));
+    geo.setAttribute("aShade", new BufferAttribute(shade.subarray(0, n), 1));
+    geo.setAttribute("aAlpha", new BufferAttribute(alphaArr.subarray(0, n), 1));
+    geo.setAttribute("aSeed", new BufferAttribute(seed.subarray(0, n * 3), 3));
 
     this.material = new ShaderMaterial({
       vertexShader,

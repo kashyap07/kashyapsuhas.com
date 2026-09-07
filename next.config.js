@@ -65,6 +65,19 @@ const nextConfig = {
         source: "/:path*",
         headers: [...SECURITY_HEADERS, { key: "Link", value: LINK_HEADER }],
       },
+      {
+        // the hero grain portrait. public/ is served with must-revalidate by
+        // default, which costs a round trip before a single grain can draw on
+        // every repeat visit. the size is in the filename, so a new crop or a
+        // different sampling budget ships as a new url and this stays safe.
+        source: "/kedar-bw-800.webp",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
     ];
   },
   async redirects() {
