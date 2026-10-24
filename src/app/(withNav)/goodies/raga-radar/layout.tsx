@@ -2,8 +2,6 @@ import { Metadata } from "next";
 
 import { SITE_URL } from "@utils/site";
 
-import { goodieAppMetadata } from "../goodieManifest";
-
 export const metadata: Metadata = {
   title: "Raga Radar",
   description:
@@ -11,7 +9,6 @@ export const metadata: Metadata = {
   alternates: {
     canonical: `${SITE_URL}/goodies/raga-radar`,
   },
-  ...goodieAppMetadata("raga-radar"),
   keywords: [
     "raga radar",
     "raga detector",
