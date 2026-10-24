@@ -2,6 +2,8 @@ import { Metadata } from "next";
 
 import { SITE_URL } from "@utils/site";
 
+import { goodieAppMetadata } from "../goodieManifest";
+
 export const metadata: Metadata = {
   title: "Panchanga",
   description:
@@ -9,8 +11,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: `${SITE_URL}/goodies/panchanga`,
   },
-  manifest: "/goodies/panchanga/manifest.webmanifest",
-  appleWebApp: { title: "Panchanga" },
+  ...goodieAppMetadata("panchanga"),
   keywords: [
     "panchanga",
     "sankalpa mantra",

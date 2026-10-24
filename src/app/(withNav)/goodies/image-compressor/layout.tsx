@@ -2,6 +2,8 @@ import { Metadata } from "next";
 
 import { SITE_URL } from "@utils/site";
 
+import { goodieAppMetadata } from "../goodieManifest";
+
 export const metadata: Metadata = {
   title: "Image Compressor",
   description:
@@ -9,6 +11,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: `${SITE_URL}/goodies/image-compressor`,
   },
+  ...goodieAppMetadata("image-compressor"),
   keywords: [
     "image compressor",
     "compress images online",

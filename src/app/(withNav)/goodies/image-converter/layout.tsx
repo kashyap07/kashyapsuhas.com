@@ -2,6 +2,8 @@ import { Metadata } from "next";
 
 import { SITE_URL } from "@utils/site";
 
+import { goodieAppMetadata } from "../goodieManifest";
+
 export const metadata: Metadata = {
   title: "Image Converter",
   description:
@@ -9,6 +11,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: `${SITE_URL}/goodies/image-converter`,
   },
+  ...goodieAppMetadata("image-converter"),
   keywords: [
     "image converter",
     "HEIC to JPEG",
