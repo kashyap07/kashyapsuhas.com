@@ -1,12 +1,11 @@
 import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
+  // no start_url/name on purpose: browsers then default to the current page's
+  // url and title, so "add to home screen" saves that page, not the homepage
   return {
-    name: "Suhas Kashyap",
-    short_name: "Suhas Kashyap",
     description:
       "Suhas Kashyap's slice of the interwebs. Blogs, photos, reviews, goodies.",
-    start_url: "/",
     display: "standalone",
     background_color: "#ffffff",
     theme_color: "#ffffff",
