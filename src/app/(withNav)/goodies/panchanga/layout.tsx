@@ -9,6 +9,8 @@ export const metadata: Metadata = {
   alternates: {
     canonical: `${SITE_URL}/goodies/panchanga`,
   },
+  manifest: "/goodies/panchanga/manifest.webmanifest",
+  appleWebApp: { title: "Panchanga" },
   keywords: [
     "panchanga",
     "sankalpa mantra",
