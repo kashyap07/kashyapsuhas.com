@@ -29,6 +29,13 @@ import DomainCard from "./DomainCard";
 import RuleCard from "./RuleCard";
 import SouthIndianChart, { type ChartOccupant } from "./SouthIndianChart";
 import { PRESET_PLACES, type Place, searchPlaces } from "./geocode";
+import {
+  type HistoryEntry,
+  pushEntry,
+  readHistory,
+  sameEntry,
+  writeHistory,
+} from "./history";
 
 // the barrel pulls in astronomy-engine, so it is loaded after mount as its own chunk
 // rather than sitting in the initial route js. constants, angles, dignity and the rule
@@ -67,15 +74,28 @@ const fmtDate = (d: Date) =>
     year: "numeric",
   });
 
+// a placeholder, deliberately not anyone's real birth data: this page is public and
+// whatever sits here is the chart every visitor lands on
+const DEFAULT_ENTRY: HistoryEntry = {
+  date: "1990-01-01",
+  time: "12:00",
+  tzKey: "Asia/Kolkata",
+  place: PRESET_PLACES[0],
+};
+
+const historyLabel = (e: HistoryEntry) => {
+  const [y, mo, d] = e.date.split("-").map(Number);
+  return `${fmtDate(new Date(y, mo - 1, d))}, ${e.time} · ${e.place.label.split(",")[0]}`;
+};
+
 export default function JaatakaPage() {
   const [lib, setLib] = useState<Jyotisha | null>(null);
 
-  // a placeholder, deliberately not anyone's real birth data: this page is public and
-  // whatever sits here is the chart every visitor lands on
-  const [date, setDate] = useState("1990-01-01");
-  const [time, setTime] = useState("12:00");
-  const [tzKey, setTzKey] = useState("Asia/Kolkata");
-  const [place, setPlace] = useState<Place>(PRESET_PLACES[0]);
+  const [date, setDate] = useState(DEFAULT_ENTRY.date);
+  const [time, setTime] = useState(DEFAULT_ENTRY.time);
+  const [tzKey, setTzKey] = useState(DEFAULT_ENTRY.tzKey);
+  const [place, setPlace] = useState<Place>(DEFAULT_ENTRY.place);
+  const [history, setHistory] = useState<HistoryEntry[]>([]);
 
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Place[]>([]);
@@ -91,6 +111,8 @@ export default function JaatakaPage() {
       cancelled = true;
     };
   }, []);
+
+  useEffect(() => setHistory(readHistory()), []);
 
   // debounced place search
   useEffect(() => {
@@ -186,6 +208,38 @@ export default function JaatakaPage() {
       })(),
     };
   }, [lib, date, time, tzKey, place]);
+
+  // record a chart once its inputs have settled, so typing a date digit by digit does
+  // not fill the history with every intermediate year. the untouched default is not
+  // worth keeping.
+  useEffect(() => {
+    if (!result) return;
+    const entry: HistoryEntry = { date, time, tzKey, place };
+    if (sameEntry(entry, DEFAULT_ENTRY)) return;
+    const id = setTimeout(() => {
+      // read storage afresh so another tab's entries are not overwritten
+      const next = pushEntry(readHistory(), entry);
+      writeHistory(next);
+      setHistory(next);
+    }, 1500);
+    return () => clearTimeout(id);
+    // result already tracks the inputs; they are listed for the entry built here
+  }, [result, date, time, tzKey, place]);
+
+  const restore = (e: HistoryEntry) => {
+    setDate(e.date);
+    setTime(e.time);
+    setTzKey(e.tzKey);
+    setPlace(e.place);
+    setQuery("");
+    setResults([]);
+  };
+
+  const forget = (e: HistoryEntry) => {
+    const next = history.filter((h) => !sameEntry(h, e));
+    writeHistory(next);
+    setHistory(next);
+  };
 
   const occupants = useMemo(() => {
     const map = new Map<number, ChartOccupant[]>();
@@ -291,10 +345,55 @@ export default function JaatakaPage() {
               </span>
             )}
           </div>
+          {history.length > 0 && (
+            <div className="mt-2 flex flex-wrap items-center gap-2">
+              <span className="font-sans text-label-sm uppercase tracking-wider text-subtle">
+                history
+              </span>
+              {history.map((h) => {
+                const active = sameEntry(h, { date, time, tzKey, place });
+                return (
+                  <span
+                    key={`${h.date}${h.time}${h.tzKey}${h.place.label}${h.place.lat}`}
+                    className={`flex items-center rounded border font-sans text-label-sm transition-colors duration-200 ${
+                      active
+                        ? "border-accent text-accent"
+                        : "border-line text-muted"
+                    }`}
+                  >
+                    <button
+                      onClick={() => restore(h)}
+                      title={`${h.place.label}, ${TZ_OPTIONS.find((o) => o.value === h.tzKey)?.label ?? h.tzKey}`}
+                      className="py-1 pl-2 pr-1 text-left hover:text-accent"
+                    >
+                      {historyLabel(h)}
+                    </button>
+                    <button
+                      onClick={() => forget(h)}
+                      aria-label={`remove ${historyLabel(h)} from history`}
+                      className="py-1 pl-1 pr-2 text-subtle hover:text-danger"
+                    >
+                      ×
+                    </button>
+                  </span>
+                );
+              })}
+              <button
+                onClick={() => {
+                  writeHistory([]);
+                  setHistory([]);
+                }}
+                className="font-sans text-label-sm text-subtle underline-offset-2 hover:text-accent hover:underline"
+              >
+                clear
+              </button>
+            </div>
+          )}
           <p className="mt-1 font-sans text-label-sm text-subtle">
             using {place.label} at {place.lat.toFixed(4)},{" "}
             {place.lon.toFixed(4)}. Place search goes to OpenStreetMap
-            Nominatim; nothing else leaves your browser.
+            Nominatim; nothing else leaves your browser. Recent charts are kept
+            in this browser only.
           </p>
         </div>
       </div>
