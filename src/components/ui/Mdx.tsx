@@ -23,6 +23,33 @@ import slugify from "@utils/slugify";
 
 const { ImageMDX } = MdxComponents;
 
+// mdx drops everything after the fence language (```js title="foo.js"), so
+// lift `title="..."` off the meta string onto the <code> element where Pre
+// can read it. hand rolled walk instead of unist-util-visit, which is only a
+// transitive dep here.
+type MdNode = {
+  type: string;
+  meta?: string | null;
+  data?: { hProperties?: Record<string, unknown> };
+  children?: MdNode[];
+};
+function remarkCodeTitle() {
+  const walk = (node: MdNode) => {
+    if (node.type === "code" && node.meta) {
+      const title = /title="([^"]+)"/.exec(node.meta)?.[1];
+      if (title) {
+        node.data = node.data ?? {};
+        node.data.hProperties = {
+          ...node.data.hProperties,
+          "data-title": title,
+        };
+      }
+    }
+    node.children?.forEach(walk);
+  };
+  return (tree: MdNode) => walk(tree);
+}
+
 // flatten react children to plain text. headings/code can carry nested nodes
 // (`## foo *bar*`, links, inline code), so a bare `typeof === "string"` check
 // drops the text and yields empty slugs / unhighlighted code.
@@ -84,7 +111,11 @@ interface PreProps extends HTMLAttributes<HTMLPreElement> {
 // source string, which is exactly what both shiki and the copy button need.
 const Pre = async ({ children }: PreProps) => {
   const child = Children.toArray(children).find(isValidElement) as
-    | ReactElement<{ className?: string; children?: ReactNode }>
+    | ReactElement<{
+        className?: string;
+        children?: ReactNode;
+        "data-title"?: string;
+      }>
     | undefined;
 
   const raw = getNodeText(child ?? children).replace(/\n$/, "");
@@ -92,7 +123,14 @@ const Pre = async ({ children }: PreProps) => {
 
   const { html, lang: label } = await highlightCode(raw, lang);
 
-  return <CodeBlock html={html} raw={raw} lang={label} />;
+  return (
+    <CodeBlock
+      html={html}
+      raw={raw}
+      lang={label}
+      title={child?.props?.["data-title"]}
+    />
+  );
 };
 
 const createHeading = (level: number) => {
@@ -159,6 +197,7 @@ function CustomMDX({ trip, ...props }: CustomMDXProps) {
           remarkPlugins: [
             ...(props.options?.mdxOptions?.remarkPlugins ?? []),
             remarkGfm,
+            remarkCodeTitle,
           ],
         },
       }}

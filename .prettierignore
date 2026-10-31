@@ -1,0 +1,3 @@
+
+# verbatim third-party code blocks, prettier would reformat the minified chunk
+content/blog/source-maps.mdx

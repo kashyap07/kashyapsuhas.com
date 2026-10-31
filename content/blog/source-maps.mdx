@@ -1,0 +1,138 @@
+---
+title: Source maps
+description: ""
+publishedDateTime: 2026-10-31T22:00:00+05:30
+categories:
+  - tech
+heroImage: ""
+---
+
+A source map is a JSON file that lets browsers map compiled code to original source code. 
+
+We rarely ship raw html/js/css in modern frontends - either because actual code is written in a different language (ts / sass) or uses a library (react) or because we want to reduce file size (minification). Source maps let us get the original source code since this compiled file is not human-readable.
+
+Consider this example from Josh Comeau's [CSS transitions post](https://www.joshwcomeau.com/animation/css-transitions/).
+
+```js title="_next/static/chunks/28274.8577756433e86cea.js"
+(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[28274],{28274:(e,s,r)=>{"use strict";r.r(s),r.d(s,{default:()=>n});var t=r(29549);let c=(0,r(24299).I)("button")({name:"Wrapper",class:"w1fyi19c",propsAsIs:!1}),n=function(e){let{children:s}=e;return(0,t.jsx)(c,{children:s})};r(95292)},95292:e=>{e.exports={w1fyi19c:"w1fyi19c"}}}]);
+//# sourceMappingURL=28274.8577756433e86cea.js.map
+```
+
+Above is the compiled file or what's actually received by the browser.  
+Below is its corresponding source map file. Notice the `sourceMappingURL` comment line at the bottom - that's how mapping is set.
+
+```json title="_next/static/chunks/28274.8577756433e86cea.js.map"
+{
+  "version": 3,
+  "file": "static/chunks/28274.8577756433e86cea.js",
+  "mappings": "2IAMA,IAAMA,EAAUC,CAAAA,EAAAA,EAAH,OAAGA,CAAAA,CAAM,YAAAC,IAAA,WAAAC,KAAA,YAAAC,SAAA,KAiBrB,CAED,EAvBA,SAAoBC,CAAAA,UAAAA,KAAGC,CAAAA,CAAU,CAAZ,CAAc,CACjC,MAAO,UAAC,EAAQ,KAAD,CAAC,IAACA,GACnB,KAD2B,iBCF3B,WAAkB",
+  "sources": [
+    "webpack://_N_E/./src/post-helpers/css-transitions/EarlyButton.js",
+    "webpack://_N_E/./src/post-helpers/css-transitions/EarlyButton.linaria.module.css"
+  ],
+  "names": ["Wrapper","styled","name","class","propsAsIs","EarlyButton","children"],
+  "sourcesContent": ["..."],
+  "sourceRoot": "",
+  "ignoreList": []
+}
+```
+
+These are the fields:
+
+1. `version`: always 3 idk why
+2. `file`: compiled file this map belongs to
+3. `mappings`: base64 [VLQ](https://en.wikipedia.org/wiki/Variable-length_quantity) encoded strings ([spec](https://tc39.es/ecma426/)), maps lines and locations in compiled file to original file
+4. `sources`: list of original files that went into this chunk
+5. `names`: replacement strings (`Wrapper` -> `c`)
+6. `sourcesContent`: literal source code
+7. `sourceRoot`: prefix for source paths
+8. `ignoreList`: used for ignoring third party libs and such
+
+
+For context, this is the actual source file:
+
+```jsx title="src/post-helpers/css-transitions/EarlyButton.js"
+import { styled } from '@linaria/react';
+
+function EarlyButton({ children }) {
+  return <Wrapper>{children}</Wrapper>;
+}
+
+const Wrapper = styled.button`
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: none;
+  background: hsl(345deg, 100%, 47%);
+  color: white;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1;
+  text-align: center;
+  transition: transform 250ms;
+  will-change: transform;
+
+  &:hover {
+    transform: translateY(-10px);
+  }
+`;
+
+export default EarlyButton;
+```
+
+## Why tho
+
+As I mentioned earlier, for debugging purpose, we want human-readable code. Something like `r.r(s),r.d(s,{default:()=>n})` is unuseable. During development we want to be able to set breakpoints and such and this helps with that.  
+Browser figures out how to do that separating of files into different folders.
+
+Shipping source maps to production is probably not a good idea. One could argue that security through obscurity does not work, but with source maps shipped you can see other information that'd typically not be visible in compiled code - things like comments, folder structure, potential business logic info etc. While you could reverse-engineer any client side logic (AI makes things super easy), having actual code just available like that makes things super easy.
+
+There's one more need for source files, and that's for sharing with logging platforms like NewRelic and Sentry. Seeing a..
+```
+TypeError: Cannot read properties of undefined
+
+at n (app.abcd.js:1:42069)
+at r (app.abcd.js:1:676767)
+```
+..is useless (especially in PROD), so we'd want a way to upload source maps to them.
+
+This is typically handled in your build pipeline, where you generate the source maps and then upload them (but not ship to the client / make it available to the public). Example:
+```bash title="Upload Maps"
+curl -H "Api-Key: YOUR_NEW_RELIC_USER_API_KEY" \
+     -F "sourcemap=@SOURCE_MAP_PATH" \
+     -F "javascriptUrl=JS_URL" \
+     -F "releaseId=YOUR_RELEASE_ID" \
+     -F "releaseName=YOUR_UI_PAGE" \
+     https://sourcemaps.service.newrelic.com/v2/applications/YOUR_NEW_RELIC_APP_ID/sourcemaps
+```
+
+## Where can I see it
+
+A VERY VERY VERY important thing to note is that Source Maps are downloaded only when you open dev tools. A regular user will not get this massive file. Trace it in Chromium's devtools source: ([devtools-frontend](https://github.com/ChromeDevTools/devtools-frontend/tree/82e99f9678c78a51c8f0961a0d001445144f604b/front_end/core/sdk), Oct 2026).
+
+[Chrome] It does not appear in your network tab; to see it, you have to open "Developer resources" tab.
+
+<ImageMDX
+  alt="Chrome DevTools menu open at More tools, with Developer resources highlighted"
+  src="/blog/source-maps/devtools-more-tools-menu.png"
+  mdHalfWidth
+/>
+_⋮ menu → More tools → Developer resources._
+
+<ImageMDX
+  alt="Developer resources panel listing the .js.map files DevTools fetched for joshwcomeau.com, including 28274.8577756433e86cea.js.map"
+  src="/blog/source-maps/devtools-developer-resources.png"
+/>
+
+_Every .map file DevTools pulled for joshwcomeau.com. The highlighted one is the EarlyButton map from above._
+
+## Performance Notes
+
+On DEV: there are various options to set the kind of source maps you want (`source-map`, `eval-source-map`, `cheap-module-source-map` etc in webpack), you can mess around with this to improve your HMR speeds.  
+
+On PROD: let's say you reeeeeally need source maps on PROD, there's not much in terms of perf. impact, as these fat files (remember, source maps have literal source code) are never downloaded for a normal visitor. It'll take up space in your server, but not really a thing to worry about wrt CDN costs for example - average person does not go open devtools on your site. They will however make builds slower and use more memory.
+
+
+---
+
+Thanks to [Josh Comeau](https://www.joshwcomeau.com/) for leaving his source maps [public](https://www.joshwcomeau.com/blog/why-my-blog-is-closed-source/#the-workaround-7). 
