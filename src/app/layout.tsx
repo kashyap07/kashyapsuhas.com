@@ -2,8 +2,9 @@ import type { Metadata, Viewport } from "next";
 import {
   Fraunces,
   IBM_Plex_Mono,
-  Inter,
-  Literata,
+  IBM_Plex_Sans,
+  Noto_Sans_Devanagari,
+  Noto_Sans_Kannada,
   Noto_Serif_Devanagari,
   Noto_Serif_Kannada,
 } from "next/font/google";
@@ -24,16 +25,17 @@ const fraunces = Fraunces({
   variable: "--font-fraunces",
   axes: ["WONK", "SOFT"],
 });
-const inter = Inter({
+// body text and ui chrome, one family for both. not variable on google fonts,
+// so only the weights in use: 400 prose, 500 ui labels, 600 strong. next/font
+// crosses weights with styles, so italic comes in all three
+const ibmPlexSans = IBM_Plex_Sans({
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
   subsets: ["latin"],
-  variable: "--font-inter",
-});
-const literata = Literata({
-  subsets: ["latin"],
-  variable: "--font-literata",
+  variable: "--font-ibm-plex-sans",
 });
 // code, everywhere: fenced blocks, inline chips, the font-mono numbers in the
-// goodies. plex mono is a sibling of plex serif/sans, so it carries editorial
+// goodies. plex mono is the sibling of the plex sans body, so it carries editorial
 // weight rather than ide neutrality, which is what the warm code surface wants.
 // two weights, not the whole family: blocks render at 400 and the goodies pair
 // font-mono with font-medium. no italic, github-light-default never sets one.
@@ -57,6 +59,19 @@ const notoSerifKannada = Noto_Serif_Kannada({
   weight: ["400", "700"],
   subsets: ["kannada"],
   variable: "--font-noto-kannada",
+  preload: false,
+});
+// kannada + devanagari in body text (recipes, vachanas, panchanga, jaataka,
+// carnatic). sans cuts so they match plex sans instead of mixing in serif.
+// preload: false, unicode-range means they only download on pages that use them
+const notoSansDevanagari = Noto_Sans_Devanagari({
+  subsets: ["devanagari"],
+  variable: "--font-noto-sans-devanagari",
+  preload: false,
+});
+const notoSansKannada = Noto_Sans_Kannada({
+  subsets: ["kannada"],
+  variable: "--font-noto-sans-kannada",
   preload: false,
 });
 // shippori mincho is NOT loaded via next/font: it only exposes latin subsets
@@ -106,9 +121,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${fraunces.variable} ${literata.variable} ${inter.variable} ${ibmPlexMono.variable} ${notoSerifDevanagari.variable} ${notoSerifKannada.variable}`}
+      className={`${fraunces.variable} ${ibmPlexSans.variable} ${ibmPlexMono.variable} ${notoSerifDevanagari.variable} ${notoSerifKannada.variable} ${notoSansDevanagari.variable} ${notoSansKannada.variable}`}
     >
-      <body className="font-serif">
+      <body className="font-sans">
         {/* just the katakana the particle morph rasterizes (レス ヤップ / モア ドゥ),
             subset to those exact glyphs. react 19 hoists these into <head> */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />

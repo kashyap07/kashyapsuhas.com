@@ -59,7 +59,7 @@ Tokens are defined in `tailwind.config.ts` under `theme.extend`.
 **Code**
 
 Warm off-white, deliberately not the cool `surface-subtle` grey. Code is its own
-surface: it should read as an inset object in the serif prose, and the warm tint
+surface: it should read as an inset object in the prose, and the warm tint
 sits with the amber accent instead of fighting it. Values are css vars in
 `globals.css` so the shiki theme and the chrome stay in one place.
 
@@ -103,24 +103,24 @@ strings are unaffected, this only bites through `cn()`.
 
 ### Fonts
 
-Four families, all loaded via `next/font/google` in `src/app/layout.tsx` and exposed as tailwind tokens.
+Three families, all loaded via `next/font/google` in `src/app/layout.tsx` and exposed as tailwind tokens.
 
 | token          | font                        | use for                                                                                                                                                                                                                                                    |
 | -------------- | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `font-display` | **Fraunces (wonky + soft)** | all headings (h1-h6), the "Suhas Kashyap" wordmark, any title-style text. Loaded with `opsz` + `WONK` + `SOFT` axes, and `WONK 1, SOFT 100` (both maxed) is forced via `font-variation-settings` in `globals.css` so it doesn't look like default Fraunces |
-| `font-serif`   | **Literata**                | body text (default on `<body>`), paragraphs, lists, captions                                                                                                                                                                                               |
-| `font-sans`    | **Inter**                   | interface chrome: small labels, year headers, dates next to titles, tag badges, filter chips, table headers, form inputs, social handles. Use for anything UI-flavored vs editorial content.                                                               |
+| `font-sans`    | **IBM Plex Sans**           | body text (default on `<body>`), paragraphs, lists, captions, and interface chrome: small labels, year headers, dates next to titles, tag badges, filter chips, table headers, form inputs, social handles. Loaded at 400/500/600 plus italics             |
 | `font-mono`    | **IBM Plex Mono**           | all code: fenced blocks, inline chips, and the numeric readouts in the goodies. Applied to `pre`/`code` globally in `globals.css`, so markdown needs nothing; reach for `font-mono` by hand only in components                                             |
 
 Headings get `font-display` automatically via a global rule in `globals.css`, you don't need to add it on every `<h1>`/`<h2>`. The wordmark and other non-heading display text needs `font-display` explicitly.
 
 ### Non-Latin script fallbacks
 
-Both `font-serif` and `font-display` stack Noto Serif scripts after the primary font so browser auto-picks the right font per character:
+Each stack carries script fallbacks in its own style, so the browser picks per character and sans text never drops into a serif:
 
-- **Devanagari** (हिन्दी, संस्कृत) → Noto Serif Devanagari
-- **Kannada** (ಕನ್ನಡ) → Noto Serif Kannada
-- **Japanese** (日本語) → Noto Serif JP (preload disabled, only loads when used)
+- `font-sans`: **Devanagari** (हिन्दी, संस्कृत) → Noto Sans Devanagari, **Kannada** (ಕನ್ನಡ) → Noto Sans Kannada. Japanese falls to the system sans (Hiragino Sans on macos)
+- `font-display`: Noto Serif Devanagari, Noto Serif Kannada, and Shippori Mincho for the katakana wordmark morph
+
+All of them have preload disabled, so they only load on pages that use them.
 
 You don't need to do anything special, just write the script and the browser picks the right font.
 
@@ -328,8 +328,7 @@ highlighter reaches the browser.
   unreadable: 32 of 68 tokens in a plain JS sample fell under 3:1. If you swap
   the theme, measure first.
 - **Font:** IBM Plex Mono (`font-mono`). Picked over an IDE face like Source
-  Code Pro on purpose: Plex Mono is a sibling of Plex Serif and Plex Sans, so it
-  reads editorial next to Literata and Fraunces, and it carries more weight on
+  Code Pro on purpose: Plex Mono is the sibling of the Plex Sans body, reads editorial next to Fraunces, and it carries more weight on
   the warm code surface, where a cooler mono goes pale. All the usual monos sit
   at a 0.6em advance, so the choice costs nothing in characters per line (90 at
   13px in a 736px block). The one thing it gives up is a marked zero: Plex Mono
@@ -341,7 +340,7 @@ highlighter reaches the browser.
   fallback keeps the swap from shifting the block. `font-variant-ligatures: none`
   stays on, since a fallback in the stack could still ship coding ligatures.
 - **Size:** 13px mobile, 14px desktop, `line-height: 1.65`. Code reads _smaller_
-  than the serif body, never larger.
+  than the body, never larger.
 - **Width:** breaks out of the reading column by 32px a side from `md`
   (`md:-mx-8`), so 736px against the prose's 672px. Code needs room prose
   doesn't, and the wrapper is `max-w-4xl` so there is 112px of slack a side to

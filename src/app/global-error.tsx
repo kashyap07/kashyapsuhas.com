@@ -19,14 +19,23 @@ export default function GlobalError({
           alignItems: "center",
           justifyContent: "center",
           gap: "1.5rem",
-          fontFamily: "ui-serif, Georgia, serif",
+          fontFamily: "ui-sans-serif, system-ui, sans-serif",
           background: "#ffffff",
           color: "#1e293b",
           padding: "2rem",
           textAlign: "center",
         }}
       >
-        <h1 style={{ fontSize: "6rem", margin: 0, lineHeight: 1 }}>500</h1>
+        <h1
+          style={{
+            fontSize: "6rem",
+            margin: 0,
+            lineHeight: 1,
+            fontFamily: "ui-serif, Georgia, serif",
+          }}
+        >
+          500
+        </h1>
         <p style={{ fontSize: "1.5rem", margin: 0 }}>something broke</p>
         <div style={{ display: "flex", gap: "1rem" }}>
           <button

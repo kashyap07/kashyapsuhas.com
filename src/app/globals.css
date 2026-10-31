@@ -9,13 +9,13 @@
     --columbiaYellow: #f0a044;
 
     /* shippori mincho is loaded via a <link> in layout.tsx, not next/font, so
-       its variable isn't auto-defined. it must exist: the serif + display font
-       stacks reference var(--font-shippori-mincho), and an undefined var with
+       its variable isn't auto-defined. it must exist: the display font
+       stack references var(--font-shippori-mincho), and an undefined var with
        no fallback invalidates the WHOLE font-family, dropping headings to sans. */
     --font-shippori-mincho: "Shippori Mincho";
 
     /* code surface. warm off-white rather than a grey slab so fenced blocks
-       sit with the serif prose and the amber accent. shiki's
+       sit with the prose and the amber accent. shiki's
        github-light-default supplies the token colours (chosen on measured
        contrast, see lib/highlight.ts), these own everything around them. */
     --code-bg: #faf9f6;
@@ -153,7 +153,7 @@
   .code-body pre {
     @apply m-0 overflow-visible rounded-none border-0 bg-transparent p-0;
     color: var(--code-fg);
-    font-size: 0.8125rem; /* 13px, was 18px. code should read smaller than serif body */
+    font-size: 0.8125rem; /* 13px, was 18px. code should read smaller than body */
     line-height: 1.65;
     tab-size: 2;
   }

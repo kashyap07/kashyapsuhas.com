@@ -18,8 +18,8 @@ import plugin from "tailwindcss/plugin";
 //         data-driven colors, not ui chrome. leave them as-is
 //
 // TYPOGRAPHY (responsive pattern: text-{step} mobile → md:text-{step} desktop)
-//   families:        font-display (fraunces), font-serif (literata),
-//                    font-sans (inter), font-mono (ibm plex mono)
+//   families:        font-display (fraunces), font-sans (ibm plex sans),
+//                    font-mono (ibm plex mono)
 //   page titles:     text-heading-lg  → md:text-display
 //   section titles:  text-heading-md  → md:text-heading-xl
 //   subheadings:     text-heading-sm  → md:text-heading-md
@@ -97,7 +97,7 @@ const config: Config = {
         "line-subtle": "#f3f4f6", // border-line-subtle (gray-100, faint)
 
         // code surface. warm off-white so fenced blocks read as their own
-        // object against the serif prose without going full grey slab.
+        // object against the prose without going full grey slab.
         // token values live in globals.css so the shiki theme and the css
         // stay in one place
         code: {
@@ -110,15 +110,6 @@ const config: Config = {
 
       // ── typography ─────────────────────────────────────────────────────────
       fontFamily: {
-        serif: [
-          "var(--font-literata)",
-          "var(--font-noto-devanagari)",
-          "var(--font-noto-kannada)",
-          "var(--font-shippori-mincho)",
-          "ui-serif",
-          "Georgia",
-          "serif",
-        ],
         display: [
           "var(--font-fraunces)",
           "var(--font-noto-devanagari)",
@@ -128,7 +119,14 @@ const config: Config = {
           "Georgia",
           "serif",
         ],
-        sans: ["var(--font-inter)", "ui-sans-serif", "system-ui", "sans-serif"],
+        sans: [
+          "var(--font-ibm-plex-sans)",
+          "var(--font-noto-sans-devanagari)",
+          "var(--font-noto-sans-kannada)",
+          "ui-sans-serif",
+          "system-ui",
+          "sans-serif",
+        ],
         // code. the fallbacks only matter for the moment before the webfont
         // lands, since plex mono is self-hosted by next/font
         mono: [
