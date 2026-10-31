@@ -42,10 +42,9 @@ function useIsXl(): boolean {
 // width tracks the real gutter, (50vw - half the 42rem column) less margins,
 // capped at 400, so it can never push past the viewport at narrow xl widths.
 //
-// below xl: sticky ribbon strip (svg route + car) with the same follow-map
-// open underneath by default, collapsible by tap. the ribbon also ssr-renders
-// (css-hidden on xl), so phones get it on first paint; `active` turns its
-// listeners and map off on desktop.
+// below xl: the same follow-map as a permanent sticky panel at the top. the
+// panel shell ssr-renders (css-hidden on xl), so phones get it on first
+// paint; `active` keeps the map off on desktop.
 export default function TripMapHero() {
   const isXl = useIsXl();
   return (
