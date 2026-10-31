@@ -108,23 +108,20 @@ curl -H "Api-Key: YOUR_NEW_RELIC_USER_API_KEY" \
 
 ## Where can I see it
 
-A VERY VERY VERY important thing to note is that Source Maps are downloaded only when you open dev tools. A regular user will not get this massive file. Trace it in Chromium's devtools source: ([devtools-frontend](https://github.com/ChromeDevTools/devtools-frontend/tree/82e99f9678c78a51c8f0961a0d001445144f604b/front_end/core/sdk), Oct 2026).
+A VERY VERY important thing to note is that Source Maps are downloaded only when you open dev tools, a regular user will not get this massive file. Trace it in Chromium's devtools source: [devtools-frontend](https://github.com/ChromeDevTools/devtools-frontend/tree/82e99f9678c78a51c8f0961a0d001445144f604b/front_end/core/sdk).
 
-[Chrome] It does not appear in your network tab; to see it, you have to open "Developer resources" tab.
+[Chrome] It does not appear in your network tab - to see it, you have to open "Developer resources" tab.
 
-<ImageMDX
+<Figure
   alt="Chrome DevTools menu open at More tools, with Developer resources highlighted"
   src="/blog/source-maps/devtools-more-tools-menu.png"
-  mdHalfWidth
-/>
-_⋮ menu → More tools → Developer resources._
+  size="half">
+  More tools -> Developer resources.
+</Figure>
 
-<ImageMDX
+<Figure
   alt="Developer resources panel listing the .js.map files DevTools fetched for joshwcomeau.com, including 28274.8577756433e86cea.js.map"
-  src="/blog/source-maps/devtools-developer-resources.png"
-/>
-
-_Every .map file DevTools pulled for joshwcomeau.com. The highlighted one is the EarlyButton map from above._
+  src="/blog/source-maps/devtools-developer-resources.png" />
 
 ## Performance Notes
 

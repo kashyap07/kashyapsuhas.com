@@ -160,12 +160,13 @@ Now go do the suspicious thing ten times. Open the modal, close it. Change route
 
 That listeners counter is SO useful. It's a plain integer. It goes up when you register and down when you remove, no GC involved, no interpretation needed. If you open and close a modal ten times and it's up by ten, you found your bug in about forty seconds and you never opened the Memory panel.
 
-<ImageMDX
+<Figure
   alt="Performance Monitor with JS event listeners climbing in a staircase"
   src="/blog/memory-leaks/performance-monitor.png"
-/>
-
-_The listener count going up and never coming back down. That's the whole diagnosis._
+>
+  The listener count going up and never coming back down. That's the whole
+  diagnosis.
+</Figure>
 
 One gotcha: the heap doesn't shrink until a GC actually runs. Before you declare a leak, hit the trash can icon in the Memory panel to force one, then look again.
 
@@ -210,12 +211,13 @@ Two shortcuts worth knowing:
 - Type `Detached` into the class filter box. Fastest DOM leak find there is.
 - The Memory panel has a separate **Detached elements** profiling type. It gives you the actual detached nodes and their counts without doing a full snapshot at all. If you suspect DOM, start here, it's much faster.
 
-<ImageMDX
+<Figure
   alt="Heap snapshot Comparison view sorted by size delta"
   src="/blog/memory-leaks/comparison.png"
-/>
-
-_Snapshot 3 against snapshot 2. `New: 10, Deleted: 0` for ten interactions is not a coincidence._
+>
+  Snapshot 3 against snapshot 2. `New: 10, Deleted: 0` for ten interactions is
+  not a coincidence.
+</Figure>
 
 ### 5. Retainers. The only part that matters.
 
@@ -233,7 +235,7 @@ For our search panel it reads something like:
              └─ in [[listeners]] of Window
 ```
 
-<ImageMDX
+<Figure
   alt="DevTools Retainers pane showing the path from Window down to the leaked object"
   src="/blog/memory-leaks/retainers.png"
 />

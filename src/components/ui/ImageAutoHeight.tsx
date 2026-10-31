@@ -5,7 +5,6 @@ import cn from "@utils/cn";
 type ImageAutoHeightProps = ImageProps & {
   src: string;
   alt: string;
-  mdHalfWidth?: boolean; // poor design lol. but this is for blog post half width
   className?: string;
   imageClassName?: string;
 };
@@ -25,7 +24,6 @@ type ImageAutoHeightProps = ImageProps & {
 const ImageAutoHeight = ({
   src,
   alt,
-  mdHalfWidth,
   className,
   imageClassName,
   ...rest
@@ -34,7 +32,6 @@ const ImageAutoHeight = ({
     <span
       className={cn(
         "css-ImageAutoHeight children:!position-unset relative grid w-full self-center justify-self-center",
-        mdHalfWidth && "md:w-1/2",
         className,
       )}
       data-component="ImageAutoHeight"

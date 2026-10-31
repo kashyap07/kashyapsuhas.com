@@ -16,12 +16,11 @@ import remarkGfm from "remark-gfm";
 import * as MdxComponents from "@components/mdx";
 import { CodeBlock } from "@components/mdx/CodeBlock";
 import { bindFootnoteComponents } from "@components/mdx/Footnotes";
+import { MarkdownImage, remarkFigureImages } from "@components/mdx/figure";
 import Lightbox from "@components/mdx/trip/Lightbox";
 import { TripRouteProvider } from "@components/mdx/trip/TripContext";
 import { bindTripComponents, getTrip } from "@components/mdx/trip/registry";
 import slugify from "@utils/slugify";
-
-const { ImageMDX } = MdxComponents;
 
 // mdx drops everything after the fence language (```js title="foo.js"), so
 // lift `title="..."` off the meta string onto the <code> element where Pre
@@ -161,7 +160,7 @@ const defaultComponentMapping: MDXComponents = {
   h4: createHeading(4),
   h5: createHeading(5),
   h6: createHeading(6),
-  img: ImageMDX,
+  img: MarkdownImage,
   a: CustomLink,
   code: Code,
   pre: Pre,
@@ -198,6 +197,7 @@ function CustomMDX({ trip, ...props }: CustomMDXProps) {
             ...(props.options?.mdxOptions?.remarkPlugins ?? []),
             remarkGfm,
             remarkCodeTitle,
+            remarkFigureImages,
           ],
         },
       }}
@@ -210,7 +210,15 @@ function CustomMDX({ trip, ...props }: CustomMDXProps) {
     />
   );
 
-  if (!tripData) return mdx;
+  // every post gets the lightbox: Figure and TripPhoto both open it
+  if (!tripData) {
+    return (
+      <>
+        {mdx}
+        <Lightbox />
+      </>
+    );
+  }
 
   return (
     <TripRouteProvider route={tripData.route}>

@@ -1,7 +1,8 @@
 import { type Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { CustomMDX, RelativeDate, Toc, Wrapper } from "@components/ui";
+import { RelativeDate, Toc, Wrapper } from "@components/ui";
+import CustomMDX from "@components/ui/Mdx";
 import { getBlogPost, getBlogPosts } from "@db/blog";
 import { extractHeadings } from "@utils/headings";
 import { SITE_URL } from "@utils/site";
