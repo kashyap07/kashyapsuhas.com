@@ -63,6 +63,32 @@
     @apply font-sans;
   }
 
+  /* markdown tables in posts split columns equally. auto layout treats these
+     widths as a preference, so a column whose unbreakable content (a long
+     code key) can't fit still grows past its share instead of chopping it.
+     custom table components opt out with not-prose. */
+  .prose table:not(:where(.not-prose *)):has(th:nth-child(2):last-child) th {
+    width: 50%;
+  }
+  .prose table:not(:where(.not-prose *)):has(th:nth-child(3):last-child) th {
+    width: 33.333%;
+  }
+  .prose table:not(:where(.not-prose *)):has(th:nth-child(4):last-child) th {
+    width: 25%;
+  }
+  .prose table:not(:where(.not-prose *)):has(th:nth-child(5):last-child) th {
+    width: 20%;
+  }
+  /* inline code chips may break anywhere in prose (see .inline-code), which
+     would let the equal widths above chop a code key mid-word. keep them
+     whole in table cells so their column grows instead. md+ only: on a
+     phone a long key is wider than the whole table, so it still breaks. */
+  @screen md {
+    .prose table:not(:where(.not-prose *)) .inline-code {
+      word-break: normal;
+    }
+  }
+
   pre,
   code {
     @apply font-mono;
