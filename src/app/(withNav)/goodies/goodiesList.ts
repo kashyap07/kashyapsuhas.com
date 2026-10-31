@@ -6,13 +6,13 @@ export type Goodie = {
 
 const goodies: Array<Goodie> = [
   {
-    name: "Raagle",
-    description: "a daily Mēḷakartā raaga guessing game",
-    href: "goodies/raagle",
+    name: "Panchanga",
+    description: "sankalpa mantra elements",
+    href: "goodies/panchanga",
   },
   {
     name: "Dreamify",
-    description: "dreamy wedding-photo look, meesho photoshop",
+    description: "dreamy wedding-photo-wala look",
     href: "goodies/dreamify",
   },
   {
@@ -31,19 +31,19 @@ const goodies: Array<Goodie> = [
     href: "goodies/background-remover",
   },
   {
-    name: "Panchanga",
-    description: "sankalpa mantra elements",
-    href: "goodies/panchanga",
-  },
-  {
-    name: "Jaataka",
-    description: "south indian birth chart, grahas, bhavas, vimshottari dasha",
-    href: "goodies/jaataka",
-  },
-  {
     name: "Melakarta Ragas",
     description: "all 72 melakarta raagas: filter by swara, hear them",
     href: "goodies/melakarta-ragas",
+  },
+  {
+    name: "Jaataka",
+    description: "south indian birth chart, with some predictions",
+    href: "goodies/jaataka",
+  },
+  {
+    name: "Raagle",
+    description: "a daily Mēḷakartā raaga guessing game",
+    href: "goodies/raagle",
   },
   {
     name: "Raga Radar",

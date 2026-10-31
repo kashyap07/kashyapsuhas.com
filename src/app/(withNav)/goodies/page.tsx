@@ -35,7 +35,7 @@ export default function Goodies() {
         {goodies.map((goodie) => (
           <Link key={goodie.href} href={goodie.href} className="group">
             <li className="flex flex-col gap-1">
-              <span className="text-xl font-medium group-hover:text-accent md:text-2xl">
+              <span className="font-display text-xl font-medium group-hover:text-accent md:text-2xl">
                 {goodie.name}
               </span>
               <span className="text-base text-secondary md:text-lg">
