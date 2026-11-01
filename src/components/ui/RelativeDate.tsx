@@ -14,38 +14,31 @@ function toUtcDate(date: string): Date {
 // this exists so that the relative date can be calculated on the client side
 // prev util required redeployment everytime
 function getRelativeDate(date: string) {
-  const currentDate = new Date();
-  const targetDate = toUtcDate(date);
+  const now = new Date();
+  const target = toUtcDate(date);
 
-  const yearsAgo = currentDate.getUTCFullYear() - targetDate.getUTCFullYear();
-  const monthsAgo = currentDate.getUTCMonth() - targetDate.getUTCMonth();
-  const daysAgo = currentDate.getUTCDate() - targetDate.getUTCDate();
-  const isLessthanAYear = yearsAgo === 1 && monthsAgo < 0;
-  const monthsAgoAbs = Math.abs(monthsAgo);
+  // whole calendar months elapsed, minus one if the day-of-month hasn't come round yet
+  const months =
+    (now.getUTCFullYear() - target.getUTCFullYear()) * 12 +
+    (now.getUTCMonth() - target.getUTCMonth()) -
+    (now.getUTCDate() < target.getUTCDate() ? 1 : 0);
 
-  let formattedDate = "";
+  if (months >= 12) return `${Math.floor(months / 12)}y ago`;
+  if (months >= 1) return `${months}mo ago`;
 
-  if (isLessthanAYear) {
-    if (monthsAgoAbs > 0) {
-      formattedDate = `${12 - monthsAgoAbs}mo ago`;
-    } else if (daysAgo > 0) {
-      formattedDate = `${daysAgo}d ago`;
-    } else {
-      formattedDate = "Today";
-    }
-  } else {
-    if (yearsAgo > 0) {
-      formattedDate = `${yearsAgo}y ago`;
-    } else if (monthsAgoAbs > 0) {
-      formattedDate = `${monthsAgoAbs}mo ago`;
-    } else if (daysAgo > 0) {
-      formattedDate = `${daysAgo}d ago`;
-    } else {
-      formattedDate = "Today";
-    }
-  }
+  // whole utc days between the two calendar dates
+  const dayMs = 86400000;
+  const days = Math.round(
+    (Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()) -
+      Date.UTC(
+        target.getUTCFullYear(),
+        target.getUTCMonth(),
+        target.getUTCDate(),
+      )) /
+      dayMs,
+  );
 
-  return formattedDate;
+  return days > 0 ? `${days}d ago` : "Today";
 }
 
 interface Props {
