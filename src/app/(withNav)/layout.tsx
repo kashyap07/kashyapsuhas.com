@@ -32,7 +32,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
       <main
         id="main"
-        className="flex min-h-screen flex-col items-center justify-between pb-12 pt-8"
+        className="flex min-h-screen flex-col items-center justify-between pb-3 pt-8"
       >
         {children}
       </main>
